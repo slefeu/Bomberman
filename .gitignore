@@ -1,0 +1,8 @@
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+!Findraylib.cmake
+_deps/
+bomberman
+.vscode/

@@ -2,9 +2,24 @@ cmake_minimum_required(VERSION 3.17)
 project(bomberman)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(raylib 4.0.0 QUIET)
+find_package(raylib 4.0.0 REQUIRED)
 
-# Our Project
-add_executable(${PROJECT_NAME} src/main.cpp)
-#set(raylib_VERBOSE 1)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    set(CMAKE_VERBOSE_MAKEFILE ON)
+endif ()
+
+# Ajouter ici les .cpp
+set(INDIE_SRC
+    src/main.cpp)
+
+# Ajouter ici les dossiers contenants les .hpp
+# target_include_directories(${PROJECT_NAME} PRIVATE include)
+
+add_executable(${PROJECT_NAME} ${INDIE_SRC})
+if (UNIX)
+    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror)
+endif ()
 target_link_libraries(${PROJECT_NAME} raylib)

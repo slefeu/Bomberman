@@ -19,6 +19,10 @@ class Cameraman : public Camera3D
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
     bool smoothMove(Vector3 target, float speed) noexcept;
+
+  public:
+    bool isMoving;
+    Vector3 target;
 };
 
 #endif /* !CAMERA_HPP_ */

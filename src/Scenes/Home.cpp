@@ -18,16 +18,8 @@ void Home::placeCamera(Cameraman& camera) noexcept
 {
     camera.target = {0.0f, 0.0f, 0.0f};
     camera.up = {0.0f, 1.0f, 0.0f};
-
-    while (!camera.smoothMove(cameraPosition, 1)) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        BeginMode3D(camera);
-        display();
-        EndMode3D();
-        DrawFPS(10, 10);
-        EndDrawing();
-    }
+    camera.target = cameraPosition;
+    camera.isMoving = true;
 }
 
 void Home::display() noexcept

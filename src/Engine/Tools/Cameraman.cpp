@@ -17,6 +17,7 @@ Cameraman::Cameraman() noexcept
 {
     fovy = 60.0f;
     projection = CAMERA_PERSPECTIVE;
+    isMoving = false;
 }
 
 void Cameraman::moveX(float x) noexcept
@@ -42,14 +43,13 @@ bool Cameraman::smoothMove(Vector3 to, float speed) noexcept
     dir.y = (position.y < pos.y) ? 1.0f : -1.0f;
     dir.z = (position.z < pos.z) ? 1.0f : -1.0f;
 
-    if (position.x != pos.x || position.y != pos.y || position.z != pos.z) {
-        if (pos.x != position.x)
-            moveX(dir.x * speed);
-        if (pos.y != position.y)
-            moveY(dir.y * speed);
-        if (pos.z != position.z)
-            moveZ(dir.z * speed);
+    if (position.x == pos.x && position.y == pos.y && position.z == pos.z)
         return false;
-    }
+    if (pos.x != position.x)
+        moveX(dir.x * speed);
+    if (pos.y != position.y)
+        moveY(dir.y * speed);
+    if (pos.z != position.z)
+        moveZ(dir.z * speed);
     return true;
 }

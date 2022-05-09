@@ -45,6 +45,8 @@ void Core::run() noexcept
         // Update -------------------------------------------------------------
         if (IsKeyPressed(KEY_LEFT))
             switchScene((currentScene - 1) % scenes.size());
+        if (camera.isMoving)
+            camera.isMoving = camera.smoothMove(camera.target, 1);
         scenes[currentScene]->action();
 
         // Display ------------------------------------------------------------

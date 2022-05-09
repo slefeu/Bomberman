@@ -18,7 +18,6 @@ endif ()
 set(INDIE_SRC
     src/main.cpp
     src/Engine/Tools/Cameraman.cpp
-    src/Engine/Tools/Vector3Tools.cpp
     src/Engine/Core/Core.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)

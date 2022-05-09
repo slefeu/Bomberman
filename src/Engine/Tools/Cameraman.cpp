@@ -11,8 +11,6 @@
 
 #include <iostream>
 
-#include "Vector3Tools.hpp"
-
 Cameraman::Cameraman() noexcept
 {
     fovy = 60.0f;

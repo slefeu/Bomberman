@@ -11,7 +11,6 @@
 
 #include "Game.hpp"
 #include "Home.hpp"
-#include "Vector3Tools.hpp"
 
 #define SCENE scenes[currentScene]
 

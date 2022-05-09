@@ -22,9 +22,8 @@ class Core
     int currentScene;
 
   public:
-    Core(int height, int width) noexcept;
+    Core(int height, int width, int fps) noexcept;
     ~Core() noexcept = default;
-    void setFPS(int fps) noexcept;
     void run() noexcept;
 
   private:

@@ -13,14 +13,17 @@
 class Scene
 {
   public:
-    Scene() noexcept = default;
-    virtual ~Scene() noexcept = default;
-    virtual void placeCamera(Cameraman& camera) noexcept = 0;
-    virtual void display(void) noexcept = 0;
-    virtual void action() noexcept = 0;
+    Vector3 cameraPosition;
+    Vector3 cameraTarget;
+    Vector3 cameraUp;
 
   public:
-    Vector3 cameraPosition;
+    Scene() noexcept = default;
+    virtual ~Scene() noexcept = default;
+    virtual void resetCamera(Cameraman& camera) noexcept = 0;
+    virtual void display3D(void) noexcept = 0;
+    virtual void display2D(void) noexcept = 0;
+    virtual void action() noexcept = 0;
 };
 
 #endif /* !SCENE_HPP_ */

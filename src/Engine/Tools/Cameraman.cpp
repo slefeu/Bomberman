@@ -18,6 +18,7 @@ Cameraman::Cameraman() noexcept
     fovy = 60.0f;
     projection = CAMERA_PERSPECTIVE;
     isMoving = false;
+    speed = 1;
 }
 
 void Cameraman::moveX(float x) noexcept
@@ -35,21 +36,40 @@ void Cameraman::moveZ(float z) noexcept
     position.z += z;
 }
 
-bool Cameraman::smoothMove(Vector3 to, float speed) noexcept
+void Cameraman::moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept
 {
-    Vector3 pos = to;
-    Vector3 dir;
-    dir.x = (position.x < pos.x) ? 1.0f : -1.0f;
-    dir.y = (position.y < pos.y) ? 1.0f : -1.0f;
-    dir.z = (position.z < pos.z) ? 1.0f : -1.0f;
+    targetPosition = to;
+    targetTarget = target;
+    targetUp = up;
+    isMoving = true;
+}
 
-    if (position.x == pos.x && position.y == pos.y && position.z == pos.z)
+void Cameraman::tpTo(Vector3 to, Vector3 tar, Vector3 newUp) noexcept
+{
+    position = to;
+    target = tar;
+    up = newUp;
+    isMoving = false;
+}
+
+bool Cameraman::smoothMove(void) noexcept
+{
+    Vector3 dir;
+    dir.x = (position.x < targetPosition.x) ? 1.0f : -1.0f;
+    dir.y = (position.y < targetPosition.y) ? 1.0f : -1.0f;
+    dir.z = (position.z < targetPosition.z) ? 1.0f : -1.0f;
+
+    if (position.x == targetPosition.x && position.y == targetPosition.y && position.z == targetPosition.z)
         return false;
-    if (pos.x != position.x)
+    if (targetPosition.x != position.x)
         moveX(dir.x * speed);
-    if (pos.y != position.y)
+    if (targetPosition.y != position.y)
         moveY(dir.y * speed);
-    if (pos.z != position.z)
+    if (targetPosition.z != position.z)
         moveZ(dir.z * speed);
+
+    target = targetTarget;
+    up = targetUp;
+
     return true;
 }

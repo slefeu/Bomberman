@@ -18,11 +18,16 @@ class Cameraman : public Camera3D
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
-    bool smoothMove(Vector3 target, float speed) noexcept;
+    void moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
+    void tpTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
+    bool smoothMove(void) noexcept;
 
   public:
     bool isMoving;
-    Vector3 target;
+    float speed;
+    Vector3 targetPosition;
+    Vector3 targetTarget;
+    Vector3 targetUp;
 };
 
 #endif /* !CAMERA_HPP_ */

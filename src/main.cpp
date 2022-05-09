@@ -4,8 +4,7 @@
 
 int main(void)
 {
-    Core core(800, 600);
-    core.setFPS(60);
+    Core core(800, 600, 60);
     core.run();
     return 0;
 }

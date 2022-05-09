@@ -15,8 +15,9 @@ class Home : public Scene
   public:
     Home() noexcept;
     ~Home() noexcept = default;
-    void placeCamera(Cameraman& camera) noexcept;
-    void display(void) noexcept;
+    void resetCamera(Cameraman& camera) noexcept;
+    void display3D(void) noexcept;
+    void display2D(void) noexcept;
     void action() noexcept;
 };
 

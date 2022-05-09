@@ -13,49 +13,54 @@
 #include "Home.hpp"
 #include "Vector3Tools.hpp"
 
-Core::Core(int height, int width) noexcept
-{
-    InitWindow(height, width, "indie Studio - Bomberman");
-    currentScene = 0;
+#define SCENE scenes[currentScene]
 
+Core::Core(int height, int width, int fps) noexcept
+{
+    // Create Window
+    InitWindow(height, width, "indie Studio - Bomberman");
+    SetTargetFPS(fps);
+
+    // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>());
     scenes.emplace_back(std::make_unique<Game>());
+    currentScene = 0;
 
-    // scenes[currentScene]->placeCamera(camera);
-    camera.position = scenes[currentScene]->cameraPosition;
-    camera.target = {0.0f, 0.0f, 0.0f};
-    camera.up = {0.0f, 1.0f, 0.0f};
-}
-
-void Core::setFPS(int fps) noexcept
-{
-    SetTargetFPS(fps);
+    // Setting the first camera
+    camera.position = SCENE->cameraPosition;
+    camera.target = SCENE->cameraTarget;
+    camera.up = SCENE->cameraUp;
 }
 
 void Core::switchScene(int scene) noexcept
 {
-    std::cout << "Switching to scene " << scene << std::endl;
     currentScene = scene;
-    scenes[currentScene]->placeCamera(camera);
+    SCENE->resetCamera(camera);
 }
 
 void Core::run() noexcept
 {
     while (!WindowShouldClose()) {
-        // Update -------------------------------------------------------------
+        // Events -------------------------------------------------------------
         if (IsKeyPressed(KEY_LEFT))
             switchScene((currentScene - 1) % scenes.size());
+        if (IsKeyPressed(KEY_UP))
+            SCENE->resetCamera(camera);
+        if (IsKeyPressed(KEY_DOWN))
+            camera.tpTo({30.0f, 30.0f, 30.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+
+        // Update -------------------------------------------------------------
         if (camera.isMoving)
-            camera.isMoving = camera.smoothMove(camera.target, 1);
-        scenes[currentScene]->action();
+            camera.isMoving = camera.smoothMove();
+        SCENE->action();
 
         // Display ------------------------------------------------------------
         BeginDrawing();
         ClearBackground(RAYWHITE);
         BeginMode3D(camera);
-        scenes[currentScene]->display();
+        SCENE->display3D();
         EndMode3D();
-        DrawFPS(10, 10);
+        SCENE->display2D();
         EndDrawing();
     }
     CloseWindow();

@@ -23,8 +23,8 @@ Core::Core(int height, int width) noexcept
 
     // scenes[currentScene]->placeCamera(camera);
     camera.position = scenes[currentScene]->cameraPosition;
-    camera.target = (Vector3){0.0f, 0.0f, 0.0f};
-    camera.up = (Vector3){0.0f, 1.0f, 0.0f};
+    camera.target = {0.0f, 0.0f, 0.0f};
+    camera.up = {0.0f, 1.0f, 0.0f};
 }
 
 void Core::setFPS(int fps) noexcept

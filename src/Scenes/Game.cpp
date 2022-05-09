@@ -16,8 +16,8 @@ Game::Game() noexcept
 
 void Game::placeCamera(Cameraman& camera) noexcept
 {
-    camera.target = (Vector3){0.0f, 0.0f, 0.0f};
-    camera.up = (Vector3){0.0f, 1.0f, 0.0f};
+    camera.target = {0.0f, 0.0f, 0.0f};
+    camera.up = {0.0f, 1.0f, 0.0f};
 
     while (!camera.smoothMove(cameraPosition, 1)) {
         BeginDrawing();

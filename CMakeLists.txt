@@ -5,7 +5,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(raylib 4.0.0 REQUIRED)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+
+if (UNIX)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+endif()
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_VERBOSE_MAKEFILE ON)

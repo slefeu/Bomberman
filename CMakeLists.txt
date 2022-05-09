@@ -17,7 +17,11 @@ endif ()
 # Ajouter ici les .cpp
 set(INDIE_SRC
     src/main.cpp
-    src/Engine/Tools/Camera.cpp)
+    src/Engine/Tools/Cameraman.cpp
+    src/Engine/Tools/Vector3Tools.cpp
+    src/Engine/Core/Core.cpp
+    src/Scenes/Game.cpp
+    src/Scenes/Home.cpp)
     
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
 if (UNIX)
@@ -27,3 +31,5 @@ target_link_libraries(${PROJECT_NAME} raylib)
     
 # Ajouter ici les dossiers contenants les .hpp
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)

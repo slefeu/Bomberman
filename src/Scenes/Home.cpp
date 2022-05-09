@@ -11,9 +11,9 @@
 
 Home::Home() noexcept
 {
-    cameraPosition = {20.0f, 50.0f, 20.0f};
-    cameraTarget = {0.0f, 0.0f, 0.0f};
-    cameraUp = {0.0f, 1.0f, 0.0f};
+    cameraPosition = { 20.0f, 50.0f, 20.0f };
+    cameraTarget   = { 0.0f, 0.0f, 0.0f };
+    cameraUp       = { 0.0f, 1.0f, 0.0f };
 }
 
 void Home::resetCamera(Cameraman& camera) noexcept
@@ -23,8 +23,8 @@ void Home::resetCamera(Cameraman& camera) noexcept
 
 void Home::display3D() noexcept
 {
-    DrawCube({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, BLUE);
-    DrawCubeWires({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, RED);
+    DrawCube({ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, BLUE);
+    DrawCubeWires({ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, RED);
     DrawGrid(10, 1.0f);
 }
 
@@ -39,6 +39,5 @@ void Home::display2D() noexcept
 
 void Home::action() noexcept
 {
-    if (IsKeyPressed(KEY_RIGHT))
-        std::cout << "Home" << std::endl;
+    if (IsKeyPressed(KEY_RIGHT)) std::cout << "Home" << std::endl;
 }

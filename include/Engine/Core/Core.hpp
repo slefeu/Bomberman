@@ -17,9 +17,9 @@
 class Core
 {
   private:
-    Cameraman camera;
+    Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes;
-    int currentScene;
+    int                                 currentScene;
 
   public:
     Core(int height, int width, int fps) noexcept;

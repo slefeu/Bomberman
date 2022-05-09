@@ -23,8 +23,8 @@ class Cameraman : public Camera3D
     bool smoothMove(void) noexcept;
 
   public:
-    bool isMoving;
-    float speed;
+    bool    isMoving;
+    float   speed;
     Vector3 targetPosition;
     Vector3 targetTarget;
     Vector3 targetUp;

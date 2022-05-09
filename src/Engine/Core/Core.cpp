@@ -27,8 +27,8 @@ Core::Core(int height, int width, int fps) noexcept
 
     // Setting the first camera
     camera.position = SCENE->cameraPosition;
-    camera.target = SCENE->cameraTarget;
-    camera.up = SCENE->cameraUp;
+    camera.target   = SCENE->cameraTarget;
+    camera.up       = SCENE->cameraUp;
 }
 
 void Core::switchScene(int scene) noexcept
@@ -41,16 +41,12 @@ void Core::run() noexcept
 {
     while (!WindowShouldClose()) {
         // Events -------------------------------------------------------------
-        if (IsKeyPressed(KEY_LEFT))
-            switchScene((currentScene - 1) % scenes.size());
-        if (IsKeyPressed(KEY_UP))
-            SCENE->resetCamera(camera);
-        if (IsKeyPressed(KEY_DOWN))
-            camera.tpTo({30.0f, 30.0f, 30.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+        if (IsKeyPressed(KEY_LEFT)) switchScene((currentScene - 1) % scenes.size());
+        if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
+        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 30.0f, 30.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
 
         // Update -------------------------------------------------------------
-        if (camera.isMoving)
-            camera.isMoving = camera.smoothMove();
+        if (camera.isMoving) camera.isMoving = camera.smoothMove();
         SCENE->action();
 
         // Display ------------------------------------------------------------

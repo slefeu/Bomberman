@@ -18,12 +18,12 @@ class Scene
     Vector3 cameraUp;
 
   public:
-    Scene() noexcept = default;
-    virtual ~Scene() noexcept = default;
+    Scene() noexcept                                     = default;
+    virtual ~Scene() noexcept                            = default;
     virtual void resetCamera(Cameraman& camera) noexcept = 0;
-    virtual void display3D(void) noexcept = 0;
-    virtual void display2D(void) noexcept = 0;
-    virtual void action() noexcept = 0;
+    virtual void display3D(void) noexcept                = 0;
+    virtual void display2D(void) noexcept                = 0;
+    virtual void action() noexcept                       = 0;
 };
 
 #endif /* !SCENE_HPP_ */

@@ -11,9 +11,9 @@
 
 Game::Game() noexcept
 {
-    cameraPosition = {0.0f, 10.0f, 10.0f};
-    cameraTarget = {0.0f, 0.0f, 0.0f};
-    cameraUp = {0.0f, 1.0f, 0.0f};
+    cameraPosition = { 0.0f, 10.0f, 10.0f };
+    cameraTarget   = { 0.0f, 0.0f, 0.0f };
+    cameraUp       = { 0.0f, 1.0f, 0.0f };
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -23,7 +23,7 @@ void Game::resetCamera(Cameraman& camera) noexcept
 
 void Game::display3D() noexcept
 {
-    DrawSphere({0, 0, 0}, 2, RED);
+    DrawSphere({ 0, 0, 0 }, 2, RED);
     DrawGrid(10, 1.0f);
 }
 
@@ -38,6 +38,5 @@ void Game::display2D() noexcept
 
 void Game::action() noexcept
 {
-    if (IsKeyPressed(KEY_RIGHT))
-        std::cout << "Game" << std::endl;
+    if (IsKeyPressed(KEY_RIGHT)) std::cout << "Game" << std::endl;
 }

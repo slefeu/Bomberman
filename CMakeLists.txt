@@ -16,13 +16,14 @@ endif ()
 
 # Ajouter ici les .cpp
 set(INDIE_SRC
-    src/main.cpp)
-
-# Ajouter ici les dossiers contenants les .hpp
-# target_include_directories(${PROJECT_NAME} PRIVATE include)
-
+    src/main.cpp
+    src/Engine/Tools/Camera.cpp)
+    
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
 if (UNIX)
     target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror)
 endif ()
 target_link_libraries(${PROJECT_NAME} raylib)
+    
+# Ajouter ici les dossiers contenants les .hpp
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)

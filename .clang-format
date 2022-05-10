@@ -2,16 +2,10 @@
 Language: Cpp
 AccessModifierOffset: -2
 AlignAfterOpenBracket: DontAlign
-AlignConsecutiveAssignments: false
 AlignEscapedNewlinesLeft: true
 AlignOperands: true
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
-AllowShortBlocksOnASingleLine: false
-AllowShortCaseLabelsOnASingleLine: true
-AllowShortFunctionsOnASingleLine: None
-AllowShortIfStatementsOnASingleLine: false
-AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
@@ -23,7 +17,7 @@ BreakBeforeBraces: Linux
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: true
 ColumnLimit: 120
-CommentPragmas: '^ IWYU pragma:'
+CommentPragmas: "^ IWYU pragma:"
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
@@ -32,13 +26,13 @@ DerivePointerAlignment: false
 DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: false
-ForEachMacros: [ foreach, Q_FOREACH, BOOST_FOREACH ]
+ForEachMacros: [foreach, Q_FOREACH, BOOST_FOREACH]
 IndentCaseLabels: true
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
-MacroBlockBegin: ''
-MacroBlockEnd: ''
+MacroBlockBegin: ""
+MacroBlockEnd: ""
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 ObjCBlockIndentWidth: 4
@@ -64,3 +58,11 @@ SpacesInSquareBrackets: false
 Standard: Latest
 TabWidth: 8
 UseTab: Never
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Always
+AllowShortLoopsOnASingleLine: true
+Cpp11BracedListStyle: false

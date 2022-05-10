@@ -20,6 +20,7 @@ set(INDIE_SRC
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Core/Core.cpp
     src/Entities/Player.cpp
+    src/Entities/Box.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     

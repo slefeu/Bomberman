@@ -9,19 +9,26 @@
 
 #include <iostream>
 
+#include "Box.hpp"
 #include "Player.hpp"
 
 Game::Game() noexcept
 {
-    cameraPosition = { 0.0f, 20.0f, 10.0f };
+    cameraPosition = { 0.0f, 12.0f, 12.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 1.0f, 0.0f };
 
-    // _entities.emplace_back(std::make_unique<Player>());
-    _players.emplace_back(std::make_unique<Player>(1));
+    _players.emplace_back(std::make_unique<Player>(1, GREEN));
     _players.emplace_back(std::make_unique<Player>(2, BLUE));
     _players.emplace_back(std::make_unique<Player>(3, PINK));
     _players.emplace_back(std::make_unique<Player>(4, YELLOW));
+
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 0.0f }, 0.02f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, -2.0f }, 0.01f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 2.0f, 0.0f, -4.0f }, 0.012f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ -2.0f, 0.0f, -4.0f }, 0.012f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ -4.0f, 0.0f, -2.0f }, 0.012f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ -4.0f, 0.0f, 2.0f }, 0.012f));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -31,11 +38,10 @@ void Game::resetCamera(Cameraman& camera) noexcept
 
 void Game::display3D() noexcept
 {
-    DrawSphere({ 0, 0, 0 }, 2, RED);
     DrawGrid(100, 1.0f);
 
-    for (auto& entity : _entities) entity->display();
     for (auto& player : _players) player->display();
+    for (auto& entity : _entities) entity->display();
 }
 
 void Game::display2D() noexcept
@@ -49,6 +55,6 @@ void Game::display2D() noexcept
 
 void Game::action(Cameraman& camera) noexcept
 {
-    for (auto& player : _players) player->action();
+    for (auto& player : _players) player->action(_entities);
     camera.lookBetweenEntities(_players);
 }

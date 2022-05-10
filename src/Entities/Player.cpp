@@ -7,30 +7,32 @@
 
 #include "Player.hpp"
 
-Player::Player(int newId) noexcept
-{
-    position = { 0.0f, 1.0f, 2.0f };
-    size     = { 0.5f, 0.5f, 0.5f };
-    color    = GREEN;
-    id       = newId;
-    setKeyboard();
-}
+#include <iostream>
 
 Player::Player(Vector3 pos, Vector3 newSize, Color newColor, int newId) noexcept
 {
     position = pos;
     size     = newSize;
-    color    = newColor;
-    id       = newId;
+    position.y += (size.y / 2);
+    color     = newColor;
+    id        = newId;
+    isSolid   = true;
+    isTrigger = false;
+    type      = EntityType::PLAYER;
+    speed     = 0.1f;
     setKeyboard();
 }
 
 Player::Player(int newId, Color newColor) noexcept
 {
-    position = { 0.0f, 1.0f, 2.0f };
-    size     = { 0.5f, 0.5f, 0.5f };
-    color    = newColor;
-    id       = newId;
+    size      = { 0.5f, 0.5f, 0.5f };
+    position  = { 0.0f, 0.0f + (size.y / 2), 2.0f };
+    color     = newColor;
+    id        = newId;
+    isSolid   = true;
+    isTrigger = false;
+    speed     = 0.1f;
+    type      = EntityType::PLAYER;
     setKeyboard();
 }
 
@@ -68,6 +70,7 @@ void Player::setKeyboard(void) noexcept
 void Player::display() noexcept
 {
     DrawCubeV(position, size, color);
+    DrawCubeWiresV(position, size, BLACK);
 }
 
 void Player::moveX(float x) noexcept
@@ -85,15 +88,47 @@ void Player::moveZ(float z) noexcept
     position.z += z;
 }
 
-void Player::action(void) noexcept
+void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
-    if (IsKeyDown(moveUp)) moveZ(-0.1f);
-    if (IsKeyDown(moveDown)) moveZ(0.1f);
-    if (IsKeyDown(moveLeft)) moveX(-0.1f);
-    if (IsKeyDown(moveRight)) moveX(0.1f);
+    if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
+    if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
+    if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
+    if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
 }
 
 Vector3 Player::getPosition() noexcept
 {
     return position;
+}
+
+Vector3 Player::getSize() noexcept
+{
+    return size;
+}
+
+bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
+{
+    for (auto& other : others) {
+        if (other->isSolid && other->type != EntityType::PLAYER) {
+            Vector3 otherPos  = other->getPosition();
+            Vector3 otherSize = other->getSize();
+
+            Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
+            Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };
+            Vector3 BoundingBox2_1 = { otherPos.x - otherSize.x / 2, otherPos.y - otherSize.y / 2, otherPos.z - otherSize.z / 2 };
+            Vector3 BoundingBox2_2 = { otherPos.x + otherSize.x / 2, otherPos.y + otherSize.y / 2, otherPos.z + otherSize.z / 2 };
+
+            BoundingBox BoundingBox1 = { BoundingBox1_1, BoundingBox1_2 };
+            BoundingBox BoundingBox2 = { BoundingBox2_1, BoundingBox2_2 };
+
+            if (CheckCollisionBoxes(BoundingBox1, BoundingBox2)) return true;
+        }
+    }
+    return false;
+}
+
+bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+{
+    Vector3 nextTurn = { position.x + (speed * xdir), position.y, position.z + (speed * zdir) };
+    return isColliding(others, nextTurn);
 }

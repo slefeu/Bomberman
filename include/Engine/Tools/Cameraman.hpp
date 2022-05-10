@@ -8,6 +8,10 @@
 #ifndef CAMERAMAN_HPP_
 #define CAMERAMAN_HPP_
 
+#include <memory>
+#include <vector>
+
+#include "Entities.hpp"
 #include "raylib.h"
 
 class Cameraman : public Camera3D
@@ -21,6 +25,7 @@ class Cameraman : public Camera3D
     void moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
     void tpTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
     bool smoothMove(void) noexcept;
+    void lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities) noexcept;
 
   public:
     bool    isMoving;

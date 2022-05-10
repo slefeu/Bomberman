@@ -25,7 +25,7 @@ void Home::display3D() noexcept
 {
     DrawCube({ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, BLUE);
     DrawCubeWires({ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, RED);
-    DrawGrid(10, 1.0f);
+    DrawGrid(100, 1.0f);
 }
 
 void Home::display2D() noexcept
@@ -37,7 +37,7 @@ void Home::display2D() noexcept
     DrawText("Home", 10, 570, 20, GREEN);
 }
 
-void Home::action() noexcept
+void Home::action(Cameraman& camera) noexcept
 {
-    if (IsKeyPressed(KEY_RIGHT)) std::cout << "Home" << std::endl;
+    (void)camera;
 }

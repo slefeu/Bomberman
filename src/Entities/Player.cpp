@@ -10,7 +10,7 @@
 Player::Player(int newId) noexcept
 {
     position = { 0.0f, 1.0f, 2.0f };
-    size     = { 1.0f, 2.0f, 1.0f };
+    size     = { 0.5f, 0.5f, 0.5f };
     color    = GREEN;
     id       = newId;
     setKeyboard();
@@ -28,7 +28,7 @@ Player::Player(Vector3 pos, Vector3 newSize, Color newColor, int newId) noexcept
 Player::Player(int newId, Color newColor) noexcept
 {
     position = { 0.0f, 1.0f, 2.0f };
-    size     = { 1.0f, 2.0f, 1.0f };
+    size     = { 0.5f, 0.5f, 0.5f };
     color    = newColor;
     id       = newId;
     setKeyboard();
@@ -91,4 +91,9 @@ void Player::action(void) noexcept
     if (IsKeyDown(moveDown)) moveZ(0.1f);
     if (IsKeyDown(moveLeft)) moveX(-0.1f);
     if (IsKeyDown(moveRight)) moveX(0.1f);
+}
+
+Vector3 Player::getPosition() noexcept
+{
+    return position;
 }

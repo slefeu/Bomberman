@@ -13,13 +13,15 @@
 
 Game::Game() noexcept
 {
-    cameraPosition = { 0.0f, 10.0f, 10.0f };
+    cameraPosition = { 0.0f, 20.0f, 10.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 1.0f, 0.0f };
 
     // _entities.emplace_back(std::make_unique<Player>());
     _players.emplace_back(std::make_unique<Player>(1));
     _players.emplace_back(std::make_unique<Player>(2, BLUE));
+    _players.emplace_back(std::make_unique<Player>(3, PINK));
+    _players.emplace_back(std::make_unique<Player>(4, YELLOW));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -30,7 +32,7 @@ void Game::resetCamera(Cameraman& camera) noexcept
 void Game::display3D() noexcept
 {
     DrawSphere({ 0, 0, 0 }, 2, RED);
-    DrawGrid(10, 1.0f);
+    DrawGrid(100, 1.0f);
 
     for (auto& entity : _entities) entity->display();
     for (auto& player : _players) player->display();
@@ -45,7 +47,8 @@ void Game::display2D() noexcept
     DrawText("Game", 10, 570, 20, GREEN);
 }
 
-void Game::action() noexcept
+void Game::action(Cameraman& camera) noexcept
 {
     for (auto& player : _players) player->action();
+    camera.lookBetweenEntities(_players);
 }

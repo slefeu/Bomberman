@@ -9,11 +9,17 @@
 
 #include <iostream>
 
+#include "Player.hpp"
+
 Game::Game() noexcept
 {
     cameraPosition = { 0.0f, 10.0f, 10.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 1.0f, 0.0f };
+
+    // _entities.emplace_back(std::make_unique<Player>());
+    _players.emplace_back(std::make_unique<Player>(1));
+    _players.emplace_back(std::make_unique<Player>(2, BLUE));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -25,6 +31,9 @@ void Game::display3D() noexcept
 {
     DrawSphere({ 0, 0, 0 }, 2, RED);
     DrawGrid(10, 1.0f);
+
+    for (auto& entity : _entities) entity->display();
+    for (auto& player : _players) player->display();
 }
 
 void Game::display2D() noexcept
@@ -38,5 +47,5 @@ void Game::display2D() noexcept
 
 void Game::action() noexcept
 {
-    if (IsKeyPressed(KEY_RIGHT)) std::cout << "Game" << std::endl;
+    for (auto& player : _players) player->action();
 }

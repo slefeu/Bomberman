@@ -8,6 +8,11 @@
 #ifndef GAME_HPP_
 #define GAME_HPP_
 
+#include <memory>
+#include <vector>
+
+#include "Entities.hpp"
+#include "Player.hpp"
 #include "Scene.hpp"
 
 class Game : public Scene
@@ -19,6 +24,10 @@ class Game : public Scene
     void display3D(void) noexcept;
     void display2D(void) noexcept;
     void action() noexcept;
+
+  private:
+    std::vector<std::unique_ptr<Entities>> _entities;
+    std::vector<std::unique_ptr<Player>>   _players;
 };
 
 #endif /* !GAME_HPP_ */

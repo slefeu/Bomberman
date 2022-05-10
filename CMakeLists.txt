@@ -19,6 +19,7 @@ set(INDIE_SRC
     src/main.cpp
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Core/Core.cpp
+    src/Entities/Player.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     
@@ -32,3 +33,4 @@ target_link_libraries(${PROJECT_NAME} raylib)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Entities)

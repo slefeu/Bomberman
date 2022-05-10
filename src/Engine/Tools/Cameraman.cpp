@@ -68,3 +68,22 @@ bool Cameraman::smoothMove(void) noexcept
 
     return true;
 }
+
+void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities) noexcept
+{
+    float minX = 1 / 0.f;
+    float minZ = 1 / 0.f;
+    float maxX = -minX;
+    float maxZ = -minZ;
+
+    for (auto& entity : entities) {
+        Vector3 pos = entity->getPosition();
+        if (pos.x < minX) minX = pos.x;
+        if (pos.x > maxX) maxX = pos.x;
+        if (pos.z < minZ) minZ = pos.z;
+        if (pos.z > maxZ) maxZ = pos.z;
+    }
+
+    target.x = (minX + maxX) / 2;
+    target.z = (minZ + maxZ) / 2;
+}

@@ -47,7 +47,7 @@ void Core::run() noexcept
 
         // Update -------------------------------------------------------------
         if (camera.isMoving) camera.isMoving = camera.smoothMove();
-        SCENE->action();
+        SCENE->action(camera);
 
         // Display ------------------------------------------------------------
         BeginDrawing();

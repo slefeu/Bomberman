@@ -18,7 +18,7 @@ class Home : public Scene
     void resetCamera(Cameraman& camera) noexcept;
     void display3D(void) noexcept;
     void display2D(void) noexcept;
-    void action() noexcept;
+    void action(Cameraman& camera) noexcept;
 };
 
 #endif /* !HOME_HPP_ */

@@ -13,7 +13,7 @@
 
 #include "raylib.h"
 
-enum class EntityType { PLAYER, BOX, BOMB };
+enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION };
 
 class Entities
 {

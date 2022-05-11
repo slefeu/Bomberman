@@ -21,7 +21,7 @@ Box::Box(Vector3 pos, float newScale) noexcept
 
     // position.y += scale;
     (void)newScale;
-    color = RED;
+    color = GREEN;
     size  = { (rand() % 10) / 10.0f, (rand() % 10) / 10.0f, (rand() % 10) / 10.0f };
 }
 

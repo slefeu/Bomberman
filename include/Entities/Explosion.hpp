@@ -2,20 +2,20 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Bomb
+** Explosion
 */
 
-#ifndef BOMB_HPP_
-#define BOMB_HPP_
+#ifndef EXPLOSION_HPP_
+#define EXPLOSION_HPP_
 
-#include "Explosion.hpp"
+#include "Entities.hpp"
 #include "Timer.hpp"
 
-class Bomb : public Entities
+class Explosion : public Entities
 {
   public:
-    Bomb(Vector3 pos) noexcept;
-    ~Bomb() noexcept = default;
+    Explosion(Vector3 pos, float size) noexcept;
+    ~Explosion() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     Vector3 getPosition() noexcept;
@@ -30,9 +30,8 @@ class Bomb : public Entities
     void moveZ(float z) noexcept;
 
   private:
-    float                      lifeTime;
-    std::unique_ptr<Timer>     lifeTimer;
-    std::unique_ptr<Explosion> explosion;
+    float                  lifeTime;
+    std::unique_ptr<Timer> timer;
 };
 
-#endif /* !BOMB_HPP_ */
+#endif /* !EXPLOSION_HPP_ */

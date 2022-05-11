@@ -19,11 +19,11 @@ set(INDIE_SRC
     src/main.cpp
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Tools/Timer.cpp
-    src/Engine/Tools/Clock.cpp
     src/Engine/Core/Core.cpp
     src/Entities/Player.cpp
     src/Entities/Box.cpp
     src/Entities/Bomb.cpp
+    src/Entities/Explosion.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     

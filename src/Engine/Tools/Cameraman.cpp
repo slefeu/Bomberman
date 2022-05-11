@@ -23,17 +23,17 @@ Cameraman::Cameraman() noexcept
 
 void Cameraman::moveX(float x) noexcept
 {
-    position.x += Round().round(x * GetFrameTime(), 1);
+    position.x += Round().myRound(x * GetFrameTime(), 1);
 }
 
 void Cameraman::moveY(float y) noexcept
 {
-    position.y += Round().round(y * GetFrameTime(), 1);
+    position.y += Round().myRound(y * GetFrameTime(), 1);
 }
 
 void Cameraman::moveZ(float z) noexcept
 {
-    position.z += Round().round(z * GetFrameTime(), 1);
+    position.z += Round().myRound(z * GetFrameTime(), 1);
 }
 
 void Cameraman::moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept
@@ -54,23 +54,12 @@ void Cameraman::tpTo(Vector3 to, Vector3 tar, Vector3 newUp) noexcept
 
 bool Cameraman::smoothMove(void) noexcept
 {
-    bool thereIsMovement = false;
-
-    Vector3 roundPos;
-    Vector3 roundTarget;
-
-    roundPos.x = Round().round(position.x, 1);
-    roundPos.y = Round().round(position.y, 1);
-    roundPos.z = Round().round(position.z, 1);
-
-    roundTarget.x = Round().round(targetPosition.x, 1);
-    roundTarget.y = Round().round(targetPosition.y, 1);
-    roundTarget.z = Round().round(targetPosition.z, 1);
-
-    Vector3 dir;
-    dir.x = (roundPos.x < roundTarget.x) ? 1.0f : -1.0f;
-    dir.y = (roundPos.y < roundTarget.y) ? 1.0f : -1.0f;
-    dir.z = (roundPos.z < roundTarget.z) ? 1.0f : -1.0f;
+    bool    thereIsMovement = false;
+    Vector3 roundPos        = Round().roundVector(position, 1);
+    Vector3 roundTarget     = Round().roundVector(targetPosition, 1);
+    Vector3 dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
+        (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
+        (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
 
     if ((dir.z == 1 && roundTarget.z > roundPos.z) || (dir.z == -1 && roundTarget.z < roundPos.z)) {
         thereIsMovement = true;
@@ -109,8 +98,6 @@ void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& enti
 
     float newX = (minX + maxX) / 2;
     float newZ = (minZ + maxZ) / 2;
-
-    std::cout << newX << " " << newZ << std::endl;
 
     target.x   = newX;
     target.z   = newZ;

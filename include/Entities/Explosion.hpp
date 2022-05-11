@@ -32,6 +32,8 @@ class Explosion : public Entities
   private:
     float                  lifeTime;
     std::unique_ptr<Timer> timer;
+    Vector3                pos[4];
+    Vector3                siz[4];
 };
 
 #endif /* !EXPLOSION_HPP_ */

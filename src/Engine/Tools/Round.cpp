@@ -9,7 +9,12 @@
 
 #include <math.h>
 
-float Round::round(float x, int n) noexcept
+float Round::myRound(float x, int n) noexcept
 {
     return (float)(int)(x * pow(10, n)) / pow(10, n);
+}
+
+Vector3 Round::roundVector(Vector3 x, int n) noexcept
+{
+    return { myRound(x.x, n), myRound(x.y, n), myRound(x.z, n) };
 }

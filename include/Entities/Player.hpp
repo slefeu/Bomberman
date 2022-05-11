@@ -11,25 +11,25 @@
 #include <memory>
 #include <vector>
 
-#include "Bomb.hpp"
 #include "Entities.hpp"
 
 class Player : public Entities
 {
   private:
-    int                                id;
-    KeyboardKey                        moveUp;
-    KeyboardKey                        moveDown;
-    KeyboardKey                        moveLeft;
-    KeyboardKey                        moveRight;
-    KeyboardKey                        dropBomb;
-    float                              speed;
-    std::vector<std::unique_ptr<Bomb>> bombs;
-    int                                nbBomb;
+    KeyboardKey                             moveUp;
+    KeyboardKey                             moveDown;
+    KeyboardKey                             moveLeft;
+    KeyboardKey                             moveRight;
+    KeyboardKey                             dropBomb;
+    int                                     id;
+    float                                   speed;
+    std::vector<std::unique_ptr<Entities>>* bombs;
 
   public:
-    Player(int newId, Color newColor) noexcept;
-    Player(Vector3 pos, Vector3 size, Color color, int id) noexcept;
+    int nbBomb;
+
+  public:
+    Player(int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombs) noexcept;
     ~Player() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
@@ -37,9 +37,11 @@ class Player : public Entities
     Vector3 getSize() noexcept;
     bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
+    bool    update() noexcept;
 
   private:
     void setKeyboard(void) noexcept;
+    void setPosition(void) noexcept;
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;

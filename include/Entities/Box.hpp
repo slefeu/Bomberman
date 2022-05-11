@@ -12,10 +12,6 @@
 
 class Box : public Entities
 {
-    // private:
-    // Model     model;
-    // Texture2D texture;
-
   public:
     Box(Vector3 pos, float scale) noexcept;
     ~Box() noexcept = default;
@@ -25,6 +21,7 @@ class Box : public Entities
     Vector3 getSize() noexcept;
     bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
+    bool    update() noexcept;
 
   private:
     void moveX(float x) noexcept;

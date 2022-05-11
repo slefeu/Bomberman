@@ -9,12 +9,13 @@
 #define BOMB_HPP_
 
 #include "Explosion.hpp"
+#include "Player.hpp"
 #include "Timer.hpp"
 
 class Bomb : public Entities
 {
   public:
-    Bomb(Vector3 pos) noexcept;
+    Bomb(Vector3 pos, Player* p) noexcept;
     ~Bomb() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
@@ -33,6 +34,7 @@ class Bomb : public Entities
     float                      lifeTime;
     std::unique_ptr<Timer>     lifeTimer;
     std::unique_ptr<Explosion> explosion;
+    Player*                    player;
 };
 
 #endif /* !BOMB_HPP_ */

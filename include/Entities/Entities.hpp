@@ -37,6 +37,7 @@ class Entities
     virtual Vector3 getSize() noexcept                                                                               = 0;
     virtual bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept               = 0;
     virtual bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept = 0;
+    virtual bool    update() noexcept                                                                                = 0;
 
   protected:
     virtual void moveX(float x) noexcept = 0;

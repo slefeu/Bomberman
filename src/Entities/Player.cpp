@@ -9,22 +9,9 @@
 
 #include <iostream>
 
-Player::Player(Vector3 pos, Vector3 newSize, Color newColor, int newId) noexcept
-{
-    position = pos;
-    size     = newSize;
-    position.y += (size.y / 2);
-    color     = newColor;
-    id        = newId;
-    isSolid   = true;
-    isTrigger = false;
-    type      = EntityType::PLAYER;
-    speed     = 3.0f;
-    nbBomb    = 2;
-    setKeyboard();
-}
+#include "Bomb.hpp"
 
-Player::Player(int newId, Color newColor) noexcept
+Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept
 {
     size      = { 0.5f, 0.5f, 0.5f };
     position  = { 0.0f, 0.0f + (size.y / 2), 2.0f };
@@ -35,7 +22,32 @@ Player::Player(int newId, Color newColor) noexcept
     speed     = 3.0f;
     type      = EntityType::PLAYER;
     nbBomb    = 2;
+    bombs     = bombsArray;
     setKeyboard();
+    setPosition();
+}
+
+void Player::setPosition(void) noexcept
+{
+    switch (id) {
+        case 0:
+            position.x = -2.0f;
+            position.z = -2.0f;
+            break;
+        case 1:
+            position.x = 2.0f;
+            position.z = -2.0f;
+            break;
+        case 2:
+            position.x = -2.0f;
+            position.z = 2.0f;
+            break;
+        case 3:
+            position.x = 2.0f;
+            position.z = 2.0f;
+            break;
+        default: break;
+    }
 }
 
 void Player::setKeyboard(void) noexcept
@@ -75,23 +87,9 @@ void Player::setKeyboard(void) noexcept
 
 void Player::display() noexcept
 {
+    std::cout << "Player " << id << " -> " << nbBomb << std::endl;
     DrawCubeV(position, size, color);
     DrawCubeWiresV(position, size, BLACK);
-
-    size_t len = bombs.size();
-    for (size_t i = 0; i != len; i++) {
-        if (bombs[i]->update()) {
-            bombs[i].release();
-            bombs.erase(bombs.begin() + i);
-            len--;
-            i--;
-            nbBomb++;
-        }
-    }
-
-    // for (auto& bomb : bombs) {
-    //     if (bomb->update()) { bomb.release(); }
-    // }
 }
 
 void Player::moveX(float x) noexcept
@@ -173,5 +171,10 @@ void Player::placeBomb(void) noexcept
 {
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs.emplace_back(std::make_unique<Bomb>(position));
+    bombs->emplace_back(std::make_unique<Bomb>(position, this));
+}
+
+bool Player::update(void) noexcept
+{
+    return false;
 }

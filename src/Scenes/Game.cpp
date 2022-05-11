@@ -18,10 +18,9 @@ Game::Game() noexcept
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 1.0f, 0.0f };
 
-    _players.emplace_back(std::make_unique<Player>(0, PINK));
-    // _players.emplace_back(std::make_unique<Player>(1, BLUE));
-    // _players.emplace_back(std::make_unique<Player>(2, PINK));
-    // _players.emplace_back(std::make_unique<Player>(3, YELLOW));
+    _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs));
+    _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs));
+    _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs));
 
     _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 0.0f }, 0.02f));
     _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, -2.0f }, 0.01f));
@@ -42,15 +41,23 @@ void Game::display3D() noexcept
 
     for (auto& player : _players) player->display();
     for (auto& entity : _entities) entity->display();
+    // for (auto& bomb : _bombs) bomb->update();
+
+    size_t len = _bombs.size();
+    for (size_t i = 0; i != len; i++) {
+        if (_bombs[i]->update()) {
+            _bombs[i].release();
+            _bombs.erase(_bombs.begin() + i);
+            len--;
+            i--;
+        }
+    }
 }
 
 void Game::display2D() noexcept
 {
-    DrawText("Press LEFT to change scene", 10, 10, 20, BLACK);
-    DrawText("Press UP to reset camera (mouvement lisse)", 10, 30, 20, BLACK);
-    DrawText("Press DOWN to tp to (30, 30, 30) (mouvement brusque)", 10, 50, 20, BLACK);
-    DrawFPS(700, 10);
-    DrawText("Game", 10, 570, 20, GREEN);
+    DrawFPS(10, 10);
+    DrawText("Game", 10, 30, 20, GREEN);
 }
 
 void Game::action(Cameraman& camera) noexcept

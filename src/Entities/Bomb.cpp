@@ -7,7 +7,7 @@
 
 #include "Bomb.hpp"
 
-Bomb::Bomb(Vector3 pos) noexcept
+Bomb::Bomb(Vector3 pos, Player* p) noexcept
 {
     position  = pos;
     isSolid   = false;
@@ -17,6 +17,7 @@ Bomb::Bomb(Vector3 pos) noexcept
     lifeTime  = 2.0f;
     lifeTimer = std::make_unique<Timer>(lifeTime);
     explosion = nullptr;
+    player    = p;
     position.y += 0.1f;
 }
 
@@ -79,7 +80,12 @@ bool Bomb::update(void) noexcept
         display();
         return false;
     } else {
-        if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f);
-        return explosion->update();
+        if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 20.0f);
+
+        if (explosion->update()) {
+            player->nbBomb++;
+            return true;
+        }
+        return false;
     }
 }

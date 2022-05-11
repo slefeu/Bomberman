@@ -9,26 +9,19 @@
 
 Box::Box(Vector3 pos, float newScale) noexcept
 {
+    (void)newScale;
+
     position  = pos;
     isSolid   = true;
     isTrigger = false;
     type      = EntityType::BOX;
-    // scale     = newScale;
-
-    // model                                                 = LoadModel("Assets/Models/box.obj");
-    // texture                                               = LoadTexture("Assets/Textures/box.png");
-    // model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-
-    // position.y += scale;
-    (void)newScale;
-    color = GREEN;
-    size  = { (rand() % 10) / 10.0f, (rand() % 10) / 10.0f, (rand() % 10) / 10.0f };
+    color     = GREEN;
+    size      = { (rand() % 10) / 10.0f, (rand() % 10) / 10.0f, (rand() % 10) / 10.0f };
 }
 
 void Box::display() noexcept
 {
     DrawCubeV(position, size, color);
-    // DrawModel(model, position, scale, WHITE);
 }
 
 void Box::moveX(float x) noexcept
@@ -74,5 +67,10 @@ bool Box::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, in
     (void)others;
     (void)xdir;
     (void)zdir;
+    return false;
+}
+
+bool Box::update(void) noexcept
+{
     return false;
 }

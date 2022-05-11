@@ -17,7 +17,7 @@ Explosion::Explosion(Vector3 pos, float newSize) noexcept
     isSolid   = false;
     isTrigger = false;
     type      = EntityType::EXPLOSION;
-    size      = { newSize, 0.2f, 0.2f };
+    size      = { newSize, 0.2f, 0.5f };
     color     = RED;
     lifeTime  = 1.0f;
     timer     = std::make_unique<Timer>(lifeTime);

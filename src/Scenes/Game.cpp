@@ -31,7 +31,7 @@ Game::Game() noexcept
 
 void Game::resetCamera(Cameraman& camera) noexcept
 {
-    camera.tpTo(cameraPosition, cameraTarget, cameraUp);
+    camera.moveTo(cameraPosition, cameraTarget, cameraUp);
 }
 
 void Game::display3D() noexcept
@@ -66,5 +66,5 @@ void Game::action(Cameraman& camera) noexcept
         bomb->isColliding(_players, temp);
         bomb->isColliding(_entities, temp);
     }
-    camera.lookBetweenEntities(_players);
+    if (!camera.isMoving) camera.lookBetweenEntities(_players);
 }

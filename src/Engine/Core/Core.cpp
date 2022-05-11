@@ -43,7 +43,10 @@ void Core::run() noexcept
         // Events -------------------------------------------------------------
         if (IsKeyPressed(KEY_LEFT)) switchScene((currentScene - 1) % scenes.size());
         if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
-        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 30.0f, 30.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+
+        if (IsGamepadAvailable(0))
+            if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) switchScene((currentScene - 1) % scenes.size());
 
         // Update -------------------------------------------------------------
         if (camera.isMoving) camera.isMoving = camera.smoothMove();

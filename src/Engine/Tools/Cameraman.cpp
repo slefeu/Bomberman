@@ -57,8 +57,7 @@ bool Cameraman::smoothMove(void) noexcept
     dir.y = (position.y < targetPosition.y) ? 1.0f : -1.0f;
     dir.z = (position.z < targetPosition.z) ? 1.0f : -1.0f;
 
-    if (position.x == targetPosition.x && position.y == targetPosition.y && position.z == targetPosition.z)
-        return false;
+    if (position.x == targetPosition.x && position.y == targetPosition.y && position.z == targetPosition.z) return false;
     if (targetPosition.x != position.x) moveX(dir.x * speed);
     if (targetPosition.y != position.y) moveY(dir.y * speed);
     if (targetPosition.z != position.z) moveZ(dir.z * speed);

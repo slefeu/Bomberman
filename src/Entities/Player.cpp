@@ -39,25 +39,25 @@ Player::Player(int newId, Color newColor) noexcept
 void Player::setKeyboard(void) noexcept
 {
     switch (id) {
-        case 1:
+        case 0:
             moveUp    = KEY_W;
             moveDown  = KEY_S;
             moveLeft  = KEY_A;
             moveRight = KEY_D;
             break;
-        case 2:
+        case 1:
             moveUp    = KEY_KP_8;
             moveDown  = KEY_KP_2;
             moveLeft  = KEY_KP_4;
             moveRight = KEY_KP_6;
             break;
-        case 3:
+        case 2:
             moveUp    = KEY_T;
             moveDown  = KEY_G;
             moveLeft  = KEY_F;
             moveRight = KEY_H;
             break;
-        case 4:
+        case 3:
             moveUp    = KEY_I;
             moveDown  = KEY_K;
             moveLeft  = KEY_J;
@@ -90,18 +90,21 @@ void Player::moveZ(float z) noexcept
 
 void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
-    // Mouvements au clavier
-    if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
-    if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
-    if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
-    if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+    if (IsGamepadAvailable(id)) {
+        // Mouvements au joystick
+        float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
+        float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
 
-    // Mouvements au joystick
-    if (IsGamepadAvailable(id - 1)) {
-        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_DOWN) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
-        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_UP) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
-        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_LEFT) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
-        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_RIGHT) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+        if (axisY > 0.5f && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
+        if (axisY < -0.5f && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
+        if (axisX > 0.5f && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+        if (axisX < -0.5f && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
+    } else {
+        // Mouvements au clavier
+        if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
+        if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
+        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
+        if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
     }
 }
 

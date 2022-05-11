@@ -18,10 +18,10 @@ Game::Game() noexcept
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 1.0f, 0.0f };
 
-    _players.emplace_back(std::make_unique<Player>(1, GREEN));
-    _players.emplace_back(std::make_unique<Player>(2, BLUE));
-    _players.emplace_back(std::make_unique<Player>(3, PINK));
-    _players.emplace_back(std::make_unique<Player>(4, YELLOW));
+    _players.emplace_back(std::make_unique<Player>(0, GREEN));
+    _players.emplace_back(std::make_unique<Player>(1, BLUE));
+    _players.emplace_back(std::make_unique<Player>(2, PINK));
+    _players.emplace_back(std::make_unique<Player>(3, YELLOW));
 
     _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 0.0f }, 0.02f));
     _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, -2.0f }, 0.01f));

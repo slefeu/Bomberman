@@ -90,10 +90,19 @@ void Player::moveZ(float z) noexcept
 
 void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
+    // Mouvements au clavier
     if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
     if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
     if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
     if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+
+    // Mouvements au joystick
+    if (IsGamepadAvailable(id - 1)) {
+        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_DOWN) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
+        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_UP) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
+        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_LEFT) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
+        if (IsGamepadButtonDown(id - 1, GAMEPAD_BUTTON_LEFT_FACE_RIGHT) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+    }
 }
 
 Vector3 Player::getPosition() noexcept

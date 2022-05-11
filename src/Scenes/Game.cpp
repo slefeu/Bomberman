@@ -14,20 +14,18 @@
 
 Game::Game() noexcept
 {
-    cameraPosition = { 0.0f, 12.0f, 12.0f };
+    cameraPosition = { 0.0f, 10.0f, 3.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
-    cameraUp       = { 0.0f, 1.0f, 0.0f };
+    cameraUp       = { 0.0f, 2.0f, 0.0f };
 
     _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs));
     _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs));
     _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs));
 
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 0.0f }, 0.02f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, -2.0f }, 0.01f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 2.0f, 0.0f, -4.0f }, 0.012f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -2.0f, 0.0f, -4.0f }, 0.012f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -4.0f, 0.0f, -2.0f }, 0.012f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -4.0f, 0.0f, 2.0f }, 0.012f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, -5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -64,10 +62,8 @@ void Game::action(Cameraman& camera) noexcept
     for (auto& player : _players) player->action(_entities);
     for (auto& bomb : _bombs) {
         Vector3 temp = bomb->getPosition();
-        if (!bomb->isColliding(_players, temp)) std::cout << "Bomb is not colliding" << std::endl;
-        else
-            std::cout << "Bomb is colliding" << std::endl;
+        bomb->isColliding(_players, temp);
+        bomb->isColliding(_entities, temp);
     }
-
     camera.lookBetweenEntities(_players);
 }

@@ -83,7 +83,7 @@ bool Bomb::update(void) noexcept
         display();
         return false;
     } else {
-        if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 20.0f);
+        if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 5.0f);
 
         if (explosion->update()) {
             player->nbBomb++;

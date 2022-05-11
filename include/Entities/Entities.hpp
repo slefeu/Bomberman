@@ -26,6 +26,7 @@ class Entities
     EntityType type;
     bool       isSolid;
     bool       isTrigger;
+    bool       isEnable;
     // float      scale;
 
   public:

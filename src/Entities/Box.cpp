@@ -7,16 +7,14 @@
 
 #include "Box.hpp"
 
-Box::Box(Vector3 pos, float newScale) noexcept
+Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
-    (void)newScale;
-
     position  = pos;
     isSolid   = true;
     isTrigger = false;
     type      = EntityType::BOX;
     color     = GREEN;
-    size      = { (rand() % 10) / 10.0f, (rand() % 10) / 10.0f, (rand() % 10) / 10.0f };
+    size      = newSize;
 }
 
 void Box::display() noexcept

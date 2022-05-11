@@ -62,14 +62,16 @@ Vector3 Explosion::getSize() noexcept
 
 bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
 {
-    std::cout << "Explosion::isColliding" << std::endl;
     for (auto& other : others) {
         Vector3 otherPos  = other->getPosition();
         Vector3 otherSize = other->getSize();
 
         if (other->isSolid) {
-            if (Collision().isColliding(pos, size, otherPos, otherSize)) return true;
-            if (Collision().isColliding(pos, { size.z, size.y, size.x }, otherPos, otherSize)) return true;
+            if (Collision().isColliding(pos, size, otherPos, otherSize)
+                || Collision().isColliding(pos, { size.z, size.y, size.x }, otherPos, otherSize)) {
+                if (other->type == EntityType::PLAYER) other->isEnable = false;
+                return true;
+            }
         }
     }
     return false;

@@ -24,6 +24,7 @@ Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<Entities>>
     type      = EntityType::PLAYER;
     nbBomb    = 2;
     bombs     = bombsArray;
+    isEnable  = true;
     setKeyboard();
     setPosition();
 }
@@ -88,7 +89,7 @@ void Player::setKeyboard(void) noexcept
 
 void Player::display() noexcept
 {
-    std::cout << "Player " << id << " -> " << nbBomb << std::endl;
+    if (!isEnable) return;
     DrawCubeV(position, size, color);
     DrawCubeWiresV(position, size, BLACK);
 }
@@ -110,6 +111,7 @@ void Player::moveZ(float z) noexcept
 
 void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
+    if (!isEnable) return;
     if (IsGamepadAvailable(id)) {
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
@@ -143,6 +145,7 @@ Vector3 Player::getSize() noexcept
 
 bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
 {
+    if (!isEnable) return false;
     for (auto& other : others) {
         if (other->isSolid) {
             Vector3 otherPos  = other->getPosition();

@@ -13,7 +13,7 @@
 class Box : public Entities
 {
   public:
-    Box(Vector3 pos, float scale) noexcept;
+    Box(Vector3 pos, Vector3 size) noexcept;
     ~Box() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;

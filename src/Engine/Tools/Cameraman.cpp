@@ -76,6 +76,7 @@ void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& enti
     float maxZ = -minZ;
 
     for (auto& entity : entities) {
+        if (!entity->isEnable) continue;
         Vector3 pos = entity->getPosition();
         if (pos.x < minX) minX = pos.x;
         if (pos.x > maxX) maxX = pos.x;
@@ -83,6 +84,13 @@ void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& enti
         if (pos.z > maxZ) maxZ = pos.z;
     }
 
-    target.x = (minX + maxX) / 2;
-    target.z = (minZ + maxZ) / 2;
+    float newX = (minX + maxX) / 2;
+    float newZ = (minZ + maxZ) / 2;
+
+    // moveTo({ newX, position.x, newZ + 2.0f }, { newX, 0.0f, newZ }, up);
+
+    target.x   = newX;
+    target.z   = newZ;
+    position.x = newX;
+    position.z = newZ + 2.0f;
 }

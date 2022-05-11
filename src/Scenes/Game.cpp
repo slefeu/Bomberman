@@ -14,13 +14,14 @@
 
 Game::Game() noexcept
 {
-    cameraPosition = { 0.0f, 10.0f, 3.0f };
+    cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
 
     _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs));
     _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs));
     _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs));
+    _players.emplace_back(std::make_unique<Player>(3, MAROON, &_bombs));
 
     _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
     _entities.emplace_back(std::make_unique<Box>((Vector3){ 5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
@@ -30,7 +31,7 @@ Game::Game() noexcept
 
 void Game::resetCamera(Cameraman& camera) noexcept
 {
-    camera.moveTo(cameraPosition, cameraTarget, cameraUp);
+    camera.tpTo(cameraPosition, cameraTarget, cameraUp);
 }
 
 void Game::display3D() noexcept

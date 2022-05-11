@@ -8,17 +8,24 @@
 #ifndef PLAYER_HPP_
 #define PLAYER_HPP_
 
+#include <memory>
+#include <vector>
+
+#include "Bomb.hpp"
 #include "Entities.hpp"
 
 class Player : public Entities
 {
   private:
-    int         id;
-    KeyboardKey moveUp;
-    KeyboardKey moveDown;
-    KeyboardKey moveLeft;
-    KeyboardKey moveRight;
-    float       speed;
+    int                                id;
+    KeyboardKey                        moveUp;
+    KeyboardKey                        moveDown;
+    KeyboardKey                        moveLeft;
+    KeyboardKey                        moveRight;
+    KeyboardKey                        dropBomb;
+    float                              speed;
+    std::vector<std::unique_ptr<Bomb>> bombs;
+    int                                nbBomb;
 
   public:
     Player(int newId, Color newColor) noexcept;
@@ -36,6 +43,7 @@ class Player : public Entities
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
+    void placeBomb(void) noexcept;
 };
 
 #endif /* !PLAYER_HPP_ */

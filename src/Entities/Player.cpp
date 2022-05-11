@@ -20,6 +20,7 @@ Player::Player(Vector3 pos, Vector3 newSize, Color newColor, int newId) noexcept
     isTrigger = false;
     type      = EntityType::PLAYER;
     speed     = 0.1f;
+    nbBomb    = 2;
     setKeyboard();
 }
 
@@ -33,6 +34,7 @@ Player::Player(int newId, Color newColor) noexcept
     isTrigger = false;
     speed     = 0.1f;
     type      = EntityType::PLAYER;
+    nbBomb    = 2;
     setKeyboard();
 }
 
@@ -44,24 +46,28 @@ void Player::setKeyboard(void) noexcept
             moveDown  = KEY_S;
             moveLeft  = KEY_A;
             moveRight = KEY_D;
+            dropBomb  = KEY_Q;
             break;
         case 1:
             moveUp    = KEY_KP_8;
             moveDown  = KEY_KP_2;
             moveLeft  = KEY_KP_4;
             moveRight = KEY_KP_6;
+            dropBomb  = KEY_KP_7;
             break;
         case 2:
             moveUp    = KEY_T;
             moveDown  = KEY_G;
             moveLeft  = KEY_F;
             moveRight = KEY_H;
+            dropBomb  = KEY_R;
             break;
         case 3:
             moveUp    = KEY_I;
             moveDown  = KEY_K;
             moveLeft  = KEY_J;
             moveRight = KEY_L;
+            dropBomb  = KEY_U;
             break;
         default: break;
     }
@@ -71,6 +77,8 @@ void Player::display() noexcept
 {
     DrawCubeV(position, size, color);
     DrawCubeWiresV(position, size, BLACK);
+
+    for (auto& bomb : bombs) bomb->display();
 }
 
 void Player::moveX(float x) noexcept
@@ -99,12 +107,15 @@ void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
         if (axisY < -0.5f && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
         if (axisX > 0.5f && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
         if (axisX < -0.5f && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
+
+        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
     } else {
         // Mouvements au clavier
         if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
         if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
         if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
         if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+        if (IsKeyPressed(dropBomb)) placeBomb();
     }
 }
 
@@ -143,4 +154,11 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others,
 {
     Vector3 nextTurn = { position.x + (speed * xdir), position.y, position.z + (speed * zdir) };
     return isColliding(others, nextTurn);
+}
+
+void Player::placeBomb(void) noexcept
+{
+    if (nbBomb <= 0) return;
+    nbBomb--;
+    bombs.emplace_back(std::make_unique<Bomb>(position));
 }

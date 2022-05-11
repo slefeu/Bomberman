@@ -21,6 +21,7 @@ set(INDIE_SRC
     src/Engine/Core/Core.cpp
     src/Entities/Player.cpp
     src/Entities/Box.cpp
+    src/Entities/Bomb.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     

@@ -2,31 +2,39 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Box
+** Bomb
 */
 
-#ifndef BOX_HPP_
-#define BOX_HPP_
+#ifndef BOMB_HPP_
+#define BOMB_HPP_
 
-#include "Entities.hpp"
+#include "Explosion.hpp"
+#include "Player.hpp"
+#include "Timer.hpp"
 
-class Box : public Entities
+class Bomb : public Entities
 {
   public:
-    Box(Vector3 pos, Vector3 size) noexcept;
-    ~Box() noexcept = default;
+    Bomb(Vector3 pos, Player* p) noexcept;
+    ~Bomb() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     Vector3 getPosition() noexcept;
     Vector3 getSize() noexcept;
     bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
-    bool    update() noexcept;
+    bool    update(void) noexcept;
 
   private:
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
+
+  private:
+    float                      lifeTime;
+    std::unique_ptr<Timer>     lifeTimer;
+    std::unique_ptr<Explosion> explosion;
+    Player*                    player;
 };
 
-#endif /* !BOX_HPP_ */
+#endif /* !BOMB_HPP_ */

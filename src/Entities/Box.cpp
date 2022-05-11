@@ -7,43 +7,34 @@
 
 #include "Box.hpp"
 
-Box::Box(Vector3 pos, float newScale) noexcept
+Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
     position  = pos;
     isSolid   = true;
     isTrigger = false;
     type      = EntityType::BOX;
-    // scale     = newScale;
-
-    // model                                                 = LoadModel("Assets/Models/box.obj");
-    // texture                                               = LoadTexture("Assets/Textures/box.png");
-    // model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-
-    // position.y += scale;
-    (void)newScale;
-    color = RED;
-    size  = { (rand() % 10) / 10.0f, (rand() % 10) / 10.0f, (rand() % 10) / 10.0f };
+    color     = GREEN;
+    size      = newSize;
 }
 
 void Box::display() noexcept
 {
     DrawCubeV(position, size, color);
-    // DrawModel(model, position, scale, WHITE);
 }
 
 void Box::moveX(float x) noexcept
 {
-    position.x += x;
+    position.x += x * GetFrameTime();
 }
 
 void Box::moveY(float y) noexcept
 {
-    position.y += y;
+    position.y += y * GetFrameTime();
 }
 
 void Box::moveZ(float z) noexcept
 {
-    position.z += z;
+    position.z += z * GetFrameTime();
 }
 
 void Box::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
@@ -74,5 +65,10 @@ bool Box::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, in
     (void)others;
     (void)xdir;
     (void)zdir;
+    return false;
+}
+
+bool Box::update(void) noexcept
+{
     return false;
 }

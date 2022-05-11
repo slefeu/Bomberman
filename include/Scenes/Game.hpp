@@ -19,6 +19,7 @@ class Game : public Scene
   private:
     std::vector<std::unique_ptr<Entities>> _entities;
     std::vector<std::unique_ptr<Entities>> _players;
+    std::vector<std::unique_ptr<Entities>> _bombs;
 
   public:
     Game() noexcept;

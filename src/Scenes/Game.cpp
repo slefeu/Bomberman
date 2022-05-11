@@ -14,21 +14,19 @@
 
 Game::Game() noexcept
 {
-    cameraPosition = { 0.0f, 12.0f, 12.0f };
+    cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
-    cameraUp       = { 0.0f, 1.0f, 0.0f };
+    cameraUp       = { 0.0f, 2.0f, 0.0f };
 
-    _players.emplace_back(std::make_unique<Player>(0, GREEN));
-    _players.emplace_back(std::make_unique<Player>(1, BLUE));
-    _players.emplace_back(std::make_unique<Player>(2, PINK));
-    _players.emplace_back(std::make_unique<Player>(3, YELLOW));
+    _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs));
+    _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs));
+    _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs));
+    _players.emplace_back(std::make_unique<Player>(3, MAROON, &_bombs));
 
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 0.0f }, 0.02f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, -2.0f }, 0.01f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 2.0f, 0.0f, -4.0f }, 0.012f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -2.0f, 0.0f, -4.0f }, 0.012f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -4.0f, 0.0f, -2.0f }, 0.012f));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -4.0f, 0.0f, 2.0f }, 0.012f));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, -5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
+    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -42,19 +40,31 @@ void Game::display3D() noexcept
 
     for (auto& player : _players) player->display();
     for (auto& entity : _entities) entity->display();
+
+    size_t len = _bombs.size();
+    for (size_t i = 0; i != len; i++) {
+        if (_bombs[i]->update()) {
+            _bombs[i].release();
+            _bombs.erase(_bombs.begin() + i);
+            len--;
+            i--;
+        }
+    }
 }
 
 void Game::display2D() noexcept
 {
-    DrawText("Press LEFT to change scene", 10, 10, 20, BLACK);
-    DrawText("Press UP to reset camera (mouvement lisse)", 10, 30, 20, BLACK);
-    DrawText("Press DOWN to tp to (30, 30, 30) (mouvement brusque)", 10, 50, 20, BLACK);
-    DrawFPS(700, 10);
-    DrawText("Game", 10, 570, 20, GREEN);
+    DrawFPS(10, 10);
+    DrawText("Game", 10, 30, 20, GREEN);
 }
 
 void Game::action(Cameraman& camera) noexcept
 {
     for (auto& player : _players) player->action(_entities);
-    camera.lookBetweenEntities(_players);
+    for (auto& bomb : _bombs) {
+        Vector3 temp = bomb->getPosition();
+        bomb->isColliding(_players, temp);
+        bomb->isColliding(_entities, temp);
+    }
+    if (!camera.isMoving) camera.lookBetweenEntities(_players);
 }

@@ -23,7 +23,7 @@ Core::Core(int height, int width, int fps) noexcept
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>());
     scenes.emplace_back(std::make_unique<Game>());
-    currentScene = 0;
+    currentScene = 1;
 
     // Setting the first camera
     camera.position = SCENE->cameraPosition;
@@ -41,6 +41,7 @@ void Core::run() noexcept
 {
     while (!WindowShouldClose()) {
         // Events -------------------------------------------------------------
+        // Va partir, c'est que pour les tests
         if (IsKeyPressed(KEY_LEFT)) switchScene((currentScene - 1) % scenes.size());
         if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
         if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });

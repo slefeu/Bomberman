@@ -30,11 +30,8 @@ void Home::display3D() noexcept
 
 void Home::display2D() noexcept
 {
-    DrawText("Press LEFT to change scene", 10, 10, 20, BLACK);
-    DrawText("Press UP to reset camera (mouvement lisse)", 10, 30, 20, BLACK);
-    DrawText("Press DOWN to tp to (30, 30, 30) (mouvement brusque)", 10, 50, 20, BLACK);
-    DrawFPS(700, 10);
-    DrawText("Home", 10, 570, 20, GREEN);
+    DrawFPS(10, 10);
+    DrawText("Home", 10, 30, 20, GREEN);
 }
 
 void Home::action(Cameraman& camera) noexcept

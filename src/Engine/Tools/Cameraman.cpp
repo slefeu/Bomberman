@@ -11,27 +11,29 @@
 
 #include <iostream>
 
+#include "Round.hpp"
+
 Cameraman::Cameraman() noexcept
 {
     fovy       = 60.0f;
     projection = CAMERA_PERSPECTIVE;
     isMoving   = false;
-    speed      = 1;
+    speed      = 10.0f;
 }
 
 void Cameraman::moveX(float x) noexcept
 {
-    position.x += x;
+    position.x += Round().myRound(x * GetFrameTime(), 1);
 }
 
 void Cameraman::moveY(float y) noexcept
 {
-    position.y += y;
+    position.y += Round().myRound(y * GetFrameTime(), 1);
 }
 
 void Cameraman::moveZ(float z) noexcept
 {
-    position.z += z;
+    position.z += Round().myRound(z * GetFrameTime(), 1);
 }
 
 void Cameraman::moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept
@@ -52,20 +54,30 @@ void Cameraman::tpTo(Vector3 to, Vector3 tar, Vector3 newUp) noexcept
 
 bool Cameraman::smoothMove(void) noexcept
 {
-    Vector3 dir;
-    dir.x = (position.x < targetPosition.x) ? 1.0f : -1.0f;
-    dir.y = (position.y < targetPosition.y) ? 1.0f : -1.0f;
-    dir.z = (position.z < targetPosition.z) ? 1.0f : -1.0f;
+    bool    thereIsMovement = false;
+    Vector3 roundPos        = Round().roundVector(position, 1);
+    Vector3 roundTarget     = Round().roundVector(targetPosition, 1);
+    Vector3 dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
+        (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
+        (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
 
-    if (position.x == targetPosition.x && position.y == targetPosition.y && position.z == targetPosition.z) return false;
-    if (targetPosition.x != position.x) moveX(dir.x * speed);
-    if (targetPosition.y != position.y) moveY(dir.y * speed);
-    if (targetPosition.z != position.z) moveZ(dir.z * speed);
+    if ((dir.z == 1 && roundTarget.z > roundPos.z) || (dir.z == -1 && roundTarget.z < roundPos.z)) {
+        thereIsMovement = true;
+        moveZ(dir.z * speed);
+    }
+    if ((dir.x == 1 && roundTarget.x > roundPos.x) || (dir.x == -1 && roundTarget.x < roundPos.x)) {
+        thereIsMovement = true;
+        moveX(dir.x * speed);
+    }
+    if ((dir.y == 1 && roundTarget.y > roundPos.y) || (dir.y == -1 && roundTarget.y < roundPos.y)) {
+        thereIsMovement = true;
+        moveY(dir.y * speed);
+    }
 
     target = targetTarget;
     up     = targetUp;
 
-    return true;
+    return thereIsMovement;
 }
 
 void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities) noexcept
@@ -76,6 +88,7 @@ void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& enti
     float maxZ = -minZ;
 
     for (auto& entity : entities) {
+        if (!entity->isEnable) continue;
         Vector3 pos = entity->getPosition();
         if (pos.x < minX) minX = pos.x;
         if (pos.x > maxX) maxX = pos.x;
@@ -83,6 +96,11 @@ void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& enti
         if (pos.z > maxZ) maxZ = pos.z;
     }
 
-    target.x = (minX + maxX) / 2;
-    target.z = (minZ + maxZ) / 2;
+    float newX = (minX + maxX) / 2;
+    float newZ = (minZ + maxZ) / 2;
+
+    target.x   = newX;
+    target.z   = newZ;
+    position.x = newX;
+    position.z = newZ + 2.0f;
 }

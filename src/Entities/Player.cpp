@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "Bomb.hpp"
+#include "Collision.hpp"
 
 Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept
 {
@@ -143,19 +144,11 @@ Vector3 Player::getSize() noexcept
 bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
 {
     for (auto& other : others) {
-        if (other->isSolid && other->type != EntityType::PLAYER) {
+        if (other->isSolid) {
             Vector3 otherPos  = other->getPosition();
             Vector3 otherSize = other->getSize();
 
-            Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
-            Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };
-            Vector3 BoundingBox2_1 = { otherPos.x - otherSize.x / 2, otherPos.y - otherSize.y / 2, otherPos.z - otherSize.z / 2 };
-            Vector3 BoundingBox2_2 = { otherPos.x + otherSize.x / 2, otherPos.y + otherSize.y / 2, otherPos.z + otherSize.z / 2 };
-
-            BoundingBox BoundingBox1 = { BoundingBox1_1, BoundingBox1_2 };
-            BoundingBox BoundingBox2 = { BoundingBox2_1, BoundingBox2_2 };
-
-            if (CheckCollisionBoxes(BoundingBox1, BoundingBox2)) return true;
+            if (Collision().isColliding(pos, size, otherPos, otherSize)) return true;
         }
     }
     return false;

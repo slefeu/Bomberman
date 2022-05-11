@@ -7,6 +7,10 @@
 
 #include "Explosion.hpp"
 
+#include <iostream>
+
+#include "Collision.hpp"
+
 Explosion::Explosion(Vector3 pos, float newSize) noexcept
 {
     position  = pos;
@@ -17,7 +21,6 @@ Explosion::Explosion(Vector3 pos, float newSize) noexcept
     color     = RED;
     lifeTime  = 1.0f;
     timer     = std::make_unique<Timer>(lifeTime);
-    position.y += 0.1f;
 }
 
 void Explosion::display() noexcept
@@ -59,8 +62,16 @@ Vector3 Explosion::getSize() noexcept
 
 bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
 {
-    (void)others;
-    (void)pos;
+    std::cout << "Explosion::isColliding" << std::endl;
+    for (auto& other : others) {
+        Vector3 otherPos  = other->getPosition();
+        Vector3 otherSize = other->getSize();
+
+        if (other->isSolid) {
+            if (Collision().isColliding(pos, size, otherPos, otherSize)) return true;
+            if (Collision().isColliding(pos, { size.z, size.y, size.x }, otherPos, otherSize)) return true;
+        }
+    }
     return false;
 }
 

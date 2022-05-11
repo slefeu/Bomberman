@@ -59,9 +59,12 @@ Vector3 Bomb::getSize() noexcept
 
 bool Bomb::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
 {
-    (void)others;
     (void)pos;
-    return false;
+
+    if (explosion == nullptr) return false;
+    Vector3 temp = explosion->getPosition();
+
+    return explosion->isColliding(others, temp);
 }
 
 bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept

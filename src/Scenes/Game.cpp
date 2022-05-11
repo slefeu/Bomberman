@@ -41,7 +41,6 @@ void Game::display3D() noexcept
 
     for (auto& player : _players) player->display();
     for (auto& entity : _entities) entity->display();
-    // for (auto& bomb : _bombs) bomb->update();
 
     size_t len = _bombs.size();
     for (size_t i = 0; i != len; i++) {
@@ -63,5 +62,12 @@ void Game::display2D() noexcept
 void Game::action(Cameraman& camera) noexcept
 {
     for (auto& player : _players) player->action(_entities);
+    for (auto& bomb : _bombs) {
+        Vector3 temp = bomb->getPosition();
+        if (!bomb->isColliding(_players, temp)) std::cout << "Bomb is not colliding" << std::endl;
+        else
+            std::cout << "Bomb is colliding" << std::endl;
+    }
+
     camera.lookBetweenEntities(_players);
 }

@@ -20,6 +20,7 @@ set(INDIE_SRC
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Tools/Timer.cpp
     src/Engine/Core/Core.cpp
+    src/Engine/Core/Collision.cpp
     src/Entities/Player.cpp
     src/Entities/Box.cpp
     src/Entities/Bomb.cpp

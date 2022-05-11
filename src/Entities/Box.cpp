@@ -33,17 +33,17 @@ void Box::display() noexcept
 
 void Box::moveX(float x) noexcept
 {
-    position.x += x;
+    position.x += x * GetFrameTime();
 }
 
 void Box::moveY(float y) noexcept
 {
-    position.y += y;
+    position.y += y * GetFrameTime();
 }
 
 void Box::moveZ(float z) noexcept
 {
-    position.z += z;
+    position.z += z * GetFrameTime();
 }
 
 void Box::action(std::vector<std::unique_ptr<Entities>>& others) noexcept

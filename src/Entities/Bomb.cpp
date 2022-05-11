@@ -24,17 +24,17 @@ void Bomb::display() noexcept
 
 void Bomb::moveX(float x) noexcept
 {
-    position.x += x;
+    position.x += x * GetFrameTime();
 }
 
 void Bomb::moveY(float y) noexcept
 {
-    position.y += y;
+    position.y += y * GetFrameTime();
 }
 
 void Bomb::moveZ(float z) noexcept
 {
-    position.z += z;
+    position.z += z * GetFrameTime();
 }
 
 void Bomb::action(std::vector<std::unique_ptr<Entities>>& others) noexcept

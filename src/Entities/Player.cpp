@@ -19,7 +19,7 @@ Player::Player(Vector3 pos, Vector3 newSize, Color newColor, int newId) noexcept
     isSolid   = true;
     isTrigger = false;
     type      = EntityType::PLAYER;
-    speed     = 0.1f;
+    speed     = 3.0f;
     nbBomb    = 2;
     setKeyboard();
 }
@@ -32,7 +32,7 @@ Player::Player(int newId, Color newColor) noexcept
     id        = newId;
     isSolid   = true;
     isTrigger = false;
-    speed     = 0.1f;
+    speed     = 3.0f;
     type      = EntityType::PLAYER;
     nbBomb    = 2;
     setKeyboard();
@@ -83,17 +83,17 @@ void Player::display() noexcept
 
 void Player::moveX(float x) noexcept
 {
-    position.x += x;
+    position.x += x * GetFrameTime();
 }
 
 void Player::moveY(float y) noexcept
 {
-    position.y += y;
+    position.y += y * GetFrameTime();
 }
 
 void Player::moveZ(float z) noexcept
 {
-    position.z += z;
+    position.z += z * GetFrameTime();
 }
 
 void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
@@ -152,7 +152,7 @@ bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3
 
 bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
 {
-    Vector3 nextTurn = { position.x + (speed * xdir), position.y, position.z + (speed * zdir) };
+    Vector3 nextTurn = { position.x + (speed * xdir * GetFrameTime()), position.y, position.z + (speed * zdir * GetFrameTime()) };
     return isColliding(others, nextTurn);
 }
 

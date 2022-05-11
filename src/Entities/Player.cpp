@@ -78,7 +78,20 @@ void Player::display() noexcept
     DrawCubeV(position, size, color);
     DrawCubeWiresV(position, size, BLACK);
 
-    for (auto& bomb : bombs) bomb->display();
+    size_t len = bombs.size();
+    for (size_t i = 0; i != len; i++) {
+        if (bombs[i]->update()) {
+            bombs[i].release();
+            bombs.erase(bombs.begin() + i);
+            len--;
+            i--;
+            nbBomb++;
+        }
+    }
+
+    // for (auto& bomb : bombs) {
+    //     if (bomb->update()) { bomb.release(); }
+    // }
 }
 
 void Player::moveX(float x) noexcept

@@ -9,6 +9,7 @@
 #define BOMB_HPP_
 
 #include "Entities.hpp"
+#include "Timer.hpp"
 
 class Bomb : public Entities
 {
@@ -21,11 +22,16 @@ class Bomb : public Entities
     Vector3 getSize() noexcept;
     bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
+    bool    update(void) noexcept;
 
   private:
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
+
+  private:
+    float                  lifeTime;
+    std::unique_ptr<Timer> timer;
 };
 
 #endif /* !BOMB_HPP_ */

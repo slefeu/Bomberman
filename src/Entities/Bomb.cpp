@@ -13,8 +13,10 @@ Bomb::Bomb(Vector3 pos) noexcept
     isSolid   = false;
     isTrigger = false;
     type      = EntityType::BOMB;
+    color     = BLUE;
+    lifeTime  = 2.0f;
+    timer     = std::make_unique<Timer>(lifeTime);
     position.y += 0.1f;
-    color = BLUE;
 }
 
 void Bomb::display() noexcept
@@ -66,4 +68,11 @@ bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, i
     (void)xdir;
     (void)zdir;
     return false;
+}
+
+bool Bomb::update(void) noexcept
+{
+    display();
+    timer->updateTimer();
+    return timer->timerDone();
 }

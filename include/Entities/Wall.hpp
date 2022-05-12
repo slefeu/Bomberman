@@ -15,7 +15,7 @@ class Wall : public Crate
   public:
     Wall(Vector3 pos) noexcept;
     ~Wall() noexcept = default;
-    void    display() noexcept;
+    void display() noexcept;
 };
 
 #endif /* !Wall_HPP_ */

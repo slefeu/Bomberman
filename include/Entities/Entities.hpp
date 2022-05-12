@@ -13,7 +13,7 @@
 
 #include "HitBox.hpp"
 
-enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION };
+enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION, CRATE };
 
 class Entities
 {

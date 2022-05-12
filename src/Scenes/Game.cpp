@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "Box.hpp"
+#include "Crate.hpp"
 #include "Player.hpp"
 
 Game::Game() noexcept
@@ -27,6 +28,12 @@ Game::Game() noexcept
     _entities.emplace_back(std::make_unique<Box>((Vector3){ 5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
     _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, -5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
     _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
+
+    _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, -3.5f }));
+    _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, -3.5f }));
+    _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, 3.5f }));
+    _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, 3.5f }));
+    _entities.emplace_back(std::make_unique<Crate>((Vector3){ 1.5f, 0.0f, 3.5f }));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept

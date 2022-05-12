@@ -6,6 +6,7 @@
 */
 
 #include "Game.hpp"
+#include "Wall.hpp"
 
 #include <iostream>
 
@@ -34,6 +35,12 @@ Game::Game() noexcept
     _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, 3.5f }));
     _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, 3.5f }));
     _entities.emplace_back(std::make_unique<Crate>((Vector3){ 1.5f, 0.0f, 3.5f }));
+
+    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 3.5f, 1.0f, 2.5f }));
+    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 1.0f, 0.0f, 1.5f }));
+    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 2.5f, 3.0f, 3.5f }));
+    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 0.5f, 2.0f, 2.5f }));
+
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept

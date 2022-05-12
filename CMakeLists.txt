@@ -28,6 +28,7 @@ set(INDIE_SRC
     src/Entities/Bomb.cpp
     src/Entities/Crate.cpp
     src/Entities/Explosion.cpp
+    src/Entities/Wall.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     

@@ -10,14 +10,13 @@
 Bomb::Bomb(Vector3 pos, Player* p) noexcept
 {
     position  = pos;
-    isSolid   = false;
-    isTrigger = false;
     type      = EntityType::BOMB;
     color     = BLUE;
     lifeTime  = 2.0f;
     lifeTimer = std::make_unique<Timer>(lifeTime);
     explosion = nullptr;
     player    = p;
+    hitbox    = nullptr;
     position.y += 0.1f;
 }
 
@@ -57,14 +56,10 @@ Vector3 Bomb::getSize() noexcept
     return size;
 }
 
-bool Bomb::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
+bool Bomb::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
-    (void)pos;
-
     if (explosion == nullptr) return false;
-    Vector3 temp = explosion->getPosition();
-
-    return explosion->isColliding(others, temp);
+    return explosion->isColliding(others);
 }
 
 bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept

@@ -9,17 +9,18 @@
 
 Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
-    position  = pos;
-    isSolid   = true;
-    isTrigger = false;
-    type      = EntityType::BOX;
-    color     = GREEN;
-    size      = newSize;
+    position = pos;
+    type     = EntityType::BOX;
+    color    = ORANGE;
+    size     = newSize;
+    hitbox   = std::make_unique<HitBox>(position, size, true);
 }
 
 void Box::display() noexcept
 {
     DrawCubeV(position, size, color);
+    hitbox->update(position);
+    hitbox->display();
 }
 
 void Box::moveX(float x) noexcept
@@ -53,10 +54,9 @@ Vector3 Box::getSize() noexcept
     return size;
 }
 
-bool Box::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
+bool Box::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
     (void)others;
-    (void)pos;
     return false;
 }
 

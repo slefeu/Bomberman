@@ -62,9 +62,8 @@ void Game::action(Cameraman& camera) noexcept
 {
     for (auto& player : _players) player->action(_entities);
     for (auto& bomb : _bombs) {
-        Vector3 temp = bomb->getPosition();
-        bomb->isColliding(_players, temp);
-        bomb->isColliding(_entities, temp);
+        bomb->isColliding(_players);
+        bomb->isColliding(_entities);
     }
     if (!camera.isMoving) camera.lookBetweenEntities(_players);
 }

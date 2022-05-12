@@ -21,7 +21,7 @@ class Bomb : public Entities
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     Vector3 getPosition() noexcept;
     Vector3 getSize() noexcept;
-    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept;
+    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
     bool    update(void) noexcept;
 

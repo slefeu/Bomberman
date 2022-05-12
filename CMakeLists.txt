@@ -22,6 +22,7 @@ set(INDIE_SRC
     src/Engine/Tools/Round.cpp
     src/Engine/Core/Core.cpp
     src/Engine/Core/Collision.cpp
+    src/Engine/Core/HitBox.cpp
     src/Entities/Player.cpp
     src/Entities/Box.cpp
     src/Entities/Bomb.cpp

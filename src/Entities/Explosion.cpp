@@ -14,28 +14,30 @@
 Explosion::Explosion(Vector3 posi, float newSize) noexcept
 {
     position  = posi;
-    isSolid   = false;
-    isTrigger = false;
     type      = EntityType::EXPLOSION;
     size      = { newSize, 0.2f, 0.2f };
     color     = RED;
     lifeTime  = 1.0f;
     timer     = std::make_unique<Timer>(lifeTime);
-
-    pos[0] = { position.x - size.x / 4, position.y, position.z };
-    pos[1] = { position.x + size.x / 4, position.y, position.z };
-    pos[2] = { position.x, position.y, position.z - size.x / 4 };
-    pos[3] = { position.x, position.y, position.z + size.x / 4 };
-
-    siz[0] = { size.x / 2, size.y, size.z };
-    siz[1] = { size.x / 2, size.y, size.z };
-    siz[2] = { size.z, size.y, size.x / 2 };
-    siz[3] = { size.z, size.y, size.x / 2 };
+    pos[0]    = { position.x - size.x / 4, position.y, position.z };
+    pos[1]    = { position.x + size.x / 4, position.y, position.z };
+    pos[2]    = { position.x, position.y, position.z - size.x / 4 };
+    pos[3]    = { position.x, position.y, position.z + size.x / 4 };
+    siz[0]    = { size.x / 2, size.y, size.z };
+    siz[1]    = { size.x / 2, size.y, size.z };
+    siz[2]    = { size.z, size.y, size.x / 2 };
+    siz[3]    = { size.z, size.y, size.x / 2 };
+    hitBoxHor = std::make_unique<HitBox>(position, size, true);
+    hitBoxVer = std::make_unique<HitBox>(position, (Vector3){ size.z, size.y, size.x }, true);
 }
 
 void Explosion::display() noexcept
 {
     for (int i = 0; i < 4; i++) DrawCubeV(pos[i], siz[i], color);
+    hitBoxHor->display();
+    hitBoxVer->display();
+    hitBoxHor->update(position);
+    hitBoxVer->update(position);
 }
 
 void Explosion::moveX(float x) noexcept
@@ -69,23 +71,16 @@ Vector3 Explosion::getSize() noexcept
     return size;
 }
 
-bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& posi) noexcept
+bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
-    (void)posi;
     bool isColliding = false;
 
     for (auto& other : others) {
-        Vector3 otherPos  = other->getPosition();
-        Vector3 otherSize = other->getSize();
-
-        if (other->isSolid) {
-            if (Collision().isColliding(pos[0], siz[0], otherPos, otherSize)
-                || Collision().isColliding(pos[1], siz[1], otherPos, otherSize)
-                || Collision().isColliding(pos[2], siz[2], otherPos, otherSize)
-                || Collision().isColliding(pos[3], siz[3], otherPos, otherSize)) {
-                if (other->type == EntityType::PLAYER) other->isEnable = false;
-                isColliding = true;
-            }
+        if (other->hitbox == nullptr || hitBoxHor == nullptr || hitBoxVer == nullptr) continue;
+        if (!other->hitbox->isSolid || !hitBoxHor->isSolid || !hitBoxVer->isSolid) continue;
+        if (hitBoxHor->isColliding(other->hitbox) || hitBoxVer->isColliding(other->hitbox)) {
+            if (other->type == EntityType::PLAYER) other->isEnable = false;
+            isColliding = true;
         }
     }
     return isColliding;

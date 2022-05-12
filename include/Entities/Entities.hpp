@@ -22,6 +22,11 @@ class Entities
     Vector3 size;
     Color   color;
 
+  protected:
+    Model     model;
+    Texture2D texture;
+    float     scale;
+
   public:
     EntityType              type;
     bool                    isEnable;

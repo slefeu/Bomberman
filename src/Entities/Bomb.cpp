@@ -7,22 +7,35 @@
 
 #include "Bomb.hpp"
 
+#include <iostream>
+
 Bomb::Bomb(Vector3 pos, Player* p) noexcept
 {
     position  = pos;
     type      = EntityType::BOMB;
-    color     = BLUE;
     lifeTime  = 2.0f;
     lifeTimer = std::make_unique<Timer>(lifeTime);
     explosion = nullptr;
     player    = p;
     hitbox    = nullptr;
-    position.y += 0.1f;
+
+    model      = LoadModel("Assets/Models/bomb.obj");
+    texture    = LoadTexture("Assets/Textures/bomb.png");
+    scale      = 0.05f;
+    position.y = 0 + scale;
+
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
+}
+
+Bomb::~Bomb() noexcept
+{
+    UnloadTexture(texture);
+    UnloadModel(model);
 }
 
 void Bomb::display() noexcept
 {
-    DrawSphere(position, 0.2f, color);
+    DrawModel(model, position, scale, WHITE);
 }
 
 void Bomb::moveX(float x) noexcept

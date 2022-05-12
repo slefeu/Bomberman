@@ -15,7 +15,7 @@ Explosion::Explosion(Vector3 posi, float newSize) noexcept
 {
     position  = posi;
     type      = EntityType::EXPLOSION;
-    size      = { newSize, 0.2f, 0.2f };
+    size      = { newSize, 0.2f, 1.0f };
     color     = RED;
     lifeTime  = 1.0f;
     timer     = std::make_unique<Timer>(lifeTime);

@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, Render3D* newModel) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
     : lifeTime(2.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , explosion(nullptr)
@@ -24,7 +24,7 @@ Bomb::Bomb(Vector3 pos, Player* p, Render3D* newModel) noexcept
 
 void Bomb::display() noexcept
 {
-    DrawModel(model->model, position, scale, WHITE);
+    DrawModel(MODEL->model, position, scale, WHITE);
 }
 
 void Bomb::moveX(float x) noexcept

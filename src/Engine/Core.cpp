@@ -28,7 +28,7 @@ Core::Core(Settings* settings) noexcept
     // Génération des joueurs
     Color colors[4] = { PINK, BLUE, YELLOW, MAROON };
     for (int i = 0; i != settings->nbPlayer; i++)
-        _players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, _models[0].get()));
+        _players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, &_models[0]));
 
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(settings));

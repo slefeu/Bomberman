@@ -7,7 +7,7 @@
 
 #include "Crate.hpp"
 
-Crate::Crate(Vector3 pos, Render3D* newModel) noexcept
+Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel) noexcept
     : Box(pos, { 1.0f, 1.0f, 1.0f })
 {
     type             = EntityType::CRATE;
@@ -24,6 +24,6 @@ Crate::Crate(Vector3 pos, Render3D* newModel) noexcept
 void Crate::display() noexcept
 {
     if (!isEnable) return;
-    DrawModel(model->model, position, scale, WHITE);
+    DrawModel(MODEL->model, position, scale, WHITE);
     hitbox->display();
 }

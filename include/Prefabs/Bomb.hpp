@@ -15,7 +15,7 @@
 class Bomb : public GameObject3D
 {
   public:
-    Bomb(Vector3 pos, Player* p, Render3D* model) noexcept;
+    Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* model) noexcept;
     ~Bomb() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;

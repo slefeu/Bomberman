@@ -80,12 +80,11 @@ bool Bomb::update(void) noexcept
     if (!lifeTimer->timerDone()) {
         display();
         return false;
-    } else {
-        if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f);
-        if (explosion->update()) {
-            player->nbBomb++;
-            return true;
-        }
-        return false;
     }
+    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f);
+    if (explosion->update()) {
+        player->nbBomb++;
+        return true;
+    }
+    return false;
 }

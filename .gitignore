@@ -8,3 +8,7 @@ bomberman
 .vscode/
 *.log
 build/
+.cache
+.ccls
+.Debug/
+compile_commands.json

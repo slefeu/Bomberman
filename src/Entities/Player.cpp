@@ -34,20 +34,20 @@ void Player::setPosition(void) noexcept
 {
     switch (id) {
         case 0:
-            position.x = -4.0f;
-            position.z = -2.0f;
+            position.x = -6.0f;
+            position.z = -4.0f;
             break;
         case 1:
-            position.x = 4.0f;
-            position.z = -2.0f;
+            position.x = 6.0f;
+            position.z = -4.0f;
             break;
         case 2:
-            position.x = -4.0f;
-            position.z = 4.0f;
+            position.x = -6.0f;
+            position.z = 6.0f;
             break;
         case 3:
-            position.x = 4.0f;
-            position.z = 4.0f;
+            position.x = 6.0f;
+            position.z = 6.0f;
             break;
         default: break;
     }

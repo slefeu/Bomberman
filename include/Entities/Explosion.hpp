@@ -28,6 +28,7 @@ class Explosion : public Entities
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
+    void CollideAction(std::unique_ptr<Entities>& other) noexcept;
 
   private:
     float                   lifeTime;

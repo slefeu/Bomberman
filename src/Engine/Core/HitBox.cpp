@@ -18,7 +18,7 @@ HitBox::HitBox(Vector3 newPos, Vector3 newSize, bool solid) noexcept
 
 void HitBox::display() noexcept
 {
-    DrawCubeWiresV(position, size, GREEN);
+    if (debug) DrawCubeWiresV(position, size, GREEN);
 }
 
 void HitBox::update(Vector3 newPos) noexcept

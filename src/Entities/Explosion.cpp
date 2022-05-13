@@ -79,13 +79,7 @@ bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others) noex
         if (other->hitbox == nullptr || hitBoxHor == nullptr || hitBoxVer == nullptr) continue;
         if (!other->hitbox->isSolid || !hitBoxHor->isSolid || !hitBoxVer->isSolid) continue;
         if (hitBoxHor->isColliding(other->hitbox) || hitBoxVer->isColliding(other->hitbox)) {
-            if (other->type == EntityType::PLAYER) other->isEnable = false;
-            if (other->type == EntityType::CRATE) {
-                std::cout << "Crate destroyed" << std::endl;
-                other->isEnable = false;
-                other->hitbox.reset();
-                other->hitbox = nullptr;
-            }
+            CollideAction(other);
             isColliding = true;
         }
     }
@@ -105,4 +99,14 @@ bool Explosion::update(void) noexcept
     display();
     timer->updateTimer();
     return timer->timerDone();
+}
+
+void Explosion::CollideAction(std::unique_ptr<Entities>& other) noexcept
+{
+    if (other->type == EntityType::PLAYER) other->isEnable = false;
+    if (other->type == EntityType::CRATE) {
+        other->isEnable = false;
+        other->hitbox.reset();
+        other->hitbox = nullptr;
+    }
 }

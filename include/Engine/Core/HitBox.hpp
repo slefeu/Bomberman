@@ -14,6 +14,9 @@
 
 class HitBox
 {
+  private:
+    bool debug = false;
+
   public:
     Vector3 position;
     Vector3 size;

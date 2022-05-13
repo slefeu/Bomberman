@@ -18,12 +18,12 @@ endif ()
 set(INDIE_SRC
     src/main.cpp
 
-    src/Engine/Tools/Cameraman.cpp
-    src/Engine/Tools/Timer.cpp
-    src/Engine/Tools/Round.cpp
+    src/Tools/Timer.cpp
+    src/Tools/Round.cpp
     
-    src/Engine/Core/Core.cpp
-    src/Engine/Core/Collision.cpp
+    src/Engine/Cameraman.cpp
+    src/Engine/Core.cpp
+    src/Engine/Collision.cpp
     
     src/Components/Render3D.cpp
     src/Components/BoxCollider.cpp
@@ -45,8 +45,8 @@ endif ()
 target_link_libraries(${PROJECT_NAME} raylib)
     
 # Ajouter ici les dossiers contenants les .hpp
-target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Tools)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Entities)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Components)

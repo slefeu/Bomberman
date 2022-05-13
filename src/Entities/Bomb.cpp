@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Models>* newModel) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
 {
     position   = pos;
     type       = EntityType::BOMB;

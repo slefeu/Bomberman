@@ -27,8 +27,8 @@ Explosion::Explosion(Vector3 posi, float newSize) noexcept
     siz[1]    = { size.x / 2, size.y, size.z };
     siz[2]    = { size.z, size.y, size.x / 2 };
     siz[3]    = { size.z, size.y, size.x / 2 };
-    hitBoxHor = std::make_unique<HitBox>(position, size, true);
-    hitBoxVer = std::make_unique<HitBox>(position, (Vector3){ size.z, size.y, size.x }, true);
+    hitBoxHor = std::make_unique<BoxCollider>(position, size, true);
+    hitBoxVer = std::make_unique<BoxCollider>(position, (Vector3){ size.z, size.y, size.x }, true);
 }
 
 void Explosion::display() noexcept

@@ -11,8 +11,8 @@
 #include <memory>
 #include <vector>
 
-#include "HitBox.hpp"
-#include "Models.hpp"
+#include "BoxCollider.hpp"
+#include "Render3D.hpp"
 
 enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION, CRATE, WALL };
 
@@ -25,10 +25,13 @@ class Entities
     float   scale;
 
   public:
-    EntityType               type;
-    bool                     isEnable;
-    std::unique_ptr<HitBox>  hitbox;
-    std::unique_ptr<Models>* model;
+    bool       isEnable;
+    EntityType type;
+
+    // Components
+  public:
+    std::unique_ptr<BoxCollider> hitbox;
+    std::unique_ptr<Render3D>*   model;
 
   public:
     Entities() noexcept                                                                                              = default;

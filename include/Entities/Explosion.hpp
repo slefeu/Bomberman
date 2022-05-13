@@ -31,12 +31,12 @@ class Explosion : public Entities
     void CollideAction(std::unique_ptr<Entities>& other) noexcept;
 
   private:
-    float                   lifeTime;
-    std::unique_ptr<Timer>  timer;
-    Vector3                 pos[4];
-    Vector3                 siz[4];
-    std::unique_ptr<HitBox> hitBoxHor;
-    std::unique_ptr<HitBox> hitBoxVer;
+    float                        lifeTime;
+    std::unique_ptr<Timer>       timer;
+    Vector3                      pos[4];
+    Vector3                      siz[4];
+    std::unique_ptr<BoxCollider> hitBoxHor;
+    std::unique_ptr<BoxCollider> hitBoxVer;
 };
 
 #endif /* !EXPLOSION_HPP_ */

@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "Entities.hpp"
-#include "Models.hpp"
+#include "Render3D.hpp"
 #include "Scene.hpp"
 
 class Game : public Scene
@@ -23,9 +23,9 @@ class Game : public Scene
     std::vector<std::unique_ptr<Entities>> _bombs;
 
   private:
-    std::unique_ptr<Models> modelBomb;
-    std::unique_ptr<Models> modelWall;
-    std::unique_ptr<Models> modelCrate;
+    std::unique_ptr<Render3D> modelBomb;
+    std::unique_ptr<Render3D> modelWall;
+    std::unique_ptr<Render3D> modelCrate;
 
   public:
     Game() noexcept;

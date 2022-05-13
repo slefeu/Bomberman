@@ -2,25 +2,25 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Models
+** Render3D
 */
 
-#ifndef MODELS_HPP_
-#define MODELS_HPP_
+#ifndef RENDERER3D_HPP_
+#define RENDERER3D_HPP_
 
 #include <string>
 
 #include "raylib.h"
 
-class Models
+class Render3D
 {
   public:
     Model     model;
     Texture2D texture;
 
   public:
-    Models(std::string path, std::string texturePath) noexcept;
-    ~Models() noexcept;
+    Render3D(std::string path, std::string texturePath) noexcept;
+    ~Render3D() noexcept;
 };
 
-#endif /* !MODELS_HPP_ */
+#endif /* !RENDERER3D_HPP_ */

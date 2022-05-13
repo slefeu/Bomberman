@@ -7,7 +7,7 @@
 
 #include "Crate.hpp"
 
-Crate::Crate(Vector3 pos, std::unique_ptr<Models>* newModel) noexcept
+Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel) noexcept
     : Box(pos, { 1.0f, 1.0f, 1.0f })
 {
     type             = EntityType::CRATE;

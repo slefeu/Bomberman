@@ -13,11 +13,11 @@
 #include "Collision.hpp"
 
 Player::Player(
-    int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray, std::unique_ptr<Models>* _bombModel) noexcept
+    int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray, std::unique_ptr<Render3D>* _bombModel) noexcept
 {
     size      = { 0.5f, 0.5f, 0.5f };
     position  = { 0.0f, 0.0f + (size.y / 2), 2.0f };
-    hitbox    = std::make_unique<HitBox>(position, size, true);
+    hitbox    = std::make_unique<BoxCollider>(position, size, true);
     color     = newColor;
     id        = newId;
     speed     = 3.0f;

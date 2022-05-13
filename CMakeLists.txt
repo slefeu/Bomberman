@@ -17,19 +17,24 @@ endif ()
 # Ajouter ici les .cpp
 set(INDIE_SRC
     src/main.cpp
+
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Tools/Timer.cpp
     src/Engine/Tools/Round.cpp
-    src/Engine/Tools/Models.cpp
+    
     src/Engine/Core/Core.cpp
     src/Engine/Core/Collision.cpp
-    src/Engine/Core/HitBox.cpp
+    
+    src/Components/Render3D.cpp
+    src/Components/BoxCollider.cpp
+    
     src/Entities/Player.cpp
     src/Entities/Box.cpp
     src/Entities/Bomb.cpp
     src/Entities/Crate.cpp
     src/Entities/Explosion.cpp
     src/Entities/Wall.cpp
+    
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     
@@ -44,3 +49,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Entities)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Components)

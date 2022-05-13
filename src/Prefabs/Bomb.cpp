@@ -10,17 +10,16 @@
 #include <iostream>
 
 Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
+    : lifeTime(2.0f)
+    , lifeTimer(std::make_unique<Timer>(lifeTime))
+    , explosion(nullptr)
+    , player(p)
 {
     position   = pos;
-    type       = EntityType::BOMB;
-    lifeTime   = 2.0f;
-    lifeTimer  = std::make_unique<Timer>(lifeTime);
-    explosion  = nullptr;
-    player     = p;
-    hitbox     = nullptr;
     scale      = 0.05f;
-    position.y = 0 - scale;
+    type       = EntityType::BOMB;
     model      = newModel;
+    position.y = 0 - scale;
 }
 
 void Bomb::display() noexcept

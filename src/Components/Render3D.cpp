@@ -8,10 +8,9 @@
 #include "Render3D.hpp"
 
 Render3D::Render3D(std::string path, std::string texturePath) noexcept
+    : model(LoadModel(path.c_str()))
+    , texture(LoadTexture(texturePath.c_str()))
 {
-    model   = LoadModel(path.c_str());
-    texture = LoadTexture(texturePath.c_str());
-
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
 }
 

@@ -16,18 +16,17 @@ Player::Player(int                              newId,
     Color                                       newColor,
     std::vector<std::unique_ptr<GameObject3D>>* bombsArray,
     std::unique_ptr<Render3D>*                  _bombModel) noexcept
+    : id(newId)
+    , speed(3.0f)
+    , bombs(bombsArray)
+    , bombModel(_bombModel)
+    , nbBomb(3)
 {
-    size      = { 0.5f, 0.5f, 0.5f };
-    position  = { 0.0f, 0.0f + (size.y / 2), 2.0f };
-    hitbox    = std::make_unique<BoxCollider>(position, size, true);
-    color     = newColor;
-    id        = newId;
-    speed     = 3.0f;
-    type      = EntityType::PLAYER;
-    nbBomb    = 2;
-    bombs     = bombsArray;
-    isEnable  = true;
-    bombModel = _bombModel;
+    size     = { 0.5f, 0.5f, 0.5f };
+    position = { 0.0f, 0.0f + (size.y / 2), 2.0f };
+    hitbox   = std::make_unique<BoxCollider>(position, size, true);
+    color    = newColor;
+    type     = EntityType::PLAYER;
     setKeyboard();
     setPosition();
 }

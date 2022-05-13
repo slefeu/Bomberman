@@ -25,13 +25,13 @@ class GameObject3D
     float   scale;
 
   public:
-    bool       isEnable;
+    bool       isEnable = true;
     EntityType type;
 
     // Components
   public:
-    std::unique_ptr<BoxCollider> hitbox;
-    std::unique_ptr<Render3D>*   model;
+    std::unique_ptr<BoxCollider> hitbox = nullptr;
+    std::unique_ptr<Render3D>*   model  = nullptr;
 
   public:
     GameObject3D() noexcept                                                                  = default;

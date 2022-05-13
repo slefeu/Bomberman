@@ -15,14 +15,13 @@
 #include "Wall.hpp"
 
 Game::Game() noexcept
+    : modelBomb(std::make_unique<Render3D>("Assets/Models/bomb.obj", "Assets/Textures/bomb.png"))
+    , modelWall(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/wall.png"))
+    , modelCrate(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/box.png"))
 {
     cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 1.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
-
-    modelBomb  = std::make_unique<Render3D>("Assets/Models/bomb.obj", "Assets/Textures/bomb.png");
-    modelWall  = std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/wall.png");
-    modelCrate = std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/box.png");
 
     _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs, &modelBomb));
     _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs, &modelBomb));

@@ -12,13 +12,13 @@
 #include "Collision.hpp"
 
 Explosion::Explosion(Vector3 posi, float newSize) noexcept
+    : lifeTime(1.0f)
+    , timer(std::make_unique<Timer>(lifeTime))
 {
     position  = posi;
     type      = EntityType::EXPLOSION;
     size      = { newSize, 0.2f, 0.2f };
     color     = RED;
-    lifeTime  = 1.0f;
-    timer     = std::make_unique<Timer>(lifeTime);
     pos[0]    = { position.x - size.x / 4, position.y, position.z };
     pos[1]    = { position.x + size.x / 4, position.y, position.z };
     pos[2]    = { position.x, position.y, position.z - size.x / 4 };

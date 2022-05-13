@@ -8,8 +8,8 @@
 #include "Timer.hpp"
 
 Timer::Timer(float newLifeTime) noexcept
+    : lifeTime(neewLifeTime)
 {
-    lifeTime = newLifeTime;
 }
 
 void Timer::updateTimer(void) noexcept

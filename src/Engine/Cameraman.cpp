@@ -14,11 +14,11 @@
 #include "Round.hpp"
 
 Cameraman::Cameraman() noexcept
+    : isMoving(false)
+    , speed(10.0f)
 {
     fovy       = 60.0f;
     projection = CAMERA_PERSPECTIVE;
-    isMoving   = false;
-    speed      = 10.0f;
 }
 
 void Cameraman::moveX(float x) noexcept

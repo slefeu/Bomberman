@@ -16,24 +16,22 @@
 class Player : public GameObject3D
 {
   private:
-    KeyboardKey                                 moveUp;
-    KeyboardKey                                 moveDown;
-    KeyboardKey                                 moveLeft;
-    KeyboardKey                                 moveRight;
-    KeyboardKey                                 dropBomb;
-    int                                         id;
-    float                                       speed;
+    KeyboardKey moveUp;
+    KeyboardKey moveDown;
+    KeyboardKey moveLeft;
+    KeyboardKey moveRight;
+    KeyboardKey dropBomb;
+    int         id;
+    float       speed;
+    Render3D*   bombModel;
+
+  public:
     std::vector<std::unique_ptr<GameObject3D>>* bombs;
-    std::unique_ptr<Render3D>*                  bombModel;
+    int                                         nbBomb;
 
   public:
-    int nbBomb;
-
-  public:
-    Player(int                                      newId,
-        Color                                       newColor,
-        std::vector<std::unique_ptr<GameObject3D>>* bombs,
-        std::unique_ptr<Render3D>*                  _bombModel) noexcept;
+    Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject3D>>* bombs, Render3D* _bombModel) noexcept;
+    // Player(int newId, Color newColor, Render3D* _bombModel) noexcept;
     ~Player() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;

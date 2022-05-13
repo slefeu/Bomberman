@@ -14,15 +14,25 @@
 
 #define SCENE scenes[currentScene]
 
-Core::Core(int height, int width, int fps) noexcept
+Core::Core(Settings* settings) noexcept
 {
     // Create Window
-    InitWindow(height, width, "indie Studio - Bomberman");
-    SetTargetFPS(fps);
+    InitWindow(settings->winWidth, settings->winHeight, "indie Studio - Bomberman");
+    SetTargetFPS(settings->fps);
+
+    // Chargement des models 3D
+    _models.emplace_back(std::make_unique<Render3D>("Assets/Models/bomb.obj", "Assets/Textures/bomb.png"));
+    _models.emplace_back(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/wall.png"));
+    _models.emplace_back(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/box.png"));
+
+    // Génération des joueurs
+    Color colors[4] = { PINK, BLUE, YELLOW, MAROON };
+    for (int i = 0; i != settings->nbPlayer; i++)
+        _players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, _models[0].get()));
 
     // Loading all scenes
-    scenes.emplace_back(std::make_unique<Home>());
-    scenes.emplace_back(std::make_unique<Game>());
+    scenes.emplace_back(std::make_unique<Home>(settings));
+    scenes.emplace_back(std::make_unique<Game>(&_players, &_models, settings));
     currentScene = 1;
 
     // Setting the first camera
@@ -63,8 +73,10 @@ void Core::run() noexcept
         EndDrawing();
     }
 
-    // Déchargement des scènes
+    // Déchargement des éléments (necessaire pour les modèles 3D)
     for (auto& scene : scenes) scene.reset();
+    for (auto& model : _models) model.reset();
+    for (auto& player : _players) player.reset();
 
     CloseWindow();
 }

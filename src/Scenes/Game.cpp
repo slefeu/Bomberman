@@ -14,47 +14,28 @@
 #include "Player.hpp"
 #include "Wall.hpp"
 
-Game::Game() noexcept
-    : modelBomb(std::make_unique<Render3D>("Assets/Models/bomb.obj", "Assets/Textures/bomb.png"))
-    , modelWall(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/wall.png"))
-    , modelCrate(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/box.png"))
+#define MODELS (*_models)
+#define PLAYERS (*_players)
+
+Game::Game(std::vector<std::unique_ptr<GameObject3D>>* players,
+    std::vector<std::unique_ptr<Render3D>>*            models,
+    Settings*                                          settings) noexcept
+    : Scene(settings)
+    , _players(players)
+    , _models(models)
 {
     cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 1.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
 
-    _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs, &modelBomb));
-    _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs, &modelBomb));
-    _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs, &modelBomb));
-    _players.emplace_back(std::make_unique<Player>(3, MAROON, &_bombs, &modelBomb));
-
-    // add 10 crates at random positions on the map
-    for (int i = 0; i < 50; i++) {
-        float tempX = (float)(rand() % 12) - 5.0f;
-        float tempZ = (float)(rand() % 12) - 5.0f;
-
-        if ((int)tempX % 2 != 0 && (int)tempZ % 2 != 0) continue;
-        if (tempX == _players[0]->getPosition().x && tempZ == _players[0]->getPosition().z) continue;
-        if (tempX == _players[1]->getPosition().x && tempZ == _players[1]->getPosition().z) continue;
-        if (tempX == _players[2]->getPosition().x && tempZ == _players[2]->getPosition().z) continue;
-        if (tempX == _players[3]->getPosition().x && tempZ == _players[3]->getPosition().z) continue;
-
-        _entities.emplace_back(std::make_unique<Crate>((Vector3){ tempX, 0.0f, tempZ }, &modelCrate));
+    // Assignation des bombes aux joueurs
+    for (auto& player : *_players) {
+        if (player->type != EntityType::PLAYER) continue;
+        std::unique_ptr<Player>& tempPlayer = (std::unique_ptr<Player>&)player;
+        if (tempPlayer->bombs == nullptr) tempPlayer->bombs = &_bombs;
     }
 
-    // Ajout des murs une case sur deux
-    for (int z = -4; z < 6; z++)
-        for (int x = -5; x < 6; x++) {
-            if (x % 2 != 0 && z % 2 != 0)
-                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, &modelWall));
-        }
-
-    // Ajout des murs autour de la carte
-    for (int z = -5; z < 8; z++)
-        for (int x = -7; x < 8; x++) {
-            if (x == -7 || x == 7 || z == -5 || z == 7)
-                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, &modelWall));
-        }
+    createMap();
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -65,9 +46,9 @@ void Game::resetCamera(Cameraman& camera) noexcept
 void Game::display3D() noexcept
 {
     DrawGrid(100, 1.0f);
-    // DrawPlane({ 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f }, DARKGREEN);
+    // DrawPlane({ 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f }, { 0, 0, 0, 255 });
 
-    for (auto& player : _players) player->display();
+    for (auto& player : PLAYERS) player->display();
     for (auto& entity : _entities) entity->display();
 
     size_t len = _bombs.size();
@@ -89,10 +70,53 @@ void Game::display2D() noexcept
 
 void Game::action(Cameraman& camera) noexcept
 {
-    for (auto& player : _players) player->action(_entities);
+    for (auto& player : PLAYERS) player->action(_entities);
     for (auto& bomb : _bombs) {
-        bomb->isColliding(_players);
+        bomb->isColliding(PLAYERS);
         bomb->isColliding(_entities);
     }
-    if (!camera.isMoving) camera.lookBetweenGameObject3D(_players);
+    if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);
+
+    if (IsKeyPressed(KEY_C) && settings->nbPlayer < 4) {
+        settings->nbPlayer++;
+        std::cout << settings->nbPlayer << std::endl;
+        _players->emplace_back(std::make_unique<Player>(settings->nbPlayer - 1, MAGENTA, &_bombs, MODELS[0].get()));
+    }
+    if (IsKeyPressed(KEY_V) && settings->nbPlayer > 1) {
+        settings->nbPlayer--;
+        std::cout << settings->nbPlayer << std::endl;
+        // PLAYERS[settings->nbPlayer].reset();
+        _players->erase(_players->begin() + settings->nbPlayer);
+    }
+}
+
+void Game::createMap(void) noexcept
+{
+    // // add 10 crates at random positions on the map
+    // for (int i = 0; i < 50; i++) {
+    //     float tempX = (float)(rand() % 12) - 5.0f;
+    //     float tempZ = (float)(rand() % 12) - 5.0f;
+
+    //     if ((int)tempX % 2 != 0 && (int)tempZ % 2 != 0) continue;
+    //     if (tempX == PLAYERS[0]->getPosition().x && tempZ == PLAYERS[0]->getPosition().z) continue;
+    //     if (tempX == PLAYERS[1]->getPosition().x && tempZ == PLAYERS[1]->getPosition().z) continue;
+    //     if (tempX == PLAYERS[2]->getPosition().x && tempZ == PLAYERS[2]->getPosition().z) continue;
+    //     if (tempX == PLAYERS[3]->getPosition().x && tempZ == PLAYERS[3]->getPosition().z) continue;
+
+    //     _entities.emplace_back(std::make_unique<Crate>((Vector3){ tempX, 0.0f, tempZ }, MODELS[ModelType::CRATE]));
+    // }
+
+    // // Ajout des murs une case sur deux
+    // for (int z = -4; z < 6; z++)
+    //     for (int x = -5; x < 6; x++) {
+    //         if (x % 2 != 0 && z % 2 != 0)
+    //             _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, MODELS[ModelType::WALL]));
+    //     }
+
+    // // Ajout des murs autour de la carte
+    // for (int z = -5; z < 8; z++)
+    //     for (int x = -7; x < 8; x++) {
+    //         if (x == -7 || x == 7 || z == -5 || z == 7)
+    //             _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, MODELS[ModelType::BOMB]));
+    //     }
 }

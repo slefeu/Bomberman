@@ -12,14 +12,11 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 
-Player::Player(int                              newId,
-    Color                                       newColor,
-    std::vector<std::unique_ptr<GameObject3D>>* bombsArray,
-    std::unique_ptr<Render3D>*                  _bombModel) noexcept
+Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, Render3D* _bombModel) noexcept
     : id(newId)
     , speed(3.0f)
-    , bombs(bombsArray)
     , bombModel(_bombModel)
+    , bombs(bombsArray)
     , nbBomb(3)
 {
     size     = { 0.5f, 0.5f, 0.5f };

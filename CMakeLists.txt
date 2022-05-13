@@ -24,6 +24,7 @@ set(INDIE_SRC
     src/Engine/Cameraman.cpp
     src/Engine/Core.cpp
     src/Engine/Collision.cpp
+    src/Engine/Settings.cpp
     
     src/Components/Render3D.cpp
     src/Components/BoxCollider.cpp

@@ -9,16 +9,19 @@
 #define SCENE_HPP_
 
 #include "Cameraman.hpp"
+#include "Settings.hpp"
 
 class Scene
 {
   public:
-    Vector3 cameraPosition;
-    Vector3 cameraTarget;
-    Vector3 cameraUp;
+    Vector3   cameraPosition;
+    Vector3   cameraTarget;
+    Vector3   cameraUp;
+    Settings* settings;
 
   public:
-    Scene() noexcept                                     = default;
+    Scene(Settings* settings) noexcept
+        : settings(settings){};
     virtual ~Scene() noexcept                            = default;
     virtual void resetCamera(Cameraman& camera) noexcept = 0;
     virtual void display3D(void) noexcept                = 0;

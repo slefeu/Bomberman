@@ -5,7 +5,9 @@
 int main(void)
 {
     srand(time(NULL));
-    Core core(1280, 720, 60);
+
+    Settings settings(60, 1280, 720, 1);
+    Core     core(&settings);
     core.run();
     return 0;
 }

@@ -9,7 +9,8 @@
 
 #include <iostream>
 
-Home::Home() noexcept
+Home::Home(Settings* settings) noexcept
+    : Scene(settings)
 {
     cameraPosition = { 20.0f, 50.0f, 20.0f };
     cameraTarget   = { 0.0f, 0.0f, 0.0f };

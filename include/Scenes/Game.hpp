@@ -18,22 +18,23 @@
 class Game : public Scene
 {
   private:
-    std::vector<std::unique_ptr<GameObject3D>> _entities;
-    std::vector<std::unique_ptr<GameObject3D>> _players;
-    std::vector<std::unique_ptr<GameObject3D>> _bombs;
-
-  private:
-    std::unique_ptr<Render3D> modelBomb;
-    std::unique_ptr<Render3D> modelWall;
-    std::unique_ptr<Render3D> modelCrate;
+    std::vector<std::unique_ptr<GameObject3D>>  _entities;
+    std::vector<std::unique_ptr<GameObject3D>>  _bombs;
+    std::vector<std::unique_ptr<GameObject3D>>* _players;
+    std::vector<std::unique_ptr<Render3D>>*     _models;
 
   public:
-    Game() noexcept;
+    Game(std::vector<std::unique_ptr<GameObject3D>>* players,
+        std::vector<std::unique_ptr<Render3D>>*      models,
+        Settings*                                    settings) noexcept;
     ~Game() noexcept = default;
     void resetCamera(Cameraman& camera) noexcept;
     void display3D(void) noexcept;
     void display2D(void) noexcept;
     void action(Cameraman& camera) noexcept;
+
+  private:
+    void createMap(void) noexcept;
 };
 
 #endif /* !GAME_HPP_ */

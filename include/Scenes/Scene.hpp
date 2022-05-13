@@ -9,7 +9,7 @@
 #define SCENE_HPP_
 
 #include "Cameraman.hpp"
-#include "Settings.hpp"
+#include "GameData.hpp"
 
 class Scene
 {
@@ -17,11 +17,11 @@ class Scene
     Vector3   cameraPosition;
     Vector3   cameraTarget;
     Vector3   cameraUp;
-    Settings* settings;
+    GameData* data;
 
   public:
-    Scene(Settings* settings) noexcept
-        : settings(settings){};
+    Scene(GameData* data) noexcept
+        : data(data){};
     virtual ~Scene() noexcept                            = default;
     virtual void resetCamera(Cameraman& camera) noexcept = 0;
     virtual void display3D(void) noexcept                = 0;

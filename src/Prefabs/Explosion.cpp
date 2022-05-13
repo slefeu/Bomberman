@@ -16,7 +16,7 @@ Explosion::Explosion(Vector3 posi, float newSize) noexcept
     , timer(std::make_unique<Timer>(lifeTime))
 {
     position  = posi;
-    type      = EntityType::EXPLOSION;
+    type      = EntityType::E_EXPLOSION;
     size      = { newSize, 0.2f, 0.2f };
     color     = RED;
     pos[0]    = { position.x - size.x / 4, position.y, position.z };
@@ -103,8 +103,8 @@ bool Explosion::update(void) noexcept
 
 void Explosion::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
 {
-    if (other->type == EntityType::PLAYER) other->isEnable = false;
-    if (other->type == EntityType::CRATE) {
+    if (other->type == EntityType::E_PLAYER) other->isEnable = false;
+    if (other->type == EntityType::E_CRATE) {
         other->isEnable = false;
         other->hitbox.reset();
         other->hitbox = nullptr;

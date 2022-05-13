@@ -14,7 +14,7 @@
 #include "BoxCollider.hpp"
 #include "Render3D.hpp"
 
-enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION, CRATE, WALL };
+enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_EXPLOSION, E_CRATE, E_WALL };
 
 class GameObject3D
 {

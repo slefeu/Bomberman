@@ -10,7 +10,7 @@
 Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
     position = pos;
-    type     = EntityType::BOX;
+    type     = EntityType::E_BOX;
     color    = ORANGE;
     size     = newSize;
     hitbox   = std::make_unique<BoxCollider>(position, size, true);

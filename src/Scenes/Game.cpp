@@ -14,26 +14,19 @@
 #include "Player.hpp"
 #include "Wall.hpp"
 
-#define MODELS (*_models)
-#define PLAYERS (*_players)
-#define WALL (int)ModelType::WALL
-#define BOMB (int)ModelType::BOMB
-#define CRATE (int)ModelType::CRATE
+#define MODELS data->models
+#define PLAYERS data->players
 
-Game::Game(std::vector<std::unique_ptr<GameObject3D>>* players,
-    std::vector<std::unique_ptr<Render3D>>*            models,
-    Settings*                                          settings) noexcept
-    : Scene(settings)
-    , _players(players)
-    , _models(models)
+Game::Game(GameData* data) noexcept
+    : Scene(data)
 {
     cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 1.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
 
     // Assignation des bombes aux joueurs
-    for (auto& player : *_players) {
-        if (player->type != EntityType::PLAYER) continue;
+    for (auto& player : data->players) {
+        if (player->type != EntityType::E_PLAYER) continue;
         std::unique_ptr<Player>& tempPlayer = (std::unique_ptr<Player>&)player;
         if (tempPlayer->bombs == nullptr) tempPlayer->bombs = &_bombs;
     }
@@ -80,13 +73,13 @@ void Game::action(Cameraman& camera) noexcept
     if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);
 
     // Modificatoin de nombre de joueur à l'écran
-    if (IsKeyPressed(KEY_C) && settings->nbPlayer < 4) {
-        settings->nbPlayer++;
-        _players->emplace_back(std::make_unique<Player>(settings->nbPlayer - 1, MAGENTA, &_bombs, &MODELS[BOMB]));
+    if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
+        data->nbPlayer++;
+        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, MAGENTA, &_bombs, &MODELS[BOMB]));
     }
-    if (IsKeyPressed(KEY_V) && settings->nbPlayer > 1) {
-        settings->nbPlayer--;
-        _players->erase(_players->begin() + settings->nbPlayer);
+    if (IsKeyPressed(KEY_V) && data->nbPlayer > 1) {
+        data->nbPlayer--;
+        PLAYERS.erase(PLAYERS.begin() + data->nbPlayer);
     }
 }
 

@@ -10,5 +10,5 @@
 Wall::Wall(Vector3 pos, std::unique_ptr<Render3D>* model) noexcept
     : Crate(pos, model)
 {
-    type = EntityType::WALL;
+    type = EntityType::E_WALL;
 }

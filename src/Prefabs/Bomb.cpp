@@ -17,7 +17,7 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
 {
     position   = pos;
     scale      = 0.05f;
-    type       = EntityType::BOMB;
+    type       = EntityType::E_BOMB;
     model      = newModel;
     position.y = 0 - scale;
 }

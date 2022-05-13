@@ -26,7 +26,7 @@ Player::Player(int                              newId,
     position = { 0.0f, 0.0f + (size.y / 2), 2.0f };
     hitbox   = std::make_unique<BoxCollider>(position, size, true);
     color    = newColor;
-    type     = EntityType::PLAYER;
+    type     = EntityType::E_PLAYER;
     setKeyboard();
     setPosition();
 }

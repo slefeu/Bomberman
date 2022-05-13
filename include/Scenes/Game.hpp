@@ -24,9 +24,7 @@ class Game : public Scene
     std::vector<std::unique_ptr<Render3D>>*     _models;
 
   public:
-    Game(std::vector<std::unique_ptr<GameObject3D>>* players,
-        std::vector<std::unique_ptr<Render3D>>*      models,
-        Settings*                                    settings) noexcept;
+    Game(GameData* data) noexcept;
     ~Game() noexcept = default;
     void resetCamera(Cameraman& camera) noexcept;
     void display3D(void) noexcept;

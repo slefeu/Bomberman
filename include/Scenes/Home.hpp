@@ -13,7 +13,7 @@
 class Home : public Scene
 {
   public:
-    Home(Settings* settings) noexcept;
+    Home(GameData* data) noexcept;
     ~Home() noexcept = default;
     void resetCamera(Cameraman& camera) noexcept;
     void display3D(void) noexcept;

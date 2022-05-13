@@ -10,7 +10,7 @@
 Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel) noexcept
     : Box(pos, { 1.0f, 1.0f, 1.0f })
 {
-    type             = EntityType::CRATE;
+    type             = EntityType::E_CRATE;
     hitbox->position = { position.x, 0.35f, position.z };
     hitbox->size     = { 1.0f, 1.0f, 1.0f };
     scale            = 0.017f;

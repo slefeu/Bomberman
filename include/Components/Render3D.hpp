@@ -13,9 +13,7 @@
 #include "raylib.h"
 
 #define MODEL model->get()
-#define WALL (int)ModelType::M_WALL
-#define BOMB (int)ModelType::M_BOMB
-#define CRATE (int)ModelType::M_CRATE
+#define MODELS(type) &data->models[(int)ModelType::type]
 
 enum class ModelType { M_BOMB, M_WALL, M_CRATE };
 

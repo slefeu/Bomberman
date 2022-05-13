@@ -29,7 +29,7 @@ Core::Core(GameData* newData) noexcept
     // Génération des joueurs
     Color colors[4] = { PINK, BLUE, YELLOW, MAROON };
     for (int i = 0; i != data->nbPlayer; i++)
-        data->players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, &data->models[BOMB]));
+        data->players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, MODELS(M_BOMB)));
 
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data));

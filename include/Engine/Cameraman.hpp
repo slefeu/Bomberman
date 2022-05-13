@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-#include "Entities.hpp"
+#include "GameObject3D.hpp"
 #include "raylib.h"
 
 class Cameraman : public Camera3D
@@ -25,7 +25,7 @@ class Cameraman : public Camera3D
     void moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
     void tpTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
     bool smoothMove(void) noexcept;
-    void lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities) noexcept;
+    void lookBetweenGameObject3D(std::vector<std::unique_ptr<GameObject3D>>& entities) noexcept;
 
   public:
     bool    isMoving;

@@ -55,7 +55,7 @@ void Explosion::moveZ(float z) noexcept
     (void)z;
 }
 
-void Explosion::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
+void Explosion::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
@@ -71,7 +71,7 @@ Vector3 Explosion::getSize() noexcept
     return size;
 }
 
-bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
+bool Explosion::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     bool isColliding = false;
 
@@ -86,7 +86,7 @@ bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others) noex
     return isColliding;
 }
 
-bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     (void)others;
     (void)xdir;
@@ -101,7 +101,7 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
-void Explosion::CollideAction(std::unique_ptr<Entities>& other) noexcept
+void Explosion::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
 {
     if (other->type == EntityType::PLAYER) other->isEnable = false;
     if (other->type == EntityType::CRATE) {

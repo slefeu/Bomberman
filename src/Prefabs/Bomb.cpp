@@ -43,7 +43,7 @@ void Bomb::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
-void Bomb::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
+void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
@@ -59,13 +59,13 @@ Vector3 Bomb::getSize() noexcept
     return size;
 }
 
-bool Bomb::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
+bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (explosion == nullptr) return false;
     return explosion->isColliding(others);
 }
 
-bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     (void)others;
     (void)xdir;

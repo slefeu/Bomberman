@@ -12,17 +12,17 @@
 #include "Player.hpp"
 #include "Timer.hpp"
 
-class Bomb : public Entities
+class Bomb : public GameObject3D
 {
   public:
     Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* model) noexcept;
     ~Bomb() noexcept = default;
     void    display() noexcept;
-    void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
+    void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     Vector3 getPosition() noexcept;
     Vector3 getSize() noexcept;
-    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept;
-    bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
+    bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update(void) noexcept;
 
   private:

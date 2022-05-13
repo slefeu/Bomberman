@@ -11,16 +11,16 @@
 #include <memory>
 #include <vector>
 
-#include "Entities.hpp"
+#include "GameObject3D.hpp"
 #include "Render3D.hpp"
 #include "Scene.hpp"
 
 class Game : public Scene
 {
   private:
-    std::vector<std::unique_ptr<Entities>> _entities;
-    std::vector<std::unique_ptr<Entities>> _players;
-    std::vector<std::unique_ptr<Entities>> _bombs;
+    std::vector<std::unique_ptr<GameObject3D>> _entities;
+    std::vector<std::unique_ptr<GameObject3D>> _players;
+    std::vector<std::unique_ptr<GameObject3D>> _bombs;
 
   private:
     std::unique_ptr<Render3D> modelBomb;

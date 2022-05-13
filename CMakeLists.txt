@@ -28,12 +28,12 @@ set(INDIE_SRC
     src/Components/Render3D.cpp
     src/Components/BoxCollider.cpp
     
-    src/Entities/Player.cpp
-    src/Entities/Box.cpp
-    src/Entities/Bomb.cpp
-    src/Entities/Crate.cpp
-    src/Entities/Explosion.cpp
-    src/Entities/Wall.cpp
+    src/Prefabs/Player.cpp
+    src/Prefabs/Box.cpp
+    src/Prefabs/Bomb.cpp
+    src/Prefabs/Crate.cpp
+    src/Prefabs/Explosion.cpp
+    src/Prefabs/Wall.cpp
     
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
@@ -45,8 +45,8 @@ endif ()
 target_link_libraries(${PROJECT_NAME} raylib)
     
 # Ajouter ici les dossiers contenants les .hpp
-target_include_directories(${PROJECT_NAME} PRIVATE include/Tools)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Engine)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Entities)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Components)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Prefabs)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Tools)

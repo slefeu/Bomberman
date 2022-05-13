@@ -95,5 +95,5 @@ void Game::action(Cameraman& camera) noexcept
         bomb->isColliding(_players);
         bomb->isColliding(_entities);
     }
-    if (!camera.isMoving) camera.lookBetweenEntities(_players);
+    if (!camera.isMoving) camera.lookBetweenGameObject3D(_players);
 }

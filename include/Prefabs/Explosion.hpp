@@ -8,27 +8,27 @@
 #ifndef EXPLOSION_HPP_
 #define EXPLOSION_HPP_
 
-#include "Entities.hpp"
+#include "GameObject3D.hpp"
 #include "Timer.hpp"
 
-class Explosion : public Entities
+class Explosion : public GameObject3D
 {
   public:
     Explosion(Vector3 pos, float size) noexcept;
     ~Explosion() noexcept = default;
     void    display() noexcept;
-    void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
+    void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     Vector3 getPosition() noexcept;
     Vector3 getSize() noexcept;
-    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept;
-    bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
+    bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update(void) noexcept;
 
   private:
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
-    void CollideAction(std::unique_ptr<Entities>& other) noexcept;
+    void CollideAction(std::unique_ptr<GameObject3D>& other) noexcept;
 
   private:
     float                        lifeTime;

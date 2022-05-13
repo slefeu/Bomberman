@@ -20,7 +20,7 @@ class Explosion : public Entities
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     Vector3 getPosition() noexcept;
     Vector3 getSize() noexcept;
-    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept;
+    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
     bool    update(void) noexcept;
 
@@ -28,12 +28,15 @@ class Explosion : public Entities
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
+    void CollideAction(std::unique_ptr<Entities>& other) noexcept;
 
   private:
-    float                  lifeTime;
-    std::unique_ptr<Timer> timer;
-    Vector3                pos[4];
-    Vector3                siz[4];
+    float                   lifeTime;
+    std::unique_ptr<Timer>  timer;
+    Vector3                 pos[4];
+    Vector3                 siz[4];
+    std::unique_ptr<HitBox> hitBoxHor;
+    std::unique_ptr<HitBox> hitBoxVer;
 };
 
 #endif /* !EXPLOSION_HPP_ */

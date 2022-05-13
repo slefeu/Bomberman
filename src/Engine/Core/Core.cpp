@@ -62,5 +62,9 @@ void Core::run() noexcept
         SCENE->display2D();
         EndDrawing();
     }
+
+    // Déchargement des scènes
+    for (auto& scene : scenes) scene.reset();
+
     CloseWindow();
 }

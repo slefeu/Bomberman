@@ -20,12 +20,16 @@ set(INDIE_SRC
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Tools/Timer.cpp
     src/Engine/Tools/Round.cpp
+    src/Engine/Tools/Models.cpp
     src/Engine/Core/Core.cpp
     src/Engine/Core/Collision.cpp
+    src/Engine/Core/HitBox.cpp
     src/Entities/Player.cpp
     src/Entities/Box.cpp
     src/Entities/Bomb.cpp
+    src/Entities/Crate.cpp
     src/Entities/Explosion.cpp
+    src/Entities/Wall.cpp
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     

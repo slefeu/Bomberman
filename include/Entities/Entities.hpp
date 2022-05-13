@@ -11,9 +11,10 @@
 #include <memory>
 #include <vector>
 
-#include "raylib.h"
+#include "HitBox.hpp"
+#include "Models.hpp"
 
-enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION };
+enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION, CRATE, WALL };
 
 class Entities
 {
@@ -21,13 +22,13 @@ class Entities
     Vector3 position;
     Vector3 size;
     Color   color;
+    float   scale;
 
   public:
-    EntityType type;
-    bool       isSolid;
-    bool       isTrigger;
-    bool       isEnable;
-    // float      scale;
+    EntityType               type;
+    bool                     isEnable;
+    std::unique_ptr<HitBox>  hitbox;
+    std::unique_ptr<Models>* model;
 
   public:
     Entities() noexcept                                                                                              = default;
@@ -36,7 +37,7 @@ class Entities
     virtual void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept                                  = 0;
     virtual Vector3 getPosition() noexcept                                                                           = 0;
     virtual Vector3 getSize() noexcept                                                                               = 0;
-    virtual bool    isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept               = 0;
+    virtual bool    isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept                             = 0;
     virtual bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept = 0;
     virtual bool    update() noexcept                                                                                = 0;
 

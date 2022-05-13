@@ -12,19 +12,20 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 
-Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept
+Player::Player(
+    int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray, std::unique_ptr<Models>* _bombModel) noexcept
 {
     size      = { 0.5f, 0.5f, 0.5f };
     position  = { 0.0f, 0.0f + (size.y / 2), 2.0f };
+    hitbox    = std::make_unique<HitBox>(position, size, true);
     color     = newColor;
     id        = newId;
-    isSolid   = true;
-    isTrigger = false;
     speed     = 3.0f;
     type      = EntityType::PLAYER;
     nbBomb    = 2;
     bombs     = bombsArray;
     isEnable  = true;
+    bombModel = _bombModel;
     setKeyboard();
     setPosition();
 }
@@ -33,20 +34,20 @@ void Player::setPosition(void) noexcept
 {
     switch (id) {
         case 0:
-            position.x = -2.0f;
-            position.z = -2.0f;
+            position.x = -6.0f;
+            position.z = -4.0f;
             break;
         case 1:
-            position.x = 2.0f;
-            position.z = -2.0f;
+            position.x = 6.0f;
+            position.z = -4.0f;
             break;
         case 2:
-            position.x = -2.0f;
-            position.z = 2.0f;
+            position.x = -6.0f;
+            position.z = 6.0f;
             break;
         case 3:
-            position.x = 2.0f;
-            position.z = 2.0f;
+            position.x = 6.0f;
+            position.z = 6.0f;
             break;
         default: break;
     }
@@ -92,6 +93,8 @@ void Player::display() noexcept
     if (!isEnable) return;
     DrawCubeV(position, size, color);
     DrawCubeWiresV(position, size, BLACK);
+    hitbox->update(position);
+    hitbox->display();
 }
 
 void Player::moveX(float x) noexcept
@@ -143,16 +146,13 @@ Vector3 Player::getSize() noexcept
     return size;
 }
 
-bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3& pos) noexcept
+bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
 {
     if (!isEnable) return false;
     for (auto& other : others) {
-        if (other->isSolid) {
-            Vector3 otherPos  = other->getPosition();
-            Vector3 otherSize = other->getSize();
-
-            if (Collision().isColliding(pos, size, otherPos, otherSize)) return true;
-        }
+        if (hitbox == nullptr || other->hitbox == nullptr) continue;
+        if (!hitbox->isSolid || !other->hitbox->isSolid) continue;
+        if (hitbox->isColliding(other->hitbox)) return true;
     }
     return false;
 }
@@ -160,14 +160,21 @@ bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others, Vector3
 bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
 {
     Vector3 nextTurn = { position.x + (speed * xdir * GetFrameTime()), position.y, position.z + (speed * zdir * GetFrameTime()) };
-    return isColliding(others, nextTurn);
+
+    if (!isEnable) return false;
+    for (auto& other : others) {
+        if (hitbox == nullptr || other->hitbox == nullptr) continue;
+        if (!hitbox->isSolid || !other->hitbox->isSolid) continue;
+        if (other->hitbox->isColliding(hitbox, nextTurn)) return true;
+    }
+    return false;
 }
 
 void Player::placeBomb(void) noexcept
 {
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(position, this));
+    bombs->emplace_back(std::make_unique<Bomb>(position, this, bombModel));
 }
 
 bool Player::update(void) noexcept

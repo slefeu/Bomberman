@@ -14,8 +14,6 @@
 #include "Player.hpp"
 #include "Wall.hpp"
 
-#define PLAYERS data->players
-
 Game::Game(GameData* data) noexcept
     : Scene(data)
 {

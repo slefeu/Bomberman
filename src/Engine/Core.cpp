@@ -12,8 +12,6 @@
 #include "Game.hpp"
 #include "Home.hpp"
 
-#define SCENE scenes[data->currentScene]
-
 Core::Core(GameData* newData) noexcept
     : data(newData)
 {

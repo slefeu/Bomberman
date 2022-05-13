@@ -15,8 +15,8 @@
 class Bomb : public Entities
 {
   public:
-    Bomb(Vector3 pos, Player* p) noexcept;
-    ~Bomb() noexcept;
+    Bomb(Vector3 pos, Player* p, std::unique_ptr<Models>* model) noexcept;
+    ~Bomb() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
     Vector3 getPosition() noexcept;

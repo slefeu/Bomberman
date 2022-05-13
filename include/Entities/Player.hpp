@@ -24,12 +24,14 @@ class Player : public Entities
     int                                     id;
     float                                   speed;
     std::vector<std::unique_ptr<Entities>>* bombs;
+    std::unique_ptr<Models>*                bombModel;
 
   public:
     int nbBomb;
 
   public:
-    Player(int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombs) noexcept;
+    Player(
+        int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombs, std::unique_ptr<Models>* _bombModel) noexcept;
     ~Player() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;

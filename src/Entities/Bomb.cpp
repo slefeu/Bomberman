@@ -9,33 +9,23 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Models>* newModel) noexcept
 {
-    position  = pos;
-    type      = EntityType::BOMB;
-    lifeTime  = 2.0f;
-    lifeTimer = std::make_unique<Timer>(lifeTime);
-    explosion = nullptr;
-    player    = p;
-    hitbox    = nullptr;
-
-    model      = LoadModel("Assets/Models/bomb.obj");
-    texture    = LoadTexture("Assets/Textures/bomb.png");
+    position   = pos;
+    type       = EntityType::BOMB;
+    lifeTime   = 2.0f;
+    lifeTimer  = std::make_unique<Timer>(lifeTime);
+    explosion  = nullptr;
+    player     = p;
+    hitbox     = nullptr;
     scale      = 0.05f;
     position.y = 0 - scale;
-
-    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-}
-
-Bomb::~Bomb() noexcept
-{
-    UnloadTexture(texture);
-    UnloadModel(model);
+    model      = newModel;
 }
 
 void Bomb::display() noexcept
 {
-    DrawModel(model, position, scale, WHITE);
+    DrawModel(model->get()->model, position, scale, WHITE);
 }
 
 void Bomb::moveX(float x) noexcept

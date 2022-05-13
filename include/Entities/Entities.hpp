@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "HitBox.hpp"
+#include "Models.hpp"
 
 enum class EntityType { PLAYER, BOX, BOMB, EXPLOSION, CRATE, WALL };
 
@@ -21,16 +22,13 @@ class Entities
     Vector3 position;
     Vector3 size;
     Color   color;
-
-  protected:
-    Model     model;
-    Texture2D texture;
-    float     scale;
+    float   scale;
 
   public:
-    EntityType              type;
-    bool                    isEnable;
-    std::unique_ptr<HitBox> hitbox;
+    EntityType               type;
+    bool                     isEnable;
+    std::unique_ptr<HitBox>  hitbox;
+    std::unique_ptr<Models>* model;
 
   public:
     Entities() noexcept                                                                                              = default;

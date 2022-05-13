@@ -6,13 +6,13 @@
 */
 
 #include "Game.hpp"
-#include "Wall.hpp"
 
 #include <iostream>
 
 #include "Box.hpp"
 #include "Crate.hpp"
 #include "Player.hpp"
+#include "Wall.hpp"
 
 Game::Game() noexcept
 {
@@ -20,27 +20,37 @@ Game::Game() noexcept
     cameraTarget   = { 0.0f, 0.0f, 0.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
 
-    _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs));
-    _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs));
-    _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs));
-    _players.emplace_back(std::make_unique<Player>(3, MAROON, &_bombs));
+    modelBomb  = std::make_unique<Models>("Assets/Models/bomb.obj", "Assets/Textures/bomb.png");
+    modelWall  = std::make_unique<Models>("Assets/Models/box.obj", "Assets/Textures/wall.png");
+    modelCrate = std::make_unique<Models>("Assets/Models/box.obj", "Assets/Textures/box.png");
 
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, -5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
-    _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
+    _players.emplace_back(std::make_unique<Player>(0, PINK, &_bombs, &modelBomb));
+    _players.emplace_back(std::make_unique<Player>(1, BLUE, &_bombs, &modelBomb));
+    _players.emplace_back(std::make_unique<Player>(2, YELLOW, &_bombs, &modelBomb));
+    _players.emplace_back(std::make_unique<Player>(3, MAROON, &_bombs, &modelBomb));
 
-    _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, -3.5f }));
-    _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, -3.5f }));
-    _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, 3.5f }));
-    _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, 3.5f }));
-    _entities.emplace_back(std::make_unique<Crate>((Vector3){ 1.5f, 0.0f, 3.5f }));
+    // _entities.emplace_back(std::make_unique<Box>((Vector3){ -5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
+    // _entities.emplace_back(std::make_unique<Box>((Vector3){ 5.0f, 0.0f, 0.0f }, Vector3{ 0.5f, 0.5f, 10.5f }));
+    // _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, -5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
+    // _entities.emplace_back(std::make_unique<Box>((Vector3){ 0.0f, 0.0f, 5.0f }, Vector3{ 10.5f, 0.5f, 0.5f }));
 
-    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 3.5f, 1.0f, 2.5f }));
-    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 1.0f, 0.0f, 1.5f }));
-    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 2.5f, 3.0f, 3.5f }));
-    _entities.emplace_back(std::make_unique<Wall>((Vector3){ 0.5f, 2.0f, 2.5f }));
+    // _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, -3.5f }, &modelCrate));
+    // _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, -3.5f }, &modelCrate));
+    // _entities.emplace_back(std::make_unique<Crate>((Vector3){ -3.5f, 0.0f, 3.5f }, &modelCrate));
+    // _entities.emplace_back(std::make_unique<Crate>((Vector3){ 3.5f, 0.0f, 3.5f }, &modelCrate));
+    // _entities.emplace_back(std::make_unique<Crate>((Vector3){ 1.5f, 0.0f, 3.5f }, &modelCrate));
 
+    // create walls every 2 units on a map of size 13 by 11
+    for (int y = -4; y < 6; y++)
+        for (int x = -5; x < 6; x++) {
+            if (x % 2 != 0 && y % 2 != 0)
+                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, y * 1.0f }, &modelWall));
+        }
+
+    // _entities.emplace_back(std::make_unique<Wall>((Vector3){ 3.5f, 0.0f, 2.5f }));
+    // _entities.emplace_back(std::make_unique<Wall>((Vector3){ 1.5f, 0.0f, 1.5f }));
+    // _entities.emplace_back(std::make_unique<Wall>((Vector3){ 2.5f, 0.0f, 3.5f }));
+    // _entities.emplace_back(std::make_unique<Wall>((Vector3){ 0.5f, 0.0f, 2.5f }));
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept

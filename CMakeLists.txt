@@ -20,6 +20,7 @@ set(INDIE_SRC
     src/Engine/Tools/Cameraman.cpp
     src/Engine/Tools/Timer.cpp
     src/Engine/Tools/Round.cpp
+    src/Engine/Tools/Models.cpp
     src/Engine/Core/Core.cpp
     src/Engine/Core/Collision.cpp
     src/Engine/Core/HitBox.cpp

@@ -8,19 +8,19 @@
 #ifndef BOX_HPP_
 #define BOX_HPP_
 
-#include "Entities.hpp"
+#include "GameObject3D.hpp"
 
-class Box : public Entities
+class Box : public GameObject3D
 {
   public:
     Box(Vector3 pos, Vector3 size) noexcept;
     ~Box() noexcept = default;
     void    display() noexcept;
-    void    action(std::vector<std::unique_ptr<Entities>>& others) noexcept;
+    void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     Vector3 getPosition() noexcept;
     Vector3 getSize() noexcept;
-    bool    isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept;
-    bool    isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept;
+    bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update() noexcept;
 
   private:

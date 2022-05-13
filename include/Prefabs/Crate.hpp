@@ -13,7 +13,7 @@
 class Crate : public Box
 {
   public:
-    Crate(Vector3 pos, std::unique_ptr<Models>* model) noexcept;
+    Crate(Vector3 pos, std::unique_ptr<Render3D>* model) noexcept;
     ~Crate() noexcept = default;
     void display() noexcept;
 };

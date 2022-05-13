@@ -9,23 +9,22 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Models>* newModel) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
+    : lifeTime(2.0f)
+    , lifeTimer(std::make_unique<Timer>(lifeTime))
+    , explosion(nullptr)
+    , player(p)
 {
     position   = pos;
-    type       = EntityType::BOMB;
-    lifeTime   = 2.0f;
-    lifeTimer  = std::make_unique<Timer>(lifeTime);
-    explosion  = nullptr;
-    player     = p;
-    hitbox     = nullptr;
     scale      = 0.05f;
-    position.y = 0 - scale;
+    type       = EntityType::E_BOMB;
     model      = newModel;
+    position.y = 0 - scale;
 }
 
 void Bomb::display() noexcept
 {
-    DrawModel(model->get()->model, position, scale, WHITE);
+    DrawModel(MODEL->model, position, scale, WHITE);
 }
 
 void Bomb::moveX(float x) noexcept
@@ -43,7 +42,7 @@ void Bomb::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
-void Bomb::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
+void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
@@ -59,13 +58,13 @@ Vector3 Bomb::getSize() noexcept
     return size;
 }
 
-bool Bomb::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
+bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (explosion == nullptr) return false;
     return explosion->isColliding(others);
 }
 
-bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     (void)others;
     (void)xdir;

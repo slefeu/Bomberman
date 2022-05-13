@@ -12,13 +12,13 @@
 #include "Collision.hpp"
 
 Explosion::Explosion(Vector3 posi, float newSize) noexcept
+    : lifeTime(1.0f)
+    , timer(std::make_unique<Timer>(lifeTime))
 {
     position  = posi;
-    type      = EntityType::EXPLOSION;
+    type      = EntityType::E_EXPLOSION;
     size      = { newSize, 0.2f, 0.2f };
     color     = RED;
-    lifeTime  = 1.0f;
-    timer     = std::make_unique<Timer>(lifeTime);
     pos[0]    = { position.x - size.x / 4, position.y, position.z };
     pos[1]    = { position.x + size.x / 4, position.y, position.z };
     pos[2]    = { position.x, position.y, position.z - size.x / 4 };
@@ -27,8 +27,8 @@ Explosion::Explosion(Vector3 posi, float newSize) noexcept
     siz[1]    = { size.x / 2, size.y, size.z };
     siz[2]    = { size.z, size.y, size.x / 2 };
     siz[3]    = { size.z, size.y, size.x / 2 };
-    hitBoxHor = std::make_unique<HitBox>(position, size, true);
-    hitBoxVer = std::make_unique<HitBox>(position, (Vector3){ size.z, size.y, size.x }, true);
+    hitBoxHor = std::make_unique<BoxCollider>(position, size, true);
+    hitBoxVer = std::make_unique<BoxCollider>(position, (Vector3){ size.z, size.y, size.x }, true);
 }
 
 void Explosion::display() noexcept
@@ -55,7 +55,7 @@ void Explosion::moveZ(float z) noexcept
     (void)z;
 }
 
-void Explosion::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
+void Explosion::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
@@ -71,7 +71,7 @@ Vector3 Explosion::getSize() noexcept
     return size;
 }
 
-bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
+bool Explosion::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     bool isColliding = false;
 
@@ -86,7 +86,7 @@ bool Explosion::isColliding(std::vector<std::unique_ptr<Entities>>& others) noex
     return isColliding;
 }
 
-bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     (void)others;
     (void)xdir;
@@ -101,10 +101,10 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
-void Explosion::CollideAction(std::unique_ptr<Entities>& other) noexcept
+void Explosion::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
 {
-    if (other->type == EntityType::PLAYER) other->isEnable = false;
-    if (other->type == EntityType::CRATE) {
+    if (other->type == EntityType::E_PLAYER) other->isEnable = false;
+    if (other->type == EntityType::E_CRATE) {
         other->isEnable = false;
         other->hitbox.reset();
         other->hitbox = nullptr;

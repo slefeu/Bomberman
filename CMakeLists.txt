@@ -17,19 +17,25 @@ endif ()
 # Ajouter ici les .cpp
 set(INDIE_SRC
     src/main.cpp
-    src/Engine/Tools/Cameraman.cpp
-    src/Engine/Tools/Timer.cpp
-    src/Engine/Tools/Round.cpp
-    src/Engine/Tools/Models.cpp
-    src/Engine/Core/Core.cpp
-    src/Engine/Core/Collision.cpp
-    src/Engine/Core/HitBox.cpp
-    src/Entities/Player.cpp
-    src/Entities/Box.cpp
-    src/Entities/Bomb.cpp
-    src/Entities/Crate.cpp
-    src/Entities/Explosion.cpp
-    src/Entities/Wall.cpp
+
+    src/Tools/Timer.cpp
+    src/Tools/Round.cpp
+    
+    src/Engine/Cameraman.cpp
+    src/Engine/Core.cpp
+    src/Engine/Collision.cpp
+    src/Engine/GameData.cpp
+    
+    src/Components/Render3D.cpp
+    src/Components/BoxCollider.cpp
+    
+    src/Prefabs/Player.cpp
+    src/Prefabs/Box.cpp
+    src/Prefabs/Bomb.cpp
+    src/Prefabs/Crate.cpp
+    src/Prefabs/Explosion.cpp
+    src/Prefabs/Wall.cpp
+    
     src/Scenes/Game.cpp
     src/Scenes/Home.cpp)
     
@@ -40,7 +46,8 @@ endif ()
 target_link_libraries(${PROJECT_NAME} raylib)
     
 # Ajouter ici les dossiers contenants les .hpp
-target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Components)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Prefabs)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Entities)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Tools)

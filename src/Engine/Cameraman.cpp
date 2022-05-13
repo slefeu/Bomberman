@@ -14,11 +14,11 @@
 #include "Round.hpp"
 
 Cameraman::Cameraman() noexcept
+    : isMoving(false)
+    , speed(10.0f)
 {
     fovy       = 60.0f;
     projection = CAMERA_PERSPECTIVE;
-    isMoving   = false;
-    speed      = 10.0f;
 }
 
 void Cameraman::moveX(float x) noexcept
@@ -80,7 +80,7 @@ bool Cameraman::smoothMove(void) noexcept
     return thereIsMovement;
 }
 
-void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities) noexcept
+void Cameraman::lookBetweenGameObject3D(std::vector<std::unique_ptr<GameObject3D>>& entities) noexcept
 {
     float minX = 1 / 0.f;
     float minZ = 1 / 0.f;

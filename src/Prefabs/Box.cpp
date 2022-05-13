@@ -10,10 +10,10 @@
 Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
     position = pos;
-    type     = EntityType::BOX;
+    type     = EntityType::E_BOX;
     color    = ORANGE;
     size     = newSize;
-    hitbox   = std::make_unique<HitBox>(position, size, true);
+    hitbox   = std::make_unique<BoxCollider>(position, size, true);
 }
 
 void Box::display() noexcept
@@ -38,7 +38,7 @@ void Box::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
-void Box::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
+void Box::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
@@ -54,13 +54,13 @@ Vector3 Box::getSize() noexcept
     return size;
 }
 
-bool Box::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
+bool Box::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return false;
 }
 
-bool Box::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+bool Box::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     (void)others;
     (void)xdir;

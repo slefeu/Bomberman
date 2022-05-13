@@ -12,17 +12,18 @@
 #include <vector>
 
 #include "Cameraman.hpp"
+#include "GameData.hpp"
+#include "Player.hpp"
 #include "Scene.hpp"
-
 class Core
 {
   private:
     Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes;
-    int                                 currentScene;
+    GameData*                           data;
 
   public:
-    Core(int height, int width, int fps) noexcept;
+    Core(GameData* data) noexcept;
     ~Core() noexcept = default;
     void run() noexcept;
 

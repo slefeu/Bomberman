@@ -12,20 +12,21 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 
-Player::Player(
-    int newId, Color newColor, std::vector<std::unique_ptr<Entities>>* bombsArray, std::unique_ptr<Models>* _bombModel) noexcept
+Player::Player(int                              newId,
+    Color                                       newColor,
+    std::vector<std::unique_ptr<GameObject3D>>* bombsArray,
+    std::unique_ptr<Render3D>*                  _bombModel) noexcept
+    : id(newId)
+    , speed(3.0f)
+    , bombModel(_bombModel)
+    , bombs(bombsArray)
+    , nbBomb(3)
 {
-    size      = { 0.5f, 0.5f, 0.5f };
-    position  = { 0.0f, 0.0f + (size.y / 2), 2.0f };
-    hitbox    = std::make_unique<HitBox>(position, size, true);
-    color     = newColor;
-    id        = newId;
-    speed     = 3.0f;
-    type      = EntityType::PLAYER;
-    nbBomb    = 2;
-    bombs     = bombsArray;
-    isEnable  = true;
-    bombModel = _bombModel;
+    size     = { 0.5f, 0.5f, 0.5f };
+    position = { 0.0f, 0.0f + (size.y / 2), 2.0f };
+    hitbox   = std::make_unique<BoxCollider>(position, size, true);
+    color    = newColor;
+    type     = EntityType::E_PLAYER;
     setKeyboard();
     setPosition();
 }
@@ -112,7 +113,7 @@ void Player::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
-void Player::action(std::vector<std::unique_ptr<Entities>>& others) noexcept
+void Player::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (!isEnable) return;
     if (IsGamepadAvailable(id)) {
@@ -146,7 +147,7 @@ Vector3 Player::getSize() noexcept
     return size;
 }
 
-bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcept
+bool Player::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (!isEnable) return false;
     for (auto& other : others) {
@@ -157,7 +158,7 @@ bool Player::isColliding(std::vector<std::unique_ptr<Entities>>& others) noexcep
     return false;
 }
 
-bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir) noexcept
+bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     Vector3 nextTurn = { position.x + (speed * xdir * GetFrameTime()), position.y, position.z + (speed * zdir * GetFrameTime()) };
 

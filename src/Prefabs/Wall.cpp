@@ -7,8 +7,8 @@
 
 #include "Wall.hpp"
 
-Wall::Wall(Vector3 pos, std::unique_ptr<Models>* model) noexcept
+Wall::Wall(Vector3 pos, std::unique_ptr<Render3D>* model) noexcept
     : Crate(pos, model)
 {
-    type = EntityType::WALL;
+    type = EntityType::E_WALL;
 }

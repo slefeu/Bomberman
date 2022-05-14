@@ -12,11 +12,6 @@
 
 #include "raylib.h"
 
-#define MODEL model->get()
-#define WALL (int)ModelType::M_WALL
-#define BOMB (int)ModelType::M_BOMB
-#define CRATE (int)ModelType::M_CRATE
-
 enum class ModelType { M_BOMB, M_WALL, M_CRATE };
 
 class Render3D

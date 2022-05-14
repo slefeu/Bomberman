@@ -13,6 +13,7 @@
 
 #include "BoxCollider.hpp"
 #include "Render3D.hpp"
+#include "Shortcuts.hpp"
 
 enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_EXPLOSION, E_CRATE, E_WALL };
 

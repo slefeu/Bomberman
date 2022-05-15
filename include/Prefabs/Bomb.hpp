@@ -8,6 +8,8 @@
 #ifndef BOMB_HPP_
 #define BOMB_HPP_
 
+#include <math.h>
+
 #include "Explosion.hpp"
 #include "Player.hpp"
 #include "Timer.hpp"

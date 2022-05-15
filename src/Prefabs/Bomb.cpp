@@ -15,7 +15,9 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
     , explosion(nullptr)
     , player(p)
 {
-    position   = pos;
+    position.x = round(pos.x);
+    position.y = pos.y;
+    position.z = round(pos.z);
     scale      = 0.05f;
     type       = EntityType::E_BOMB;
     model      = newModel;

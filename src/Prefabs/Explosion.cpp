@@ -1,3 +1,5 @@
+
+
 /*
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
@@ -11,33 +13,49 @@
 
 #include "Collision.hpp"
 
-Explosion::Explosion(Vector3 posi, float newSize) noexcept
-    : lifeTime(1.0f)
-    , timer(std::make_unique<Timer>(lifeTime))
+Explosion::Explosion(Vector3 posi, float newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    position  = posi;
-    type      = EntityType::E_EXPLOSION;
-    size      = { newSize, 0.2f, 0.2f };
-    color     = RED;
-    pos[0]    = { position.x - size.x / 4, position.y, position.z };
-    pos[1]    = { position.x + size.x / 4, position.y, position.z };
-    pos[2]    = { position.x, position.y, position.z - size.x / 4 };
-    pos[3]    = { position.x, position.y, position.z + size.x / 4 };
-    siz[0]    = { size.x / 2, size.y, size.z };
-    siz[1]    = { size.x / 2, size.y, size.z };
-    siz[2]    = { size.z, size.y, size.x / 2 };
-    siz[3]    = { size.z, size.y, size.x / 2 };
-    hitBoxHor = std::make_unique<BoxCollider>(position, size, true);
-    hitBoxVer = std::make_unique<BoxCollider>(position, (Vector3){ size.z, size.y, size.x }, true);
+    position = posi;
+    type     = EntityType::E_EXPLOSION;
+    size     = { newSize, 0.2f, 0.2f };
+    color    = RED;
+    hitbox   = nullptr;
+    lifeTime = 1.0f;
+    timer    = std::make_unique<Timer>(lifeTime);
+    fires.emplace_back(std::make_unique<Fire>(posi, 1.0f));
+    extandExplosion(others);
 }
 
 void Explosion::display() noexcept
 {
-    for (int i = 0; i < 4; i++) DrawCubeV(pos[i], siz[i], color);
-    hitBoxHor->display();
-    hitBoxVer->display();
-    hitBoxHor->update(position);
-    hitBoxVer->update(position);
+    for (auto& fire : fires) { fire->display(); }
+}
+
+void Explosion::extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    int   lenght = 3;
+    float size   = 0.5f;
+
+    for (int i = 1; i < lenght; i++) {
+        Vector3 newPos = { position.x + float(i), position.y, position.z };
+        fires.emplace_back(std::make_unique<Fire>(newPos, size));
+        if (fires.back()->isColliding(others)) break;
+    }
+    for (int i = 1; i < lenght; i++) {
+        Vector3 newPos = { position.x - float(i), position.y, position.z };
+        fires.emplace_back(std::make_unique<Fire>(newPos, size));
+        if (fires.back()->isColliding(others)) break;
+    }
+    for (int i = 1; i < lenght; i++) {
+        Vector3 newPos = { position.x, position.y, position.z + float(i) };
+        fires.emplace_back(std::make_unique<Fire>(newPos, size));
+        if (fires.back()->isColliding(others)) break;
+    }
+    for (int i = 1; i < lenght; i++) {
+        Vector3 newPos = { position.x, position.y, position.z - float(i) };
+        fires.emplace_back(std::make_unique<Fire>(newPos, size));
+        if (fires.back()->isColliding(others)) break;
+    }
 }
 
 void Explosion::moveX(float x) noexcept
@@ -73,17 +91,12 @@ Vector3 Explosion::getSize() noexcept
 
 bool Explosion::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    bool isColliding = false;
+    bool explosionColliding = false;
 
-    for (auto& other : others) {
-        if (other->hitbox == nullptr || hitBoxHor == nullptr || hitBoxVer == nullptr) continue;
-        if (!other->hitbox->isSolid || !hitBoxHor->isSolid || !hitBoxVer->isSolid) continue;
-        if (hitBoxHor->isColliding(other->hitbox) || hitBoxVer->isColliding(other->hitbox)) {
-            CollideAction(other);
-            isColliding = true;
-        }
+    for (auto& fire : fires) {
+        if (fire->isColliding(others)) explosionColliding = true;
     }
-    return isColliding;
+    return explosionColliding;
 }
 
 bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
@@ -97,16 +110,18 @@ bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& 
 bool Explosion::update(void) noexcept
 {
     display();
+    for (auto& fire : fires) { fire->update(); }
     timer->updateTimer();
     return timer->timerDone();
 }
 
+bool Explosion::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    (void)others;
+    return false;
+}
+
 void Explosion::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
 {
-    if (other->type == EntityType::E_PLAYER) other->isEnable = false;
-    if (other->type == EntityType::E_CRATE) {
-        other->isEnable = false;
-        other->hitbox.reset();
-        other->hitbox = nullptr;
-    }
+    (void)other;
 }

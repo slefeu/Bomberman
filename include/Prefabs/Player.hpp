@@ -42,6 +42,7 @@ class Player : public GameObject3D
     bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update() noexcept;
+    bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
 
   private:
     void setKeyboard(void) noexcept;

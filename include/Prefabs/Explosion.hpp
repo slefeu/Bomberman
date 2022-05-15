@@ -8,13 +8,14 @@
 #ifndef EXPLOSION_HPP_
 #define EXPLOSION_HPP_
 
+#include "Fire.hpp"
 #include "GameObject3D.hpp"
 #include "Timer.hpp"
 
 class Explosion : public GameObject3D
 {
   public:
-    Explosion(Vector3 pos, float size) noexcept;
+    Explosion(Vector3 pos, float size, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     ~Explosion() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
@@ -23,6 +24,8 @@ class Explosion : public GameObject3D
     bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update(void) noexcept;
+    bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    void    extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
 
   private:
     void moveX(float x) noexcept;
@@ -31,12 +34,9 @@ class Explosion : public GameObject3D
     void CollideAction(std::unique_ptr<GameObject3D>& other) noexcept;
 
   private:
-    float                        lifeTime;
-    std::unique_ptr<Timer>       timer;
-    Vector3                      pos[4];
-    Vector3                      siz[4];
-    std::unique_ptr<BoxCollider> hitBoxHor;
-    std::unique_ptr<BoxCollider> hitBoxVer;
+    float                              lifeTime;
+    std::unique_ptr<Timer>             timer;
+    std::vector<std::unique_ptr<Fire>> fires;
 };
 
 #endif /* !EXPLOSION_HPP_ */

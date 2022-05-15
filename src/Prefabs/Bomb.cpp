@@ -72,7 +72,7 @@ bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& other
     return false;
 }
 
-bool Bomb::update(void) noexcept
+bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     lifeTimer->updateTimer();
 
@@ -80,10 +80,18 @@ bool Bomb::update(void) noexcept
         display();
         return false;
     }
-    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f);
+    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f, others);
     if (explosion->update()) {
         player->nbBomb++;
         return true;
     }
+    return false;
+}
+
+bool Bomb::update(void) noexcept
+{
+    lifeTimer->updateTimer();
+
+    if (!lifeTimer->timerDone()) { display(); }
     return false;
 }

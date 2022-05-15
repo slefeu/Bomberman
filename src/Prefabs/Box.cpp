@@ -72,3 +72,9 @@ bool Box::update(void) noexcept
 {
     return false;
 }
+
+bool Box::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    (void)others;
+    return false;
+}

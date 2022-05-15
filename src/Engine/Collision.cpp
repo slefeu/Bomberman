@@ -17,6 +17,5 @@ bool Collision::isColliding(Vector3 pos, Vector3 size, Vector3 otherPos, Vector3
     BoundingBox BoundingBox1 = { BoundingBox1_1, BoundingBox1_2 };
     BoundingBox BoundingBox2 = { BoundingBox2_1, BoundingBox2_2 };
 
-    if (CheckCollisionBoxes(BoundingBox1, BoundingBox2)) return true;
-    return false;
+    return CheckCollisionBoxes(BoundingBox1, BoundingBox2);
 }

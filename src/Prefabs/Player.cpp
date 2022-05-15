@@ -182,3 +182,9 @@ bool Player::update(void) noexcept
 {
     return false;
 }
+
+bool Player::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    (void)others;
+    return false;
+}

@@ -46,7 +46,7 @@ void Game::display3D() noexcept
 
     size_t len = _bombs.size();
     for (size_t i = 0; i != len; i++) {
-        if (_bombs[i]->update()) {
+        if (_bombs[i]->update(_entities)) {
             _bombs.erase(_bombs.begin() + i);
             len--;
             i--;

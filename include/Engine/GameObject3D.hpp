@@ -15,7 +15,7 @@
 #include "Render3D.hpp"
 #include "Shortcuts.hpp"
 
-enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_EXPLOSION, E_CRATE, E_WALL };
+enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_EXPLOSION, E_CRATE, E_WALL, E_FIRE };
 
 class GameObject3D
 {
@@ -41,6 +41,7 @@ class GameObject3D
     virtual bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept = 0;
     virtual bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept = 0;
     virtual bool    update() noexcept                                                                                    = 0;
+    virtual bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept                                  = 0;
 
   protected:
     virtual void moveX(float x) noexcept = 0;

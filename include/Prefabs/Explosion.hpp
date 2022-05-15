@@ -37,6 +37,7 @@ class Explosion : public GameObject3D
     float                              lifeTime;
     std::unique_ptr<Timer>             timer;
     std::vector<std::unique_ptr<Fire>> fires;
+    int                                explosionSize;
 };
 
 #endif /* !EXPLOSION_HPP_ */

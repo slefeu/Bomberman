@@ -15,13 +15,14 @@
 
 Explosion::Explosion(Vector3 posi, float newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    position = posi;
-    type     = EntityType::E_EXPLOSION;
-    size     = { newSize, 0.2f, 0.2f };
-    color    = RED;
-    hitbox   = nullptr;
-    lifeTime = 1.0f;
-    timer    = std::make_unique<Timer>(lifeTime);
+    position      = posi;
+    type          = EntityType::E_EXPLOSION;
+    size          = { newSize, 0.2f, 0.2f };
+    color         = RED;
+    hitbox        = nullptr;
+    lifeTime      = 1.0f;
+    explosionSize = 3;
+    timer         = std::make_unique<Timer>(lifeTime);
     fires.emplace_back(std::make_unique<Fire>(posi, 1.0f));
     extandExplosion(others);
 }
@@ -33,25 +34,24 @@ void Explosion::display() noexcept
 
 void Explosion::extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    int   lenght = 3;
-    float size   = 0.5f;
+    float size = 0.5f;
 
-    for (int i = 1; i < lenght; i++) {
+    for (int i = 1; i < explosionSize; i++) {
         Vector3 newPos = { position.x + float(i), position.y, position.z };
         fires.emplace_back(std::make_unique<Fire>(newPos, size));
         if (fires.back()->isColliding(others)) break;
     }
-    for (int i = 1; i < lenght; i++) {
+    for (int i = 1; i < explosionSize; i++) {
         Vector3 newPos = { position.x - float(i), position.y, position.z };
         fires.emplace_back(std::make_unique<Fire>(newPos, size));
         if (fires.back()->isColliding(others)) break;
     }
-    for (int i = 1; i < lenght; i++) {
+    for (int i = 1; i < explosionSize; i++) {
         Vector3 newPos = { position.x, position.y, position.z + float(i) };
         fires.emplace_back(std::make_unique<Fire>(newPos, size));
         if (fires.back()->isColliding(others)) break;
     }
-    for (int i = 1; i < lenght; i++) {
+    for (int i = 1; i < explosionSize; i++) {
         Vector3 newPos = { position.x, position.y, position.z - float(i) };
         fires.emplace_back(std::make_unique<Fire>(newPos, size));
         if (fires.back()->isColliding(others)) break;

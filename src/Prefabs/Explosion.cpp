@@ -23,7 +23,7 @@ Explosion::Explosion(Vector3 posi, int newSize, std::vector<std::unique_ptr<Game
     lifeTime      = 1.0f;
     explosionSize = newSize;
     timer         = std::make_unique<Timer>(lifeTime);
-    fires.emplace_back(std::make_unique<Fire>(posi, 1.0f));
+    fires.emplace_back(std::make_unique<Fire>(posi, 0.9f));
     extandExplosion(others);
 }
 

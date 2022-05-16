@@ -21,7 +21,7 @@ Player::Player(int                              newId,
     , bombs(bombsArray)
     , nbBomb(3)
     , speed(3.0f)
-    , bombSize(1)
+    , bombSize(3)
 {
     size     = { 0.5f, 0.5f, 0.5f };
     position = { 0.0f, 0.0f + (size.y / 2), 2.0f };

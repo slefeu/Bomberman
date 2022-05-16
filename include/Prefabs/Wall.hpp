@@ -13,7 +13,7 @@
 class Wall : public Crate
 {
   public:
-    Wall(Vector3 pos, std::unique_ptr<Render3D>* model) noexcept;
+    Wall(Vector3 pos, std::unique_ptr<Render3D>* model, GameData* data) noexcept;
     ~Wall() noexcept = default;
 };
 

@@ -31,6 +31,8 @@ Game::Game(GameData* data) noexcept
 
     _items.emplace_back(std::make_unique<Item>((Vector3){ 0.0f, 0.0f, 0.0f }, MODELS(M_ITEM)));
 
+    data->items = &_items;
+
     createMap();
 }
 
@@ -77,7 +79,7 @@ void Game::action(Cameraman& camera) noexcept
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
         data->nbPlayer++;
-        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, MAGENTA, &_bombs, MODELS(M_BOMB)));
+        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, MAGENTA, &_bombs, data));
     }
     if (IsKeyPressed(KEY_V) && data->nbPlayer > 1) {
         data->nbPlayer--;
@@ -96,20 +98,20 @@ void Game::createMap(void) noexcept
         for (auto& player : PLAYERS)
             if (tempX == player->getPosition().x && tempZ == player->getPosition().z) continue;
 
-        _entities.emplace_back(std::make_unique<Crate>((Vector3){ tempX, 0.0f, tempZ }, MODELS(M_CRATE)));
+        _entities.emplace_back(std::make_unique<Crate>((Vector3){ tempX, 0.0f, tempZ }, MODELS(M_CRATE), data));
     }
 
     // Ajout des murs une case sur deux
     for (int z = -4; z < 6; z++)
         for (int x = -5; x < 6; x++) {
             if (x % 2 != 0 && z % 2 != 0)
-                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, MODELS(M_WALL)));
+                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, MODELS(M_WALL), data));
         }
 
     // Ajout des murs autour de la carte
     for (int z = -5; z < 8; z++)
         for (int x = -7; x < 8; x++) {
             if (x == -7 || x == 7 || z == -5 || z == 7)
-                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, MODELS(M_WALL)));
+                _entities.emplace_back(std::make_unique<Wall>((Vector3){ x * 1.0f, 0.0f, z * 1.0f }, MODELS(M_WALL), data));
         }
 }

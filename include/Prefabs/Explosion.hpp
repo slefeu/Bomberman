@@ -9,6 +9,7 @@
 #define EXPLOSION_HPP_
 
 #include "Fire.hpp"
+#include "GameData.hpp"
 #include "GameObject3D.hpp"
 #include "Timer.hpp"
 
@@ -38,6 +39,7 @@ class Explosion : public GameObject3D
     std::unique_ptr<Timer>             timer;
     std::vector<std::unique_ptr<Fire>> fires;
     int                                explosionSize;
+    GameData*                          data;
 };
 
 #endif /* !EXPLOSION_HPP_ */

@@ -13,5 +13,6 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
     , winHeight(winHeight)
     , nbPlayer(nbPlayer)
     , currentScene(1)
+    , items(nullptr)
 {
 }

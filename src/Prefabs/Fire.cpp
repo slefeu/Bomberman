@@ -8,6 +8,8 @@
 
 #include "Fire.hpp"
 
+#include "Crate.hpp"
+
 Fire::Fire(Vector3 posi, float newSize) noexcept
 {
     position = posi;
@@ -45,6 +47,8 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
 {
     if (other->type == EntityType::E_PLAYER) other->isEnable = false;
     if (other->type == EntityType::E_CRATE) {
+        ((std::unique_ptr<Crate>&)other)->dropItem();
+
         other->isEnable = false;
         other->hitbox.reset();
         other->hitbox = nullptr;

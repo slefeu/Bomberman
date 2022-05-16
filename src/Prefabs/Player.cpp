@@ -17,10 +17,11 @@ Player::Player(int                              newId,
     std::vector<std::unique_ptr<GameObject3D>>* bombsArray,
     std::unique_ptr<Render3D>*                  _bombModel) noexcept
     : id(newId)
-    , speed(3.0f)
     , bombModel(_bombModel)
     , bombs(bombsArray)
     , nbBomb(3)
+    , speed(3.0f)
+    , bombSize(3)
 {
     size     = { 0.5f, 0.5f, 0.5f };
     position = { 0.0f, 0.0f + (size.y / 2), 2.0f };
@@ -175,7 +176,14 @@ void Player::placeBomb(void) noexcept
 {
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(position, this, bombModel));
+    bombs->emplace_back(std::make_unique<Bomb>(position, this, bombModel, bombSize));
+}
+
+void Player::setStats(int bomb, int sp, int size) noexcept
+{
+    nbBomb += bomb;
+    speed += (float)sp;
+    bombSize += size;
 }
 
 bool Player::update(void) noexcept

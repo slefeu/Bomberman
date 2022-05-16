@@ -13,17 +13,17 @@
 
 #include "Collision.hpp"
 
-Explosion::Explosion(Vector3 posi, float newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+Explosion::Explosion(Vector3 posi, int newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     position      = posi;
     type          = EntityType::E_EXPLOSION;
-    size          = { newSize, 0.2f, 0.2f };
+    size          = { 10.0f, 0.2f, 0.2f };
     color         = RED;
     hitbox        = nullptr;
     lifeTime      = 1.0f;
-    explosionSize = 3;
+    explosionSize = newSize;
     timer         = std::make_unique<Timer>(lifeTime);
-    fires.emplace_back(std::make_unique<Fire>(posi, 1.0f));
+    fires.emplace_back(std::make_unique<Fire>(posi, 0.9f));
     extandExplosion(others);
 }
 
@@ -58,6 +58,26 @@ void Explosion::extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& othe
     }
 }
 
+bool Explosion::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    bool explosionColliding = false;
+
+    for (auto& fire : fires) {
+        if (fire->isColliding(others)) explosionColliding = true;
+    }
+    return explosionColliding;
+}
+
+bool Explosion::update(void) noexcept
+{
+    display();
+    for (auto& fire : fires) { fire->update(); }
+    timer->updateTimer();
+    return timer->timerDone();
+}
+
+// -------------------------- USELESS FUNCTIONS --------------------------
+
 void Explosion::moveX(float x) noexcept
 {
     (void)x;
@@ -89,30 +109,12 @@ Vector3 Explosion::getSize() noexcept
     return size;
 }
 
-bool Explosion::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    bool explosionColliding = false;
-
-    for (auto& fire : fires) {
-        if (fire->isColliding(others)) explosionColliding = true;
-    }
-    return explosionColliding;
-}
-
 bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     (void)others;
     (void)xdir;
     (void)zdir;
     return false;
-}
-
-bool Explosion::update(void) noexcept
-{
-    display();
-    for (auto& fire : fires) { fire->update(); }
-    timer->updateTimer();
-    return timer->timerDone();
 }
 
 bool Explosion::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept

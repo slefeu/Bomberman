@@ -18,9 +18,8 @@ class Timer
   public:
     Timer(float lifeTime) noexcept;
     ~Timer() noexcept = default;
-    void  updateTimer(void) noexcept;
-    bool  timerDone(void) noexcept;
-    float getTime(void) noexcept;
+    void updateTimer(void) noexcept;
+    bool timerDone(void) noexcept;
 };
 
 #endif /* !TIMER_HPP_ */

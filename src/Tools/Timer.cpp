@@ -21,8 +21,3 @@ bool Timer::timerDone(void) noexcept
 {
     return lifeTime <= 0;
 }
-
-float Timer::getTime(void) noexcept
-{
-    return lifeTime;
-}

@@ -38,6 +38,8 @@ void Box::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
+// -------------------------- USELESS FUNCTIONS --------------------------
+
 void Box::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;

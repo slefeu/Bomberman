@@ -26,12 +26,6 @@ bool Fire::update(void) noexcept
     return timer->timerDone();
 }
 
-bool Fire::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return false;
-}
-
 bool Fire::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     bool isColliding = false;
@@ -57,6 +51,21 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
     }
 }
 
+void Fire::display() noexcept
+{
+    DrawCubeV(position, size, color);
+    hitbox->display();
+    hitbox->update(position);
+}
+
+// -------------------------- USELESS FUNCTIONS --------------------------
+
+bool Fire::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    (void)others;
+    return false;
+}
+
 void Fire::moveX(float x) noexcept
 {
     (void)x;
@@ -70,13 +79,6 @@ void Fire::moveY(float y) noexcept
 void Fire::moveZ(float z) noexcept
 {
     (void)z;
-}
-
-void Fire::display() noexcept
-{
-    DrawCubeV(position, size, color);
-    hitbox->display();
-    hitbox->update(position);
 }
 
 void Fire::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept

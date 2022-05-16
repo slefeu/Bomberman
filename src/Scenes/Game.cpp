@@ -11,6 +11,7 @@
 
 #include "Box.hpp"
 #include "Crate.hpp"
+#include "Item.hpp"
 #include "Player.hpp"
 #include "Wall.hpp"
 
@@ -27,6 +28,8 @@ Game::Game(GameData* data) noexcept
         std::unique_ptr<Player>& tempPlayer = (std::unique_ptr<Player>&)player;
         if (tempPlayer->bombs == nullptr) tempPlayer->bombs = &_bombs;
     }
+
+    _entities.emplace_back(std::make_unique<Item>((Vector3){ 0.0f, 0.0f, 0.0f }, MODELS(M_ITEM)));
 
     createMap();
 }

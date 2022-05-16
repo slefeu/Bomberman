@@ -44,12 +44,6 @@ void Bomb::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
-void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return;
-}
-
 Vector3 Bomb::getPosition() noexcept
 {
     return position;
@@ -64,14 +58,6 @@ bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 {
     if (explosion == nullptr) return false;
     return explosion->isColliding(others);
-}
-
-bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
-{
-    (void)others;
-    (void)xdir;
-    (void)zdir;
-    return false;
 }
 
 bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
@@ -96,4 +82,20 @@ bool Bomb::update(void) noexcept
 
     if (!lifeTimer->timerDone()) { display(); }
     return false;
+}
+
+// -------------------------- USELESS FUNCTIONS --------------------------
+
+bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
+{
+    (void)others;
+    (void)xdir;
+    (void)zdir;
+    return false;
+}
+
+void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    (void)others;
+    return;
 }

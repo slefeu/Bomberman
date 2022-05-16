@@ -25,13 +25,13 @@ class Explosion : public GameObject3D
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update(void) noexcept;
     bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
-    void    extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
 
   private:
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
     void CollideAction(std::unique_ptr<GameObject3D>& other) noexcept;
+    void extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
 
   private:
     float                              lifeTime;

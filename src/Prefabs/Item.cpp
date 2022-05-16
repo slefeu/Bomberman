@@ -59,18 +59,9 @@ bool Item::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
 {
     switch (itemType) {
-        case ItemType::I_SPEEDUP:
-            std::cout << "SPEED UP" << std::endl;
-            p->speed += 0.2f;
-            break;
-        case ItemType::I_BOMBUP:
-            std::cout << "BOMB UP" << std::endl;
-            p->nbBomb += 1;
-            break;
-        case ItemType::I_FIREUP:
-            std::cout << "FIRE UP" << std::endl;
-            p->bombSize += 1;
-            break;
+        case ItemType::I_SPEEDUP: p->speed += 0.2f; break;
+        case ItemType::I_BOMBUP: p->nbBomb += 1; break;
+        case ItemType::I_FIREUP: p->bombSize += 1; break;
         default: break;
     }
 }

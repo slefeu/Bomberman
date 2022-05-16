@@ -55,10 +55,7 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
         other->hitbox.reset();
         other->hitbox = nullptr;
     }
-    if (other->type == EntityType::E_ITEM) {
-        std::cout << "Destroy item" << std::endl;
-        other->isEnable = false;
-    }
+    if (other->type == EntityType::E_ITEM) other->isEnable = false;
 }
 
 void Fire::display() noexcept
@@ -66,6 +63,16 @@ void Fire::display() noexcept
     DrawCubeV(position, size, color);
     hitbox->display();
     hitbox->update(position);
+}
+
+Vector3 Fire::getPosition() noexcept
+{
+    return position;
+}
+
+Vector3 Fire::getSize() noexcept
+{
+    return size;
 }
 
 // -------------------------- USELESS FUNCTIONS --------------------------
@@ -95,16 +102,6 @@ void Fire::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
-}
-
-Vector3 Fire::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Fire::getSize() noexcept
-{
-    return size;
 }
 
 bool Fire::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept

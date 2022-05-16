@@ -76,6 +76,16 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
+Vector3 Explosion::getPosition() noexcept
+{
+    return position;
+}
+
+Vector3 Explosion::getSize() noexcept
+{
+    return size;
+}
+
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 void Explosion::moveX(float x) noexcept
@@ -97,16 +107,6 @@ void Explosion::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 {
     (void)others;
     return;
-}
-
-Vector3 Explosion::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Explosion::getSize() noexcept
-{
-    return size;
 }
 
 bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept

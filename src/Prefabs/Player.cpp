@@ -191,6 +191,11 @@ bool Player::update(void) noexcept
     return false;
 }
 
+void Player::setLifeTime(float const& newLifeTime) noexcept
+{
+    (void)newLifeTime;
+}
+
 bool Player::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;

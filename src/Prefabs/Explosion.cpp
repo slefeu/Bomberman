@@ -76,6 +76,10 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
+void Explosion::setLifeTime(float const& newLifeTime) noexcept
+{
+    lifeTime = newLifeTime;
+}
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 void Explosion::moveX(float x) noexcept

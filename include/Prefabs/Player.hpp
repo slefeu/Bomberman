@@ -47,6 +47,7 @@ class Player : public GameObject3D
     bool    update() noexcept;
     bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     void    setStats(int bomb, int sp, int size) noexcept;
+    void    setLifeTime(float const& newLifeTime) noexcept;
 
   private:
     void setKeyboard(void) noexcept;

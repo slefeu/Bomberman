@@ -8,6 +8,8 @@
 
 #include "Fire.hpp"
 
+#include "GameObject3D.hpp"
+
 Fire::Fire(Vector3 posi, float newSize) noexcept
 {
     position = posi;
@@ -50,6 +52,7 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
         other->hitbox = nullptr;
     }
     if (other->type == EntityType::E_ITEM) other->isEnable = false;
+    if (other->type == EntityType::E_BOMB) other->setLifeTime(0.0);
 }
 
 void Fire::display() noexcept
@@ -59,6 +62,10 @@ void Fire::display() noexcept
     hitbox->update(position);
 }
 
+void Fire::setLifeTime(float const& newLifeTime) noexcept
+{
+    lifeTime = newLifeTime;
+}
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 bool Fire::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept

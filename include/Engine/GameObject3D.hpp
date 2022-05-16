@@ -42,6 +42,7 @@ class GameObject3D
     virtual bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept = 0;
     virtual bool    update() noexcept                                                                                    = 0;
     virtual bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept                                  = 0;
+    virtual void    setLifeTime(float const& newLifeTime) noexcept                                                       = 0;
 
   protected:
     virtual void moveX(float x) noexcept = 0;

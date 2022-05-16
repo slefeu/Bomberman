@@ -50,6 +50,11 @@ bool Item::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 
 // -------------------------- USELESS FUNCTIONS --------------------------
 
+void Item::setLifeTime(float const& newLifeTime) noexcept
+{
+    (void)newLifeTime;
+}
+
 void Item::moveX(float x) noexcept
 {
     (void)x;

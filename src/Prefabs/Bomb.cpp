@@ -7,8 +7,6 @@
 
 #include "Bomb.hpp"
 
-#include <iostream>
-
 Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bombSize) noexcept
     : lifeTime(2.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
@@ -16,13 +14,14 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bomb
     , player(p)
     , size(bombSize)
 {
-    position.x = round(pos.x);
-    position.y = pos.y;
-    position.z = round(pos.z);
-    scale      = 0.05f;
-    type       = EntityType::E_BOMB;
-    model      = newModel;
-    position.y = 0 - scale;
+    scale              = 0.05f;
+    position.x         = round(pos.x);
+    position.y         = 0 - scale;
+    position.z         = round(pos.z);
+    type               = EntityType::E_BOMB;
+    model              = newModel;
+    Vector3 hitboxsize = { float(size), float(size), float(size) };
+    hitbox             = std::make_unique<BoxCollider>(position, hitboxsize, true);
 }
 
 void Bomb::display() noexcept
@@ -85,6 +84,10 @@ bool Bomb::update(void) noexcept
     return false;
 }
 
+void Bomb::setLifeTime(float const& newLifeTime) noexcept
+{
+    lifeTimer->setLifeTime(newLifeTime);
+}
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept

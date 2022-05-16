@@ -9,6 +9,9 @@
 #define ITEM_HPP_
 
 #include "GameObject3D.hpp"
+#include "Player.hpp"
+
+enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP };
 
 class Item : public GameObject3D
 {
@@ -28,6 +31,10 @@ class Item : public GameObject3D
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
+    void setPlayerStat(std::unique_ptr<Player>& p) noexcept;
+
+  private:
+    ItemType itemType;
 };
 
 #endif /* !ITEM_HPP_ */

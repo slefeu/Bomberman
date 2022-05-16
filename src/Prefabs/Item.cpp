@@ -22,6 +22,9 @@ Item::Item(Vector3 pos, std::unique_ptr<Render3D>* newModel) noexcept
     position.z -= scale / 2;
     hitbox->position.z += scale / 10;
     hitbox->isSolid = false;
+
+    int temp = rand() % 3;
+    itemType = (ItemType)temp;
 }
 
 void Item::display() noexcept
@@ -39,13 +42,22 @@ bool Item::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
         if (hitbox == nullptr || other->hitbox == nullptr) continue;
         if (hitbox->isColliding(other->hitbox)) {
             if (other->type == EntityType::E_PLAYER) {
-                std::unique_ptr<Player>& p = (std::unique_ptr<Player>&)other;
-                p->setStats(1, 1, 1);
+                setPlayerStat((std::unique_ptr<Player>&)other);
                 isEnable = false;
             }
         };
     }
     return false;
+}
+
+void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
+{
+    switch (itemType) {
+        case ItemType::I_SPEEDUP: p->speed += 0.2f; break;
+        case ItemType::I_BOMBUP: p->nbBomb += 1; break;
+        case ItemType::I_FIREUP: p->bombSize += 1; break;
+        default: break;
+    }
 }
 
 // -------------------------- USELESS FUNCTIONS --------------------------

@@ -176,13 +176,6 @@ void Player::placeBomb(void) noexcept
     bombs->emplace_back(std::make_unique<Bomb>(position, this, MODELS(M_BOMB), bombSize));
 }
 
-void Player::setStats(int bomb, int sp, int size) noexcept
-{
-    nbBomb += bomb;
-    speed += (float)sp;
-    bombSize += size;
-}
-
 bool Player::update(void) noexcept
 {
     return false;

@@ -22,12 +22,15 @@ class Player : public GameObject3D
     KeyboardKey                moveRight;
     KeyboardKey                dropBomb;
     int                        id;
-    float                      speed;
     std::unique_ptr<Render3D>* bombModel;
 
   public:
     std::vector<std::unique_ptr<GameObject3D>>* bombs;
-    int                                         nbBomb;
+
+  public:
+    int   nbBomb;
+    float speed;
+    int   bombSize;
 
   public:
     Player(int                                      newId,
@@ -43,6 +46,7 @@ class Player : public GameObject3D
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update() noexcept;
     bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    void    setStats(int bomb, int sp, int size) noexcept;
 
   private:
     void setKeyboard(void) noexcept;

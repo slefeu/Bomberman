@@ -9,11 +9,12 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bombSize) noexcept
     : lifeTime(2.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , explosion(nullptr)
     , player(p)
+    , size(bombSize)
 {
     position.x = round(pos.x);
     position.y = pos.y;
@@ -51,7 +52,7 @@ Vector3 Bomb::getPosition() noexcept
 
 Vector3 Bomb::getSize() noexcept
 {
-    return size;
+    return { 0.0f, 0.0f, 0.0f };
 }
 
 bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
@@ -68,7 +69,7 @@ bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
         display();
         return false;
     }
-    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f, others);
+    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, size, others);
     if (explosion->update()) {
         player->nbBomb++;
         return true;

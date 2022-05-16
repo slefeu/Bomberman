@@ -21,6 +21,7 @@ class Game : public Scene
     std::vector<std::unique_ptr<GameObject3D>>  _entities;
     std::vector<std::unique_ptr<GameObject3D>>  _bombs;
     std::vector<std::unique_ptr<GameObject3D>>* _players;
+    std::vector<std::unique_ptr<GameObject3D>>  _items;
     std::vector<std::unique_ptr<Render3D>>*     _models;
 
   public:

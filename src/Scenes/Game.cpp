@@ -29,7 +29,7 @@ Game::Game(GameData* data) noexcept
         if (tempPlayer->bombs == nullptr) tempPlayer->bombs = &_bombs;
     }
 
-    _entities.emplace_back(std::make_unique<Item>((Vector3){ 0.0f, 0.0f, 0.0f }, MODELS(M_ITEM)));
+    _items.emplace_back(std::make_unique<Item>((Vector3){ 0.0f, 0.0f, 0.0f }, MODELS(M_ITEM)));
 
     createMap();
 }
@@ -42,10 +42,10 @@ void Game::resetCamera(Cameraman& camera) noexcept
 void Game::display3D() noexcept
 {
     DrawGrid(100, 1.0f);
-    // DrawPlane({ 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f }, { 0, 0, 0, 255 });
 
     for (auto& player : PLAYERS) player->display();
     for (auto& entity : _entities) entity->display();
+    for (auto& item : _items) item->display();
 
     size_t len = _bombs.size();
     for (size_t i = 0; i != len; i++) {
@@ -66,9 +66,11 @@ void Game::display2D() noexcept
 void Game::action(Cameraman& camera) noexcept
 {
     for (auto& player : PLAYERS) player->action(_entities);
+    for (auto& item : _items) item->isColliding(PLAYERS);
     for (auto& bomb : _bombs) {
         bomb->isColliding(PLAYERS);
         bomb->isColliding(_entities);
+        bomb->isColliding(_items);
     }
     if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);
 

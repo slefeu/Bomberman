@@ -49,6 +49,7 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
         other->hitbox.reset();
         other->hitbox = nullptr;
     }
+    if (other->type == EntityType::E_ITEM) other->isEnable = false;
 }
 
 void Fire::display() noexcept

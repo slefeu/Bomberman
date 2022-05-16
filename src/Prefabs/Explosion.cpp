@@ -13,15 +13,15 @@
 
 #include "Collision.hpp"
 
-Explosion::Explosion(Vector3 posi, float newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+Explosion::Explosion(Vector3 posi, int newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     position      = posi;
     type          = EntityType::E_EXPLOSION;
-    size          = { newSize, 0.2f, 0.2f };
+    size          = { 10.0f, 0.2f, 0.2f };
     color         = RED;
     hitbox        = nullptr;
     lifeTime      = 1.0f;
-    explosionSize = 3;
+    explosionSize = newSize;
     timer         = std::make_unique<Timer>(lifeTime);
     fires.emplace_back(std::make_unique<Fire>(posi, 1.0f));
     extandExplosion(others);

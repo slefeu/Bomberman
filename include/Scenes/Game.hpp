@@ -8,12 +8,15 @@
 #ifndef GAME_HPP_
 #define GAME_HPP_
 
+#include <math.h>
+
 #include <memory>
 #include <vector>
 
 #include "GameObject3D.hpp"
 #include "Render3D.hpp"
 #include "Scene.hpp"
+#include "Timer.hpp"
 
 class Game : public Scene
 {
@@ -23,6 +26,7 @@ class Game : public Scene
     std::vector<std::unique_ptr<GameObject3D>>* _players;
     std::vector<std::unique_ptr<GameObject3D>>  _items;
     std::vector<std::unique_ptr<Render3D>>*     _models;
+    std::unique_ptr<Timer>                      _chrono;
 
   public:
     Game(GameData* data) noexcept;

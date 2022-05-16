@@ -12,7 +12,7 @@
 
 #include "raylib.h"
 
-enum class ModelType { M_BOMB, M_WALL, M_CRATE };
+enum class ModelType { M_BOMB, M_WALL, M_CRATE, M_ITEM };
 
 class Render3D
 {

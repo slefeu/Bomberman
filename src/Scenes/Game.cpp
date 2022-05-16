@@ -11,8 +11,10 @@
 
 #include "Box.hpp"
 #include "Crate.hpp"
+#include "Item.hpp"
 #include "Player.hpp"
 #include "Wall.hpp"
+#include "raylib.h"
 
 Game::Game(GameData* data) noexcept
     : Scene(data)
@@ -20,6 +22,7 @@ Game::Game(GameData* data) noexcept
     cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 1.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
+    _chrono        = std::make_unique<Timer>(60);
 
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {
@@ -27,6 +30,8 @@ Game::Game(GameData* data) noexcept
         std::unique_ptr<Player>& tempPlayer = (std::unique_ptr<Player>&)player;
         if (tempPlayer->bombs == nullptr) tempPlayer->bombs = &_bombs;
     }
+
+    _items.emplace_back(std::make_unique<Item>((Vector3){ 0.0f, 0.0f, 0.0f }, MODELS(M_ITEM)));
 
     createMap();
 }
@@ -39,10 +44,10 @@ void Game::resetCamera(Cameraman& camera) noexcept
 void Game::display3D() noexcept
 {
     DrawGrid(100, 1.0f);
-    // DrawPlane({ 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f }, { 0, 0, 0, 255 });
 
     for (auto& player : PLAYERS) player->display();
     for (auto& entity : _entities) entity->display();
+    for (auto& item : _items) item->display();
 
     size_t len = _bombs.size();
     for (size_t i = 0; i != len; i++) {
@@ -58,14 +63,19 @@ void Game::display2D() noexcept
 {
     DrawFPS(10, 10);
     DrawText("Game", 10, 30, 20, GREEN);
+    if (_chrono->timerDone()) DrawText("Party end", 450, 300, 70, BLUE);
+    else
+        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 1200, 30, 50, BLUE);
 }
 
 void Game::action(Cameraman& camera) noexcept
 {
     for (auto& player : PLAYERS) player->action(_entities);
+    for (auto& item : _items) item->isColliding(PLAYERS);
     for (auto& bomb : _bombs) {
         bomb->isColliding(PLAYERS);
         bomb->isColliding(_entities);
+        bomb->isColliding(_items);
     }
     if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);
 
@@ -78,6 +88,7 @@ void Game::action(Cameraman& camera) noexcept
         data->nbPlayer--;
         PLAYERS.erase(PLAYERS.begin() + data->nbPlayer);
     }
+    _chrono->updateTimer();
 }
 
 void Game::createMap(void) noexcept

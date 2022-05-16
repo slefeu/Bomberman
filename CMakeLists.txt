@@ -37,7 +37,6 @@ set(
   src/Prefabs/Explosion.cpp
   src/Prefabs/Wall.cpp
   src/Prefabs/Fire.cpp
-  src/Prefabs/Item.cpp
 
   src/Scenes/Game.cpp
   src/Scenes/Home.cpp

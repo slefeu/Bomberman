@@ -9,12 +9,11 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bombSize) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel) noexcept
     : lifeTime(2.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , explosion(nullptr)
     , player(p)
-    , size(bombSize)
 {
     position.x = round(pos.x);
     position.y = pos.y;
@@ -45,6 +44,12 @@ void Bomb::moveZ(float z) noexcept
     position.z += z * GetFrameTime();
 }
 
+void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+{
+    (void)others;
+    return;
+}
+
 Vector3 Bomb::getPosition() noexcept
 {
     return position;
@@ -52,13 +57,21 @@ Vector3 Bomb::getPosition() noexcept
 
 Vector3 Bomb::getSize() noexcept
 {
-    return { 0.0f, 0.0f, 0.0f };
+    return size;
 }
 
 bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (explosion == nullptr) return false;
     return explosion->isColliding(others);
+}
+
+bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
+{
+    (void)others;
+    (void)xdir;
+    (void)zdir;
+    return false;
 }
 
 bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
@@ -69,7 +82,7 @@ bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
         display();
         return false;
     }
-    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, size, others);
+    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, 10.0f, others);
     if (explosion->update()) {
         player->nbBomb++;
         return true;
@@ -83,20 +96,4 @@ bool Bomb::update(void) noexcept
 
     if (!lifeTimer->timerDone()) { display(); }
     return false;
-}
-
-// -------------------------- USELESS FUNCTIONS --------------------------
-
-bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
-{
-    (void)others;
-    (void)xdir;
-    (void)zdir;
-    return false;
-}
-
-void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return;
 }

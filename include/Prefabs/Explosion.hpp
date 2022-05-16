@@ -15,7 +15,7 @@
 class Explosion : public GameObject3D
 {
   public:
-    Explosion(Vector3 pos, int size, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    Explosion(Vector3 pos, float size, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
     ~Explosion() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;

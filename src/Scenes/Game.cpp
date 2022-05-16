@@ -22,7 +22,7 @@ Game::Game(GameData* data) noexcept
     cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 1.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
-    _chrono        = std::make_unique<Timer>(10);
+    _chrono        = std::make_unique<Timer>(60);
 
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {

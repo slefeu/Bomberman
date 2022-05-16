@@ -16,7 +16,7 @@ enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP };
 class Item : public GameObject3D
 {
   public:
-    Item(Vector3 pos, std::unique_ptr<Render3D>* newModel) noexcept;
+    Item(Vector3 pos, GameData* data) noexcept;
     ~Item() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;

@@ -8,6 +8,8 @@
 
 #include "Fire.hpp"
 
+#include <iostream>
+
 #include "Crate.hpp"
 
 Fire::Fire(Vector3 posi, float newSize) noexcept
@@ -34,7 +36,7 @@ bool Fire::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 
     for (auto& other : others) {
         if (other->hitbox == nullptr || hitbox == nullptr) continue;
-        if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
+        // if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
         if (hitbox->isColliding(other->hitbox)) {
             CollideAction(other);
             isColliding = true;
@@ -53,7 +55,10 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
         other->hitbox.reset();
         other->hitbox = nullptr;
     }
-    if (other->type == EntityType::E_ITEM) other->isEnable = false;
+    if (other->type == EntityType::E_ITEM) {
+        std::cout << "Destroy item" << std::endl;
+        other->isEnable = false;
+    }
 }
 
 void Fire::display() noexcept

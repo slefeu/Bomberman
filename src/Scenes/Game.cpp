@@ -93,6 +93,8 @@ void Game::action(Cameraman& camera) noexcept
 
 void Game::createMap(void) noexcept
 {
+    Vector3 vectorTemp;
+
     for (int i = 0; i < 50; i++) {
         float tempX = (float)(rand() % 12) - 5.0f;
         float tempZ = (float)(rand() % 12) - 5.0f;
@@ -104,20 +106,25 @@ void Game::createMap(void) noexcept
         for (auto& player : PLAYERS)
             if (tempX == player->getPosition().x && tempZ == player->getPosition().z) continue;
 
-        _entities.emplace_back(std::make_unique<Crate>((Vector3){ tempX, 0.0f, tempZ }, MODELS(M_CRATE), data));
+        vectorTemp = { tempX, 0.0f, tempZ };
+        _entities.emplace_back(std::make_unique<Crate>(vectorTemp, MODELS(M_CRATE), data));
     }
 
     // Ajout des murs une case sur deux
     for (int z = -4; z < 6; z++)
         for (int x = -5; x < 6; x++) {
-            if (x % 2 != 0 && z % 2 != 0)
-                _entities.emplace_back(std::make_unique<Wall>((Vector3){ (float)x, 0.0f, (float)z }, MODELS(M_WALL), data));
+            if (x % 2 != 0 && z % 2 != 0) {
+                vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
+                _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
+            }
         }
 
     // Ajout des murs autour de la carte
     for (int z = -5; z < 8; z++)
         for (int x = -7; x < 8; x++) {
-            if (x == -7 || x == 7 || z == -5 || z == 7)
-                _entities.emplace_back(std::make_unique<Wall>((Vector3){ (float)x, 0.0f, (float)z }, MODELS(M_WALL), data));
+            if (x == -7 || x == 7 || z == -5 || z == 7) {
+                vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
+                _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
+            }
         }
 }

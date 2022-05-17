@@ -12,12 +12,9 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 
-Player::Player(int                              newId,
-    Color                                       newColor,
-    std::vector<std::unique_ptr<GameObject3D>>* bombsArray,
-    std::unique_ptr<Render3D>*                  _bombModel) noexcept
+Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept
     : id(newId)
-    , bombModel(_bombModel)
+    , data(data)
     , bombs(bombsArray)
     , nbBomb(3)
     , speed(3.0f)
@@ -176,14 +173,7 @@ void Player::placeBomb(void) noexcept
 {
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(position, this, bombModel, bombSize));
-}
-
-void Player::setStats(int bomb, int sp, int size) noexcept
-{
-    nbBomb += bomb;
-    speed += (float)sp;
-    bombSize += size;
+    bombs->emplace_back(std::make_unique<Bomb>(position, this, MODELS(M_BOMB), bombSize));
 }
 
 bool Player::update(void) noexcept

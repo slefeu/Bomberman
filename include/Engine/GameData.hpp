@@ -25,8 +25,9 @@ class GameData
     int currentScene;
 
   public:
-    std::vector<std::unique_ptr<Render3D>>     models;
-    std::vector<std::unique_ptr<GameObject3D>> players;
+    std::vector<std::unique_ptr<Render3D>>      models;
+    std::vector<std::unique_ptr<GameObject3D>>  players;
+    std::vector<std::unique_ptr<GameObject3D>>* items;
 };
 
 #endif /* !GAMEDATA_HPP_ */

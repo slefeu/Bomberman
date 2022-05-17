@@ -8,13 +8,14 @@
 #ifndef FIRE_HPP_
 #define FIRE_HPP_
 
+#include "GameData.hpp"
 #include "GameObject3D.hpp"
 #include "Timer.hpp"
 
 class Fire : public GameObject3D
 {
   public:
-    Fire(Vector3 pos, float size) noexcept;
+    Fire(Vector3 posi, float newSize) noexcept;
     ~Fire() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;

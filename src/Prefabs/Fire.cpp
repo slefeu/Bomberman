@@ -8,6 +8,10 @@
 
 #include "Fire.hpp"
 
+#include <iostream>
+
+#include "Crate.hpp"
+
 Fire::Fire(Vector3 posi, float newSize) noexcept
 {
     position = posi;
@@ -32,7 +36,7 @@ bool Fire::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 
     for (auto& other : others) {
         if (other->hitbox == nullptr || hitbox == nullptr) continue;
-        if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
+        // if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
         if (hitbox->isColliding(other->hitbox)) {
             CollideAction(other);
             isColliding = true;
@@ -45,6 +49,8 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
 {
     if (other->type == EntityType::E_PLAYER) other->isEnable = false;
     if (other->type == EntityType::E_CRATE) {
+        ((std::unique_ptr<Crate>&)other)->dropItem();
+
         other->isEnable = false;
         other->hitbox.reset();
         other->hitbox = nullptr;
@@ -57,6 +63,16 @@ void Fire::display() noexcept
     DrawCubeV(position, size, color);
     hitbox->display();
     hitbox->update(position);
+}
+
+Vector3 Fire::getPosition() noexcept
+{
+    return position;
+}
+
+Vector3 Fire::getSize() noexcept
+{
+    return size;
 }
 
 // -------------------------- USELESS FUNCTIONS --------------------------
@@ -86,16 +102,6 @@ void Fire::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
-}
-
-Vector3 Fire::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Fire::getSize() noexcept
-{
-    return size;
 }
 
 bool Fire::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept

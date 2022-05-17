@@ -11,18 +11,19 @@
 #include <memory>
 #include <vector>
 
+#include "GameData.hpp"
 #include "GameObject3D.hpp"
 
 class Player : public GameObject3D
 {
   private:
-    KeyboardKey                moveUp;
-    KeyboardKey                moveDown;
-    KeyboardKey                moveLeft;
-    KeyboardKey                moveRight;
-    KeyboardKey                dropBomb;
-    int                        id;
-    std::unique_ptr<Render3D>* bombModel;
+    KeyboardKey moveUp;
+    KeyboardKey moveDown;
+    KeyboardKey moveLeft;
+    KeyboardKey moveRight;
+    KeyboardKey dropBomb;
+    int         id;
+    GameData*   data;
 
   public:
     std::vector<std::unique_ptr<GameObject3D>>* bombs;
@@ -33,10 +34,7 @@ class Player : public GameObject3D
     int   bombSize;
 
   public:
-    Player(int                                      newId,
-        Color                                       newColor,
-        std::vector<std::unique_ptr<GameObject3D>>* bombs,
-        std::unique_ptr<Render3D>*                  _bombModel) noexcept;
+    Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept;
     ~Player() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
@@ -46,7 +44,6 @@ class Player : public GameObject3D
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update() noexcept;
     bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
-    void    setStats(int bomb, int sp, int size) noexcept;
 
   private:
     void setKeyboard(void) noexcept;

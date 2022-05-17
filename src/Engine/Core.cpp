@@ -23,12 +23,13 @@ Core::Core(GameData* newData) noexcept
     data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/bomb.obj", "Assets/Textures/bomb.png"));
     data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/wall.png"));
     data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/box.obj", "Assets/Textures/box.png"));
-    data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/item.obj", "Assets/Textures/item.png"));
+    data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/item.obj", "Assets/Textures/i_roller.png"));
+    data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/item.obj", "Assets/Textures/i_bomb.png"));
+    data->models.emplace_back(std::make_unique<Render3D>("Assets/Models/item.obj", "Assets/Textures/i_fire.png"));
 
     // Génération des joueurs
     Color colors[4] = { PINK, BLUE, YELLOW, MAROON };
-    for (int i = 0; i != data->nbPlayer; i++)
-        data->players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, MODELS(M_BOMB)));
+    for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, data));
 
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data));

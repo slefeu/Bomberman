@@ -37,6 +37,7 @@ bool Fire::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
     for (auto& other : others) {
         if (other->hitbox == nullptr || hitbox == nullptr) continue;
         // if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
+        if (!isEnable || !other->isEnable) continue;
         if (hitbox->isColliding(other->hitbox)) {
             CollideAction(other);
             isColliding = true;
@@ -54,12 +55,15 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
         other->isEnable = false;
         other->hitbox.reset();
         other->hitbox = nullptr;
+        isEnable      = false;
     }
     if (other->type == EntityType::E_ITEM) other->isEnable = false;
 }
 
 void Fire::display() noexcept
 {
+    if (!isEnable) return;
+
     DrawCubeV(position, size, color);
     hitbox->display();
     hitbox->update(position);

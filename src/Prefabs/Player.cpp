@@ -18,7 +18,7 @@ Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject
     , bombs(bombsArray)
     , nbBomb(3)
     , speed(3.0f)
-    , bombSize(3)
+    , bombSize(2)
 {
     size     = { 0.5f, 0.5f, 0.5f };
     position = { 0.0f, 0.0f + (size.y / 2), 2.0f };

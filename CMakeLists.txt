@@ -15,7 +15,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 endif()
 
 if (WIN32)
-  file(COPY Assets/ DESTINATION Assets/)
+  file(COPY assets/ DESTINATION assets/)
 endif()
 
 # Ajouter ici les .cpp

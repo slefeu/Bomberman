@@ -18,7 +18,7 @@ Fire::Fire(Vector3 posi, float newSize) noexcept
     type     = EntityType::E_FIRE;
     size     = { newSize, newSize, newSize };
     color    = RED;
-    lifeTime = 1.0f;
+    lifeTime = 0.5f;
     timer    = std::make_unique<Timer>(lifeTime);
     hitbox   = std::make_unique<BoxCollider>(position, size, true);
 }

@@ -33,6 +33,6 @@ void Crate::display() noexcept
 
 void Crate::dropItem()
 {
-    if (rand() % 1 != 0) return;
+    if (rand() % 3 != 0) return;
     data->items->emplace_back(std::make_unique<Item>(position, data));
 }

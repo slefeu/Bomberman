@@ -13,16 +13,16 @@
 
 Item::Item(Vector3 pos, GameData* data) noexcept
 {
-    position = pos;
-    type     = EntityType::E_ITEM;
-    hitbox   = std::make_unique<BoxCollider>(position, (Vector3){ 1.0f, 1.0f, 0.5f }, true);
-    scale    = 1.0f;
+    Vector3 vectortemp = { 1.0f, 1.0f, 0.5f };
+    position           = pos;
+    type               = EntityType::E_ITEM;
+    hitbox             = std::make_unique<BoxCollider>(position, vectortemp, true);
+    scale              = 1.0f;
+    hitbox->isSolid    = false;
+    itemType           = (ItemType)((int)rand() % 3);
 
     position.z -= scale / 2;
     hitbox->position.z += scale / 10;
-    hitbox->isSolid = false;
-
-    itemType = (ItemType)((int)rand() % 3);
 
     switch (itemType) {
         case ItemType::I_SPEEDUP: model = MODELS(M_IROLLER); break;

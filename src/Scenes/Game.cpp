@@ -18,11 +18,13 @@
 
 Game::Game(GameData* data) noexcept
     : Scene(data)
+    , _chrono(std::make_unique<Timer>(data->timeParty))
+    , isHurry(false)
+    , nbBlockPlaced(0)
 {
     cameraPosition = { 0.0f, 11.0f, 1.0f };
     cameraTarget   = { 0.0f, 0.0f, 1.0f };
     cameraUp       = { 0.0f, 2.0f, 0.0f };
-    _chrono        = std::make_unique<Timer>(data->timeParty);
 
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {
@@ -63,13 +65,17 @@ void Game::display2D() noexcept
 {
     DrawFPS(10, 10);
     DrawText("Game", 10, 30, 20, GREEN);
-    if (_chrono->timerDone()) DrawText("Party end", 450, 300, 70, BLUE);
+    if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
     else
-        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 1200, 30, 50, BLUE);
+        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);
+
+    if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
 }
 
 void Game::action(Cameraman& camera) noexcept
 {
+    _chrono->updateTimer();
+
     for (auto& player : PLAYERS) player->action(_entities);
     for (auto& item : _items) item->isColliding(PLAYERS);
     for (auto& bomb : _bombs) {
@@ -88,7 +94,14 @@ void Game::action(Cameraman& camera) noexcept
         data->nbPlayer--;
         PLAYERS.erase(PLAYERS.begin() + data->nbPlayer);
     }
-    _chrono->updateTimer();
+
+    // Activation du Hurry Up !
+    if (int(round(_chrono->getTime())) <= 55 && !isHurry) {
+        isHurry            = true;
+        lastTimeBlockPlace = _chrono->getTime();
+    }
+    if (nbBlockPlaced >= 80) isHurry = false;
+    hurryUp();
 }
 
 void Game::createMap(void) noexcept
@@ -127,4 +140,52 @@ void Game::createMap(void) noexcept
                 _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
             }
         }
+}
+
+void Game::hurryUp(void) noexcept
+{
+    if (!isHurry) return;
+
+    float time = _chrono->getTime();
+
+    if (lastTimeBlockPlace - time >= 0.37f) {
+        Vector3 vectorTemp;
+
+        if (direction == Direction::UP) {
+            z--;
+            if (z == minZ) {
+                direction = Direction::RIGHT;
+                minZ++;
+                x--;
+            }
+        }
+        if (direction == Direction::RIGHT) {
+            x++;
+            if (x == maxX) {
+                direction = Direction::DOWN;
+                maxX--;
+                z--;
+            }
+        }
+        if (direction == Direction::DOWN) {
+            z++;
+            if (z == maxZ) {
+                direction = Direction::LEFT;
+                maxZ--;
+                x++;
+            }
+        }
+        if (direction == Direction::LEFT) {
+            x--;
+            if (x == minX) {
+                direction = Direction::UP;
+                minX++;
+            }
+        }
+
+        vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
+        _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
+        lastTimeBlockPlace = _chrono->getTime();
+        nbBlockPlaced++;
+    }
 }

@@ -16,6 +16,7 @@ Core::Core(GameData* newData) noexcept
     : data(newData)
 {
     // Create Window
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
     SetTargetFPS(data->fps);
 

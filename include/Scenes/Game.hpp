@@ -18,6 +18,8 @@
 #include "Scene.hpp"
 #include "Timer.hpp"
 
+enum class Direction { UP, RIGHT, DOWN, LEFT };
+
 class Game : public Scene
 {
   private:
@@ -27,6 +29,18 @@ class Game : public Scene
     std::vector<std::unique_ptr<GameObject3D>>  _items;
     std::vector<std::unique_ptr<Render3D>>*     _models;
     std::unique_ptr<Timer>                      _chrono;
+
+  private:
+    float     lastTimeBlockPlace;
+    bool      isHurry;
+    int       nbBlockPlaced;
+    int       x         = -6;
+    int       z         = 7;
+    int       maxX      = 6;
+    int       maxZ      = 6;
+    int       minX      = -5;
+    int       minZ      = -4;
+    Direction direction = Direction::UP;
 
   public:
     Game(GameData* data) noexcept;
@@ -38,6 +52,7 @@ class Game : public Scene
 
   private:
     void createMap(void) noexcept;
+    void hurryUp(void) noexcept;
 };
 
 #endif /* !GAME_HPP_ */

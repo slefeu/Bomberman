@@ -183,7 +183,7 @@ void Game::hurryUp(void) noexcept
             }
         }
 
-        vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
+        vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
         _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
         lastTimeBlockPlace = _chrono->getTime();
         nbBlockPlaced++;

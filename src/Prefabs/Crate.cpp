@@ -16,7 +16,7 @@ Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) n
     type             = EntityType::E_CRATE;
     hitbox->position = { position.x, 0.35f, position.z };
     hitbox->size     = { 1.0f, 1.0f, 1.0f };
-    scale            = 0.017f;
+    scale            = 0.015f;
     position.y       = 0 - scale;
     isEnable         = true;
     model            = newModel;
@@ -31,7 +31,7 @@ void Crate::display() noexcept
     hitbox->display();
 }
 
-void Crate::dropItem()
+void Crate::dropItem() noexcept
 {
     if (rand() % 3 != 0) return;
     data->items->emplace_back(std::make_unique<Item>(position, data));

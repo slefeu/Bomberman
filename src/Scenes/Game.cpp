@@ -48,11 +48,11 @@ void Game::display3D() noexcept
 {
     // DrawGrid(100, 1.0f);
 
-    DrawPlane({ 0.0f, -0.01f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
+    DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.0f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
-            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.0f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
     for (auto& player : PLAYERS) player->display();
@@ -116,18 +116,19 @@ void Game::createMap(void) noexcept
 {
     Vector3 vectorTemp;
 
-    for (int i = 0; i < 50; i++) {
-        float tempX = (float)(rand() % 12) - 5.0f;
-        float tempZ = (float)(rand() % 12) - 5.0f;
-
-        for (auto& box : _entities)
-            if (box->getPosition().x == tempX && box->getPosition().z == tempZ) continue;
+    for (int i = 0; i < 100; i++) {
+        int tempX = (rand() % 13) - 6.0f;
+        int tempZ = (rand() % 12) - 5.0f;
 
         if ((int)tempX % 2 != 0 && (int)tempZ % 2 != 0) continue;
-        for (auto& player : PLAYERS)
-            if (tempX == player->getPosition().x && tempZ == player->getPosition().z) continue;
 
-        vectorTemp = { tempX, 0.0f, tempZ };
+        if ((tempX == -6 && tempZ == -4) || (tempX == 6 && tempZ == -4) || (tempX == -6 && tempZ == 6)
+            || (tempX == 6 && tempZ == 6) || (tempX == -6 && tempZ == -3) || (tempX == 6 && tempZ == -3)
+            || (tempX == -6 && tempZ == 5) || (tempX == 6 && tempZ == 5) || (tempX == -5 && tempZ == -4)
+            || (tempX == 5 && tempZ == -4) || (tempX == -5 && tempZ == 6) || (tempX == 5 && tempZ == 6))
+            continue;
+
+        vectorTemp = { tempX * 1.0f, 0.0f, tempZ * 1.0f };
         _entities.emplace_back(std::make_unique<Crate>(vectorTemp, MODELS(M_CRATE), data));
     }
 

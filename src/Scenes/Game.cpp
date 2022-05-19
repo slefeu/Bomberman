@@ -89,6 +89,7 @@ void Game::action(Cameraman& camera) noexcept
     for (auto& bomb : _bombs) {
         bomb->isColliding(PLAYERS);
         bomb->isColliding(_entities);
+        bomb->isColliding(_bombs);
         bomb->isColliding(_items);
     }
     if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);

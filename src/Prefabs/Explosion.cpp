@@ -76,16 +76,6 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
-Vector3 Explosion::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Explosion::getSize() noexcept
-{
-    return size;
-}
-
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 void Explosion::moveX(float x) noexcept

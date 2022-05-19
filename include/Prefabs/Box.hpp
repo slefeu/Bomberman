@@ -23,6 +23,7 @@ class Box : public GameObject3D
     bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
     bool    update() noexcept;
     bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
+    void    setLifeTime(float const& newLifeTime) noexcept;
 
   private:
     void moveX(float x) noexcept;

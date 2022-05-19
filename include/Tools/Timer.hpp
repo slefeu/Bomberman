@@ -21,6 +21,7 @@ class Timer
     void  updateTimer(void) noexcept;
     bool  timerDone(void) noexcept;
     float getTime(void) noexcept;
+    void  setLifeTime(float const& newLifeTime) noexcept;
 };
 
 #endif /* !TIMER_HPP_ */

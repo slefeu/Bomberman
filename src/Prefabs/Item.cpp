@@ -70,6 +70,11 @@ void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
 
 // -------------------------- USELESS FUNCTIONS --------------------------
 
+void Item::setLifeTime(float const& newLifeTime) noexcept
+{
+    (void)newLifeTime;
+}
+
 void Item::moveX(float x) noexcept
 {
     (void)x;

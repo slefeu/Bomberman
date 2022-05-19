@@ -26,3 +26,8 @@ float Timer::getTime(void) noexcept
 {
     return lifeTime;
 }
+
+void Timer::setLifeTime(float const& newLifeTime) noexcept
+{
+    lifeTime = newLifeTime;
+}

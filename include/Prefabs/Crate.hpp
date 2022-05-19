@@ -17,7 +17,7 @@ class Crate : public Box
     Crate(Vector3 pos, std::unique_ptr<Render3D>* model, GameData* data) noexcept;
     ~Crate() noexcept = default;
     void display() noexcept;
-    void dropItem();
+    void dropItem() noexcept;
 
   public:
     GameData* data;

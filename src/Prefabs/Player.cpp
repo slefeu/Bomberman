@@ -16,9 +16,9 @@ Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject
     : id(newId)
     , data(data)
     , bombs(bombsArray)
-    , nbBomb(3)
-    , speed(3.0f)
-    , bombSize(2)
+    , nbBomb(1)
+    , speed(2.5f)
+    , bombSize(3)
 {
     size     = { 0.5f, 0.5f, 0.5f };
     position = { 0.0f, 0.0f + (size.y / 2), 2.0f };
@@ -114,6 +114,9 @@ void Player::moveZ(float z) noexcept
 void Player::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (!isEnable) return;
+
+    if (isColliding(others)) return;
+
     if (IsGamepadAvailable(id)) {
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
@@ -151,7 +154,10 @@ bool Player::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noe
     for (auto& other : others) {
         if (hitbox == nullptr || other->hitbox == nullptr) continue;
         if (!hitbox->isSolid || !other->hitbox->isSolid) continue;
-        if (hitbox->isColliding(other->hitbox)) return true;
+        if (hitbox->isColliding(other->hitbox)) {
+            if (other->type == EntityType::E_WALL) isEnable = false;
+            return true;
+        };
     }
     return false;
 }

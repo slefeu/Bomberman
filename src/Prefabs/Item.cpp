@@ -22,7 +22,9 @@ Item::Item(Vector3 pos, GameData* data) noexcept
     itemType           = (ItemType)((int)rand() % 3);
 
     position.z -= scale / 2;
+    position.y += scale / 2;
     hitbox->position.z += scale / 10;
+    hitbox->position.y += scale / 2;
 
     switch (itemType) {
         case ItemType::I_SPEEDUP: model = MODELS(M_IROLLER); break;

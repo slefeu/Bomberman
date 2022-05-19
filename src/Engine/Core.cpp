@@ -66,7 +66,7 @@ void Core::run() noexcept
 
         // Display ------------------------------------------------------------
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(SCENE->backgroundColor);
         BeginMode3D(camera);
         SCENE->display3D();
         EndMode3D();

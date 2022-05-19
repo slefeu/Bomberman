@@ -22,9 +22,10 @@ Game::Game(GameData* data) noexcept
     , isHurry(false)
     , nbBlockPlaced(0)
 {
-    cameraPosition = { 0.0f, 11.0f, 1.0f };
-    cameraTarget   = { 0.0f, 0.0f, 1.0f };
-    cameraUp       = { 0.0f, 2.0f, 0.0f };
+    cameraPosition  = { 0.0f, 11.0f, 1.0f };
+    cameraTarget    = { 0.0f, 0.0f, 1.0f };
+    cameraUp        = { 0.0f, 2.0f, 0.0f };
+    backgroundColor = BLACK;
 
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {
@@ -45,7 +46,14 @@ void Game::resetCamera(Cameraman& camera) noexcept
 
 void Game::display3D() noexcept
 {
-    DrawGrid(100, 1.0f);
+    // DrawGrid(100, 1.0f);
+
+    DrawPlane({ 0.0f, -0.01f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
+    for (int z = -4; z < 7; z++)
+        for (int x = -6; x < 7; x++) {
+            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.0f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.0f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+        }
 
     for (auto& player : PLAYERS) player->display();
     for (auto& entity : _entities) entity->display();

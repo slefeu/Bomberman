@@ -12,15 +12,12 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 
-Player::Player(int                              newId,
-    Color                                       newColor,
-    std::vector<std::unique_ptr<GameObject3D>>* bombsArray,
-    std::unique_ptr<Render3D>*                  _bombModel) noexcept
+Player::Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept
     : id(newId)
-    , bombModel(_bombModel)
+    , data(data)
     , bombs(bombsArray)
-    , nbBomb(3)
-    , speed(3.0f)
+    , nbBomb(1)
+    , speed(2.5f)
     , bombSize(3)
 {
     size     = { 0.5f, 0.5f, 0.5f };
@@ -117,6 +114,9 @@ void Player::moveZ(float z) noexcept
 void Player::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     if (!isEnable) return;
+
+    if (isColliding(others)) return;
+
     if (IsGamepadAvailable(id)) {
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
@@ -154,7 +154,10 @@ bool Player::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noe
     for (auto& other : others) {
         if (hitbox == nullptr || other->hitbox == nullptr) continue;
         if (!hitbox->isSolid || !other->hitbox->isSolid) continue;
-        if (hitbox->isColliding(other->hitbox)) return true;
+        if (hitbox->isColliding(other->hitbox)) {
+            if (other->type == EntityType::E_WALL) isEnable = false;
+            return true;
+        };
     }
     return false;
 }
@@ -176,14 +179,7 @@ void Player::placeBomb(void) noexcept
 {
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(position, this, bombModel, bombSize));
-}
-
-void Player::setStats(int bomb, int sp, int size) noexcept
-{
-    nbBomb += bomb;
-    speed += (float)sp;
-    bombSize += size;
+    bombs->emplace_back(std::make_unique<Bomb>(position, this, MODELS(M_BOMB), bombSize));
 }
 
 bool Player::update(void) noexcept

@@ -7,13 +7,16 @@
 
 #include "Crate.hpp"
 
-Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel) noexcept
+#include "Item.hpp"
+
+Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) noexcept
     : Box(pos, { 1.0f, 1.0f, 1.0f })
+    , data(data)
 {
     type             = EntityType::E_CRATE;
     hitbox->position = { position.x, 0.35f, position.z };
     hitbox->size     = { 1.0f, 1.0f, 1.0f };
-    scale            = 0.017f;
+    scale            = 0.015f;
     position.y       = 0 - scale;
     isEnable         = true;
     model            = newModel;
@@ -26,4 +29,10 @@ void Crate::display() noexcept
     if (!isEnable) return;
     DrawModel(MODEL->model, position, scale, WHITE);
     hitbox->display();
+}
+
+void Crate::dropItem() noexcept
+{
+    if (rand() % 3 != 0) return;
+    data->items->emplace_back(std::make_unique<Item>(position, data));
 }

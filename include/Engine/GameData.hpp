@@ -18,15 +18,17 @@ class GameData
     ~GameData() noexcept = default;
 
   public:
-    int fps;
-    int winWidth;
-    int winHeight;
-    int nbPlayer;
-    int currentScene;
+    int   fps;
+    int   winWidth;
+    int   winHeight;
+    int   nbPlayer;
+    int   currentScene;
+    float timeParty;
 
   public:
-    std::vector<std::unique_ptr<Render3D>>     models;
-    std::vector<std::unique_ptr<GameObject3D>> players;
+    std::vector<std::unique_ptr<Render3D>>      models;
+    std::vector<std::unique_ptr<GameObject3D>>  players;
+    std::vector<std::unique_ptr<GameObject3D>>* items;
 };
 
 #endif /* !GAMEDATA_HPP_ */

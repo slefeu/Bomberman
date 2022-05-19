@@ -18,6 +18,7 @@ class Scene
     Vector3   cameraTarget;
     Vector3   cameraUp;
     GameData* data;
+    Color     backgroundColor;
 
   public:
     Scene(GameData* data) noexcept

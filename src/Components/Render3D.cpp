@@ -18,7 +18,6 @@ Render3D::Render3D(std::string path, std::string texturePath) noexcept
 
 Render3D::~Render3D() noexcept
 {
-    std::cout << "Render3D destructor" << std::endl;
     UnloadTexture(texture);
     UnloadModel(model);
 }

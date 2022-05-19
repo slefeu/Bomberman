@@ -12,9 +12,10 @@
 Home::Home(GameData* data) noexcept
     : Scene(data)
 {
-    cameraPosition = { 20.0f, 50.0f, 20.0f };
-    cameraTarget   = { 0.0f, 0.0f, 0.0f };
-    cameraUp       = { 0.0f, 1.0f, 0.0f };
+    cameraPosition  = { 20.0f, 50.0f, 20.0f };
+    cameraTarget    = { 0.0f, 0.0f, 0.0f };
+    cameraUp        = { 0.0f, 1.0f, 0.0f };
+    backgroundColor = RAYWHITE;
 }
 
 void Home::resetCamera(Cameraman& camera) noexcept

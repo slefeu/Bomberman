@@ -14,6 +14,10 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_VERBOSE_MAKEFILE ON)
 endif()
 
+if (WIN32)
+  file(COPY assets/ DESTINATION assets/)
+endif()
+
 # Ajouter ici les .cpp
 set(
   INDIE_SRC

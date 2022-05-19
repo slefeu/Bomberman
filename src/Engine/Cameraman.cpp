@@ -9,6 +9,7 @@
 
 #include <math.h>
 
+#include <cmath>
 #include <iostream>
 
 #include "Round.hpp"
@@ -82,8 +83,8 @@ bool Cameraman::smoothMove(void) noexcept
 
 void Cameraman::lookBetweenGameObject3D(std::vector<std::unique_ptr<GameObject3D>>& entities) noexcept
 {
-    float minX = 1 / 0.f;
-    float minZ = 1 / 0.f;
+    float minX = INFINITY;
+    float minZ = INFINITY;
     float maxX = -minX;
     float maxZ = -minZ;
 

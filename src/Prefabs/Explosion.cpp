@@ -20,7 +20,7 @@ Explosion::Explosion(Vector3 posi, int newSize, std::vector<std::unique_ptr<Game
     size          = { 10.0f, 0.2f, 0.2f };
     color         = RED;
     hitbox        = nullptr;
-    lifeTime      = 1.0f;
+    lifeTime      = 0.5f;
     explosionSize = newSize;
     timer         = std::make_unique<Timer>(lifeTime);
     fires.emplace_back(std::make_unique<Fire>(posi, 0.9f));
@@ -76,10 +76,6 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
-void Explosion::setLifeTime(float const& newLifeTime) noexcept
-{
-    lifeTime = newLifeTime;
-}
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 void Explosion::moveX(float x) noexcept
@@ -101,16 +97,6 @@ void Explosion::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
 {
     (void)others;
     return;
-}
-
-Vector3 Explosion::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Explosion::getSize() noexcept
-{
-    return size;
 }
 
 bool Explosion::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept

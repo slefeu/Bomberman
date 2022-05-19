@@ -7,26 +7,31 @@
 
 #include "Bomb.hpp"
 
+#include <iostream>
+
 Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bombSize) noexcept
     : lifeTime(3.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , explosion(nullptr)
     , player(p)
     , size(bombSize)
+    , hasHitbox(false)
 {
-    scale              = 0.05f;
+    scale              = 0.07f;
     position.x         = round(pos.x);
     position.y         = 0 - scale;
     position.z         = round(pos.z);
     type               = EntityType::E_BOMB;
     model              = newModel;
-    Vector3 hitboxsize = { float(size), float(size), float(size) };
-    hitbox             = std::make_unique<BoxCollider>(position, hitboxsize, true);
+    Vector3 hitboxsize = { 0.8f, 1.2f, 0.8f };
+    hitbox             = std::make_unique<BoxCollider>(position, hitboxsize, false);
 }
 
 void Bomb::display() noexcept
 {
     DrawModel(MODEL->model, position, scale, WHITE);
+    hitbox->update(position);
+    hitbox->display();
 }
 
 void Bomb::moveX(float x) noexcept
@@ -56,7 +61,27 @@ Vector3 Bomb::getSize() noexcept
 
 bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    if (explosion == nullptr) return false;
+    if (explosion == nullptr) {
+        // Permet de ne pas activer les collisions de la bombe si un joueur est à l'interieur
+
+        if (hitbox->isSolid) return false;
+        if (others.size() <= 0 || others[0]->type != EntityType::E_PLAYER) return false;
+
+        int i = 0;
+
+        for (auto& other : others) {
+            if (other->hitbox == nullptr) continue;
+            if (!hitbox->isColliding(other->hitbox)) i++;
+        }
+
+        std::cout << "i = " << i << std::endl;
+        std::cout << "hitbox->isSolid = " << hitbox->isSolid << std::endl;
+
+        if (i == (int)others.size()) hitbox->isSolid = true;
+
+        return false;
+    }
+
     return explosion->isColliding(others);
 }
 

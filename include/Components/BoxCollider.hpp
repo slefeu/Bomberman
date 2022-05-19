@@ -15,7 +15,7 @@
 class BoxCollider
 {
   private:
-    bool debug = false;
+    bool debug = true;
 
   public:
     Vector3 position;

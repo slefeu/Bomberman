@@ -40,6 +40,7 @@ class Bomb : public GameObject3D
     std::unique_ptr<Explosion> explosion;
     Player*                    player;
     int                        size;
+    bool                       hasHitbox;
 };
 
 #endif /* !BOMB_HPP_ */

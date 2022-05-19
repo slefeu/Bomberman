@@ -50,6 +50,11 @@ Vector3 Box::getSize() noexcept
 
 // -------------------------- USELESS FUNCTIONS --------------------------
 
+void Box::setLifeTime(float const& newLifeTime) noexcept
+{
+    (void)newLifeTime;
+}
+
 void Box::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;

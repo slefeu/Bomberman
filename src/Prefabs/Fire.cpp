@@ -8,9 +8,8 @@
 
 #include "Fire.hpp"
 
-#include "GameObject3D.hpp"
-
 #include "Crate.hpp"
+#include "GameObject3D.hpp"
 
 Fire::Fire(Vector3 posi, float newSize) noexcept
 {
@@ -70,10 +69,19 @@ void Fire::display() noexcept
     hitbox->update(position);
 }
 
-
 void Fire::setLifeTime(float const& newLifeTime) noexcept
 {
     lifeTime = newLifeTime;
+}
+
+Vector3 Fire::getPosition() noexcept
+{
+    return position;
+}
+
+Vector3 Fire::getSize() noexcept
+{
+    return size;
 }
 
 // -------------------------- USELESS FUNCTIONS --------------------------

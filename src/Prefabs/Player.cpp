@@ -38,14 +38,15 @@ void Player::setPosition(void) noexcept
             break;
         case 1:
             position.x = 6.0f;
-            position.z = -4.0f;
+            position.z = 6.0f;
+
             break;
         case 2:
-            position.x = -6.0f;
-            position.z = 6.0f;
+            position.x = 6.0f;
+            position.z = -4.0f;
             break;
         case 3:
-            position.x = 6.0f;
+            position.x = -6.0f;
             position.z = 6.0f;
             break;
         default: break;
@@ -122,18 +123,17 @@ void Player::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
         float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
 
-        if (axisY > 0.5f && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
-        if (axisY < -0.5f && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
-        if (axisX > 0.5f && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
-        if (axisX < -0.5f && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
-
+        if (axisY < -0.5f && !isCollidingNextTurn(others, 0, -1) && !isCollidingNextTurn(*bombs, 0, -1)) moveZ(-speed);
+        if (axisY > 0.5f && !isCollidingNextTurn(others, 0, 1) && !isCollidingNextTurn(*bombs, 0, 1)) moveZ(speed);
+        if (axisX < -0.5f && !isCollidingNextTurn(others, -1, 0) && !isCollidingNextTurn(*bombs, -1, 0)) moveX(-speed);
+        if (axisX > 0.5f && !isCollidingNextTurn(others, 1, 0) && !isCollidingNextTurn(*bombs, 1, 0)) moveX(speed);
         if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
     } else {
         // Mouvements au clavier
-        if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1)) moveZ(-speed);
-        if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1)) moveZ(speed);
-        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0)) moveX(-speed);
-        if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0)) moveX(speed);
+        if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1) && !isCollidingNextTurn(*bombs, 0, -1)) moveZ(-speed);
+        if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1) && !isCollidingNextTurn(*bombs, 0, 1)) moveZ(speed);
+        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0) && !isCollidingNextTurn(*bombs, -1, 0)) moveX(-speed);
+        if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0) && !isCollidingNextTurn(*bombs, 1, 0)) moveX(speed);
         if (IsKeyPressed(dropBomb)) placeBomb();
     }
 }

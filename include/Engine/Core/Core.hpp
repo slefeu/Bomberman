@@ -14,6 +14,7 @@
 #include "GameData.hpp"
 #include "Player.hpp"
 #include "Scene.hpp"
+
 class Core
 {
   private:

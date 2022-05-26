@@ -16,8 +16,6 @@
 #include "Shortcuts.hpp"
 #include "Transform3D.hpp"
 
-enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_EXPLOSION, E_CRATE, E_WALL, E_FIRE, E_ITEM };
-
 class GameObject3D
 {
   protected:

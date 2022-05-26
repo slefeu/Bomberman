@@ -2,10 +2,14 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Shortcuts
+** Enums
 */
 
 #pragma once
+
+enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_EXPLOSION, E_CRATE, E_WALL, E_FIRE, E_ITEM };
+
+enum class ModelType { M_BOMB, M_WALL, M_CRATE, M_IROLLER, M_IBOMB, M_IFIRE, M_NONE };
 
 #define MODEL model->get()
 #define MODELS(type) &data->models[(int)ModelType::type]

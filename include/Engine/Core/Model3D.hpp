@@ -11,8 +11,6 @@
 
 #include "raylib.h"
 
-enum class ModelType { M_BOMB, M_WALL, M_CRATE, M_IROLLER, M_IBOMB, M_IFIRE, M_NONE };
-
 class Model3D
 {
   public:

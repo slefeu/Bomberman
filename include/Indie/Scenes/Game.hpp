@@ -41,7 +41,12 @@ class Game : public Scene
 
   public:
     Game(GameData* data) noexcept;
-    ~Game() noexcept = default;
+    ~Game() noexcept                          = default;
+    Game(const Game& other) noexcept          = delete;
+    Game(Game&& other) noexcept               = delete;
+    Game& operator=(const Game& rhs) noexcept = delete;
+    Game& operator=(Game&& rhs) noexcept      = delete;
+
     void resetCamera(Cameraman& camera) noexcept;
     void display3D(void) noexcept;
     void display2D(void) noexcept;

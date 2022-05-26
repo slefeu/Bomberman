@@ -22,7 +22,12 @@ class Scene
   public:
     Scene(GameData* data) noexcept
         : data(data){};
-    virtual ~Scene() noexcept                            = default;
+    virtual ~Scene() noexcept                   = default;
+    Scene(const Scene& other) noexcept          = delete;
+    Scene(Scene&& other) noexcept               = delete;
+    Scene& operator=(const Scene& rhs) noexcept = delete;
+    Scene& operator=(Scene&& rhs) noexcept      = delete;
+
     virtual void resetCamera(Cameraman& camera) noexcept = 0;
     virtual void display3D(void) noexcept                = 0;
     virtual void display2D(void) noexcept                = 0;

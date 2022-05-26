@@ -15,7 +15,11 @@ class Wall : public Crate
 {
   public:
     Wall(Vector3 pos, std::unique_ptr<Model3D>* model) noexcept;
-    ~Wall() noexcept = default;
+    ~Wall() noexcept                          = default;
+    Wall(const Wall& other) noexcept          = delete;
+    Wall(Wall&& other) noexcept               = delete;
+    Wall& operator=(const Wall& rhs) noexcept = delete;
+    Wall& operator=(Wall&& rhs) noexcept      = delete;
 
     void Update() noexcept;
 };

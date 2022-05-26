@@ -13,7 +13,11 @@ class Box : public GameObject3D
 {
   public:
     Box(Vector3 pos, Vector3 size) noexcept;
-    ~Box() noexcept = default;
+    ~Box() noexcept                         = default;
+    Box(const Box& other) noexcept          = delete;
+    Box(Box&& other) noexcept               = delete;
+    Box& operator=(const Box& rhs) noexcept = delete;
+    Box& operator=(Box&& rhs) noexcept      = delete;
 
     void Display() noexcept;
     void Update() noexcept;

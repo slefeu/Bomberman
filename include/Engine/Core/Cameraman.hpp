@@ -17,7 +17,12 @@ class Cameraman : public Camera3D
 {
   public:
     Cameraman() noexcept;
-    ~Cameraman() noexcept = default;
+    ~Cameraman() noexcept                               = default;
+    Cameraman(const Cameraman& other) noexcept          = delete;
+    Cameraman(Cameraman&& other) noexcept               = delete;
+    Cameraman& operator=(const Cameraman& rhs) noexcept = delete;
+    Cameraman& operator=(Cameraman&& rhs) noexcept      = delete;
+
     void moveX(float x) noexcept;
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;

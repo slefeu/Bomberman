@@ -34,7 +34,11 @@ class Player : public GameObject3D
 
   public:
     Player(int newId, GameData* data) noexcept;
-    ~Player() noexcept = default;
+    ~Player() noexcept                            = default;
+    Player(const Player& other) noexcept          = delete;
+    Player(Player&& other) noexcept               = delete;
+    Player& operator=(const Player& rhs) noexcept = delete;
+    Player& operator=(Player&& rhs) noexcept      = delete;
 
     void Display() noexcept;
     void Update() noexcept;

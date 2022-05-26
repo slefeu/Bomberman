@@ -16,7 +16,11 @@ class Item : public GameObject3D
 {
   public:
     Item(Vector3 pos, GameData* data) noexcept;
-    ~Item() noexcept = default;
+    ~Item() noexcept                          = default;
+    Item(const Item& other) noexcept          = delete;
+    Item(Item&& other) noexcept               = delete;
+    Item& operator=(const Item& rhs) noexcept = delete;
+    Item& operator=(Item&& rhs) noexcept      = delete;
 
     void Display() noexcept;
     void Update() noexcept;

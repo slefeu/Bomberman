@@ -21,7 +21,11 @@ class Fire : public GameObject3D
 
   public:
     Fire(Vector3 posi, float newSize) noexcept;
-    ~Fire() noexcept = default;
+    ~Fire() noexcept                          = default;
+    Fire(const Fire& other) noexcept          = delete;
+    Fire(Fire&& other) noexcept               = delete;
+    Fire& operator=(const Fire& rhs) noexcept = delete;
+    Fire& operator=(Fire&& rhs) noexcept      = delete;
 
     void Display() noexcept;
     void Update() noexcept;

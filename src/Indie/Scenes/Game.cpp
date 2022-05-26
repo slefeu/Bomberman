@@ -157,10 +157,7 @@ void Game::createMap(void) noexcept
                 continue;
 
             Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
-
-            if (rand() % 3 == 0) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
-            else
-                _entities.emplace_back(NEW_ITEM(vectorTemp, data));
+            if (rand() % 100 < 80) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
         }
 
     // Ajout des murs une case sur deux

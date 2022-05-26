@@ -36,7 +36,11 @@ class Bomb : public GameObject3D
         int                                         bombSize,
         GameData*                                   data,
         std::vector<std::unique_ptr<GameObject3D>>* entities) noexcept;
-    ~Bomb() noexcept = default;
+    ~Bomb() noexcept                          = default;
+    Bomb(const Bomb& other) noexcept          = delete;
+    Bomb(Bomb&& other) noexcept               = delete;
+    Bomb& operator=(const Bomb& rhs) noexcept = delete;
+    Bomb& operator=(Bomb&& rhs) noexcept      = delete;
 
     void Display() noexcept;
     void Update() noexcept;

@@ -5,15 +5,14 @@
 ** GameObject3D
 */
 
-#ifndef GAMEOBJECT3D_HPP_
-#define GAMEOBJECT3D_HPP_
+#pragma once
 
 #include <memory>
 #include <vector>
 
 #include "BoxCollider.hpp"
+#include "Model3D.hpp"
 #include "Render.hpp"
-#include "Render3D.hpp"
 #include "Shortcuts.hpp"
 #include "Transform3D.hpp"
 
@@ -30,7 +29,7 @@ class GameObject3D
     Transform3D                  transform3d;
     Render                       render;
     std::unique_ptr<BoxCollider> hitbox = nullptr;
-    std::unique_ptr<Render3D>*   model  = nullptr;
+    std::unique_ptr<Model3D>*    model  = nullptr;
 
   public:
     GameObject3D() noexcept                                   = default;
@@ -48,5 +47,3 @@ class GameObject3D
     virtual bool update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept                                  = 0;
     virtual void setLifeTime(float const& newLifeTime) noexcept                                                       = 0;
 };
-
-#endif /* !GAMEOBJECT3D_HPP_ */

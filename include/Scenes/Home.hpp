@@ -5,8 +5,7 @@
 ** Home
 */
 
-#ifndef HOME_HPP_
-#define HOME_HPP_
+#pragma once
 
 #include "Scene.hpp"
 
@@ -20,5 +19,3 @@ class Home : public Scene
     void display2D(void) noexcept;
     void action(Cameraman& camera) noexcept;
 };
-
-#endif /* !HOME_HPP_ */

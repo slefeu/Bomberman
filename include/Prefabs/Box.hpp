@@ -5,8 +5,7 @@
 ** Box
 */
 
-#ifndef BOX_HPP_
-#define BOX_HPP_
+#pragma once
 
 #include "GameObject3D.hpp"
 
@@ -30,5 +29,3 @@ class Box : public GameObject3D
     void moveY(float y) noexcept;
     void moveZ(float z) noexcept;
 };
-
-#endif /* !BOX_HPP_ */

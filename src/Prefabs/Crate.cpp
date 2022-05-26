@@ -9,7 +9,7 @@
 
 #include "Item.hpp"
 
-Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) noexcept
+Crate::Crate(Vector3 pos, std::unique_ptr<Model3D>* newModel, GameData* data) noexcept
     : Box(pos, { 1.0f, 1.0f, 1.0f })
     , data(data)
 {

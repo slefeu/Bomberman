@@ -5,8 +5,7 @@
 ** Game
 */
 
-#ifndef GAME_HPP_
-#define GAME_HPP_
+#pragma once
 
 #include <math.h>
 
@@ -14,7 +13,7 @@
 #include <vector>
 
 #include "GameObject3D.hpp"
-#include "Render3D.hpp"
+#include "Model3D.hpp"
 #include "Scene.hpp"
 #include "Timer.hpp"
 
@@ -27,7 +26,7 @@ class Game : public Scene
     std::vector<std::unique_ptr<GameObject3D>>  _bombs;
     std::vector<std::unique_ptr<GameObject3D>>* _players;
     std::vector<std::unique_ptr<GameObject3D>>  _items;
-    std::vector<std::unique_ptr<Render3D>>*     _models;
+    std::vector<std::unique_ptr<Model3D>>*      _models;
     std::unique_ptr<Timer>                      _chrono;
 
   private:
@@ -54,5 +53,3 @@ class Game : public Scene
     void createMap(void) noexcept;
     void hurryUp(void) noexcept;
 };
-
-#endif /* !GAME_HPP_ */

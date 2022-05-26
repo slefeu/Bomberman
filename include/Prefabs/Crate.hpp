@@ -5,16 +5,14 @@
 ** Crate
 */
 
-#ifndef CRATE_HPP_
-#define CRATE_HPP_
-
+#pragma once
 #include "Box.hpp"
 #include "GameData.hpp"
 
 class Crate : public Box
 {
   public:
-    Crate(Vector3 pos, std::unique_ptr<Render3D>* model, GameData* data) noexcept;
+    Crate(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data) noexcept;
     ~Crate() noexcept = default;
     void display() noexcept;
     void dropItem() noexcept;
@@ -22,5 +20,3 @@ class Crate : public Box
   public:
     GameData* data;
 };
-
-#endif /* !CRATE_HPP_ */

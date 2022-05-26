@@ -5,8 +5,7 @@
 ** Explosion
 */
 
-#ifndef EXPLOSION_HPP_
-#define EXPLOSION_HPP_
+#pragma once
 
 #include "Fire.hpp"
 #include "GameData.hpp"
@@ -42,5 +41,3 @@ class Explosion : public GameObject3D
     int                                explosionSize;
     GameData*                          data;
 };
-
-#endif /* !EXPLOSION_HPP_ */

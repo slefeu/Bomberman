@@ -4,12 +4,10 @@
 ** File description:
 ** GameData
 */
-
-#ifndef GAMEDATA_HPP_
-#define GAMEDATA_HPP_
+#pragma once
 
 #include "GameObject3D.hpp"
-#include "Render3D.hpp"
+#include "Model3D.hpp"
 
 class GameData
 {
@@ -26,9 +24,7 @@ class GameData
     float timeParty;
 
   public:
-    std::vector<std::unique_ptr<Render3D>>      models;
+    std::vector<std::unique_ptr<Model3D>>       models;
     std::vector<std::unique_ptr<GameObject3D>>  players;
     std::vector<std::unique_ptr<GameObject3D>>* items;
 };
-
-#endif /* !GAMEDATA_HPP_ */

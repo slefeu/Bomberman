@@ -5,8 +5,7 @@
 ** Timer
 */
 
-#ifndef TIMER_HPP_
-#define TIMER_HPP_
+#pragma once
 
 #include "raylib.h"
 
@@ -23,5 +22,3 @@ class Timer
     float getTime(void) noexcept;
     void  setLifeTime(float const& newLifeTime) noexcept;
 };
-
-#endif /* !TIMER_HPP_ */

@@ -5,8 +5,7 @@
 ** Fire
 */
 
-#ifndef FIRE_HPP_
-#define FIRE_HPP_
+#pragma once
 
 #include "GameData.hpp"
 #include "GameObject3D.hpp"
@@ -37,5 +36,3 @@ class Fire : public GameObject3D
     float                  lifeTime;
     std::unique_ptr<Timer> timer;
 };
-
-#endif /* !FIRE_HPP_ */

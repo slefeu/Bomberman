@@ -5,8 +5,7 @@
 ** Collision
 */
 
-#ifndef COLLISION_HPP_
-#define COLLISION_HPP_
+#pragma once
 
 #include "raylib.h"
 
@@ -17,5 +16,3 @@ class Collision
     ~Collision() noexcept = default;
     bool isColliding(Vector3 pos, Vector3 size, Vector3 otherPos, Vector3 otherSize) noexcept;
 };
-
-#endif /* !COLLISION_HPP_ */

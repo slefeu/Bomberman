@@ -28,7 +28,7 @@ void Render::setRenderType(RenderType type) noexcept
     this->type = type;
 }
 
-void Render::setModel(std::unique_ptr<Render3D>* model) noexcept
+void Render::setModel(std::unique_ptr<Model3D>* model) noexcept
 {
     this->model = model;
 }

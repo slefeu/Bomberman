@@ -2,11 +2,10 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Render3D
+** Model3D
 */
 
-#ifndef RENDERER3D_HPP_
-#define RENDERER3D_HPP_
+#pragma once
 
 #include <string>
 
@@ -14,15 +13,13 @@
 
 enum class ModelType { M_BOMB, M_WALL, M_CRATE, M_IROLLER, M_IBOMB, M_IFIRE, M_NONE };
 
-class Render3D
+class Model3D
 {
   public:
     Model     model;
     Texture2D texture;
 
   public:
-    Render3D(std::string path, std::string texturePath) noexcept;
-    ~Render3D() noexcept;
+    Model3D(std::string path, std::string texturePath) noexcept;
+    ~Model3D() noexcept;
 };
-
-#endif /* !RENDERER3D_HPP_ */

@@ -5,8 +5,7 @@
 ** Camera
 */
 
-#ifndef CAMERAMAN_HPP_
-#define CAMERAMAN_HPP_
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -34,5 +33,3 @@ class Cameraman : public Camera3D
     Vector3 targetTarget;
     Vector3 targetUp;
 };
-
-#endif /* !CAMERA_HPP_ */

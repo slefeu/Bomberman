@@ -5,12 +5,9 @@
 ** Shortcuts
 */
 
-#ifndef SHORTCUTS_HPP_
-#define SHORTCUTS_HPP_
+#pragma once
 
 #define MODEL model->get()
 #define MODELS(type) &data->models[(int)ModelType::type]
 #define SCENE scenes[data->currentScene]
 #define PLAYERS data->players
-
-#endif /* !SHORTCUTS_HPP_ */

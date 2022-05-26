@@ -5,8 +5,7 @@
 ** Scene
 */
 
-#ifndef SCENE_HPP_
-#define SCENE_HPP_
+#pragma once
 
 #include "Cameraman.hpp"
 #include "GameData.hpp"
@@ -29,5 +28,3 @@ class Scene
     virtual void display2D(void) noexcept                = 0;
     virtual void action(Cameraman& camera) noexcept      = 0;
 };
-
-#endif /* !SCENE_HPP_ */

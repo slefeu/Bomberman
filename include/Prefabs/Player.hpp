@@ -5,8 +5,7 @@
 ** Player
 */
 
-#ifndef PLAYER_HPP_
-#define PLAYER_HPP_
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -52,5 +51,3 @@ class Player : public GameObject3D
     void setPosition(void) noexcept;
     void placeBomb(void) noexcept;
 };
-
-#endif /* !PLAYER_HPP_ */

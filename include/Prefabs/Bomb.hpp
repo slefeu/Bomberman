@@ -5,8 +5,7 @@
 ** Bomb
 */
 
-#ifndef BOMB_HPP_
-#define BOMB_HPP_
+#pragma once
 
 #include <math.h>
 
@@ -17,7 +16,7 @@
 class Bomb : public GameObject3D
 {
   public:
-    Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* model, int bombSize) noexcept;
+    Bomb(Vector3 pos, Player* p, std::unique_ptr<Model3D>* model, int bombSize) noexcept;
     ~Bomb() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
@@ -42,5 +41,3 @@ class Bomb : public GameObject3D
     int                        size;
     bool                       hasHitbox;
 };
-
-#endif /* !BOMB_HPP_ */

@@ -5,9 +5,6 @@
 ** Item
 */
 
-#ifndef ITEM_HPP_
-#define ITEM_HPP_
-
 #include "GameObject3D.hpp"
 #include "Player.hpp"
 
@@ -38,4 +35,4 @@ class Item : public GameObject3D
     ItemType itemType;
 };
 
-#endif /* !ITEM_HPP_ */
+#pragma once

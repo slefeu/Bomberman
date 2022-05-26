@@ -5,8 +5,7 @@
 ** BoxCollider
 */
 
-#ifndef BOXCOLLIDER_HPP_
-#define BOXCOLLIDER_HPP_
+#pragma once
 
 #include <memory>
 
@@ -30,5 +29,3 @@ class BoxCollider
     bool isColliding(std::unique_ptr<BoxCollider>& other) noexcept;
     bool isColliding(std::unique_ptr<BoxCollider>& otherHit, Vector3& otherPos) noexcept;
 };
-
-#endif /* !BOXCOLLIDER_HPP_ */

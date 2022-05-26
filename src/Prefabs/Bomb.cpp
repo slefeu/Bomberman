@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bombSize) noexcept
+Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Model3D>* newModel, int bombSize) noexcept
     : lifeTime(3.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , explosion(nullptr)

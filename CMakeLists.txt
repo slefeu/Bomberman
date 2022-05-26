@@ -30,8 +30,8 @@ set(
   src/Engine/Core.cpp
   src/Engine/Collision.cpp
   src/Engine/GameData.cpp
+  src/Engine/Model3D.cpp
 
-  src/Components/Render3D.cpp
   src/Components/BoxCollider.cpp
   src/Components/Transform3D.cpp
   src/Components/Render.cpp

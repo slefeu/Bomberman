@@ -5,17 +5,14 @@
 ** Box
 */
 
-#ifndef Wall_HPP_
-#define Wall_HPP_
+#pragma once
 
 #include "Crate.hpp"
 
 class Wall : public Crate
 {
   public:
-    Wall(Vector3 pos, std::unique_ptr<Render3D>* model, GameData* data) noexcept;
+    Wall(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data) noexcept;
     ~Wall() noexcept = default;
     void display() noexcept;
 };
-
-#endif /* !Wall_HPP_ */

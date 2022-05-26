@@ -21,12 +21,12 @@ Core::Core(GameData* newData) noexcept
     SetTargetFPS(data->fps);
 
     // Chargement des models 3D
-    data->models.emplace_back(std::make_unique<Render3D>("assets/models/bomb.obj", "assets/textures/bomb.png"));
-    data->models.emplace_back(std::make_unique<Render3D>("assets/models/box.obj", "assets/textures/wall.png"));
-    data->models.emplace_back(std::make_unique<Render3D>("assets/models/box.obj", "assets/textures/box.png"));
-    data->models.emplace_back(std::make_unique<Render3D>("assets/models/item.obj", "assets/textures/i_roller.png"));
-    data->models.emplace_back(std::make_unique<Render3D>("assets/models/item.obj", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(std::make_unique<Render3D>("assets/models/item.obj", "assets/textures/i_fire.png"));
+    data->models.emplace_back(std::make_unique<Model3D>("assets/models/bomb.obj", "assets/textures/bomb.png"));
+    data->models.emplace_back(std::make_unique<Model3D>("assets/models/box.obj", "assets/textures/wall.png"));
+    data->models.emplace_back(std::make_unique<Model3D>("assets/models/box.obj", "assets/textures/box.png"));
+    data->models.emplace_back(std::make_unique<Model3D>("assets/models/item.obj", "assets/textures/i_roller.png"));
+    data->models.emplace_back(std::make_unique<Model3D>("assets/models/item.obj", "assets/textures/i_bomb.png"));
+    data->models.emplace_back(std::make_unique<Model3D>("assets/models/item.obj", "assets/textures/i_fire.png"));
 
     // Génération des joueurs
     for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(std::make_unique<Player>(i, nullptr, data));

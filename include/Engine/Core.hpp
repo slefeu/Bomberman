@@ -5,8 +5,7 @@
 ** Core
 */
 
-#ifndef CORE_HPP_
-#define CORE_HPP_
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -30,5 +29,3 @@ class Core
   private:
     void switchScene(int scene) noexcept;
 };
-
-#endif /* !CORE_HPP_ */

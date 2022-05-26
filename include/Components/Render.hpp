@@ -9,7 +9,7 @@
 
 #include <memory>
 
-#include "Render3D.hpp"
+#include "Model3D.hpp"
 #include "Transform3D.hpp"
 
 enum class RenderType {
@@ -23,9 +23,9 @@ enum class RenderType {
 class Render
 {
   private:
-    RenderType                 type  = RenderType::R_NONE;
-    std::unique_ptr<Render3D>* model = nullptr;
-    Color                      color = GREEN;
+    RenderType                type  = RenderType::R_NONE;
+    std::unique_ptr<Model3D>* model = nullptr;
+    Color                     color = GREEN;
 
   public:
     Render() noexcept                    = default;
@@ -38,7 +38,7 @@ class Render
 
     void       display(Transform3D& transform) noexcept;
     void       setRenderType(RenderType type) noexcept;
-    void       setModel(std::unique_ptr<Render3D>* model) noexcept;
+    void       setModel(std::unique_ptr<Model3D>* model) noexcept;
     void       setColor(Color color) noexcept;
     RenderType getRenderType() const noexcept;
 };

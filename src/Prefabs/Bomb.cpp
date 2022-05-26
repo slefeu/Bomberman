@@ -19,16 +19,18 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bomb
 {
     transform3d.setScale(0.07f);
     transform3d.setPosition({ round(pos.x), 0.0f - transform3d.getScale(), round(pos.z) });
+    render.setRenderType(RenderType::R_3DMODEL);
+    render.setModel(newModel);
 
     type               = EntityType::E_BOMB;
-    model              = newModel;
     Vector3 hitboxsize = { 0.8f, 1.2f, 0.8f };
     hitbox             = std::make_unique<BoxCollider>(transform3d.getPosition(), hitboxsize, false);
 }
 
 void Bomb::display() noexcept
 {
-    DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
+    render.display(transform3d);
+    // DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
     hitbox->update(transform3d.getPosition());
     hitbox->display();
 }

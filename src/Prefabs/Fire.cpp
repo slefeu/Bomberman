@@ -15,6 +15,8 @@ Fire::Fire(Vector3 posi, float newSize) noexcept
 {
     transform3d.setPosition(posi);
     transform3d.setSize({ newSize, newSize, newSize });
+    render.setRenderType(RenderType::R_CUBE);
+    render.setColor(RED);
 
     type     = EntityType::E_FIRE;
     lifeTime = 0.5f;
@@ -64,7 +66,8 @@ void Fire::display() noexcept
 {
     if (!isEnable) return;
 
-    DrawCubeV(transform3d.getPosition(), transform3d.getSize(), RED);
+    render.display(transform3d);
+    // DrawCubeV(transform3d.getPosition(), transform3d.getSize(), RED);
     hitbox->display();
     hitbox->update(transform3d.getPosition());
 }

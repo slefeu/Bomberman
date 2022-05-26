@@ -15,6 +15,9 @@ Item::Item(Vector3 pos, GameData* data) noexcept
 {
     transform3d.setPosition(pos);
     transform3d.setScale(1.0f);
+    transform3d.setRotationAxis({ 1.0f, 0.0f, 0.0f });
+    transform3d.setRotationAngle(90.0f);
+    render.setRenderType(RenderType::R_3DMODEL_ROTATE);
 
     Vector3 vectortemp = { 1.0f, 1.0f, 0.5f };
     type               = EntityType::E_ITEM;
@@ -29,9 +32,9 @@ Item::Item(Vector3 pos, GameData* data) noexcept
     hitbox->position.y += transform3d.getScale() / 2;
 
     switch (itemType) {
-        case ItemType::I_SPEEDUP: model = MODELS(M_IROLLER); break;
-        case ItemType::I_BOMBUP: model = MODELS(M_IBOMB); break;
-        case ItemType::I_FIREUP: model = MODELS(M_IFIRE); break;
+        case ItemType::I_SPEEDUP: render.setModel(MODELS(M_IROLLER)); break;
+        case ItemType::I_BOMBUP: render.setModel(MODELS(M_IBOMB)); break;
+        case ItemType::I_FIREUP: render.setModel(MODELS(M_IFIRE)); break;
         default: break;
     }
 }
@@ -40,9 +43,11 @@ void Item::display() noexcept
 {
     if (!isEnable) return;
 
-    float scale = transform3d.getScale();
+    render.display(transform3d);
+    // float scale = transform3d.getScale();
 
-    DrawModelEx(MODEL->model, transform3d.getPosition(), { 1.0f, 0.0f, 0.0f }, 90.0f, { scale, scale, scale }, WHITE);
+    // DrawModelEx(
+    //     MODEL->model, transform3d.getPosition(), transform3d.getRotationAxis(), transform3d.getRotationAngle(), { scale, scale, scale }, WHITE);
     hitbox->update(hitbox->position);
     hitbox->display();
 }

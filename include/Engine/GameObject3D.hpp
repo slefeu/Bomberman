@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "BoxCollider.hpp"
+#include "Render.hpp"
 #include "Render3D.hpp"
 #include "Shortcuts.hpp"
 #include "Transform3D.hpp"
@@ -27,6 +28,7 @@ class GameObject3D
     EntityType                   type;
     bool                         isEnable = true;
     Transform3D                  transform3d;
+    Render                       render;
     std::unique_ptr<BoxCollider> hitbox = nullptr;
     std::unique_ptr<Render3D>*   model  = nullptr;
 

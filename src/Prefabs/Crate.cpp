@@ -17,6 +17,8 @@ Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) n
 
     transform3d.setScale(0.015f);
     transform3d.setY(0 - transform3d.getScale());
+    render.setRenderType(RenderType::R_3DMODEL);
+    render.setModel(newModel);
 
     hitbox->position = { transform3d.getPosition().x, 0.35f, transform3d.getPosition().z };
     hitbox->size     = { 1.0f, 1.0f, 1.0f };
@@ -29,7 +31,8 @@ Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) n
 void Crate::display() noexcept
 {
     if (!isEnable) return;
-    DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
+    render.display(transform3d);
+    // DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
     hitbox->display();
 }
 

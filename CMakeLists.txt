@@ -34,6 +34,7 @@ set(
   src/Components/Render3D.cpp
   src/Components/BoxCollider.cpp
   src/Components/Transform3D.cpp
+  src/Components/Render.cpp
 
   src/Prefabs/Player.cpp
   src/Prefabs/Box.cpp

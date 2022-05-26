@@ -11,6 +11,8 @@ Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
     transform3d.setPosition(pos);
     transform3d.setSize(newSize);
+    render.setRenderType(RenderType::R_CUBE);
+    render.setColor(BLUE);
 
     type   = EntityType::E_BOX;
     hitbox = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
@@ -18,7 +20,7 @@ Box::Box(Vector3 pos, Vector3 newSize) noexcept
 
 void Box::display() noexcept
 {
-    DrawCubeV(transform3d.getPosition(), transform3d.getSize(), ORANGE);
+    render.display(transform3d);
     hitbox->update(transform3d.getPosition());
     hitbox->display();
 }

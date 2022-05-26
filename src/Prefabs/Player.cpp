@@ -22,6 +22,8 @@ Player::Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray
 {
     transform3d.setSize({ 0.5f, 0.5f, 0.5f });
     transform3d.setPosition({ 0.0f, 0.0f + (transform3d.getSize().y / 2), 2.0f });
+    render.setRenderType(RenderType::R_CUBE);
+    render.setColor(MAGENTA);
 
     hitbox = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
     type   = EntityType::E_PLAYER;
@@ -91,8 +93,9 @@ void Player::setKeyboard(void) noexcept
 void Player::display() noexcept
 {
     if (!isEnable) return;
-    DrawCubeV(transform3d.getPosition(), transform3d.getSize(), MAGENTA);
-    DrawCubeWiresV(transform3d.getPosition(), transform3d.getSize(), BLACK);
+    render.display(transform3d);
+    // DrawCubeV(transform3d.getPosition(), transform3d.getSize(), MAGENTA);
+    // DrawCubeWiresV(transform3d.getPosition(), transform3d.getSize(), BLACK);
     hitbox->update(transform3d.getPosition());
     hitbox->display();
 }

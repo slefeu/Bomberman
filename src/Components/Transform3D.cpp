@@ -7,13 +7,6 @@ Transform3D::Transform3D() noexcept
 {
 }
 
-Transform3D::Transform3D(Vector3 position, Vector3 size, float scale) noexcept
-    : position(position)
-    , size(size)
-    , scale(scale)
-{
-}
-
 Vector3 Transform3D::getPosition() const noexcept
 {
     return position;
@@ -29,6 +22,16 @@ float Transform3D::getScale() const noexcept
     return scale;
 }
 
+Vector3 Transform3D::getRotationAxis() const noexcept
+{
+    return rotationAxis;
+}
+
+float Transform3D::getRotationAngle() const noexcept
+{
+    return rotationAngle;
+}
+
 void Transform3D::setPosition(Vector3 position) noexcept
 {
     this->position = position;
@@ -42,6 +45,16 @@ void Transform3D::setSize(Vector3 size) noexcept
 void Transform3D::setScale(float scale) noexcept
 {
     this->scale = scale;
+}
+
+void Transform3D::setRotationAxis(Vector3 rotationAxis) noexcept
+{
+    this->rotationAxis = rotationAxis;
+}
+
+void Transform3D::setRotationAngle(float rotationAngle) noexcept
+{
+    this->rotationAngle = rotationAngle;
 }
 
 void Transform3D::moveX(float x) noexcept

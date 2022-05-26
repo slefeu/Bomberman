@@ -15,10 +15,11 @@ class Transform3D
     Vector3 position;
     Vector3 size;
     float   scale;
+    Vector3 rotationAxis;
+    float   rotationAngle;
 
   public:
     Transform3D() noexcept;
-    Transform3D(Vector3 position, Vector3 size, float scale) noexcept;
     ~Transform3D() noexcept                                 = default;
     Transform3D(const Transform3D& other) noexcept          = delete;
     Transform3D(Transform3D&& other) noexcept               = delete;
@@ -28,9 +29,13 @@ class Transform3D
     Vector3 getPosition() const noexcept;
     Vector3 getSize() const noexcept;
     float   getScale() const noexcept;
+    Vector3 getRotationAxis() const noexcept;
+    float   getRotationAngle() const noexcept;
     void    setPosition(Vector3 position) noexcept;
     void    setSize(Vector3 size) noexcept;
     void    setScale(float scale) noexcept;
+    void    setRotationAxis(Vector3 rotationAxis) noexcept;
+    void    setRotationAngle(float rotationAngle) noexcept;
     void    moveX(float x) noexcept;
     void    moveY(float y) noexcept;
     void    moveZ(float z) noexcept;

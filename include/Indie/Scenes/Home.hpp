@@ -18,4 +18,6 @@ class Home : public Scene
     void display3D(void) noexcept;
     void display2D(void) noexcept;
     void action(Cameraman& camera) noexcept;
+    void DestroyPool() noexcept;
+    void CollisionPool() noexcept;
 };

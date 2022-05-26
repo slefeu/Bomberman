@@ -27,77 +27,107 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Model3D>* newModel, int bombS
     hitbox             = std::make_unique<BoxCollider>(transform3d.getPosition(), hitboxsize, false);
 }
 
-void Bomb::display() noexcept
+void Bomb::Display() noexcept
 {
-    render.display(transform3d);
-    // DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
-    hitbox->update(transform3d.getPosition());
-    hitbox->display();
-}
-
-bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    if (explosion == nullptr) {
-        // Permet de ne pas activer les collisions de la bombe si un joueur est à l'interieur
-
-        if (hitbox->isSolid) return false;
-        if (others.size() <= 0 || others[0]->type != EntityType::E_PLAYER) return false;
-
-        int i = 0;
-
-        for (auto& other : others) {
-            if (other->hitbox == nullptr) continue;
-            if (!hitbox->isColliding(other->hitbox)) i++;
-        }
-
-        if (i == (int)others.size()) hitbox->isSolid = true;
-
-        return false;
-    }
-
-    return explosion->isColliding(others);
-}
-
-bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    lifeTimer->updateTimer();
-
-    if (!lifeTimer->timerDone()) {
-        display();
-        return false;
-    }
-    if (explosion == nullptr) explosion = std::make_unique<Explosion>(transform3d.getPosition(), size, others);
-    if (explosion->update()) {
+    if (!isEnable) return;
+    if (lifeTimer->timerDone()) {
+        isEnable = false;
         player->nbBomb++;
-        return true;
+        return;
     }
-    return false;
+    render.display(transform3d);
 }
 
-bool Bomb::update(void) noexcept
+void Bomb::Update() noexcept
 {
+    // hitbox->update(transform3d.getPosition());
+
     lifeTimer->updateTimer();
+    // if (isEnable) return;
 
-    if (!lifeTimer->timerDone()) { display(); }
-    return false;
+    // if (explosion == nullptr) explosion = std::make_unique<Explosion>(transform3d.getPosition(), size, others);
+    //     if (explosion->update()) {
+    // player->nbBomb++;
+    //         return true;
+    //     }
+    //     return false;
 }
 
-void Bomb::setLifeTime(float const& newLifeTime) noexcept
+void Bomb::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
 {
-    lifeTimer->setLifeTime(newLifeTime);
-}
-// -------------------------- USELESS FUNCTIONS --------------------------
-
-bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
-{
-    (void)others;
-    (void)xdir;
-    (void)zdir;
-    return false;
+    (void)other;
 }
 
-void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return;
-}
+// void Bomb::display() noexcept
+// {
+//     render.display(transform3d);
+//     hitbox->update(transform3d.getPosition());
+//     hitbox->display();
+// }
+
+// bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     if (explosion == nullptr) {
+//         // Permet de ne pas activer les collisions de la bombe si un joueur est à l'interieur
+
+//         if (hitbox->isSolid) return false;
+//         if (others.size() <= 0 || others[0]->type != EntityType::E_PLAYER) return false;
+
+//         int i = 0;
+
+//         for (auto& other : others) {
+//             if (other->hitbox == nullptr) continue;
+//             if (!hitbox->isColliding(other->hitbox)) i++;
+//         }
+
+//         if (i == (int)others.size()) hitbox->isSolid = true;
+
+//         return false;
+//     }
+
+//     return explosion->isColliding(others);
+// }
+
+// bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     lifeTimer->updateTimer();
+
+//     if (!lifeTimer->timerDone()) {
+//         display();
+//         return false;
+//     }
+//     if (explosion == nullptr) explosion = std::make_unique<Explosion>(transform3d.getPosition(), size, others);
+//     if (explosion->update()) {
+//         player->nbBomb++;
+//         return true;
+//     }
+//     return false;
+// }
+
+// bool Bomb::update(void) noexcept
+// {
+//     lifeTimer->updateTimer();
+
+//     if (!lifeTimer->timerDone()) { display(); }
+//     return false;
+// }
+
+// void Bomb::setLifeTime(float const& newLifeTime) noexcept
+// {
+//     lifeTimer->setLifeTime(newLifeTime);
+// }
+// // -------------------------- USELESS FUNCTIONS --------------------------
+
+// bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
+// {
+//     (void)others;
+//     (void)xdir;
+//     (void)zdir;
+//     return false;
+// }
+
+// void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     (void)others;
+//     return;
+// }

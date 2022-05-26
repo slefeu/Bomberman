@@ -24,30 +24,22 @@ Fire::Fire(Vector3 posi, float newSize) noexcept
     hitbox   = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
 }
 
-bool Fire::update(void) noexcept
+void Fire::Display() noexcept
 {
-    display();
+    if (!isEnable) return;
+
+    render.display(transform3d);
+}
+
+void Fire::Update() noexcept
+{
+    if (!isEnable) return;
+
+    hitbox->update(transform3d.getPosition());
     timer->updateTimer();
-    return timer->timerDone();
 }
 
-bool Fire::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    bool isColliding = false;
-
-    for (auto& other : others) {
-        if (other->hitbox == nullptr || hitbox == nullptr) continue;
-        // if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
-        if (!isEnable || !other->isEnable) continue;
-        if (hitbox->isColliding(other->hitbox)) {
-            CollideAction(other);
-            isColliding = true;
-        }
-    }
-    return isColliding;
-}
-
-void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
+void Fire::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
 {
     if (other->type == EntityType::E_PLAYER) other->isEnable = false;
     if (other->type == EntityType::E_CRATE) {
@@ -59,42 +51,79 @@ void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
         isEnable      = false;
     }
     if (other->type == EntityType::E_ITEM) other->isEnable = false;
-    if (other->type == EntityType::E_BOMB) other->setLifeTime(0.0);
+    // if (other->type == EntityType::E_BOMB) other->setLifeTime(0.0);
 }
 
-void Fire::display() noexcept
-{
-    if (!isEnable) return;
+// bool Fire::update(void) noexcept
+// {
+//     display();
+//     timer->updateTimer();
+//     return timer->timerDone();
+// }
 
-    render.display(transform3d);
-    // DrawCubeV(transform3d.getPosition(), transform3d.getSize(), RED);
-    hitbox->display();
-    hitbox->update(transform3d.getPosition());
-}
+// bool Fire::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     bool isColliding = false;
 
-void Fire::setLifeTime(float const& newLifeTime) noexcept
-{
-    lifeTime = newLifeTime;
-}
+//     for (auto& other : others) {
+//         if (other->hitbox == nullptr || hitbox == nullptr) continue;
+//         // if (!other->hitbox->isSolid || !hitbox->isSolid) continue;
+//         if (!isEnable || !other->isEnable) continue;
+//         if (hitbox->isColliding(other->hitbox)) {
+//             CollideAction(other);
+//             isColliding = true;
+//         }
+//     }
+//     return isColliding;
+// }
 
-// -------------------------- USELESS FUNCTIONS --------------------------
+// void Fire::CollideAction(std::unique_ptr<GameObject3D>& other) noexcept
+// {
+//     if (other->type == EntityType::E_PLAYER) other->isEnable = false;
+//     if (other->type == EntityType::E_CRATE) {
+//         ((std::unique_ptr<Crate>&)other)->dropItem();
 
-bool Fire::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return false;
-}
+//         other->isEnable = false;
+//         other->hitbox.reset();
+//         other->hitbox = nullptr;
+//         isEnable      = false;
+//     }
+//     if (other->type == EntityType::E_ITEM) other->isEnable = false;
+//     // if (other->type == EntityType::E_BOMB) other->setLifeTime(0.0);
+// }
 
-void Fire::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return;
-}
+// void Fire::display() noexcept
+// {
+//     if (!isEnable) return;
 
-bool Fire::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
-{
-    (void)others;
-    (void)xdir;
-    (void)zdir;
-    return false;
-}
+//     render.display(transform3d);
+//     hitbox->display();
+//     hitbox->update(transform3d.getPosition());
+// }
+
+// void Fire::setLifeTime(float const& newLifeTime) noexcept
+// {
+//     lifeTime = newLifeTime;
+// }
+
+// // -------------------------- USELESS FUNCTIONS --------------------------
+
+// bool Fire::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     (void)others;
+//     return false;
+// }
+
+// void Fire::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     (void)others;
+//     return;
+// }
+
+// bool Fire::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
+// {
+//     (void)others;
+//     (void)xdir;
+//     (void)zdir;
+//     return false;
+// }

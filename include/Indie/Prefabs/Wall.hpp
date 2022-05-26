@@ -14,5 +14,6 @@ class Wall : public Crate
   public:
     Wall(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data) noexcept;
     ~Wall() noexcept = default;
-    void display() noexcept;
+
+    void Update() noexcept;
 };

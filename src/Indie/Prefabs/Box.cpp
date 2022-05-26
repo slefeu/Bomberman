@@ -18,47 +18,62 @@ Box::Box(Vector3 pos, Vector3 newSize) noexcept
     hitbox = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
 }
 
-void Box::display() noexcept
+void Box::Display() noexcept
 {
     render.display(transform3d);
+}
+
+void Box::Update() noexcept
+{
     hitbox->update(transform3d.getPosition());
-    hitbox->display();
 }
 
-// -------------------------- USELESS FUNCTIONS --------------------------
-
-void Box::setLifeTime(float const& newLifeTime) noexcept
+void Box::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
 {
-    (void)newLifeTime;
+    (void)other;
 }
 
-void Box::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return;
-}
+// void Box::display() noexcept
+// {
+//     render.display(transform3d);
+//     hitbox->update(transform3d.getPosition());
+//     hitbox->display();
+// }
 
-bool Box::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return false;
-}
+// // -------------------------- USELESS FUNCTIONS --------------------------
 
-bool Box::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
-{
-    (void)others;
-    (void)xdir;
-    (void)zdir;
-    return false;
-}
+// void Box::setLifeTime(float const& newLifeTime) noexcept
+// {
+//     (void)newLifeTime;
+// }
 
-bool Box::update(void) noexcept
-{
-    return false;
-}
+// void Box::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     (void)others;
+//     return;
+// }
 
-bool Box::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return false;
-}
+// bool Box::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     (void)others;
+//     return false;
+// }
+
+// bool Box::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
+// {
+//     (void)others;
+//     (void)xdir;
+//     (void)zdir;
+//     return false;
+// }
+
+// bool Box::update(void) noexcept
+// {
+//     return false;
+// }
+
+// bool Box::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
+// {
+//     (void)others;
+//     return false;
+// }

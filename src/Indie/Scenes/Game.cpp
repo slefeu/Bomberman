@@ -16,6 +16,10 @@
 #include "Wall.hpp"
 #include "raylib.h"
 
+//-------------------------------------------------------------------------------------------------
+// PUBLIC METHODS
+//-------------------------------------------------------------------------------------------------
+
 Game::Game(GameData* data) noexcept
     : Scene(data)
     , _chrono(std::make_unique<Timer>(data->timeParty))
@@ -30,11 +34,8 @@ Game::Game(GameData* data) noexcept
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {
         if (player->type != EntityType::E_PLAYER) continue;
-        std::unique_ptr<Player>& tempPlayer = (std::unique_ptr<Player>&)player;
-        if (tempPlayer->bombs == nullptr) tempPlayer->bombs = &_bombs;
+        ((std::unique_ptr<Player>&)player)->setBombArray(&_entities);
     }
-
-    data->items = &_items;
 
     createMap();
 }
@@ -46,8 +47,6 @@ void Game::resetCamera(Cameraman& camera) noexcept
 
 void Game::display3D() noexcept
 {
-    // DrawGrid(100, 1.0f);
-
     DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
@@ -55,18 +54,8 @@ void Game::display3D() noexcept
             if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
-    for (auto& player : PLAYERS) player->display();
-    for (auto& entity : _entities) entity->display();
-    for (auto& item : _items) item->display();
-
-    size_t len = _bombs.size();
-    for (size_t i = 0; i != len; i++) {
-        if (_bombs[i]->update(_entities)) {
-            _bombs.erase(_bombs.begin() + i);
-            len--;
-            i--;
-        }
-    }
+    for (auto& player : PLAYERS) player->Display();
+    for (auto& entity : _entities) entity->Display();
 }
 
 void Game::display2D() noexcept
@@ -82,22 +71,19 @@ void Game::display2D() noexcept
 
 void Game::action(Cameraman& camera) noexcept
 {
+    DestroyPool();
+    CollisionPool();
     _chrono->updateTimer();
 
-    for (auto& player : PLAYERS) player->action(_entities);
-    for (auto& item : _items) item->isColliding(PLAYERS);
-    for (auto& bomb : _bombs) {
-        bomb->isColliding(PLAYERS);
-        bomb->isColliding(_entities);
-        bomb->isColliding(_bombs);
-        bomb->isColliding(_items);
-    }
+    for (auto& player : PLAYERS) player->Update();
+    for (auto& entity : _entities) entity->Update();
+
     if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);
 
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
         data->nbPlayer++;
-        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, &_bombs, data));
+        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, &_entities, data));
     }
     if (IsKeyPressed(KEY_V) && data->nbPlayer > 1) {
         data->nbPlayer--;
@@ -112,6 +98,50 @@ void Game::action(Cameraman& camera) noexcept
     if (nbBlockPlaced >= 80) isHurry = false;
     hurryUp();
 }
+
+void Game::DestroyPool() noexcept
+{
+    // suppression des entités désacivées
+    size_t len = _entities.size();
+    for (size_t i = 0; i != len; i++) {
+        if (!_entities[i]->isEnable) {
+            _entities.erase(_entities.begin() + i);
+            len--;
+            i--;
+        }
+    }
+}
+
+void Game::CollisionPool() noexcept
+{
+    // Collisions jouers/entités
+    for (auto& player : PLAYERS) {
+        for (auto& entity : _entities) {
+            if (player->hitbox == nullptr || entity->hitbox == nullptr) continue;
+            if (!player->hitbox->isSolid || !entity->hitbox->isSolid) continue;
+            if (player->hitbox->isColliding(entity->hitbox)) {
+                player->OnCollisionEnter(entity);
+                entity->OnCollisionEnter(player);
+            }
+        }
+    }
+    // Collisions entités/entités
+    for (auto& entity1 : _entities) {
+        for (auto& entity : _entities) {
+            if (entity1->hitbox == nullptr || entity->hitbox == nullptr) continue;
+            if (!entity1->hitbox->isSolid || !entity->hitbox->isSolid) continue;
+            if (entity1 == entity) continue;
+            if (entity1->hitbox->isColliding(entity->hitbox)) {
+                entity1->OnCollisionEnter(entity);
+                entity->OnCollisionEnter(entity1);
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+// PRIVATE METHODS
+//-------------------------------------------------------------------------------------------------
 
 void Game::createMap(void) noexcept
 {

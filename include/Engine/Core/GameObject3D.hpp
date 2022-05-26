@@ -18,9 +18,6 @@
 
 class GameObject3D
 {
-  protected:
-    Color color;
-
   public:
     EntityType                   type;
     bool                         isEnable = true;
@@ -37,11 +34,8 @@ class GameObject3D
     GameObject3D& operator=(const GameObject3D& rhs) noexcept = delete;
     GameObject3D& operator=(GameObject3D&& rhs) noexcept      = delete;
 
-    virtual void display() noexcept                                                                                   = 0;
-    virtual void action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept                                  = 0;
-    virtual bool isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept                             = 0;
-    virtual bool isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept = 0;
-    virtual bool update() noexcept                                                                                    = 0;
-    virtual bool update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept                                  = 0;
-    virtual void setLifeTime(float const& newLifeTime) noexcept                                                       = 0;
+    virtual void Display() noexcept                                              = 0;
+    virtual void Update() noexcept                                               = 0;
+    virtual void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept = 0;
+    // virtual void setLifeTime(float const& newLifeTime) noexcept                  = 0;
 };

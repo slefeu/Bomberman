@@ -40,3 +40,7 @@ void Home::action(Cameraman& camera) noexcept
 {
     (void)camera;
 }
+
+void Home::DestroyPool() noexcept {}
+
+void Home::CollisionPool() noexcept {}

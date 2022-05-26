@@ -27,4 +27,6 @@ class Scene
     virtual void display3D(void) noexcept                = 0;
     virtual void display2D(void) noexcept                = 0;
     virtual void action(Cameraman& camera) noexcept      = 0;
+    virtual void DestroyPool() noexcept                  = 0;
+    virtual void CollisionPool() noexcept                = 0;
 };

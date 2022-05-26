@@ -24,11 +24,49 @@ Player::Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray
     transform3d.setPosition({ 0.0f, 0.0f + (transform3d.getSize().y / 2), 2.0f });
     render.setRenderType(RenderType::R_CUBE);
     render.setColor(MAGENTA);
+    setKeyboard();
+    setPosition();
 
     hitbox = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
     type   = EntityType::E_PLAYER;
-    setKeyboard();
-    setPosition();
+}
+
+void Player::Display() noexcept
+{
+    if (!isEnable) return;
+
+    render.display(transform3d);
+}
+
+void Player::Update() noexcept
+{
+    if (!isEnable) return;
+
+    hitbox->update(transform3d.getPosition());
+
+    if (IsGamepadAvailable(id)) {
+        // Mouvements au joystick
+        float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
+        float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
+
+        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) transform3d.moveZ(-speed);
+        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) transform3d.moveZ(speed);
+        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) transform3d.moveX(-speed);
+        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) transform3d.moveX(speed);
+        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
+    } else {
+        // Mouvements au clavier
+        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) transform3d.moveZ(-speed);
+        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) transform3d.moveZ(speed);
+        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) transform3d.moveX(-speed);
+        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) transform3d.moveX(speed);
+        if (IsKeyPressed(dropBomb)) placeBomb();
+    }
+}
+
+void Player::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
+{
+    if (other->type == EntityType::E_WALL) isEnable = false;
 }
 
 void Player::setPosition(void) noexcept
@@ -90,56 +128,6 @@ void Player::setKeyboard(void) noexcept
     }
 }
 
-void Player::display() noexcept
-{
-    if (!isEnable) return;
-    render.display(transform3d);
-    // DrawCubeV(transform3d.getPosition(), transform3d.getSize(), MAGENTA);
-    // DrawCubeWiresV(transform3d.getPosition(), transform3d.getSize(), BLACK);
-    hitbox->update(transform3d.getPosition());
-    hitbox->display();
-}
-
-void Player::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    if (!isEnable) return;
-
-    if (isColliding(others)) return;
-
-    if (IsGamepadAvailable(id)) {
-        // Mouvements au joystick
-        float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
-        float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
-
-        if (axisY < -0.5f && !isCollidingNextTurn(others, 0, -1) && !isCollidingNextTurn(*bombs, 0, -1)) transform3d.moveZ(-speed);
-        if (axisY > 0.5f && !isCollidingNextTurn(others, 0, 1) && !isCollidingNextTurn(*bombs, 0, 1)) transform3d.moveZ(speed);
-        if (axisX < -0.5f && !isCollidingNextTurn(others, -1, 0) && !isCollidingNextTurn(*bombs, -1, 0)) transform3d.moveX(-speed);
-        if (axisX > 0.5f && !isCollidingNextTurn(others, 1, 0) && !isCollidingNextTurn(*bombs, 1, 0)) transform3d.moveX(speed);
-        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
-    } else {
-        // Mouvements au clavier
-        if (IsKeyDown(moveUp) && !isCollidingNextTurn(others, 0, -1) && !isCollidingNextTurn(*bombs, 0, -1)) transform3d.moveZ(-speed);
-        if (IsKeyDown(moveDown) && !isCollidingNextTurn(others, 0, 1) && !isCollidingNextTurn(*bombs, 0, 1)) transform3d.moveZ(speed);
-        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(others, -1, 0) && !isCollidingNextTurn(*bombs, -1, 0)) transform3d.moveX(-speed);
-        if (IsKeyDown(moveRight) && !isCollidingNextTurn(others, 1, 0) && !isCollidingNextTurn(*bombs, 1, 0)) transform3d.moveX(speed);
-        if (IsKeyPressed(dropBomb)) placeBomb();
-    }
-}
-
-bool Player::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    if (!isEnable) return false;
-    for (auto& other : others) {
-        if (hitbox == nullptr || other->hitbox == nullptr) continue;
-        if (!hitbox->isSolid || !other->hitbox->isSolid) continue;
-        if (hitbox->isColliding(other->hitbox)) {
-            if (other->type == EntityType::E_WALL) isEnable = false;
-            return true;
-        };
-    }
-    return false;
-}
-
 bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
 {
     Vector3 position = transform3d.getPosition();
@@ -149,7 +137,11 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& oth
     for (auto& other : others) {
         if (hitbox == nullptr || other->hitbox == nullptr) continue;
         if (!hitbox->isSolid || !other->hitbox->isSolid) continue;
-        if (other->hitbox->isColliding(hitbox, nextTurn)) return true;
+        if (other->hitbox->isColliding(hitbox, nextTurn)) {
+            if (other->type == EntityType::E_BOMB) return true;
+            if (other->type == EntityType::E_WALL) return true;
+            if (other->type == EntityType::E_CRATE) return true;
+        }
     }
     return false;
 }
@@ -161,18 +153,7 @@ void Player::placeBomb(void) noexcept
     bombs->emplace_back(std::make_unique<Bomb>(transform3d.getPosition(), this, MODELS(M_BOMB), bombSize));
 }
 
-bool Player::update(void) noexcept
+void Player::setBombArray(std::vector<std::unique_ptr<GameObject3D>>* bombsArray) noexcept
 {
-    return false;
-}
-
-void Player::setLifeTime(float const& newLifeTime) noexcept
-{
-    (void)newLifeTime;
-}
-
-bool Player::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-{
-    (void)others;
-    return false;
+    bombs = bombsArray;
 }

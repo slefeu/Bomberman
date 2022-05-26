@@ -16,15 +16,13 @@
 class Player : public GameObject3D
 {
   private:
-    KeyboardKey moveUp;
-    KeyboardKey moveDown;
-    KeyboardKey moveLeft;
-    KeyboardKey moveRight;
-    KeyboardKey dropBomb;
-    int         id;
-    GameData*   data;
-
-  public:
+    KeyboardKey                                 moveUp;
+    KeyboardKey                                 moveDown;
+    KeyboardKey                                 moveLeft;
+    KeyboardKey                                 moveRight;
+    KeyboardKey                                 dropBomb;
+    int                                         id;
+    GameData*                                   data;
     std::vector<std::unique_ptr<GameObject3D>>* bombs;
 
   public:
@@ -35,19 +33,16 @@ class Player : public GameObject3D
   public:
     Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept;
     ~Player() noexcept = default;
-    void    display() noexcept;
-    void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
-    Vector3 getPosition() noexcept;
-    Vector3 getSize() noexcept;
-    bool    isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
-    bool    isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
-    bool    update() noexcept;
-    bool    update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
-    void    setStats(int bomb, int sp, int size) noexcept;
-    void    setLifeTime(float const& newLifeTime) noexcept;
+
+    void Display() noexcept;
+    void Update() noexcept;
+    void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept;
+    void setStats(int bomb, int sp, int size) noexcept;
+    void setBombArray(std::vector<std::unique_ptr<GameObject3D>>* bombsArray) noexcept;
 
   private:
     void setKeyboard(void) noexcept;
     void setPosition(void) noexcept;
     void placeBomb(void) noexcept;
+    bool isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept;
 };

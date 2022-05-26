@@ -29,8 +29,7 @@ Core::Core(GameData* newData) noexcept
     data->models.emplace_back(std::make_unique<Render3D>("assets/models/item.obj", "assets/textures/i_fire.png"));
 
     // Génération des joueurs
-    Color colors[4] = { PINK, BLUE, YELLOW, MAROON };
-    for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(std::make_unique<Player>(i, colors[i], nullptr, data));
+    for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(std::make_unique<Player>(i, nullptr, data));
 
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data));

@@ -12,3 +12,4 @@ build/
 .ccls
 .Debug/
 compile_commands.json
+null.d

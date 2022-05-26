@@ -13,13 +13,13 @@
 
 Fire::Fire(Vector3 posi, float newSize) noexcept
 {
-    position = posi;
+    transform3d.setPosition(posi);
+    transform3d.setSize({ newSize, newSize, newSize });
+
     type     = EntityType::E_FIRE;
-    size     = { newSize, newSize, newSize };
-    color    = RED;
     lifeTime = 0.5f;
     timer    = std::make_unique<Timer>(lifeTime);
-    hitbox   = std::make_unique<BoxCollider>(position, size, true);
+    hitbox   = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
 }
 
 bool Fire::update(void) noexcept
@@ -64,24 +64,14 @@ void Fire::display() noexcept
 {
     if (!isEnable) return;
 
-    DrawCubeV(position, size, color);
+    DrawCubeV(transform3d.getPosition(), transform3d.getSize(), RED);
     hitbox->display();
-    hitbox->update(position);
+    hitbox->update(transform3d.getPosition());
 }
 
 void Fire::setLifeTime(float const& newLifeTime) noexcept
 {
     lifeTime = newLifeTime;
-}
-
-Vector3 Fire::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Fire::getSize() noexcept
-{
-    return size;
 }
 
 // -------------------------- USELESS FUNCTIONS --------------------------
@@ -90,21 +80,6 @@ bool Fire::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return false;
-}
-
-void Fire::moveX(float x) noexcept
-{
-    (void)x;
-}
-
-void Fire::moveY(float y) noexcept
-{
-    (void)y;
-}
-
-void Fire::moveZ(float z) noexcept
-{
-    (void)z;
 }
 
 void Fire::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept

@@ -90,7 +90,7 @@ void Cameraman::lookBetweenGameObject3D(std::vector<std::unique_ptr<GameObject3D
 
     for (auto& entity : entities) {
         if (!entity->isEnable) continue;
-        Vector3 pos = entity->getPosition();
+        Vector3 pos = entity->transform3d.getPosition();
         if (pos.x < minX) minX = pos.x;
         if (pos.x > maxX) maxX = pos.x;
         if (pos.z < minZ) minZ = pos.z;

@@ -15,15 +15,15 @@
 
 Explosion::Explosion(Vector3 posi, int newSize, std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    position      = posi;
+    transform3d.setPosition(posi);
+    transform3d.setSize({ 10.0f, 0.2f, 0.2f });
+
     type          = EntityType::E_EXPLOSION;
-    size          = { 10.0f, 0.2f, 0.2f };
-    color         = RED;
     hitbox        = nullptr;
     lifeTime      = 0.5f;
     explosionSize = newSize;
     timer         = std::make_unique<Timer>(lifeTime);
-    fires.emplace_back(std::make_unique<Fire>(posi, 0.9f));
+    fires.emplace_back(std::make_unique<Fire>(transform3d.getPosition(), 0.9f));
     extandExplosion(others);
 }
 
@@ -34,7 +34,8 @@ void Explosion::display() noexcept
 
 void Explosion::extandExplosion(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
-    float size = 0.5f;
+    Vector3 position = transform3d.getPosition();
+    float   size     = 0.5f;
 
     for (int i = 1; i < explosionSize; i++) {
         Vector3 newPos = { position.x + float(i), position.y, position.z };
@@ -76,36 +77,11 @@ bool Explosion::update(void) noexcept
     return timer->timerDone();
 }
 
-Vector3 Explosion::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Explosion::getSize() noexcept
-{
-    return size;
-}
-
 // -------------------------- USELESS FUNCTIONS --------------------------
 
 void Explosion::setLifeTime(float const& newLifeTime) noexcept
 {
     (void)newLifeTime;
-}
-
-void Explosion::moveX(float x) noexcept
-{
-    (void)x;
-}
-
-void Explosion::moveY(float y) noexcept
-{
-    (void)y;
-}
-
-void Explosion::moveZ(float z) noexcept
-{
-    (void)z;
 }
 
 void Explosion::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept

@@ -13,11 +13,13 @@ Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) n
     : Box(pos, { 1.0f, 1.0f, 1.0f })
     , data(data)
 {
-    type             = EntityType::E_CRATE;
-    hitbox->position = { position.x, 0.35f, position.z };
+    type = EntityType::E_CRATE;
+
+    transform3d.setScale(0.015f);
+    transform3d.setY(0 - transform3d.getScale());
+
+    hitbox->position = { transform3d.getPosition().x, 0.35f, transform3d.getPosition().z };
     hitbox->size     = { 1.0f, 1.0f, 1.0f };
-    scale            = 0.015f;
-    position.y       = 0 - scale;
     isEnable         = true;
     model            = newModel;
 
@@ -27,12 +29,12 @@ Crate::Crate(Vector3 pos, std::unique_ptr<Render3D>* newModel, GameData* data) n
 void Crate::display() noexcept
 {
     if (!isEnable) return;
-    DrawModel(MODEL->model, position, scale, WHITE);
+    DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
     hitbox->display();
 }
 
 void Crate::dropItem() noexcept
 {
     if (rand() % 3 != 0) return;
-    data->items->emplace_back(std::make_unique<Item>(position, data));
+    data->items->emplace_back(std::make_unique<Item>(transform3d.getPosition(), data));
 }

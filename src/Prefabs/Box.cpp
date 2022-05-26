@@ -9,43 +9,18 @@
 
 Box::Box(Vector3 pos, Vector3 newSize) noexcept
 {
-    position = pos;
-    type     = EntityType::E_BOX;
-    color    = ORANGE;
-    size     = newSize;
-    hitbox   = std::make_unique<BoxCollider>(position, size, true);
+    transform3d.setPosition(pos);
+    transform3d.setSize(newSize);
+
+    type   = EntityType::E_BOX;
+    hitbox = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
 }
 
 void Box::display() noexcept
 {
-    DrawCubeV(position, size, color);
-    hitbox->update(position);
+    DrawCubeV(transform3d.getPosition(), transform3d.getSize(), ORANGE);
+    hitbox->update(transform3d.getPosition());
     hitbox->display();
-}
-
-void Box::moveX(float x) noexcept
-{
-    position.x += x * GetFrameTime();
-}
-
-void Box::moveY(float y) noexcept
-{
-    position.y += y * GetFrameTime();
-}
-
-void Box::moveZ(float z) noexcept
-{
-    position.z += z * GetFrameTime();
-}
-
-Vector3 Box::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Box::getSize() noexcept
-{
-    return size;
 }
 
 // -------------------------- USELESS FUNCTIONS --------------------------

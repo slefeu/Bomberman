@@ -13,18 +13,20 @@
 
 Item::Item(Vector3 pos, GameData* data) noexcept
 {
-    Vector3 vectortemp = { 1.0f, 1.0f, 0.5f };
-    position           = pos;
-    type               = EntityType::E_ITEM;
-    hitbox             = std::make_unique<BoxCollider>(position, vectortemp, true);
-    scale              = 1.0f;
-    hitbox->isSolid    = false;
-    itemType           = (ItemType)((int)rand() % 3);
+    transform3d.setPosition(pos);
+    transform3d.setScale(1.0f);
 
-    position.z -= scale / 2;
-    position.y += scale / 2;
-    hitbox->position.z += scale / 10;
-    hitbox->position.y += scale / 2;
+    Vector3 vectortemp = { 1.0f, 1.0f, 0.5f };
+    type               = EntityType::E_ITEM;
+    hitbox             = std::make_unique<BoxCollider>(transform3d.getPosition(), vectortemp, true);
+    hitbox->isSolid    = false;
+
+    itemType = (ItemType)((int)rand() % 3);
+
+    transform3d.addZ((transform3d.getScale() / 2) * -1);
+    transform3d.addY((transform3d.getScale() / 2));
+    hitbox->position.z += transform3d.getScale() / 10;
+    hitbox->position.y += transform3d.getScale() / 2;
 
     switch (itemType) {
         case ItemType::I_SPEEDUP: model = MODELS(M_IROLLER); break;
@@ -38,7 +40,9 @@ void Item::display() noexcept
 {
     if (!isEnable) return;
 
-    DrawModelEx(MODEL->model, position, { 1.0f, 0.0f, 0.0f }, 90.0f, { scale, scale, scale }, WHITE);
+    float scale = transform3d.getScale();
+
+    DrawModelEx(MODEL->model, transform3d.getPosition(), { 1.0f, 0.0f, 0.0f }, 90.0f, { scale, scale, scale }, WHITE);
     hitbox->update(hitbox->position);
     hitbox->display();
 }
@@ -75,35 +79,10 @@ void Item::setLifeTime(float const& newLifeTime) noexcept
     (void)newLifeTime;
 }
 
-void Item::moveX(float x) noexcept
-{
-    (void)x;
-}
-
-void Item::moveY(float y) noexcept
-{
-    (void)y;
-}
-
-void Item::moveZ(float z) noexcept
-{
-    (void)z;
-}
-
 void Item::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
 {
     (void)others;
     return;
-}
-
-Vector3 Item::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Item::getSize() noexcept
-{
-    return size;
 }
 
 bool Item::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept

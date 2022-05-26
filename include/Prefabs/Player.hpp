@@ -34,7 +34,7 @@ class Player : public GameObject3D
     int   bombSize;
 
   public:
-    Player(int newId, Color newColor, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept;
+    Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept;
     ~Player() noexcept = default;
     void    display() noexcept;
     void    action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept;
@@ -50,9 +50,6 @@ class Player : public GameObject3D
   private:
     void setKeyboard(void) noexcept;
     void setPosition(void) noexcept;
-    void moveX(float x) noexcept;
-    void moveY(float y) noexcept;
-    void moveZ(float z) noexcept;
     void placeBomb(void) noexcept;
 };
 

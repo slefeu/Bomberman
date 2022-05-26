@@ -17,46 +17,20 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Render3D>* newModel, int bomb
     , size(bombSize)
     , hasHitbox(false)
 {
-    scale              = 0.07f;
-    position.x         = round(pos.x);
-    position.y         = 0 - scale;
-    position.z         = round(pos.z);
+    transform3d.setScale(0.07f);
+    transform3d.setPosition({ round(pos.x), 0.0f - transform3d.getScale(), round(pos.z) });
+
     type               = EntityType::E_BOMB;
     model              = newModel;
     Vector3 hitboxsize = { 0.8f, 1.2f, 0.8f };
-    hitbox             = std::make_unique<BoxCollider>(position, hitboxsize, false);
+    hitbox             = std::make_unique<BoxCollider>(transform3d.getPosition(), hitboxsize, false);
 }
 
 void Bomb::display() noexcept
 {
-    DrawModel(MODEL->model, position, scale, WHITE);
-    hitbox->update(position);
+    DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
+    hitbox->update(transform3d.getPosition());
     hitbox->display();
-}
-
-void Bomb::moveX(float x) noexcept
-{
-    position.x += x * GetFrameTime();
-}
-
-void Bomb::moveY(float y) noexcept
-{
-    position.y += y * GetFrameTime();
-}
-
-void Bomb::moveZ(float z) noexcept
-{
-    position.z += z * GetFrameTime();
-}
-
-Vector3 Bomb::getPosition() noexcept
-{
-    return position;
-}
-
-Vector3 Bomb::getSize() noexcept
-{
-    return { 0.0f, 0.0f, 0.0f };
 }
 
 bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
@@ -74,9 +48,6 @@ bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexc
             if (!hitbox->isColliding(other->hitbox)) i++;
         }
 
-        std::cout << "i = " << i << std::endl;
-        std::cout << "hitbox->isSolid = " << hitbox->isSolid << std::endl;
-
         if (i == (int)others.size()) hitbox->isSolid = true;
 
         return false;
@@ -93,7 +64,7 @@ bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
         display();
         return false;
     }
-    if (explosion == nullptr) explosion = std::make_unique<Explosion>(position, size, others);
+    if (explosion == nullptr) explosion = std::make_unique<Explosion>(transform3d.getPosition(), size, others);
     if (explosion->update()) {
         player->nbBomb++;
         return true;

@@ -97,7 +97,7 @@ void Game::action(Cameraman& camera) noexcept
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
         data->nbPlayer++;
-        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, MAGENTA, &_bombs, data));
+        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, &_bombs, data));
     }
     if (IsKeyPressed(KEY_V) && data->nbPlayer > 1) {
         data->nbPlayer--;
@@ -123,10 +123,9 @@ void Game::createMap(void) noexcept
 
         if ((int)tempX % 2 != 0 && (int)tempZ % 2 != 0) continue;
 
-        if ((tempX == -6 && tempZ == -4) || (tempX == 6 && tempZ == -4) || (tempX == -6 && tempZ == 6)
-            || (tempX == 6 && tempZ == 6) || (tempX == -6 && tempZ == -3) || (tempX == 6 && tempZ == -3)
-            || (tempX == -6 && tempZ == 5) || (tempX == 6 && tempZ == 5) || (tempX == -5 && tempZ == -4)
-            || (tempX == 5 && tempZ == -4) || (tempX == -5 && tempZ == 6) || (tempX == 5 && tempZ == 6))
+        if ((tempX == -6 && tempZ == -4) || (tempX == 6 && tempZ == -4) || (tempX == -6 && tempZ == 6) || (tempX == 6 && tempZ == 6)
+            || (tempX == -6 && tempZ == -3) || (tempX == 6 && tempZ == -3) || (tempX == -6 && tempZ == 5) || (tempX == 6 && tempZ == 5)
+            || (tempX == -5 && tempZ == -4) || (tempX == 5 && tempZ == -4) || (tempX == -5 && tempZ == 6) || (tempX == 5 && tempZ == 6))
             continue;
 
         vectorTemp = { tempX * 1.0f, 0.0f, tempZ * 1.0f };

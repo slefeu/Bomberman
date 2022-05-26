@@ -10,19 +10,20 @@
 Wall::Wall(Vector3 pos, std::unique_ptr<Render3D>* model, GameData* data) noexcept
     : Crate(pos, model, data)
 {
-    type       = EntityType::E_WALL;
-    scale      = 0.017f;
-    position.y = pos.y;
+    type = EntityType::E_WALL;
+
+    transform3d.setScale(0.017f);
+    transform3d.setY(pos.y);
 }
 
 void Wall::display() noexcept
 {
     if (!isEnable) return;
 
-    if (position.y > 0) { position.y -= 4.0f * GetFrameTime(); }
-    if (position.y < 0) { position.y = 0; }
+    if (transform3d.getPosition().y > 0) { transform3d.moveY(-4.0f); }
+    if (transform3d.getPosition().y < 0) { transform3d.setY(0.0f); }
 
-    DrawModel(MODEL->model, position, scale, WHITE);
+    DrawModel(MODEL->model, transform3d.getPosition(), transform3d.getScale(), WHITE);
     hitbox->display();
-    hitbox->update(position);
+    hitbox->update(transform3d.getPosition());
 }

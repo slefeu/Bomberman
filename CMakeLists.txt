@@ -40,7 +40,6 @@ set(
   src/Indie/Prefabs/Box.cpp
   src/Indie/Prefabs/Bomb.cpp
   src/Indie/Prefabs/Crate.cpp
-  src/Indie/Prefabs/Explosion.cpp
   src/Indie/Prefabs/Wall.cpp
   src/Indie/Prefabs/Fire.cpp
   src/Indie/Prefabs/Item.cpp

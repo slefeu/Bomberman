@@ -12,12 +12,11 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 
-Player::Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept
+Player::Player(int newId, GameData* data) noexcept
     : id(newId)
     , data(data)
-    , bombs(bombsArray)
     , nbBomb(1)
-    , speed(2.5f)
+    , speed(2.0f)
     , bombSize(3)
 {
     transform3d.setSize({ 0.5f, 0.5f, 0.5f });
@@ -27,7 +26,7 @@ Player::Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray
     setKeyboard();
     setPosition();
 
-    hitbox = std::make_unique<BoxCollider>(transform3d.getPosition(), transform3d.getSize(), true);
+    hitbox = NEW_HITBOX(transform3d.getPosition(), transform3d.getSize(), true);
     type   = EntityType::E_PLAYER;
 }
 
@@ -67,6 +66,10 @@ void Player::Update() noexcept
 void Player::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
 {
     if (other->type == EntityType::E_WALL) isEnable = false;
+    if (other->type == EntityType::E_FIRE) {
+        std::cout << "Player " << id << " has been killed" << std::endl;
+        isEnable = false;
+    }
 }
 
 void Player::setPosition(void) noexcept
@@ -105,7 +108,7 @@ void Player::setKeyboard(void) noexcept
             break;
         case 1:
             moveUp    = KEY_KP_8;
-            moveDown  = KEY_KP_2;
+            moveDown  = KEY_KP_5;
             moveLeft  = KEY_KP_4;
             moveRight = KEY_KP_6;
             dropBomb  = KEY_KP_7;
@@ -150,7 +153,7 @@ void Player::placeBomb(void) noexcept
 {
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(transform3d.getPosition(), this, MODELS(M_BOMB), bombSize));
+    bombs->emplace_back(std::make_unique<Bomb>(transform3d.getPosition(), this, MODELS(M_BOMB), bombSize, data, bombs));
 }
 
 void Player::setBombArray(std::vector<std::unique_ptr<GameObject3D>>* bombsArray) noexcept

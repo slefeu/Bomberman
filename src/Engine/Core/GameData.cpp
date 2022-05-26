@@ -14,6 +14,5 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
     , nbPlayer(nbPlayer)
     , currentScene(1)
     , timeParty(120.0f)
-    , items(nullptr)
 {
 }

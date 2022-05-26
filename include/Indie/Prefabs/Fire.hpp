@@ -11,8 +11,14 @@
 #include "GameObject3D.hpp"
 #include "Timer.hpp"
 
+#define NEW_FIRE(pos, size) std::make_unique<Fire>(pos, size)
+
 class Fire : public GameObject3D
 {
+  private:
+    float                  explodeTime;
+    std::unique_ptr<Timer> explodeTimer;
+
   public:
     Fire(Vector3 posi, float newSize) noexcept;
     ~Fire() noexcept = default;
@@ -20,12 +26,5 @@ class Fire : public GameObject3D
     void Display() noexcept;
     void Update() noexcept;
     void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept;
-    // void setLifeTime(float const& newLifeTime) noexcept;
-
-    // private:
-    // void CollideAction(std::unique_ptr<GameObject3D>& other) noexcept;
-
-  private:
-    float                  lifeTime;
-    std::unique_ptr<Timer> timer;
+    bool ExplodeElements(std::unique_ptr<GameObject3D>& other) noexcept;
 };

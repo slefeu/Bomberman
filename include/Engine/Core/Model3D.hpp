@@ -11,6 +11,8 @@
 
 #include "raylib.h"
 
+#define NEW_MODEL(obj, texture) std::make_unique<Model3D>(obj, texture)
+
 class Model3D
 {
   public:

@@ -22,7 +22,7 @@
 
 Game::Game(GameData* data) noexcept
     : Scene(data)
-    , _chrono(std::make_unique<Timer>(data->timeParty))
+    , _chrono(NEW_TIMER(data->timeParty))
     , isHurry(false)
     , nbBlockPlaced(0)
 {
@@ -83,7 +83,9 @@ void Game::action(Cameraman& camera) noexcept
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
         data->nbPlayer++;
-        PLAYERS.emplace_back(std::make_unique<Player>(data->nbPlayer - 1, &_entities, data));
+        auto tempPlayer = NEW_PLAYER(data->nbPlayer - 1, data);
+        tempPlayer->setBombArray(&_entities);
+        PLAYERS.emplace_back(std::move(tempPlayer));
     }
     if (IsKeyPressed(KEY_V) && data->nbPlayer > 1) {
         data->nbPlayer--;
@@ -118,7 +120,6 @@ void Game::CollisionPool() noexcept
     for (auto& player : PLAYERS) {
         for (auto& entity : _entities) {
             if (player->hitbox == nullptr || entity->hitbox == nullptr) continue;
-            if (!player->hitbox->isSolid || !entity->hitbox->isSolid) continue;
             if (player->hitbox->isColliding(entity->hitbox)) {
                 player->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(player);
@@ -147,38 +148,36 @@ void Game::createMap(void) noexcept
 {
     Vector3 vectorTemp;
 
-    for (int i = 0; i < 100; i++) {
-        int tempX = (rand() % 13) - 6.0f;
-        int tempZ = (rand() % 12) - 5.0f;
+    // Génération des boites
+    for (int z = -4; z < 7; z++)
+        for (int x = -6; x < 7; x++) {
+            if ((x == -6 && z == -4) || (x == 6 && z == -4) || (x == -6 && z == 6) || (x == 6 && z == 6) || (x == -6 && z == -3)
+                || (x == 6 && z == -3) || (x == -6 && z == 5) || (x == 6 && z == 5) || (x == -5 && z == -4) || (x == 5 && z == -4)
+                || (x == -5 && z == 6) || (x == 5 && z == 6))
+                continue;
 
-        if ((int)tempX % 2 != 0 && (int)tempZ % 2 != 0) continue;
+            Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
 
-        if ((tempX == -6 && tempZ == -4) || (tempX == 6 && tempZ == -4) || (tempX == -6 && tempZ == 6) || (tempX == 6 && tempZ == 6)
-            || (tempX == -6 && tempZ == -3) || (tempX == 6 && tempZ == -3) || (tempX == -6 && tempZ == 5) || (tempX == 6 && tempZ == 5)
-            || (tempX == -5 && tempZ == -4) || (tempX == 5 && tempZ == -4) || (tempX == -5 && tempZ == 6) || (tempX == 5 && tempZ == 6))
-            continue;
-
-        vectorTemp = { tempX * 1.0f, 0.0f, tempZ * 1.0f };
-        _entities.emplace_back(std::make_unique<Crate>(vectorTemp, MODELS(M_CRATE), data));
-    }
+            if (rand() % 3 == 0) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
+            else
+                _entities.emplace_back(NEW_ITEM(vectorTemp, data));
+        }
 
     // Ajout des murs une case sur deux
     for (int z = -4; z < 6; z++)
-        for (int x = -5; x < 6; x++) {
+        for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
+                _entities.emplace_back(NEW_WALL(vectorTemp));
             }
-        }
 
     // Ajout des murs autour de la carte
     for (int z = -5; z < 8; z++)
-        for (int x = -7; x < 8; x++) {
+        for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
+                _entities.emplace_back(NEW_WALL(vectorTemp));
             }
-        }
 }
 
 void Game::hurryUp(void) noexcept
@@ -223,7 +222,7 @@ void Game::hurryUp(void) noexcept
         }
 
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
-        _entities.emplace_back(std::make_unique<Wall>(vectorTemp, MODELS(M_WALL), data));
+        _entities.emplace_back(NEW_WALL(vectorTemp));
         lastTimeBlockPlace = _chrono->getTime();
         nbBlockPlaced++;
     }

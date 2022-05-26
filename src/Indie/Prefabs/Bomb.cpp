@@ -9,13 +9,19 @@
 
 #include <iostream>
 
-Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Model3D>* newModel, int bombSize) noexcept
+Bomb::Bomb(Vector3                              pos,
+    Player*                                     p,
+    std::unique_ptr<Model3D>*                   newModel,
+    int                                         bombSize,
+    GameData*                                   data,
+    std::vector<std::unique_ptr<GameObject3D>>* entities) noexcept
     : lifeTime(3.0f)
-    , lifeTimer(std::make_unique<Timer>(lifeTime))
-    , explosion(nullptr)
+    , lifeTimer(NEW_TIMER(lifeTime))
     , player(p)
     , size(bombSize)
     , hasHitbox(false)
+    , data(data)
+    , entities(entities)
 {
     transform3d.setScale(0.07f);
     transform3d.setPosition({ round(pos.x), 0.0f - transform3d.getScale(), round(pos.z) });
@@ -24,33 +30,35 @@ Bomb::Bomb(Vector3 pos, Player* p, std::unique_ptr<Model3D>* newModel, int bombS
 
     type               = EntityType::E_BOMB;
     Vector3 hitboxsize = { 0.8f, 1.2f, 0.8f };
-    hitbox             = std::make_unique<BoxCollider>(transform3d.getPosition(), hitboxsize, false);
+    hitbox             = NEW_HITBOX(transform3d.getPosition(), hitboxsize, false);
 }
 
 void Bomb::Display() noexcept
 {
-    if (!isEnable) return;
-    if (lifeTimer->timerDone()) {
-        isEnable = false;
-        player->nbBomb++;
-        return;
-    }
     render.display(transform3d);
 }
 
 void Bomb::Update() noexcept
 {
-    // hitbox->update(transform3d.getPosition());
-
     lifeTimer->updateTimer();
-    // if (isEnable) return;
 
-    // if (explosion == nullptr) explosion = std::make_unique<Explosion>(transform3d.getPosition(), size, others);
-    //     if (explosion->update()) {
-    // player->nbBomb++;
-    //         return true;
-    //     }
-    //     return false;
+    if (lifeTimer->timerDone()) {
+        explode();
+        return;
+    }
+
+    if (fires.size() == 0 && !hitbox->isSolid) {
+        if (data->players.size() <= 0) return;
+        int i = 0;
+
+        for (auto& other : data->players) {
+            if (other->hitbox == nullptr) continue;
+            if (!hitbox->isColliding(other->hitbox)) i++;
+        }
+
+        if (i == (int)data->players.size()) hitbox->isSolid = true;
+        return;
+    }
 }
 
 void Bomb::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
@@ -58,76 +66,39 @@ void Bomb::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
     (void)other;
 }
 
-// void Bomb::display() noexcept
-// {
-//     render.display(transform3d);
-//     hitbox->update(transform3d.getPosition());
-//     hitbox->display();
-// }
+void Bomb::explode() noexcept
+{
+    if (isExploding) return;
 
-// bool Bomb::isColliding(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-// {
-//     if (explosion == nullptr) {
-//         // Permet de ne pas activer les collisions de la bombe si un joueur est à l'interieur
+    isExploding     = true;
+    hitbox->isSolid = false;
+    player->nbBomb++;
+    fires.emplace_back(NEW_FIRE(transform3d.getPosition(), 0.9f));
+    createFire({ 1.0f, 0.0f, 0.0f });
+    createFire({ -1.0f, 0.0f, 0.0f });
+    createFire({ 0.0f, 0.0f, 1.0f });
+    createFire({ 0.0f, 0.0f, -1.0f });
 
-//         if (hitbox->isSolid) return false;
-//         if (others.size() <= 0 || others[0]->type != EntityType::E_PLAYER) return false;
+    for (auto& fire : fires) { entities->emplace_back(std::move(fire)); }
+    isEnable = false;
+}
 
-//         int i = 0;
+void Bomb::createFire(Vector3 mul) noexcept
+{
+    Vector3 position = transform3d.getPosition();
+    float   scale    = 0.5f;
+    Vector3 newPos;
+    bool    exit = false;
 
-//         for (auto& other : others) {
-//             if (other->hitbox == nullptr) continue;
-//             if (!hitbox->isColliding(other->hitbox)) i++;
-//         }
+    for (int i = 1; i < size && !exit; i++) {
+        newPos.x = position.x + (float(i) * mul.x);
+        newPos.y = position.y + (float(i) * mul.y);
+        newPos.z = position.z + (float(i) * mul.z);
+        fires.emplace_back(NEW_FIRE(newPos, scale));
 
-//         if (i == (int)others.size()) hitbox->isSolid = true;
-
-//         return false;
-//     }
-
-//     return explosion->isColliding(others);
-// }
-
-// bool Bomb::update(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-// {
-//     lifeTimer->updateTimer();
-
-//     if (!lifeTimer->timerDone()) {
-//         display();
-//         return false;
-//     }
-//     if (explosion == nullptr) explosion = std::make_unique<Explosion>(transform3d.getPosition(), size, others);
-//     if (explosion->update()) {
-//         player->nbBomb++;
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool Bomb::update(void) noexcept
-// {
-//     lifeTimer->updateTimer();
-
-//     if (!lifeTimer->timerDone()) { display(); }
-//     return false;
-// }
-
-// void Bomb::setLifeTime(float const& newLifeTime) noexcept
-// {
-//     lifeTimer->setLifeTime(newLifeTime);
-// }
-// // -------------------------- USELESS FUNCTIONS --------------------------
-
-// bool Bomb::isCollidingNextTurn(std::vector<std::unique_ptr<GameObject3D>>& others, int xdir, int zdir) noexcept
-// {
-//     (void)others;
-//     (void)xdir;
-//     (void)zdir;
-//     return false;
-// }
-
-// void Bomb::action(std::vector<std::unique_ptr<GameObject3D>>& others) noexcept
-// {
-//     (void)others;
-//     return;
-// }
+        auto& fire = fires.back();
+        for (auto& other : *entities)
+            if (fire->hitbox->isColliding(other->hitbox))
+                if ((exit = fire->ExplodeElements(other))) break;
+    }
+}

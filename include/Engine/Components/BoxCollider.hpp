@@ -11,6 +11,8 @@
 
 #include "raylib.h"
 
+#define NEW_HITBOX(pos, size, isSolid) std::make_unique<BoxCollider>(pos, size, isSolid);
+
 class BoxCollider
 {
   private:

@@ -37,5 +37,4 @@ class GameObject3D
     virtual void Display() noexcept                                              = 0;
     virtual void Update() noexcept                                               = 0;
     virtual void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept = 0;
-    // virtual void setLifeTime(float const& newLifeTime) noexcept                  = 0;
 };

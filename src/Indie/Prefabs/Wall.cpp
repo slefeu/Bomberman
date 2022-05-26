@@ -7,8 +7,8 @@
 
 #include "Wall.hpp"
 
-Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data) noexcept
-    : Crate(pos, model, data)
+Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model) noexcept
+    : Crate(pos, model, nullptr, nullptr)
 {
     type = EntityType::E_WALL;
 

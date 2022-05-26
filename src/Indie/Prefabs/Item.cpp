@@ -21,16 +21,16 @@ Item::Item(Vector3 pos, GameData* data) noexcept
 
     Vector3 vectortemp = { 1.0f, 1.0f, 0.5f };
     type               = EntityType::E_ITEM;
-    hitbox             = std::make_unique<BoxCollider>(transform3d.getPosition(), vectortemp, true);
+    hitbox             = NEW_HITBOX(transform3d.getPosition(), vectortemp, true);
     hitbox->isSolid    = false;
-
-    itemType = (ItemType)((int)rand() % 3);
 
     transform3d.addZ((transform3d.getScale() / 2) * -1);
     transform3d.addY((transform3d.getScale() / 2));
     hitbox->position.z += transform3d.getScale() / 10;
     hitbox->position.y += transform3d.getScale() / 2;
+    hitbox->update(hitbox->position);
 
+    itemType = (ItemType)((int)rand() % 3);
     switch (itemType) {
         case ItemType::I_SPEEDUP: render.setModel(MODELS(M_IROLLER)); break;
         case ItemType::I_BOMBUP: render.setModel(MODELS(M_IBOMB)); break;
@@ -41,15 +41,11 @@ Item::Item(Vector3 pos, GameData* data) noexcept
 
 void Item::Display() noexcept
 {
-    if (!isEnable) return;
-
     render.display(transform3d);
+    hitbox->display();
 }
 
-void Item::Update() noexcept
-{
-    hitbox->update(transform3d.getPosition());
-}
+void Item::Update() noexcept {}
 
 void Item::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
 {

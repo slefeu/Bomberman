@@ -13,6 +13,8 @@
 #include "GameData.hpp"
 #include "GameObject3D.hpp"
 
+#define NEW_PLAYER(id, data) std::make_unique<Player>(id, data)
+
 class Player : public GameObject3D
 {
   private:
@@ -31,7 +33,7 @@ class Player : public GameObject3D
     int   bombSize;
 
   public:
-    Player(int newId, std::vector<std::unique_ptr<GameObject3D>>* bombsArray, GameData* data) noexcept;
+    Player(int newId, GameData* data) noexcept;
     ~Player() noexcept = default;
 
     void Display() noexcept;

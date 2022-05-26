@@ -8,6 +8,8 @@
 #include "GameObject3D.hpp"
 #include "Player.hpp"
 
+#define NEW_ITEM(pos, data) std::make_unique<Item>((Vector3)pos, data)
+
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP };
 
 class Item : public GameObject3D
@@ -19,7 +21,6 @@ class Item : public GameObject3D
     void Display() noexcept;
     void Update() noexcept;
     void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept;
-    // void setLifeTime(float const& newLifeTime) noexcept;
 
   private:
     void setPlayerStat(std::unique_ptr<Player>& p) noexcept;

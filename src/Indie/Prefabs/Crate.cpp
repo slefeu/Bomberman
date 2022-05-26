@@ -9,9 +9,10 @@
 
 #include "Item.hpp"
 
-Crate::Crate(Vector3 pos, std::unique_ptr<Model3D>* newModel, GameData* data) noexcept
+Crate::Crate(Vector3 pos, std::unique_ptr<Model3D>* newModel, GameData* data, std::vector<std::unique_ptr<GameObject3D>>* entities) noexcept
     : Box(pos, { 1.0f, 1.0f, 1.0f })
     , data(data)
+    , entities(entities)
 {
     type     = EntityType::E_CRATE;
     isEnable = true;
@@ -43,14 +44,8 @@ void Crate::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
     (void)other;
 }
 
-// void Crate::display() noexcept
-// {
-//     if (!isEnable) return;
-//     render.display(transform3d);
-// }
-
 void Crate::dropItem() noexcept
 {
     if (rand() % 3 != 0) return;
-    data->items->emplace_back(std::make_unique<Item>(transform3d.getPosition(), data));
+    entities->emplace_back(NEW_ITEM(transform3d.getPosition(), data));
 }

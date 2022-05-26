@@ -9,10 +9,12 @@
 #include "Box.hpp"
 #include "GameData.hpp"
 
+#define NEW_CRATE(pos, data, entities) std::make_unique<Crate>((Vector3)pos, MODELS(M_CRATE), data, entities)
+
 class Crate : public Box
 {
   public:
-    Crate(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data) noexcept;
+    Crate(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data, std::vector<std::unique_ptr<GameObject3D>>* entities) noexcept;
     ~Crate() noexcept = default;
 
     void Display() noexcept;
@@ -21,5 +23,6 @@ class Crate : public Box
     void dropItem() noexcept;
 
   public:
-    GameData* data;
+    GameData*                                   data;
+    std::vector<std::unique_ptr<GameObject3D>>* entities;
 };

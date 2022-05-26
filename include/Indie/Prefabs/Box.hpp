@@ -18,5 +18,4 @@ class Box : public GameObject3D
     void Display() noexcept;
     void Update() noexcept;
     void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept;
-    // void setLifeTime(float const& newLifeTime) noexcept;
 };

@@ -24,7 +24,6 @@ class GameData
     float timeParty;
 
   public:
-    std::vector<std::unique_ptr<Model3D>>       models;
-    std::vector<std::unique_ptr<GameObject3D>>  players;
-    std::vector<std::unique_ptr<GameObject3D>>* items;
+    std::vector<std::unique_ptr<Model3D>>      models;
+    std::vector<std::unique_ptr<GameObject3D>> players;
 };

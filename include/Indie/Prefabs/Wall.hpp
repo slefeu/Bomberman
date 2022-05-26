@@ -7,12 +7,14 @@
 
 #pragma once
 
+#define NEW_WALL(pos) std::make_unique<Wall>(vectorTemp, MODELS(M_WALL))
+
 #include "Crate.hpp"
 
 class Wall : public Crate
 {
   public:
-    Wall(Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data) noexcept;
+    Wall(Vector3 pos, std::unique_ptr<Model3D>* model) noexcept;
     ~Wall() noexcept = default;
 
     void Update() noexcept;

@@ -7,19 +7,22 @@
 
 #pragma once
 
-#define NEW_WALL(pos) std::make_unique<Wall>(vectorTemp, MODELS(M_WALL))
-
+#include "Shortcuts.hpp"
 #include "Crate.hpp"
 
 class Wall : public Crate
 {
   public:
-    Wall(Vector3 pos, std::unique_ptr<Model3D>* model) noexcept;
-    ~Wall() noexcept                          = default;
-    Wall(const Wall& other) noexcept          = delete;
-    Wall(Wall&& other) noexcept               = delete;
-    Wall& operator=(const Wall& rhs) noexcept = delete;
-    Wall& operator=(Wall&& rhs) noexcept      = delete;
+    Wall(Vector3 pos, std::unique_ptr<Model3D>* model);
+    Wall(const Wall& other) noexcept = default;
+    Wall(Wall&& other) noexcept      = default;
+    ~Wall() noexcept                 = default;
 
-    void Update() noexcept;
+    Wall& operator=(const Wall& rhs) noexcept = default;
+    Wall& operator=(Wall&& rhs) noexcept = default;
+
+    void Update() final;
+
+  protected:
+  private:
 };

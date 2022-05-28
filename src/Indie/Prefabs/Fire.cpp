@@ -12,52 +12,65 @@
 
 #include "Bomb.hpp"
 #include "Crate.hpp"
-#include "GameObject3D.hpp"
+#include "Entities.hpp"
+#include "Error.hpp"
 
-Fire::Fire(Vector3 posi, float newSize) noexcept
-    : explodeTime(0.5f)
+Fire::Fire(Vector3 posi, float newSize)
+    : Entities(EntityType::E_FIRE)
+    , explodeTime(0.5f)
     , explodeTimer(NEW_TIMER(explodeTime))
 {
-    transform3d.setPosition(posi);
-    transform3d.setSize({ newSize, newSize, newSize });
-    render.setRenderType(RenderType::R_CUBE);
-    render.setColor(RED);
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
 
-    type   = EntityType::E_FIRE;
-    hitbox = NEW_HITBOX(transform3d.getPosition(), transform3d.getSize(), true);
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error, could not instanciate the player element.\n"));
+    transform->get().setPosition(posi);
+    transform->get().setSize({ newSize, newSize, newSize });
+    renderer->get().setRenderType(RenderType::R_CUBE);
+    renderer->get().setColor(RED);
+    addComponent(BoxCollider(
+        transform->get().getPosition(), transform->get().getSize(), true));
 }
 
-void Fire::Display() noexcept
+void Fire::Display()
 {
-    render.display(transform3d);
-    hitbox->display();
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
+    auto hitbox    = getComponent<BoxCollider>();
+
+    if (!transform.has_value() || !renderer.has_value() || !hitbox.has_value())
+        throw(Error("Error in displaying the player element.\n"));
+    renderer->get().display(transform->get());
+    hitbox->get().display();
 }
 
-void Fire::Update() noexcept
+void Fire::Update()
 {
     explodeTimer->updateTimer();
-    if (explodeTimer->timerDone()) isEnable = false;
+    if (explodeTimer->timerDone()) setEnabledValue(false);
 }
 
-void Fire::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
+void Fire::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
-    if (other->type == EntityType::E_PLAYER) other->isEnable = false;
+    if (other->getEntityType() == EntityType::E_PLAYER)
+        other->setEnabledValue(false);
 }
 
-bool Fire::ExplodeElements(std::unique_ptr<GameObject3D>& other) noexcept
+bool Fire::ExplodeElements(std::unique_ptr<Entities>& other) noexcept
 {
-    if (other->type == EntityType::E_CRATE) {
+    if (other->getEntityType() == EntityType::E_CRATE) {
         ((std::unique_ptr<Crate>&)other)->dropItem();
-        other->isEnable = false;
-        isEnable        = false;
+        other->setEnabledValue(false);
+        setEnabledValue(false);
         return true;
     }
-    if (other->type == EntityType::E_ITEM) {
-        other->isEnable = false;
+    if (other->getEntityType() == EntityType::E_ITEM) {
+        other->setEnabledValue(false);
         return false;
     }
-    if (other->type == EntityType::E_WALL) return true;
-    if (other->type == EntityType::E_BOMB) {
+    if (other->getEntityType() == EntityType::E_WALL) return true;
+    if (other->getEntityType() == EntityType::E_BOMB) {
         ((std::unique_ptr<Bomb>&)other)->explode();
         return true;
     }

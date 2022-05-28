@@ -20,25 +20,28 @@ enum class RenderType {
     R_NONE,
 };
 
-class Render
+class Render : public Component
 {
-  private:
-    RenderType                type  = RenderType::R_NONE;
-    std::unique_ptr<Model3D>* model = nullptr;
-    Color                     color = GREEN;
-
   public:
     Render() noexcept                    = default;
     ~Render() noexcept                   = default;
-    Render(const Render& other) noexcept = delete;
-    Render(Render&& other) noexcept      = delete;
+    Render(const Render& other) noexcept = default;
+    Render(Render&& other) noexcept      = default;
 
-    Render& operator=(const Render& rhs) noexcept = delete;
-    Render& operator=(Render&& rhs) noexcept      = delete;
+    Render& operator=(const Render& rhs) noexcept = default;
+    Render& operator=(Render&& rhs) noexcept = default;
 
     void       display(Transform3D& transform) noexcept;
     void       setRenderType(RenderType type) noexcept;
     void       setModel(std::unique_ptr<Model3D>* model) noexcept;
     void       setColor(Color color) noexcept;
     RenderType getRenderType() const noexcept;
+    ComponentType getComponentType() const noexcept;
+
+    static constexpr ComponentType TYPE = ComponentType::RENDER;
+
+  private:
+    RenderType                type  = RenderType::R_NONE;
+    std::unique_ptr<Model3D>* model = nullptr;
+    Color                     color = GREEN;
 };

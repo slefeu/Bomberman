@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-#include "GameObject3D.hpp"
+#include "Entities.hpp"
 #include "Model3D.hpp"
 #include "Scene.hpp"
 #include "Timer.hpp"
@@ -22,8 +22,8 @@ enum class Direction { UP, RIGHT, DOWN, LEFT };
 class Game : public Scene
 {
   private:
-    std::vector<std::unique_ptr<GameObject3D>>  _entities;
-    std::vector<std::unique_ptr<GameObject3D>>* _players;
+    std::vector<std::unique_ptr<Entities>>  _entities;
+    std::vector<std::unique_ptr<Entities>>* _players;
     std::vector<std::unique_ptr<Model3D>>*      _models;
     std::unique_ptr<Timer>                      _chrono;
 

@@ -12,6 +12,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "Error.hpp"
 #include "Round.hpp"
 
 Cameraman::Cameraman() noexcept
@@ -62,15 +63,18 @@ bool Cameraman::smoothMove(void) noexcept
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
         (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
 
-    if ((dir.z == 1 && roundTarget.z > roundPos.z) || (dir.z == -1 && roundTarget.z < roundPos.z)) {
+    if ((dir.z == 1 && roundTarget.z > roundPos.z)
+        || (dir.z == -1 && roundTarget.z < roundPos.z)) {
         thereIsMovement = true;
         moveZ(dir.z * speed);
     }
-    if ((dir.x == 1 && roundTarget.x > roundPos.x) || (dir.x == -1 && roundTarget.x < roundPos.x)) {
+    if ((dir.x == 1 && roundTarget.x > roundPos.x)
+        || (dir.x == -1 && roundTarget.x < roundPos.x)) {
         thereIsMovement = true;
         moveX(dir.x * speed);
     }
-    if ((dir.y == 1 && roundTarget.y > roundPos.y) || (dir.y == -1 && roundTarget.y < roundPos.y)) {
+    if ((dir.y == 1 && roundTarget.y > roundPos.y)
+        || (dir.y == -1 && roundTarget.y < roundPos.y)) {
         thereIsMovement = true;
         moveY(dir.y * speed);
     }
@@ -81,7 +85,8 @@ bool Cameraman::smoothMove(void) noexcept
     return thereIsMovement;
 }
 
-void Cameraman::lookBetweenGameObject3D(std::vector<std::unique_ptr<GameObject3D>>& entities) noexcept
+void Cameraman::lookBetweenEntities(
+    std::vector<std::unique_ptr<Entities>>& entities)
 {
     float minX = INFINITY;
     float minZ = INFINITY;
@@ -89,8 +94,11 @@ void Cameraman::lookBetweenGameObject3D(std::vector<std::unique_ptr<GameObject3D
     float maxZ = -minZ;
 
     for (auto& entity : entities) {
-        if (!entity->isEnable) continue;
-        Vector3 pos = entity->transform3d.getPosition();
+        if (!entity->getEnabledValue()) continue;
+        auto transform = entity->getComponent<Transform3D>();
+        if (!transform.has_value()) throw(Error("Error in camera handling.\n"));
+
+        Vector3 pos = transform->get().getPosition();
         if (pos.x < minX) minX = pos.x;
         if (pos.x > maxX) maxX = pos.x;
         if (pos.z < minZ) minZ = pos.z;

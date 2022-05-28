@@ -7,24 +7,18 @@
 
 #pragma once
 
+#include "Component.hpp"
 #include "raylib.h"
 
-class Transform3D
+class Transform3D : public Component
 {
-  private:
-    Vector3 position;
-    Vector3 size;
-    float   scale;
-    Vector3 rotationAxis;
-    float   rotationAngle;
-
   public:
     Transform3D() noexcept;
-    ~Transform3D() noexcept                                 = default;
-    Transform3D(const Transform3D& other) noexcept          = delete;
-    Transform3D(Transform3D&& other) noexcept               = delete;
-    Transform3D& operator=(const Transform3D& rhs) noexcept = delete;
-    Transform3D& operator=(Transform3D&& rhs) noexcept      = delete;
+    ~Transform3D() noexcept                        = default;
+    Transform3D(const Transform3D& other) noexcept = default;
+    Transform3D(Transform3D&& other) noexcept      = default;
+    Transform3D& operator=(const Transform3D& rhs) noexcept = default;
+    Transform3D& operator=(Transform3D&& rhs) noexcept = default;
 
     Vector3 getPosition() const noexcept;
     Vector3 getSize() const noexcept;
@@ -45,4 +39,18 @@ class Transform3D
     void    addX(float x) noexcept;
     void    addY(float y) noexcept;
     void    addZ(float z) noexcept;
+    float getPositionX() const noexcept;
+    float getPositionY() const noexcept;
+    float getPositionZ() const noexcept;
+
+    ComponentType getComponentType() const noexcept;
+
+    static constexpr ComponentType TYPE = ComponentType::TRANSFORM;
+
+  private:
+    Vector3 position;
+    Vector3 size;
+    float   scale;
+    Vector3 rotationAxis;
+    float   rotationAngle;
 };

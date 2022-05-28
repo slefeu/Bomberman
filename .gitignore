@@ -13,3 +13,4 @@ build/
 .Debug/
 compile_commands.json
 null.d
+.history

@@ -25,12 +25,14 @@ set(
 
   src/Engine/Tools/Timer.cpp
   src/Engine/Tools/Round.cpp
+  src/Engine/Tools/Error.cpp
 
   src/Engine/Core/Cameraman.cpp
   src/Engine/Core/Core.cpp
   src/Engine/Core/Collision.cpp
   src/Engine/Core/GameData.cpp
   src/Engine/Core/Model3D.cpp
+  src/Engine/Core/Entities.cpp
 
   src/Engine/Components/BoxCollider.cpp
   src/Engine/Components/Transform3D.cpp

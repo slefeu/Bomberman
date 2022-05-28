@@ -5,26 +5,26 @@
 ** Item
 */
 
-#include "GameObject3D.hpp"
+#include "Entities.hpp"
 #include "Player.hpp"
 
 #define NEW_ITEM(pos, data) std::make_unique<Item>((Vector3)pos, data)
 
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP };
 
-class Item : public GameObject3D
+class Item : public Entities
 {
   public:
-    Item(Vector3 pos, GameData* data) noexcept;
-    ~Item() noexcept                          = default;
-    Item(const Item& other) noexcept          = delete;
-    Item(Item&& other) noexcept               = delete;
+    Item(Vector3 pos, GameData* data);
+    ~Item() noexcept                 = default;
+    Item(const Item& other) noexcept = delete;
+    Item(Item&& other) noexcept      = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
-    Item& operator=(Item&& rhs) noexcept      = delete;
+    Item& operator=(Item&& rhs) noexcept = delete;
 
-    void Display() noexcept;
-    void Update() noexcept;
-    void OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept;
+    void Display() final;
+    void Update() final;
+    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
 
   private:
     void setPlayerStat(std::unique_ptr<Player>& p) noexcept;

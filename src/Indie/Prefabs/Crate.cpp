@@ -7,45 +7,61 @@
 
 #include "Crate.hpp"
 
+#include "Error.hpp"
 #include "Item.hpp"
 
-Crate::Crate(Vector3 pos, std::unique_ptr<Model3D>* newModel, GameData* data, std::vector<std::unique_ptr<GameObject3D>>* entities) noexcept
+Crate::Crate(Vector3                        pos,
+    std::unique_ptr<Model3D>*               newModel,
+    GameData*                               data,
+    std::vector<std::unique_ptr<Entities>>* entities)
     : Box(pos, { 1.0f, 1.0f, 1.0f })
     , data(data)
     , entities(entities)
 {
-    type     = EntityType::E_CRATE;
-    isEnable = true;
+    setEnabledValue(true);
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
 
-    transform3d.setScale(0.015f);
-    transform3d.setY(0 - transform3d.getScale());
-    render.setRenderType(RenderType::R_3DMODEL);
-    render.setModel(newModel);
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error, could not instanciate the crate element.\n"));
+    transform->get().setScale(0.015f);
+    transform->get().setY(0 - transform->get().getScale());
+    renderer->get().setRenderType(RenderType::R_3DMODEL);
+    renderer->get().setModel(newModel);
 
-    hitbox->position = { transform3d.getPosition().x, 0.35f, transform3d.getPosition().z };
-    hitbox->size     = { 1.0f, 1.0f, 1.0f };
-    hitbox->update(hitbox->position);
+    Vector3 position = {
+        transform->get().getPositionX(), 0.35f, transform->get().getPositionZ()
+    };
+    Vector3 size = { 1.0f, 1.0f, 1.0f };
+    addComponent(BoxCollider(position, size, true));
 }
 
-void Crate::Display() noexcept
+void Crate::Display()
 {
-    if (!isEnable) return;
+    auto renderer  = getComponent<Render>();
+    auto transform = getComponent<Transform3D>();
 
-    render.display(transform3d);
+    if (!renderer.has_value() || !transform.has_value())
+        throw(Error("Error in displaying a crate element.\n"));
+    if (!getEnabledValue()) return;
+    renderer->get().display(transform->get());
 }
 
-void Crate::Update() noexcept
+void Crate::Update()
 {
-    if (!isEnable) return;
+    if (!getEnabledValue()) return;
 }
 
-void Crate::OnCollisionEnter(std::unique_ptr<GameObject3D>& other) noexcept
+void Crate::dropItem()
+{
+    auto transform = getComponent<Transform3D>();
+
+    if (!transform.has_value()) throw(Error("Error in dropping item.\n"));
+    if (rand() % 3 != 0) return;
+    entities->emplace_back(NEW_ITEM(transform->get().getPosition(), data));
+}
+
+void Crate::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
     (void)other;
-}
-
-void Crate::dropItem() noexcept
-{
-    if (rand() % 3 != 0) return;
-    entities->emplace_back(NEW_ITEM(transform3d.getPosition(), data));
 }

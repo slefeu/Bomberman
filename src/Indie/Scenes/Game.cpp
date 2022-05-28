@@ -16,10 +16,6 @@
 #include "Wall.hpp"
 #include "raylib.h"
 
-//-------------------------------------------------------------------------------------------------
-// PUBLIC METHODS
-//-------------------------------------------------------------------------------------------------
-
 Game::Game(GameData* data) noexcept
     : Scene(data)
     , _chrono(NEW_TIMER(data->timeParty))
@@ -33,7 +29,7 @@ Game::Game(GameData* data) noexcept
 
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {
-        if (player->type != EntityType::E_PLAYER) continue;
+        if (player->getEntityType() != EntityType::E_PLAYER) continue;
         ((std::unique_ptr<Player>&)player)->setBombArray(&_entities);
     }
 
@@ -50,8 +46,14 @@ void Game::display3D() noexcept
     DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
-            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 == 0 && x % 2 == 0)
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
+                    { 1.0f, 1.0f },
+                    { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0)
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
+                    { 1.0f, 1.0f },
+                    { 0, 181, 48, 255 });
         }
 
     for (auto& player : PLAYERS) player->Display();
@@ -64,7 +66,11 @@ void Game::display2D() noexcept
     DrawText("Game", 10, 30, 20, GREEN);
     if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
     else
-        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);
+        DrawText(std::to_string(int(round(_chrono->getTime()))).data(),
+            10,
+            50,
+            20,
+            BLUE);
 
     if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
 }
@@ -78,7 +84,7 @@ void Game::action(Cameraman& camera) noexcept
     for (auto& player : PLAYERS) player->Update();
     for (auto& entity : _entities) entity->Update();
 
-    if (!camera.isMoving) camera.lookBetweenGameObject3D(PLAYERS);
+    if (!camera.isMoving) camera.lookBetweenEntities(PLAYERS);
 
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
@@ -106,7 +112,7 @@ void Game::DestroyPool() noexcept
     // suppression des entités désacivées
     size_t len = _entities.size();
     for (size_t i = 0; i != len; i++) {
-        if (!_entities[i]->isEnable) {
+        if (!_entities[i]->getEnabledValue()) {
             _entities.erase(_entities.begin() + i);
             len--;
             i--;
@@ -119,30 +125,33 @@ void Game::CollisionPool() noexcept
     // Collisions jouers/entités
     for (auto& player : PLAYERS) {
         for (auto& entity : _entities) {
-            if (player->hitbox == nullptr || entity->hitbox == nullptr) continue;
-            if (player->hitbox->isColliding(entity->hitbox)) {
+            auto hitbox       = player->getComponent<BoxCollider>();
+            auto other_hitbox = entity->getComponent<BoxCollider>();
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
+                continue;
+            if (hitbox->get().isColliding(other_hitbox->get())) {
                 player->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(player);
             }
         }
     }
-    // Collisions entités/entités
     for (auto& entity1 : _entities) {
         for (auto& entity : _entities) {
-            if (entity1->hitbox == nullptr || entity->hitbox == nullptr) continue;
-            if (!entity1->hitbox->isSolid || !entity->hitbox->isSolid) continue;
+            auto hitbox       = entity1->getComponent<BoxCollider>();
+            auto other_hitbox = entity->getComponent<BoxCollider>();
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
+                continue;
+            if (!hitbox->get().getIsSolid()
+                || !other_hitbox->get().getIsSolid())
+                continue;
             if (entity1 == entity) continue;
-            if (entity1->hitbox->isColliding(entity->hitbox)) {
+            if (hitbox->get().isColliding(other_hitbox->get())) {
                 entity1->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(entity1);
             }
         }
     }
 }
-
-//-------------------------------------------------------------------------------------------------
-// PRIVATE METHODS
-//-------------------------------------------------------------------------------------------------
 
 void Game::createMap(void) noexcept
 {
@@ -151,13 +160,17 @@ void Game::createMap(void) noexcept
     // Génération des boites
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if ((x == -6 && z == -4) || (x == 6 && z == -4) || (x == -6 && z == 6) || (x == 6 && z == 6) || (x == -6 && z == -3)
-                || (x == 6 && z == -3) || (x == -6 && z == 5) || (x == 6 && z == 5) || (x == -5 && z == -4) || (x == 5 && z == -4)
+            if ((x == -6 && z == -4) || (x == 6 && z == -4)
+                || (x == -6 && z == 6) || (x == 6 && z == 6)
+                || (x == -6 && z == -3) || (x == 6 && z == -3)
+                || (x == -6 && z == 5) || (x == 6 && z == 5)
+                || (x == -5 && z == -4) || (x == 5 && z == -4)
                 || (x == -5 && z == 6) || (x == 5 && z == 6))
                 continue;
 
             Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
-            if (rand() % 100 < 80) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
+            if (rand() % 100 < 80)
+                _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
         }
 
     // Ajout des murs une case sur deux

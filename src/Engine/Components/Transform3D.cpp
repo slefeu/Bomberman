@@ -7,9 +7,29 @@ Transform3D::Transform3D() noexcept
 {
 }
 
+ComponentType Transform3D::getComponentType() const noexcept
+{
+    return (TYPE);
+}
+
 Vector3 Transform3D::getPosition() const noexcept
 {
     return position;
+}
+
+float Transform3D::getPositionX() const noexcept
+{
+    return position.x;
+}
+
+float Transform3D::getPositionY() const noexcept
+{
+    return position.y;
+}
+
+float Transform3D::getPositionZ() const noexcept
+{
+    return position.z;
 }
 
 Vector3 Transform3D::getSize() const noexcept

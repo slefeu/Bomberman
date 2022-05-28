@@ -6,22 +6,25 @@
 */
 
 #include "Wall.hpp"
+#include "Error.hpp"
 
-Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model) noexcept
+Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
     : Crate(pos, model, nullptr, nullptr)
 {
-    type = EntityType::E_WALL;
-
-    transform3d.setScale(0.017f);
-    transform3d.setY(pos.y);
+    auto transform = getComponent<Transform3D>();
+    if (!transform.has_value())
+        throw(Error("Error, could not instanciate the bomb element.\n"));
+     transform->get().setScale(0.017f);
+     transform->get().setY(pos.y);
 }
 
-void Wall::Update() noexcept
+void Wall::Update()
 {
-    if (!isEnable) return;
+    if (!getEnabledValue()) return;
+    auto transform = getComponent<Transform3D>();
 
-    if (transform3d.getPosition().y > 0) { transform3d.moveY(-4.0f); }
-    if (transform3d.getPosition().y < 0) { transform3d.setY(0.0f); }
+    if (transform->get().getPosition().y > 0) { transform->get().moveY(-4.0f); }
+    if (transform->get().getPosition().y < 0) { transform->get().setY(0.0f); }
 
-    hitbox->update(transform3d.getPosition());
+    getComponent<BoxCollider>()->get().update(transform->get().getPosition());
 }

@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "Shortcuts.hpp"
 #include "Crate.hpp"
+#include "Shortcuts.hpp"
 
-class Wall : public Crate
+class Wall : public Entities
 {
   public:
     Wall(Vector3 pos, std::unique_ptr<Model3D>* model);
@@ -22,6 +22,8 @@ class Wall : public Crate
     Wall& operator=(Wall&& rhs) noexcept = default;
 
     void Update() final;
+    void Display() final;
+    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
 
   protected:
   private:

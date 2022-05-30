@@ -6,16 +6,32 @@
 */
 
 #include "Wall.hpp"
+
+#include <iostream>
+
 #include "Error.hpp"
 
 Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
-    : Crate(pos, model, nullptr, nullptr)
+    : Entities(EntityType::E_WALL)
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
+    auto renderer  = getComponent<Render>();
+    if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the bomb element.\n"));
-     transform->get().setScale(0.017f);
-     transform->get().setY(pos.y);
+    transform->get().setPosition(pos);
+    transform->get().setScale(0.017f);
+    // transform->get().setY(pos.y);
+    renderer->get().setRenderType(RenderType::R_3DMODEL);
+    renderer->get().setModel(model);
+}
+
+void Wall::Display()
+{
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error in updating the game.\n"));
+    renderer->get().display(transform->get());
 }
 
 void Wall::Update()
@@ -27,4 +43,9 @@ void Wall::Update()
     if (transform->get().getPosition().y < 0) { transform->get().setY(0.0f); }
 
     getComponent<BoxCollider>()->get().update(transform->get().getPosition());
+}
+
+void Wall::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
+{
+    (void)other;
 }

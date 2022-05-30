@@ -39,7 +39,6 @@ set(
   src/Engine/Components/Render.cpp
 
   src/Indie/Prefabs/Player.cpp
-  src/Indie/Prefabs/Box.cpp
   src/Indie/Prefabs/Bomb.cpp
   src/Indie/Prefabs/Crate.cpp
   src/Indie/Prefabs/Wall.cpp

@@ -14,7 +14,7 @@ Crate::Crate(Vector3                        pos,
     std::unique_ptr<Model3D>*               newModel,
     GameData*                               data,
     std::vector<std::unique_ptr<Entities>>* entities)
-    : Box(pos, { 1.0f, 1.0f, 1.0f })
+    : Entities(EntityType::E_CRATE)
     , data(data)
     , entities(entities)
 {
@@ -24,6 +24,7 @@ Crate::Crate(Vector3                        pos,
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the crate element.\n"));
+    transform->get().setPosition(pos);
     transform->get().setScale(0.015f);
     transform->get().setY(0 - transform->get().getScale());
     renderer->get().setRenderType(RenderType::R_3DMODEL);

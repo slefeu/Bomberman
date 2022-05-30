@@ -6,12 +6,11 @@
 */
 
 #pragma once
-#include "Box.hpp"
+#include "Entities.hpp"
 #include "GameData.hpp"
 #include "Shortcuts.hpp"
-#include "Entities.hpp"
 
-class Crate : public Box
+class Crate : public Entities
 {
   public:
     Crate(Vector3                               pos,

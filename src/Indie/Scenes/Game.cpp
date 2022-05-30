@@ -9,7 +9,6 @@
 
 #include <iostream>
 
-#include "Box.hpp"
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"

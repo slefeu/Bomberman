@@ -1,5 +1,4 @@
 #include "Render.hpp"
-
 void Render::display(Transform3D& transform) noexcept
 {
     if (type == RenderType::R_3DMODEL) {

@@ -22,9 +22,6 @@
 class Entities
 {
   public:
-    std::unique_ptr<Model3D>* model = nullptr;
-
-  public:
     Entities(const EntityType& type) noexcept;
     virtual ~Entities() noexcept             = default;
     Entities(const Entities& other) noexcept = delete;

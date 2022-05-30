@@ -18,5 +18,5 @@ enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM };
 #define SCENE scenes[data->currentScene]
 #define PLAYERS data->players
 #define NEW_HITBOX(pos, size, isSolid) std::make_unique<BoxCollider>(pos, size, isSolid);
-#define NEW_WALL(pos) std::make_unique<Wall>(vectorTemp, MODELS(M_WALL))
+#define NEW_WALL(pos) std::make_unique<Wall>(pos, MODELS(M_WALL))
 #define NEW_CRATE(pos, data, entities) std::make_unique<Crate>((Vector3)pos, MODELS(M_CRATE), data, entities)

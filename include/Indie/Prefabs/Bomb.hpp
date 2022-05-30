@@ -34,7 +34,7 @@ class Bomb : public Entities
     void explode() noexcept;
     bool getExplodingStatus() const noexcept;
     void setExplodingStatus(bool newValue) noexcept;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
+    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
 
   private:
     // methods

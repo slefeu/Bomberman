@@ -195,6 +195,14 @@ void Player::placeBomb()
     auto transform = getComponent<Transform3D>();
     if (!transform.has_value())
         throw(Error("Error in updating the placement of bombs.\n"));
+    for (auto& i : *bombs) {
+        auto bomb = i->getComponent<Transform3D>();
+        if (bomb.has_value()
+            && bomb->get().getPosition().x == round(transform->get().getPosition().x)
+            && bomb->get().getPosition().z
+                   == round(transform->get().getPosition().z))
+            return;
+    }
     if (nbBomb <= 0) return;
     nbBomb--;
     bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),

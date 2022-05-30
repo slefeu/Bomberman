@@ -32,8 +32,6 @@ class Bomb : public Entities
     void Update() final;
     void setPlayerArray(std::vector<std::unique_ptr<Player>>* players) noexcept;
     void explode() noexcept;
-    bool getExplodingStatus() const noexcept;
-    void setExplodingStatus(bool newValue) noexcept;
     void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
 
   private:

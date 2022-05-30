@@ -53,15 +53,6 @@ void Bomb::Display()
     renderer->get().display(transform->get());
 }
 
-bool Bomb::getExplodingStatus() const noexcept
-{
-    return (is_exploding_);
-}
-
-void Bomb::setExplodingStatus(bool newValue) noexcept
-{
-    is_exploding_ = newValue;
-}
 void Bomb::Update()
 {
     int  i      = 0;

@@ -23,28 +23,30 @@ set(
   INDIE_SRC
   src/main.cpp
 
-  src/Tools/Timer.cpp
-  src/Tools/Round.cpp
+  src/Engine/Tools/Timer.cpp
+  src/Engine/Tools/Round.cpp
+  src/Engine/Tools/Error.cpp
 
-  src/Engine/Cameraman.cpp
-  src/Engine/Core.cpp
-  src/Engine/Collision.cpp
-  src/Engine/GameData.cpp
+  src/Engine/Core/Cameraman.cpp
+  src/Engine/Core/Core.cpp
+  src/Engine/Core/Collision.cpp
+  src/Engine/Core/GameData.cpp
+  src/Engine/Core/Model3D.cpp
+  src/Engine/Core/Entities.cpp
 
-  src/Components/Render3D.cpp
-  src/Components/BoxCollider.cpp
+  src/Engine/Components/BoxCollider.cpp
+  src/Engine/Components/Transform3D.cpp
+  src/Engine/Components/Render.cpp
 
-  src/Prefabs/Player.cpp
-  src/Prefabs/Box.cpp
-  src/Prefabs/Bomb.cpp
-  src/Prefabs/Crate.cpp
-  src/Prefabs/Explosion.cpp
-  src/Prefabs/Wall.cpp
-  src/Prefabs/Fire.cpp
-  src/Prefabs/Item.cpp
+  src/Indie/Prefabs/Player.cpp
+  src/Indie/Prefabs/Bomb.cpp
+  src/Indie/Prefabs/Crate.cpp
+  src/Indie/Prefabs/Wall.cpp
+  src/Indie/Prefabs/Fire.cpp
+  src/Indie/Prefabs/Item.cpp
 
-  src/Scenes/Game.cpp
-  src/Scenes/Home.cpp
+  src/Indie/Scenes/Game.cpp
+  src/Indie/Scenes/Home.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
@@ -54,8 +56,9 @@ endif()
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Ajouter ici les dossiers contenants les .hpp
-target_include_directories(${PROJECT_NAME} PRIVATE include/Components)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Engine)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Prefabs)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Scenes)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Tools)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Components)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Prefabs)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie)

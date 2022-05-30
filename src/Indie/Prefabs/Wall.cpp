@@ -20,9 +20,10 @@ Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
         throw(Error("Error, could not instanciate the bomb element.\n"));
     transform->get().setPosition(pos);
     transform->get().setScale(0.017f);
-    // transform->get().setY(pos.y);
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(model);
+    Vector3 size = { 1.0f, 1.0f, 1.0f };
+    addComponent(BoxCollider(transform->get().getPosition(), size, true));
 }
 
 void Wall::Display()

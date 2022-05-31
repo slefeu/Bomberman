@@ -25,6 +25,8 @@ Bomb::Bomb(Vector3                          pos,
     , hasHitbox(false)
     , data(data)
     , entities(entities)
+    , is_exploding_(false)
+    , animeDir(1)
 {
     auto transform = getComponent<Transform3D>();
     if (!transform.has_value())
@@ -55,9 +57,10 @@ void Bomb::Display()
 
 void Bomb::Update()
 {
-    int  i      = 0;
-    auto hitbox = getComponent<BoxCollider>();
-    if (!hitbox.has_value())
+    int  i         = 0;
+    auto hitbox    = getComponent<BoxCollider>();
+    auto transform = getComponent<Transform3D>();
+    if (!hitbox.has_value() || !transform.has_value())
         throw(Error("Error in updating a bomb element.\n"));
 
     lifeTimer->updateTimer();
@@ -76,6 +79,12 @@ void Bomb::Update()
         if (i == static_cast<int>(data->players.size()))
             hitbox->get().setIsSolid(true);
     }
+
+    transform->get().setScale(
+        transform->get().getScale() + (0.1f * GetFrameTime() * animeDir));
+    if (transform->get().getScale() > 0.09f
+        || transform->get().getScale() < 0.07f)
+        animeDir *= -1;
 }
 
 void Bomb::explode() noexcept

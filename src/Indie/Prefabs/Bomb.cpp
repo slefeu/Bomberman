@@ -71,8 +71,7 @@ void Bomb::Update()
         for (auto& other : data->players) {
             if (!(other->getComponent<BoxCollider>().has_value())) continue;
             auto other_collider = other->getComponent<BoxCollider>();
-            if (!hitbox->get().isColliding(other_collider->get()))
-                i++;
+            if (!hitbox->get().isColliding(other_collider->get())) i++;
         }
         if (i == static_cast<int>(data->players.size()))
             hitbox->get().setIsSolid(true);

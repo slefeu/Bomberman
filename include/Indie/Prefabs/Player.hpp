@@ -12,6 +12,7 @@
 
 #include "Entities.hpp"
 #include "GameData.hpp"
+#include "Timer.hpp"
 
 #define NEW_PLAYER(id, data) std::make_unique<Player>(id, data)
 
@@ -19,11 +20,11 @@ class Player : public Entities
 {
   public:
     Player(int newId, GameData* data);
-    ~Player() noexcept                   = default;
-    Player(const Player& other) noexcept = delete;
-    Player(Player&& other) noexcept      = delete;
+    ~Player() noexcept                            = default;
+    Player(const Player& other) noexcept          = delete;
+    Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept = delete;
+    Player& operator=(Player&& rhs) noexcept      = delete;
 
     void Display() final;
     void Update() final;
@@ -31,6 +32,7 @@ class Player : public Entities
     void setStats(int bomb, int sp, int size) noexcept;
     void setBombArray(
         std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
+    void setWallPass(bool pass) noexcept;
 
   public:
     int   nbBomb;
@@ -41,9 +43,8 @@ class Player : public Entities
     void setKeyboard(void) noexcept;
     void setPosition(void);
     void placeBomb(void);
-    bool isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others,
-        int                                                          xdir,
-        int zdir);
+    bool isCollidingNextTurn(
+        std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
     KeyboardKey                             moveUp;
     KeyboardKey                             moveDown;
     KeyboardKey                             moveLeft;
@@ -52,4 +53,7 @@ class Player : public Entities
     int                                     id;
     GameData*                               data;
     std::vector<std::unique_ptr<Entities>>* bombs;
+    bool                                    wallpass;
+    std::unique_ptr<Timer>                  wallpassTimer;
+    bool                                    wallpassEnd;
 };

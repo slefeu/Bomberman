@@ -156,22 +156,6 @@ void Game::createMap(void) noexcept
 {
     Vector3 vectorTemp;
 
-    // Génération des boites
-    for (int z = -4; z < 7; z++)
-        for (int x = -6; x < 7; x++) {
-            if ((x == -6 && z == -4) || (x == 6 && z == -4)
-                || (x == -6 && z == 6) || (x == 6 && z == 6)
-                || (x == -6 && z == -3) || (x == 6 && z == -3)
-                || (x == -6 && z == 5) || (x == 6 && z == 5)
-                || (x == -5 && z == -4) || (x == 5 && z == -4)
-                || (x == -5 && z == 6) || (x == 5 && z == 6))
-                continue;
-
-            Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
-            if (rand() % 100 < 80)
-                _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
-        }
-
     // Ajout des murs une case sur deux
     for (int z = -4; z < 6; z++)
         for (int x = -5; x < 6; x++)
@@ -187,6 +171,35 @@ void Game::createMap(void) noexcept
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 _entities.emplace_back(NEW_WALL(vectorTemp));
             }
+
+    // Génération des boites
+    for (int z = -4; z < 7; z++)
+        for (int x = -6; x < 7; x++) {
+            if ((x == -6 && z == -4) || (x == 6 && z == -4)
+                || (x == -6 && z == 6) || (x == 6 && z == 6)
+                || (x == -6 && z == -3) || (x == 6 && z == -3)
+                || (x == -6 && z == 5) || (x == 6 && z == 5)
+                || (x == -5 && z == -4) || (x == 5 && z == -4)
+                || (x == -5 && z == 6) || (x == 5 && z == 6))
+                continue;
+
+            Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
+
+            bool spawnCrate = true;
+            for (auto& entity : _entities) {
+                auto transform = entity->getComponent<Transform3D>();
+                if (transform == std::nullopt) continue;
+
+                Vector3 pos = transform->get().getPosition();
+                if (pos.x == vectorTemp.x && pos.z == vectorTemp.z) {
+                    spawnCrate = false;
+                    break;
+                }
+            }
+
+            if (rand() % 100 < 80 && spawnCrate)
+                _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
+        }
 }
 
 void Game::hurryUp(void) noexcept

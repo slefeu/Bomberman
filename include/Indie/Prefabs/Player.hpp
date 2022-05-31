@@ -32,7 +32,7 @@ class Player : public Entities
     void setStats(int bomb, int sp, int size) noexcept;
     void setBombArray(
         std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
-    void setWallPass(bool pass) noexcept;
+    void setWallPass(bool pass);
 
   public:
     int   nbBomb;

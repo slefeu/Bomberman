@@ -174,7 +174,8 @@ bool Player::isCollidingNextTurn(
 {
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
+    auto renderer  = getComponent<Render>();
+    if (!transform.has_value() || !renderer.has_value() || !hitbox.has_value())
         throw(Error("Error in updating the collision of the player.\n"));
 
     Vector3 position = transform->get().getPosition();
@@ -208,7 +209,10 @@ bool Player::isCollidingNextTurn(
             }
         }
     }
-    if (wallpassEnd) wallpassEnd = false;
+    if (wallpassEnd) {
+        wallpassEnd = false;
+        renderer->get().setColor(MAGENTA);
+    }
     return false;
 }
 
@@ -242,7 +246,14 @@ void Player::setBombArray(
     bombs = bombsArray;
 }
 
-void Player::setWallPass(bool pass) noexcept
+void Player::setWallPass(bool pass)
 {
+    // change te color of the player
+    auto renderer = getComponent<Render>();
+    if (!renderer.has_value())
+        throw(Error("Error in setting the wall pass.\n"));
+
+    renderer->get().setColor(BLUE);
+
     wallpass = pass;
 }

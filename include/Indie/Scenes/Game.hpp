@@ -24,8 +24,8 @@ class Game : public Scene
   private:
     std::vector<std::unique_ptr<Entities>>  _entities;
     std::vector<std::unique_ptr<Entities>>* _players;
-    std::vector<std::unique_ptr<Model3D>>*      _models;
-    std::unique_ptr<Timer>                      _chrono;
+    std::vector<std::unique_ptr<Model3D>>*  _models;
+    std::unique_ptr<Timer>                  _chrono;
 
   private:
     float     lastTimeBlockPlace;

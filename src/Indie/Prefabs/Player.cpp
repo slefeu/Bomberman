@@ -20,6 +20,9 @@ Player::Player(int newId, GameData* data)
     , bombSize(3)
     , id(newId)
     , data(data)
+    , wallpass(false)
+    , wallpassTimer(NEW_TIMER(5.0f))
+    , wallpassEnd(false)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -56,6 +59,15 @@ void Player::Update()
     if (!getEnabledValue()) return;
 
     hitbox->get().update(transform->get().getPosition());
+
+    if (wallpass) {
+        wallpassTimer->updateTimer();
+        if (wallpassTimer->timerDone()) {
+            wallpass    = false;
+            wallpassEnd = true;
+            wallpassTimer->resetTimer();
+        }
+    }
 
     if (IsGamepadAvailable(id)) {
         // Mouvements au joystick
@@ -170,6 +182,8 @@ bool Player::isCollidingNextTurn(
         position.y,
         position.z + (speed * zdir * GetFrameTime()) };
 
+    std::cout << wallpass << " " << wallpassEnd << std::endl;
+
     if (!getEnabledValue()) return false;
     for (auto& other : others) {
         if (hitbox == std::nullopt
@@ -182,11 +196,19 @@ bool Player::isCollidingNextTurn(
                 continue;
             if (other_hitbox->get().isColliding(hitbox->get(), nextTurn)) {
                 if (other->getEntityType() == EntityType::E_BOMB) return true;
-                if (other->getEntityType() == EntityType::E_WALL) return true;
-                if (other->getEntityType() == EntityType::E_CRATE) return true;
+                if (other->getEntityType() == EntityType::E_WALL) {
+                    std::cout << "WALL" << std::endl;
+                    return true;
+                }
+                if (other->getEntityType() == EntityType::E_CRATE) {
+                    if (wallpass) return false;
+                    if (!wallpass && wallpassEnd) return false;
+                    return true;
+                }
             }
         }
     }
+    if (wallpassEnd) wallpassEnd = false;
     return false;
 }
 
@@ -198,7 +220,8 @@ void Player::placeBomb()
     for (auto& i : *bombs) {
         auto bomb = i->getComponent<Transform3D>();
         if (bomb.has_value()
-            && bomb->get().getPosition().x == round(transform->get().getPosition().x)
+            && bomb->get().getPosition().x
+                   == round(transform->get().getPosition().x)
             && bomb->get().getPosition().z
                    == round(transform->get().getPosition().z))
             return;
@@ -217,4 +240,9 @@ void Player::setBombArray(
     std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept
 {
     bombs = bombsArray;
+}
+
+void Player::setWallPass(bool pass) noexcept
+{
+    wallpass = pass;
 }

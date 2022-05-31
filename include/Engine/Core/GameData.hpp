@@ -28,6 +28,6 @@ class GameData
     float timeParty;
 
   public:
-    std::vector<std::unique_ptr<Model3D>>      models;
+    std::vector<std::unique_ptr<Model3D>>  models;
     std::vector<std::unique_ptr<Entities>> players;
 };

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "GameData.hpp"
 #include "Entities.hpp"
+#include "GameData.hpp"
 #include "Timer.hpp"
 
 #define NEW_FIRE(pos, size) std::make_unique<Fire>(pos, size)

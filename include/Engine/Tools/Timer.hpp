@@ -15,6 +15,7 @@ class Timer
 {
   private:
     float lifeTime;
+    float defaultTime;
 
   public:
     Timer(float lifeTime) noexcept;
@@ -28,4 +29,5 @@ class Timer
     bool  timerDone(void) noexcept;
     float getTime(void) noexcept;
     void  setLifeTime(float const& newLifeTime) noexcept;
+    void  resetTimer(void) noexcept;
 };

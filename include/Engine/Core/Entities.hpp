@@ -23,11 +23,11 @@ class Entities
 {
   public:
     Entities(const EntityType& type) noexcept;
-    virtual ~Entities() noexcept             = default;
-    Entities(const Entities& other) noexcept = delete;
-    Entities(Entities&& other) noexcept      = delete;
+    virtual ~Entities() noexcept                      = default;
+    Entities(const Entities& other) noexcept          = delete;
+    Entities(Entities&& other) noexcept               = delete;
     Entities& operator=(const Entities& rhs) noexcept = delete;
-    Entities& operator=(Entities&& rhs) noexcept = delete;
+    Entities& operator=(Entities&& rhs) noexcept      = delete;
 
     virtual void Display() = 0;
     virtual void Update()  = 0;

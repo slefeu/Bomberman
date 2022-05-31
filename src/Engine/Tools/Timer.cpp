@@ -9,6 +9,7 @@
 
 Timer::Timer(float newLifeTime) noexcept
     : lifeTime(newLifeTime)
+    , defaultTime(newLifeTime)
 {
 }
 
@@ -30,4 +31,9 @@ float Timer::getTime(void) noexcept
 void Timer::setLifeTime(float const& newLifeTime) noexcept
 {
     lifeTime = newLifeTime;
+}
+
+void Timer::resetTimer(void) noexcept
+{
+    lifeTime = defaultTime;
 }

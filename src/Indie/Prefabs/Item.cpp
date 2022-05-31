@@ -43,11 +43,18 @@ Item::Item(Vector3 pos, GameData* data)
     hitbox->get().addY(transform->get().getScale() / 10);
     hitbox->get().update(hitbox->get().getPosition());
 
-    itemType = (ItemType)(static_cast<int>(rand() % 3));
+    itemType = (ItemType)(static_cast<int>(rand() % 4));
     switch (itemType) {
-        case ItemType::I_SPEEDUP: renderer->get().setModel(MODELS(M_IROLLER)); break;
-        case ItemType::I_BOMBUP: renderer->get().setModel(MODELS(M_IBOMB)); break;
-        case ItemType::I_FIREUP: renderer->get().setModel(MODELS(M_IFIRE)); break;
+        case ItemType::I_SPEEDUP:
+            renderer->get().setModel(MODELS(M_IROLLER));
+            break;
+        case ItemType::I_BOMBUP:
+            renderer->get().setModel(MODELS(M_IBOMB));
+            break;
+        case ItemType::I_FIREUP:
+            renderer->get().setModel(MODELS(M_IFIRE));
+            break;
+        case ItemType::I_WALL: renderer->get().setModel(MODELS(M_IWALL)); break;
         default: break;
     }
 }
@@ -80,6 +87,7 @@ void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
         case ItemType::I_SPEEDUP: p->speed += 0.2f; break;
         case ItemType::I_BOMBUP: p->nbBomb += 1; break;
         case ItemType::I_FIREUP: p->bombSize += 1; break;
+        case ItemType::I_WALL: p->setWallPass(true); break;
         default: break;
     }
 }

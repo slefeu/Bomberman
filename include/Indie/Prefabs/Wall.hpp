@@ -19,7 +19,7 @@ class Wall : public Entities
     ~Wall() noexcept                 = default;
 
     Wall& operator=(const Wall& rhs) noexcept = default;
-    Wall& operator=(Wall&& rhs) noexcept = default;
+    Wall& operator=(Wall&& rhs) noexcept      = default;
 
     void Update() final;
     void Display() final;

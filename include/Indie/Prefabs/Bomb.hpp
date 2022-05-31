@@ -48,5 +48,6 @@ class Bomb : public Entities
     std::vector<std::unique_ptr<Entities>>* entities;
     std::vector<std::unique_ptr<Fire>>      fires;
     std::vector<std::unique_ptr<Player>>*   players;
-    bool                                    is_exploding_ = false;
+    bool                                    is_exploding_;
+    int                                     animeDir;
 };

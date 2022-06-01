@@ -40,7 +40,7 @@ Bomb::Bomb(Vector3                          pos,
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
-    Vector3 hitbox_size = { 0.8f, 1.2f, 0.8f };
+    Vector3 hitbox_size = { 0.6f, 1.2f, 0.6f };
     addComponent(
         BoxCollider(transform->get().getPosition(), hitbox_size, false));
 }

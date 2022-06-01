@@ -22,7 +22,7 @@ Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
     transform->get().setScale(0.017f);
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(model);
-    Vector3 size = { 1.0f, 1.0f, 1.0f };
+    Vector3 size = { 0.9f, 1.0f, 0.9f };
     addComponent(BoxCollider(transform->get().getPosition(), size, true));
 }
 
@@ -48,5 +48,9 @@ void Wall::Update()
 
 void Wall::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
-    (void)other;
+    auto transform = getComponent<Transform3D>();
+
+    if (other->getEntityType() == EntityType::E_WALL
+        && transform->get().getPosition().y > 0)
+        other->setEnabledValue(false);
 }

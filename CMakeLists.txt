@@ -7,7 +7,10 @@ find_package(raylib 4.0.0 REQUIRED)
 set(CMAKE_CXX_STANDARD 20)
 
 if(UNIX)
-  set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+  find_program(TIDY "clang-tidy")
+    if(TIDY)
+      set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+    endif()
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)

@@ -33,7 +33,7 @@ Crate::Crate(Vector3                        pos,
     Vector3 position = {
         transform->get().getPositionX(), 0.35f, transform->get().getPositionZ()
     };
-    Vector3 size = { 1.0f, 1.0f, 1.0f };
+    Vector3 size = { 0.8f, 0.8f, 0.8f };
     addComponent(BoxCollider(position, size, true));
 }
 
@@ -64,5 +64,5 @@ void Crate::dropItem()
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
-    (void)other;
+    if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
 }

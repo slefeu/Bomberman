@@ -38,15 +38,15 @@ Core::Core(GameData* newData) noexcept
     scenes.emplace_back(std::make_unique<Game>(data));
 
     // Setting the first camera
-    camera.position = SCENE->cameraPosition;
-    camera.target   = SCENE->cameraTarget;
-    camera.up       = SCENE->cameraUp;
+    camera.getCamera().position = SCENE->cameraPosition;
+    camera.getCamera().target   = SCENE->cameraTarget;
+    camera.getCamera().up       = SCENE->cameraUp;
 }
 
 void Core::switchScene(const int& scene) noexcept
 {
     data->currentScene = scene;
-    SCENE->resetCamera(camera);
+    SCENE->resetCameraman(camera);
 }
 
 void Core::run() noexcept
@@ -55,7 +55,7 @@ void Core::run() noexcept
         // Events -------------------------------------------------------------
         // Va partir, c'est que pour les tests
         if (IsKeyPressed(KEY_LEFT)) switchScene((data->currentScene - 1) % scenes.size());
-        if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
+        if (IsKeyPressed(KEY_UP)) SCENE->resetCameraman(camera);
         if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
 
         if (IsGamepadAvailable(0))
@@ -63,13 +63,13 @@ void Core::run() noexcept
                 switchScene((data->currentScene - 1) % scenes.size());
 
         // Update -------------------------------------------------------------
-        if (camera.isMoving) camera.isMoving = camera.smoothMove();
+        if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         SCENE->action(camera);
 
         // Display ------------------------------------------------------------
         BeginDrawing();
         ClearBackground(SCENE->backgroundColor);
-        BeginMode3D(camera);
+        BeginMode3D(camera.getCamera());
         SCENE->display3D();
         EndMode3D();
         SCENE->display2D();

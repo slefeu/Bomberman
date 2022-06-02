@@ -35,7 +35,7 @@ Game::Game(GameData* data) noexcept
     createMap();
 }
 
-void Game::resetCamera(Cameraman& camera) noexcept
+void Game::resetCameraman(Cameraman& camera) noexcept
 {
     camera.moveTo(cameraPosition, cameraTarget, cameraUp);
 }
@@ -73,7 +73,7 @@ void Game::action(Cameraman& camera) noexcept
     for (auto& player : PLAYERS) player->Update();
     for (auto& entity : _entities) entity->Update();
 
-    if (!camera.isMoving) camera.lookBetweenEntities(PLAYERS);
+    if (!camera.getIsMoving()) camera.lookBetweenEntities(PLAYERS);
 
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {

@@ -12,7 +12,7 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
     , winWidth(winWidth)
     , winHeight(winHeight)
     , nbPlayer(nbPlayer)
-    , currentScene(1)
+    , currentScene(0)
     , timeParty(120.0f)
 {
 }

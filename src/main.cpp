@@ -14,7 +14,6 @@ int main(void)
         core->run();
         data.reset();
         core.reset();
-        CloseWindow();
     } catch (const Error& error) {
         std::cerr << error.what() << std::endl;
         return (84);

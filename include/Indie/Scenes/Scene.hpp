@@ -12,12 +12,6 @@
 
 class Scene
 {
-  public:
-    Vector3   cameraPosition;
-    Vector3   cameraTarget;
-    Vector3   cameraUp;
-    GameData* data;
-    Color     backgroundColor;
 
   public:
     Scene(GameData* data) noexcept
@@ -34,4 +28,13 @@ class Scene
     virtual void action(Cameraman& camera) noexcept      = 0;
     virtual void DestroyPool() noexcept                  = 0;
     virtual void CollisionPool() noexcept                = 0;
+    virtual void playMusic() const noexcept              = 0;
+    virtual Music Scene::getLoopMusic() const noexcept    =0;
+
+  protected:
+    Vector3   cameraPosition;
+    Vector3   cameraTarget;
+    Vector3   cameraUp;
+    GameData* data;
+    Color     backgroundColor;
 };

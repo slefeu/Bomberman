@@ -6,14 +6,12 @@
 */
 
 #include "Game.hpp"
-
-#include <iostream>
-
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
+#include "Shortcuts.hpp"
 
 Game::Game(GameData* data) noexcept
     : Scene(data)
@@ -31,8 +29,26 @@ Game::Game(GameData* data) noexcept
         if (player->getEntityType() != EntityType::E_PLAYER) continue;
         ((std::unique_ptr<Player>&)player)->setBombArray(&_entities);
     }
-
     createMap();
+    loop_music_ = LoadMusicStream(GAME_MUSIC);
+
+    // Sound sound = LoadSound("Assets/Audios/Menu.wav");
+    // sounds.push_back(std::make_unique<Sound>(sound));
+}
+
+Game::~Game() noexcept
+{
+    UnloadMusicStream(loop_music_);
+}
+
+Music Game::getLoopMusic() const noexcept
+{
+    return (loop_music_);
+}
+
+void Game::playMusic() const noexcept
+{
+    PlayMusicStream(loop_music_);
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept
@@ -147,7 +163,6 @@ void Game::createMap(void) noexcept
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 _entities.emplace_back(NEW_WALL(vectorTemp));
-                std::cout << _entities.size() << std::endl;
             }
 
     // Ajout des murs une case sur deux

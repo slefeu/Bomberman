@@ -8,6 +8,7 @@
 #include "Home.hpp"
 
 #include <iostream>
+#include "Shortcuts.hpp"
 
 Home::Home(GameData* data) noexcept
     : Scene(data)
@@ -16,6 +17,15 @@ Home::Home(GameData* data) noexcept
     cameraTarget    = { 0.0f, 0.0f, 0.0f };
     cameraUp        = { 0.0f, 1.0f, 0.0f };
     backgroundColor = RAYWHITE;
+    loop_music_ = LoadMusicStream(MENU_MUSIC);
+
+    // Sound sound = LoadSound("Assets/Audios/Menu.wav");
+    // sounds.push_back(std::make_unique<Sound>(sound));
+}
+
+Home::~Home() noexcept
+{
+    UnloadMusicStream(loop_music_);
 }
 
 void Home::resetCamera(Cameraman& camera) noexcept
@@ -44,3 +54,13 @@ void Home::action(Cameraman& camera) noexcept
 void Home::DestroyPool() noexcept {}
 
 void Home::CollisionPool() noexcept {}
+
+Music Home::getLoopMusic() const noexcept
+{
+    return (loop_music_);
+}
+
+void Home::playMusic() const noexcept
+{
+    PlayMusicStream(loop_music_);
+}

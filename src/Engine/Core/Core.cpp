@@ -19,6 +19,7 @@ Core::Core(GameData* newData) noexcept
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
     SetTargetFPS(data->fps);
+    InitAudioDevice();
 
     // Chargement des models 3D
     data->models.emplace_back(NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
@@ -35,17 +36,20 @@ Core::Core(GameData* newData) noexcept
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data));
     scenes.emplace_back(std::make_unique<Game>(data));
+    SCENE->playMusic();
 
     // Setting the first camera
     camera.position = SCENE->cameraPosition;
     camera.target   = SCENE->cameraTarget;
     camera.up       = SCENE->cameraUp;
+
 }
 
 void Core::switchScene(const int& scene) noexcept
 {
     data->currentScene = scene;
     SCENE->resetCamera(camera);
+    SCENE->playMusic();
 }
 
 void Core::run() noexcept
@@ -64,6 +68,7 @@ void Core::run() noexcept
         // Update -------------------------------------------------------------
         if (camera.isMoving) camera.isMoving = camera.smoothMove();
         SCENE->action(camera);
+        UpdateMusicStream(SCENE->getLoopMusic()); // Update music buffer with new stream data
 
         // Display ------------------------------------------------------------
         BeginDrawing();
@@ -74,4 +79,11 @@ void Core::run() noexcept
         SCENE->display2D();
         EndDrawing();
     }
+    closeElements();
+}
+
+void Core::closeElements() noexcept
+{
+    CloseAudioDevice();
+    CloseWindow();
 }

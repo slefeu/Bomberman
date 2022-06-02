@@ -17,11 +17,6 @@
 
 class Core
 {
-  private:
-    Cameraman                           camera;
-    std::vector<std::unique_ptr<Scene>> scenes;
-    GameData*                           data;
-
   public:
     Core(GameData* data) noexcept;
     ~Core() noexcept                          = default;
@@ -33,5 +28,12 @@ class Core
     void run() noexcept;
 
   private:
+  //methods
     void switchScene(const int& scene) noexcept;
+    void closeElements() noexcept;
+
+  //attributes
+    Cameraman                           camera;
+    std::vector<std::unique_ptr<Scene>> scenes;
+    GameData*                           data;
 };

@@ -21,13 +21,34 @@ enum class Direction { UP, RIGHT, DOWN, LEFT };
 
 class Game : public Scene
 {
+  public:
+    Game(GameData* data) noexcept;
+    ~Game() noexcept;
+    Game(const Game& other) noexcept          = delete;
+    Game(Game&& other) noexcept               = delete;
+    Game& operator=(const Game& rhs) noexcept = delete;
+    Game& operator=(Game&& rhs) noexcept      = delete;
+
+    void resetCamera(Cameraman& camera) noexcept final;
+    void display3D(void) noexcept final;
+    void display2D(void) noexcept final;
+    void action(Cameraman& camera) noexcept final;
+    void DestroyPool() noexcept final;
+    void CollisionPool() noexcept final;
+    void playMusic() const noexcept final;
+    Music getLoopMusic() const noexcept final;
+
   private:
+
+    //methods
+    void createMap(void) noexcept;
+    void hurryUp(void) noexcept;
+
+    //attributes
     std::vector<std::unique_ptr<Entities>>  _entities;
     std::vector<std::unique_ptr<Entities>>* _players;
     std::vector<std::unique_ptr<Model3D>>*  _models;
-    std::unique_ptr<Timer>                  _chrono;
-
-  private:
+    std::unique_ptr<Timer>                  _chrono
     float     lastTimeBlockPlace;
     bool      isHurry;
     int       nbBlockPlaced;
@@ -38,23 +59,5 @@ class Game : public Scene
     int       minX      = -5;
     int       minZ      = -4;
     Direction direction = Direction::UP;
-
-  public:
-    Game(GameData* data) noexcept;
-    ~Game() noexcept                          = default;
-    Game(const Game& other) noexcept          = delete;
-    Game(Game&& other) noexcept               = delete;
-    Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
-
-    void resetCamera(Cameraman& camera) noexcept;
-    void display3D(void) noexcept;
-    void display2D(void) noexcept;
-    void action(Cameraman& camera) noexcept;
-    void DestroyPool() noexcept;
-    void CollisionPool() noexcept;
-
-  private:
-    void createMap(void) noexcept;
-    void hurryUp(void) noexcept;
+    Music loop_music_;
 };

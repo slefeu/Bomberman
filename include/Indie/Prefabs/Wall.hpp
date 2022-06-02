@@ -10,7 +10,7 @@
 #include "Crate.hpp"
 #include "Shortcuts.hpp"
 
-class Wall : public Entities
+class Wall : public Entity
 {
   public:
     Wall(Vector3 pos, std::unique_ptr<Model3D>* model);
@@ -23,7 +23,7 @@ class Wall : public Entities
 
     void Update() final;
     void Display() final;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
+    void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
 
   protected:
   private:

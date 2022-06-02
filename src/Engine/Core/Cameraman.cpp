@@ -37,7 +37,8 @@ void Cameraman::moveZ(const float& z) noexcept
     position.z += Round().myRound(z * GetFrameTime(), 1);
 }
 
-void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept
+void Cameraman::moveTo(
+    const Vector3& to, const Vector3& target, const Vector3& up) noexcept
 {
     targetPosition = to;
     targetTarget   = target;
@@ -45,7 +46,8 @@ void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& 
     isMoving       = true;
 }
 
-void Cameraman::tpTo(const Vector3& to, const Vector3& tar, const Vector3& newUp) noexcept
+void Cameraman::tpTo(
+    const Vector3& to, const Vector3& tar, const Vector3& newUp) noexcept
 {
     position = to;
     target   = tar;
@@ -62,15 +64,18 @@ bool Cameraman::smoothMove(void) noexcept
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
         (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
 
-    if ((dir.z == 1 && roundTarget.z > roundPos.z) || (dir.z == -1 && roundTarget.z < roundPos.z)) {
+    if ((dir.z == 1 && roundTarget.z > roundPos.z)
+        || (dir.z == -1 && roundTarget.z < roundPos.z)) {
         thereIsMovement = true;
         moveZ(dir.z * speed);
     }
-    if ((dir.x == 1 && roundTarget.x > roundPos.x) || (dir.x == -1 && roundTarget.x < roundPos.x)) {
+    if ((dir.x == 1 && roundTarget.x > roundPos.x)
+        || (dir.x == -1 && roundTarget.x < roundPos.x)) {
         thereIsMovement = true;
         moveX(dir.x * speed);
     }
-    if ((dir.y == 1 && roundTarget.y > roundPos.y) || (dir.y == -1 && roundTarget.y < roundPos.y)) {
+    if ((dir.y == 1 && roundTarget.y > roundPos.y)
+        || (dir.y == -1 && roundTarget.y < roundPos.y)) {
         thereIsMovement = true;
         moveY(dir.y * speed);
     }
@@ -81,14 +86,14 @@ bool Cameraman::smoothMove(void) noexcept
     return thereIsMovement;
 }
 
-void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities)
+void Cameraman::lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity)
 {
     float minX = INFINITY;
     float minZ = INFINITY;
     float maxX = -minX;
     float maxZ = -minZ;
 
-    for (auto& entity : entities) {
+    for (auto& entity : Entity) {
         if (!entity->getEnabledValue()) continue;
         auto transform = entity->getComponent<Transform3D>();
         if (!transform.has_value()) throw(Error("Error in camera handling.\n"));

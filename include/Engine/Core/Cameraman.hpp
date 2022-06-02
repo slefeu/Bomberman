@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "raylib.h"
 
 class Cameraman : public Camera3D
@@ -26,10 +26,12 @@ class Cameraman : public Camera3D
     void moveX(const float& x) noexcept;
     void moveY(const float& y) noexcept;
     void moveZ(const float& z) noexcept;
-    void moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
-    void tpTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
+    void moveTo(
+        const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
+    void tpTo(
+        const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
     bool smoothMove(void) noexcept;
-    void lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities);
+    void lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity);
 
   public:
     bool    isMoving;

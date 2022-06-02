@@ -48,12 +48,15 @@ void BoxCollider::update(const Vector3 newPos) noexcept
 
 bool BoxCollider::isColliding(const BoxCollider& other) const noexcept
 {
-    return Collision().isColliding(position_, size_, other.getPosition(), other.getSize());
+    return Collision().isColliding(
+        position_, size_, other.getPosition(), other.getSize());
 }
 
-bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3& otherPos) const noexcept
+bool BoxCollider::isColliding(
+    const BoxCollider& otherHit, Vector3& otherPos) const noexcept
 {
-    return Collision().isColliding(position_, size_, otherPos, otherHit.getSize());
+    return Collision().isColliding(
+        position_, size_, otherPos, otherHit.getSize());
 }
 
 ComponentType BoxCollider::getComponentType() const noexcept

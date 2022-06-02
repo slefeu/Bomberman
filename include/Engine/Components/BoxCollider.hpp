@@ -24,10 +24,11 @@ class BoxCollider : public Component
     BoxCollider& operator=(const BoxCollider& rhs) noexcept = default;
     BoxCollider& operator=(BoxCollider&& rhs) noexcept = default;
 
-    void          display() const noexcept; // pour du débugage
-    void          update(Vector3 pos) noexcept;
-    bool          isColliding(const BoxCollider& other) const noexcept;
-    bool          isColliding(const BoxCollider& otherHit, Vector3& otherPos) const noexcept;
+    void display() const noexcept; // pour du débugage
+    void update(Vector3 pos) noexcept;
+    bool isColliding(const BoxCollider& other) const noexcept;
+    bool isColliding(
+        const BoxCollider& otherHit, Vector3& otherPos) const noexcept;
     Vector3       getPosition() const noexcept;
     void          setPosition(const Vector3& pos) noexcept;
     Vector3       getSize() const noexcept;

@@ -5,14 +5,14 @@
 ** Item
 */
 
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "Player.hpp"
 
 #define NEW_ITEM(pos, data) std::make_unique<Item>((Vector3)pos, data)
 
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
 
-class Item : public Entities
+class Item : public Entity
 {
   public:
     Item(Vector3 pos, GameData* data);
@@ -24,7 +24,7 @@ class Item : public Entities
 
     void Display() final;
     void Update() final;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
+    void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
 
   private:
     void setPlayerStat(std::unique_ptr<Player>& p) noexcept;

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Entities
+** Entity
 */
 
 #pragma once
@@ -19,19 +19,19 @@
 #include "Shortcuts.hpp"
 #include "Transform3D.hpp"
 
-class Entities
+class Entity
 {
   public:
-    Entities(const EntityType& type) noexcept;
-    virtual ~Entities() noexcept             = default;
-    Entities(const Entities& other) noexcept = delete;
-    Entities(Entities&& other) noexcept      = delete;
-    Entities& operator=(const Entities& rhs) noexcept = delete;
-    Entities& operator=(Entities&& rhs) noexcept = delete;
+    Entity(const EntityType& type) noexcept;
+    virtual ~Entity() noexcept           = default;
+    Entity(const Entity& other) noexcept = delete;
+    Entity(Entity&& other) noexcept      = delete;
+    Entity& operator=(const Entity& rhs) noexcept = delete;
+    Entity& operator=(Entity&& rhs) noexcept = delete;
 
-    virtual void Display()                                                   = 0;
-    virtual void Update()                                                    = 0;
-    virtual void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept = 0;
+    virtual void Display()                                                 = 0;
+    virtual void Update()                                                  = 0;
+    virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;
     template <typename T>
     void addComponent(const T& component) noexcept
     {

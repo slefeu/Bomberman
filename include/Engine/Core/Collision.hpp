@@ -14,6 +14,8 @@ class Collision
   public:
     Collision() noexcept  = default;
     ~Collision() noexcept = default;
-    bool isColliding(
-        const Vector3& pos, const Vector3& size, const Vector3& otherPos, const Vector3& otherSize) noexcept;
+    bool isColliding(const Vector3& pos,
+        const Vector3&              size,
+        const Vector3&              otherPos,
+        const Vector3&              otherSize) noexcept;
 };

@@ -10,11 +10,11 @@
 
 #include "Bomb.hpp"
 #include "Crate.hpp"
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "Error.hpp"
 
 Fire::Fire(Vector3 posi, float newSize)
-    : Entities(EntityType::E_FIRE)
+    : Entity(EntityType::E_FIRE)
     , explodeTime(0.5f)
     , explodeTimer(NEW_TIMER(explodeTime))
 {
@@ -27,7 +27,8 @@ Fire::Fire(Vector3 posi, float newSize)
     transform->get().setSize({ newSize, newSize, newSize });
     renderer->get().setRenderType(RenderType::R_CUBE);
     renderer->get().setColor(RED);
-    addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
+    addComponent(BoxCollider(
+        transform->get().getPosition(), transform->get().getSize(), true));
 }
 
 void Fire::Display()
@@ -48,12 +49,13 @@ void Fire::Update()
     if (explodeTimer->timerDone()) setEnabledValue(false);
 }
 
-void Fire::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
+void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER) other->setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_PLAYER)
+        other->setEnabledValue(false);
 }
 
-bool Fire::ExplodeElements(std::unique_ptr<Entities>& other) noexcept
+bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_CRATE) {
         ((std::unique_ptr<Crate>&)other)->dropItem();

@@ -85,7 +85,7 @@ void Bomb::explode() noexcept
     is_exploding_ = true;
     hitbox->get().setIsSolid(false);
     player->nbBomb++;
-    fires.emplace_back(NEW_FIRE(getComponent<Transform3D>()->get().getPosition(), 0.9f));
+    fires.emplace_back(NEW_FIRE(getComponent<Transform3D>()->get().getPosition()));
     createFire({ 1.0f, 0.0f, 0.0f });
     createFire({ -1.0f, 0.0f, 0.0f });
     createFire({ 0.0f, 0.0f, 1.0f });
@@ -98,7 +98,6 @@ void Bomb::explode() noexcept
 void Bomb::createFire(Vector3 mul) noexcept
 {
     Vector3 position = getComponent<Transform3D>()->get().getPosition();
-    float   scale    = 0.5f;
     Vector3 newPos;
     bool    exit = false;
 
@@ -106,7 +105,7 @@ void Bomb::createFire(Vector3 mul) noexcept
         newPos.x = position.x + (float(i) * mul.x);
         newPos.y = position.y + (float(i) * mul.y);
         newPos.z = position.z + (float(i) * mul.z);
-        fires.emplace_back(NEW_FIRE(newPos, scale));
+        fires.emplace_back(NEW_FIRE(newPos));
 
         auto& fire = fires.back();
         for (auto& other : *entities) {
@@ -120,5 +119,5 @@ void Bomb::createFire(Vector3 mul) noexcept
 
 void Bomb::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
-    (void)other;
+    if (other->getEntityType() == EntityType::E_WALL) explode();
 }

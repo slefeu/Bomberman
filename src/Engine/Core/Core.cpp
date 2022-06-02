@@ -21,13 +21,14 @@ Core::Core(GameData* newData) noexcept
     SetTargetFPS(data->fps);
 
     // Chargement des models 3D
-    data->models.emplace_back(NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/bomb.glb", "assets/textures/bomb.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/box.glb", "assets/textures/wall.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/box.glb", "assets/textures/box.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_roller.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_bomb.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_fire.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/item.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/fire.png"));
 
     // Génération des joueurs
     for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(NEW_PLAYER(i, data));

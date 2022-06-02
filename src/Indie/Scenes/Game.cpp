@@ -147,7 +147,6 @@ void Game::createMap(void) noexcept
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 _entities.emplace_back(NEW_WALL(vectorTemp));
-                std::cout << _entities.size() << std::endl;
             }
 
     // Ajout des murs une case sur deux

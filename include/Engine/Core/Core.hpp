@@ -34,4 +34,6 @@ class Core
 
   private:
     void switchScene(const int& scene) noexcept;
+    void createWindow() noexcept;
+    void resetData() noexcept;
 };

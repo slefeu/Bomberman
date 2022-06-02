@@ -15,10 +15,7 @@
 Core::Core(GameData* newData) noexcept
     : data(newData)
 {
-    // Create Window
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
-    SetTargetFPS(data->fps);
+    createWindow();
 
     // Chargement des models 3D
     data->models.emplace_back(NEW_MODEL("assets/models/bomb.glb", "assets/textures/bomb.png"));
@@ -30,17 +27,28 @@ Core::Core(GameData* newData) noexcept
     data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/item.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/fire.png"));
 
+    resetData();
+    camera.tpTo(SCENE->cameraPosition, SCENE->cameraTarget, SCENE->cameraUp);
+}
+
+void Core::createWindow() noexcept
+{
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
+    SetTargetFPS(data->fps);
+}
+
+void Core::resetData() noexcept
+{
+    if (scenes.size() != 0) scenes.clear();
+    if (data->players.size() != 0) data->players.clear();
+
     // Génération des joueurs
     for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(NEW_PLAYER(i, data));
 
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data));
     scenes.emplace_back(std::make_unique<Game>(data));
-
-    // Setting the first camera
-    camera.getCamera().position = SCENE->cameraPosition;
-    camera.getCamera().target   = SCENE->cameraTarget;
-    camera.getCamera().up       = SCENE->cameraUp;
 }
 
 void Core::switchScene(const int& scene) noexcept
@@ -52,17 +60,8 @@ void Core::switchScene(const int& scene) noexcept
 void Core::run() noexcept
 {
     while (!WindowShouldClose()) {
-        // Events -------------------------------------------------------------
-        // Va partir, c'est que pour les tests
-        if (IsKeyPressed(KEY_LEFT)) switchScene((data->currentScene - 1) % scenes.size());
-        if (IsKeyPressed(KEY_UP)) SCENE->resetCameraman(camera);
-        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+        if (IsKeyPressed(KEY_SPACE)) resetData();
 
-        if (IsGamepadAvailable(0))
-            if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN))
-                switchScene((data->currentScene - 1) % scenes.size());
-
-        // Update -------------------------------------------------------------
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         SCENE->action(camera);
 

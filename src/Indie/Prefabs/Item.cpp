@@ -7,8 +7,6 @@
 
 #include "Item.hpp"
 
-#include <iostream>
-
 #include "Error.hpp"
 #include "Player.hpp"
 #include "Render.hpp"

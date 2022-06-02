@@ -19,20 +19,20 @@ class Core
 {
   public:
     Core(GameData* data) noexcept;
-    ~Core() noexcept                          = default;
-    Core(const Core& other) noexcept          = delete;
-    Core(Core&& other) noexcept               = delete;
+    ~Core() noexcept                 = default;
+    Core(const Core& other) noexcept = delete;
+    Core(Core&& other) noexcept      = delete;
     Core& operator=(const Core& rhs) noexcept = delete;
-    Core& operator=(Core&& rhs) noexcept      = delete;
+    Core& operator=(Core&& rhs) noexcept = delete;
 
     void run() noexcept;
 
   private:
-  //methods
+    // methods
     void switchScene(const int& scene) noexcept;
     void closeElements() noexcept;
 
-  //attributes
+    // attributes
     Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes;
     GameData*                           data;

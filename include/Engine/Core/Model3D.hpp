@@ -22,8 +22,8 @@ class Model3D
   public:
     Model3D(std::string path, std::string texturePath) noexcept;
     ~Model3D() noexcept;
-    Model3D(const Model3D& other) noexcept          = delete;
-    Model3D(Model3D&& other) noexcept               = delete;
+    Model3D(const Model3D& other) noexcept = delete;
+    Model3D(Model3D&& other) noexcept      = delete;
     Model3D& operator=(const Model3D& rhs) noexcept = delete;
-    Model3D& operator=(Model3D&& rhs) noexcept      = delete;
+    Model3D& operator=(Model3D&& rhs) noexcept = delete;
 };

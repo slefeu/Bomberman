@@ -14,11 +14,11 @@ class Transform3D : public Component
 {
   public:
     Transform3D() noexcept;
-    ~Transform3D() noexcept                                 = default;
-    Transform3D(const Transform3D& other) noexcept          = default;
-    Transform3D(Transform3D&& other) noexcept               = default;
+    ~Transform3D() noexcept                        = default;
+    Transform3D(const Transform3D& other) noexcept = default;
+    Transform3D(Transform3D&& other) noexcept      = default;
     Transform3D& operator=(const Transform3D& rhs) noexcept = default;
-    Transform3D& operator=(Transform3D&& rhs) noexcept      = default;
+    Transform3D& operator=(Transform3D&& rhs) noexcept = default;
 
     Vector3 getPosition() const noexcept;
     Vector3 getSize() const noexcept;

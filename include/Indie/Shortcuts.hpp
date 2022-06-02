@@ -21,4 +21,4 @@ enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM };
 #define NEW_WALL(pos) std::make_unique<Wall>(pos, MODELS(M_WALL))
 #define NEW_CRATE(pos, data, entities) std::make_unique<Crate>((Vector3)pos, MODELS(M_CRATE), data, entities)
 #define MENU_MUSIC "assets/audios/Menu.mp3"
-#define GAME_MUSIC "assets/audios/Menu.mp3"
+#define GAME_MUSIC "assets/audios/Game.mp3"

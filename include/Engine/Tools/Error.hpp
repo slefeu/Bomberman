@@ -19,7 +19,7 @@ class Error : public std::exception
     ~Error() noexcept override         = default;
 
     Error&      operator=(const Error&) noexcept = default;
-    Error&      operator=(Error&&) noexcept      = default;
+    Error&      operator=(Error&&) noexcept = default;
     const char* what() const noexcept override;
 
   protected:

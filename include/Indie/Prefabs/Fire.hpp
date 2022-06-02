@@ -21,11 +21,11 @@ class Fire : public Entities
 
   public:
     Fire(Vector3 posi, float newSize);
-    ~Fire() noexcept                          = default;
-    Fire(const Fire& other) noexcept          = delete;
-    Fire(Fire&& other) noexcept               = delete;
+    ~Fire() noexcept                 = default;
+    Fire(const Fire& other) noexcept = delete;
+    Fire(Fire&& other) noexcept      = delete;
     Fire& operator=(const Fire& rhs) noexcept = delete;
-    Fire& operator=(Fire&& rhs) noexcept      = delete;
+    Fire& operator=(Fire&& rhs) noexcept = delete;
 
     void Display() final;
     void Update() final;

@@ -6,12 +6,13 @@
 */
 
 #include "Game.hpp"
+
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
+#include "Shortcuts.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
-#include "Shortcuts.hpp"
 
 Game::Game(GameData* data) noexcept
     : Scene(data)
@@ -19,11 +20,6 @@ Game::Game(GameData* data) noexcept
     , isHurry(false)
     , nbBlockPlaced(0)
 {
-    cameraPosition  = { 0.0f, 11.0f, 1.0f };
-    cameraTarget    = { 0.0f, 0.0f, 1.0f };
-    cameraUp        = { 0.0f, 2.0f, 0.0f };
-    backgroundColor = BLACK;
-
     // Assignation des bombes aux joueurs
     for (auto& player : data->players) {
         if (player->getEntityType() != EntityType::E_PLAYER) continue;
@@ -53,7 +49,7 @@ void Game::playMusic() const noexcept
 
 void Game::resetCamera(Cameraman& camera) noexcept
 {
-    camera.moveTo(cameraPosition, cameraTarget, cameraUp);
+    camera.moveTo(camera_position_, camera_target_, camera_up_);
 }
 
 void Game::display3D() noexcept
@@ -247,4 +243,24 @@ void Game::hurryUp(void) noexcept
     }
 
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
+}
+
+Vector3 Game::getCameraPosition() const noexcept
+{
+    return (camera_position_);
+}
+
+Vector3 Game::getCameraTarget() const noexcept
+{
+    return (camera_target_);
+}
+
+Vector3 Game::getCameraUp() const noexcept
+{
+    return (camera_up_);
+}
+
+Color Game::getBackgroundColor() const noexcept
+{
+    return (background_color_);
 }

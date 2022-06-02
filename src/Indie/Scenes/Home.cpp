@@ -7,16 +7,11 @@
 
 #include "Home.hpp"
 
-#include <iostream>
 #include "Shortcuts.hpp"
 
 Home::Home(GameData* data) noexcept
     : Scene(data)
 {
-    cameraPosition  = { 20.0f, 50.0f, 20.0f };
-    cameraTarget    = { 0.0f, 0.0f, 0.0f };
-    cameraUp        = { 0.0f, 1.0f, 0.0f };
-    backgroundColor = RAYWHITE;
     loop_music_ = LoadMusicStream(MENU_MUSIC);
 
     // Sound sound = LoadSound("Assets/Audios/Menu.wav");
@@ -30,15 +25,10 @@ Home::~Home() noexcept
 
 void Home::resetCamera(Cameraman& camera) noexcept
 {
-    camera.moveTo(cameraPosition, cameraTarget, cameraUp);
+    camera.moveTo(camera_position_, camera_target_, camera_up_);
 }
 
-void Home::display3D() noexcept
-{
-    DrawCube({ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, BLUE);
-    DrawCubeWires({ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, RED);
-    DrawGrid(100, 1.0f);
-}
+void Home::display3D() noexcept {}
 
 void Home::display2D() noexcept
 {
@@ -63,4 +53,24 @@ Music Home::getLoopMusic() const noexcept
 void Home::playMusic() const noexcept
 {
     PlayMusicStream(loop_music_);
+}
+
+Vector3 Home::getCameraPosition() const noexcept
+{
+    return (camera_position_);
+}
+
+Vector3 Home::getCameraTarget() const noexcept
+{
+    return (camera_target_);
+}
+
+Vector3 Home::getCameraUp() const noexcept
+{
+    return (camera_up_);
+}
+
+Color Home::getBackgroundColor() const noexcept
+{
+    return (background_color_);
 }

@@ -7,8 +7,6 @@
 
 #include "Core.hpp"
 
-#include <iostream>
-
 #include "Game.hpp"
 #include "Home.hpp"
 
@@ -39,10 +37,9 @@ Core::Core(GameData* newData) noexcept
     SCENE->playMusic();
 
     // Setting the first camera
-    camera.position = SCENE->cameraPosition;
-    camera.target   = SCENE->cameraTarget;
-    camera.up       = SCENE->cameraUp;
-
+    camera.position = SCENE->getCameraPosition();
+    camera.target   = SCENE->getCameraTarget();
+    camera.up       = SCENE->getCameraUp();
 }
 
 void Core::switchScene(const int& scene) noexcept
@@ -72,7 +69,7 @@ void Core::run() noexcept
 
         // Display ------------------------------------------------------------
         BeginDrawing();
-        ClearBackground(SCENE->backgroundColor);
+        ClearBackground(SCENE->getBackgroundColor());
         BeginMode3D(camera);
         SCENE->display3D();
         EndMode3D();

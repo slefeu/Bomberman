@@ -8,8 +8,6 @@
 
 #include "Fire.hpp"
 
-#include <iostream>
-
 #include "Bomb.hpp"
 #include "Crate.hpp"
 #include "Entities.hpp"

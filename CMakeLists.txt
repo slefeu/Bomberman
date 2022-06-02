@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(bomberman)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(raylib 4.0.0 REQUIRED)
-
+set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
 
 if(UNIX)
@@ -12,6 +11,8 @@ if(UNIX)
       set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
     endif()
 endif()
+
+find_package(raylib 4.0.0 REQUIRED)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -51,9 +52,7 @@ set(
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
-if(UNIX)
-  target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror)
-endif()
+
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Ajouter ici les dossiers contenants les .hpp

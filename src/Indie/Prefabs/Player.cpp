@@ -7,8 +7,6 @@
 
 #include "Player.hpp"
 
-#include <iostream>
-
 #include "Bomb.hpp"
 #include "Collision.hpp"
 #include "Error.hpp"
@@ -66,7 +64,6 @@ void Player::Update()
     }
 
     if (IsGamepadAvailable(id)) {
-        std::cout << "Gamepad " << id << " is available" << std::endl;
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
         float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
@@ -89,10 +86,7 @@ void Player::Update()
 void Player::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
-    if (other->getEntityType() == EntityType::E_FIRE) {
-        std::cout << "Player " << id << " has been killed" << std::endl;
-        setEnabledValue(false);
-    }
+    if (other->getEntityType() == EntityType::E_FIRE) { setEnabledValue(false); }
 }
 
 void Player::setPosition(void)

@@ -7,8 +7,6 @@
 
 #include "Model3D.hpp"
 
-#include <iostream>
-
 Model3D::Model3D(std::string path, std::string texturePath) noexcept
     : model(LoadModel(path.c_str()))
     , texture(LoadTexture(texturePath.c_str()))

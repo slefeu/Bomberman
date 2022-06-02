@@ -19,6 +19,6 @@ class Round
     Round& operator=(const Round& rhs) noexcept = delete;
     Round& operator=(Round&& rhs) noexcept      = delete;
 
-    float   myRound(float x, int n = 0) noexcept;
-    Vector3 roundVector(Vector3 x, int n = 0) noexcept;
+    float   myRound(const float& x, const int& n = 0) noexcept;
+    Vector3 roundVector(const Vector3& x, const int& n = 0) noexcept;
 };

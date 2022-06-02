@@ -23,11 +23,11 @@ class Cameraman : public Camera3D
     Cameraman& operator=(const Cameraman& rhs) noexcept = delete;
     Cameraman& operator=(Cameraman&& rhs) noexcept      = delete;
 
-    void moveX(float x) noexcept;
-    void moveY(float y) noexcept;
-    void moveZ(float z) noexcept;
-    void moveTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
-    void tpTo(Vector3 to, Vector3 target, Vector3 up) noexcept;
+    void moveX(const float& x) noexcept;
+    void moveY(const float& y) noexcept;
+    void moveZ(const float& z) noexcept;
+    void moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
+    void tpTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
     bool smoothMove(void) noexcept;
     void lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities);
 

@@ -29,20 +29,16 @@ Bomb::Bomb(Vector3                          pos,
     , animeDir(1)
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
-        throw(Error("Error, could not instanciate the bomb element.\n"));
+    if (!transform.has_value()) throw(Error("Error, could not instanciate the bomb element.\n"));
     transform->get().setScale(0.07f);
-    transform->get().setPosition(
-        { round(pos.x), 0.0f - transform->get().getScale(), round(pos.z) });
+    transform->get().setPosition({ round(pos.x), 0.0f - transform->get().getScale(), round(pos.z) });
     auto renderer = getComponent<Render>();
-    if (!renderer.has_value())
-        throw(Error("Error, could not instanciate the bomb element.\n"));
+    if (!renderer.has_value()) throw(Error("Error, could not instanciate the bomb element.\n"));
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
     Vector3 hitbox_size = { 0.8f, 1.2f, 0.8f };
-    addComponent(
-        BoxCollider(transform->get().getPosition(), hitbox_size, false));
+    addComponent(BoxCollider(transform->get().getPosition(), hitbox_size, false));
 }
 
 void Bomb::Display()
@@ -50,8 +46,7 @@ void Bomb::Display()
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying a bomb element.\n"));
+    if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying a bomb element.\n"));
     renderer->get().display(transform->get());
 }
 
@@ -60,8 +55,7 @@ void Bomb::Update()
     int  i         = 0;
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
-    if (!hitbox.has_value() || !transform.has_value())
-        throw(Error("Error in updating a bomb element.\n"));
+    if (!hitbox.has_value() || !transform.has_value()) throw(Error("Error in updating a bomb element.\n"));
 
     lifeTimer->updateTimer();
     if (lifeTimer->timerDone()) {
@@ -76,15 +70,11 @@ void Bomb::Update()
             auto other_collider = other->getComponent<BoxCollider>();
             if (!hitbox->get().isColliding(other_collider->get())) i++;
         }
-        if (i == static_cast<int>(data->players.size()))
-            hitbox->get().setIsSolid(true);
+        if (i == static_cast<int>(data->players.size())) hitbox->get().setIsSolid(true);
     }
 
-    transform->get().setScale(
-        transform->get().getScale() + (0.1f * GetFrameTime() * animeDir));
-    if (transform->get().getScale() > 0.09f
-        || transform->get().getScale() < 0.07f)
-        animeDir *= -1;
+    transform->get().setScale(transform->get().getScale() + (0.1f * GetFrameTime() * animeDir));
+    if (transform->get().getScale() > 0.09f || transform->get().getScale() < 0.07f) animeDir *= -1;
 }
 
 void Bomb::explode() noexcept
@@ -95,8 +85,7 @@ void Bomb::explode() noexcept
     is_exploding_ = true;
     hitbox->get().setIsSolid(false);
     player->nbBomb++;
-    fires.emplace_back(
-        NEW_FIRE(getComponent<Transform3D>()->get().getPosition(), 0.9f));
+    fires.emplace_back(NEW_FIRE(getComponent<Transform3D>()->get().getPosition(), 0.9f));
     createFire({ 1.0f, 0.0f, 0.0f });
     createFire({ -1.0f, 0.0f, 0.0f });
     createFire({ 0.0f, 0.0f, 1.0f });

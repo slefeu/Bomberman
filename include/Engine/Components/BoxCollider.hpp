@@ -24,21 +24,21 @@ class BoxCollider : public Component
     BoxCollider& operator=(const BoxCollider& rhs) noexcept = default;
     BoxCollider& operator=(BoxCollider&& rhs) noexcept      = default;
 
-    void display() noexcept; // pour du débugage
-    void update(Vector3 pos) noexcept;
-    bool isColliding(const BoxCollider& other) noexcept;
-    bool isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept;
+    void          display() const noexcept; // pour du débugage
+    void          update(Vector3 pos) noexcept;
+    bool          isColliding(const BoxCollider& other) const noexcept;
+    bool          isColliding(const BoxCollider& otherHit, Vector3& otherPos) const noexcept;
     Vector3       getPosition() const noexcept;
-    void          setPosition(Vector3 pos) noexcept;
+    void          setPosition(const Vector3& pos) noexcept;
     Vector3       getSize() const noexcept;
     bool          getIsSolid() const noexcept;
-    void          setIsSolid(bool newValue) noexcept;
+    void          setIsSolid(const bool& newValue) noexcept;
     ComponentType getComponentType() const noexcept;
-    void          setPositionY(int pos) noexcept;
-    void          setPositionZ(int pos) noexcept;
-    void          addX(float x) noexcept;
-    void          addY(float x) noexcept;
-    void          addZ(float x) noexcept;
+    void          setPositionY(const int& pos) noexcept;
+    void          setPositionZ(const int& pos) noexcept;
+    void          addX(const float& x) noexcept;
+    void          addY(const float& x) noexcept;
+    void          addZ(const float& x) noexcept;
 
     static constexpr ComponentType TYPE = ComponentType::BOXCOLLIDER;
 

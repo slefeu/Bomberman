@@ -29,10 +29,9 @@ class Entities
     Entities& operator=(const Entities& rhs) noexcept = delete;
     Entities& operator=(Entities&& rhs) noexcept      = delete;
 
-    virtual void Display() = 0;
-    virtual void Update()  = 0;
-    virtual void OnCollisionEnter(
-        std::unique_ptr<Entities>& other) noexcept = 0;
+    virtual void Display()                                                   = 0;
+    virtual void Update()                                                    = 0;
+    virtual void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept = 0;
     template <typename T>
     void addComponent(const T& component) noexcept
     {
@@ -54,9 +53,8 @@ class Entities
     };
     EntityType getEntityType() const noexcept;
     bool       getEnabledValue() const noexcept;
-    void       setEnabledValue(bool value) noexcept;
+    void       setEnabledValue(const bool value) noexcept;
 
-  protected:
   private:
     const EntityType                        type_;
     bool                                    is_enabled_ = true;

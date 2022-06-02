@@ -21,24 +21,16 @@ Core::Core(GameData* newData) noexcept
     SetTargetFPS(data->fps);
 
     // Chargement des models 3D
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
 
     // Génération des joueurs
-    for (int i = 0; i != data->nbPlayer; i++)
-        data->players.emplace_back(NEW_PLAYER(i, data));
+    for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(NEW_PLAYER(i, data));
 
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data));
@@ -50,7 +42,7 @@ Core::Core(GameData* newData) noexcept
     camera.up       = SCENE->cameraUp;
 }
 
-void Core::switchScene(int scene) noexcept
+void Core::switchScene(const int& scene) noexcept
 {
     data->currentScene = scene;
     SCENE->resetCamera(camera);
@@ -61,13 +53,9 @@ void Core::run() noexcept
     while (!WindowShouldClose()) {
         // Events -------------------------------------------------------------
         // Va partir, c'est que pour les tests
-        if (IsKeyPressed(KEY_LEFT))
-            switchScene((data->currentScene - 1) % scenes.size());
+        if (IsKeyPressed(KEY_LEFT)) switchScene((data->currentScene - 1) % scenes.size());
         if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
-        if (IsKeyPressed(KEY_DOWN))
-            camera.tpTo({ 0.0f, 0.0f, 30.0f },
-                { 0.0f, 0.0f, 0.0f },
-                { 0.0f, 1.0f, 0.0f });
+        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
 
         if (IsGamepadAvailable(0))
             if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN))

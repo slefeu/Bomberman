@@ -30,8 +30,7 @@ void Wall::Display()
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
-    if (!transform.has_value() || !renderer.has_value())
-        throw(Error("Error in updating the game.\n"));
+    if (!transform.has_value() || !renderer.has_value()) throw(Error("Error in updating the game.\n"));
     renderer->get().display(transform->get());
 }
 

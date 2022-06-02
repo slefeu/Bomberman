@@ -13,10 +13,8 @@
 class Crate : public Entities
 {
   public:
-    Crate(Vector3                               pos,
-        std::unique_ptr<Model3D>*               model,
-        GameData*                               data,
-        std::vector<std::unique_ptr<Entities>>* entities);
+    Crate(
+        Vector3 pos, std::unique_ptr<Model3D>* model, GameData* data, std::vector<std::unique_ptr<Entities>>* entities);
     ~Crate() noexcept                           = default;
     Crate(const Crate& other) noexcept          = delete;
     Crate(Crate&& other) noexcept               = delete;
@@ -26,7 +24,7 @@ class Crate : public Entities
     void Display() override;
     void Update() override;
     void dropItem();
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
+    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
 
   public:
     GameData*                               data;

@@ -45,14 +45,8 @@ void Game::display3D() noexcept
     DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
-                    { 1.0f, 1.0f },
-                    { 0, 181, 48, 255 });
-            if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
-                    { 1.0f, 1.0f },
-                    { 0, 181, 48, 255 });
+            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
     for (auto& player : PLAYERS) player->Display();
@@ -65,11 +59,7 @@ void Game::display2D() noexcept
     DrawText("Game", 10, 30, 20, GREEN);
     if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
     else
-        DrawText(std::to_string(int(round(_chrono->getTime()))).data(),
-            10,
-            50,
-            20,
-            BLUE);
+        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);
 
     if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
 }
@@ -126,8 +116,7 @@ void Game::CollisionPool() noexcept
         for (auto& entity : _entities) {
             auto hitbox       = player->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
-                continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 player->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(player);
@@ -138,11 +127,8 @@ void Game::CollisionPool() noexcept
         for (auto& entity : _entities) {
             auto hitbox       = entity1->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
-                continue;
-            if (!hitbox->get().getIsSolid()
-                || !other_hitbox->get().getIsSolid())
-                continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
+            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (entity1 == entity) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 entity1->OnCollisionEnter(entity);
@@ -175,12 +161,9 @@ void Game::createMap(void) noexcept
     // Génération des boites
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if ((x == -6 && z == -4) || (x == 6 && z == -4)
-                || (x == -6 && z == 6) || (x == 6 && z == 6)
-                || (x == -6 && z == -3) || (x == 6 && z == -3)
-                || (x == -6 && z == 5) || (x == 6 && z == 5)
-                || (x == -5 && z == -4) || (x == 5 && z == -4)
-                || (x == -5 && z == 6) || (x == 5 && z == 6))
+            if ((x == -6 && z == -4) || (x == 6 && z == -4) || (x == -6 && z == 6) || (x == 6 && z == 6)
+                || (x == -6 && z == -3) || (x == 6 && z == -3) || (x == -6 && z == 5) || (x == 6 && z == 5)
+                || (x == -5 && z == -4) || (x == 5 && z == -4) || (x == -5 && z == 6) || (x == 5 && z == 6))
                 continue;
 
             Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
@@ -197,8 +180,7 @@ void Game::createMap(void) noexcept
                 }
             }
 
-            if (rand() % 100 < 80 && spawnCrate)
-                _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
+            if (rand() % 100 < 80 && spawnCrate) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
         }
 }
 

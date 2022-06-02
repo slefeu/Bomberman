@@ -14,16 +14,18 @@
 #include "Wall.hpp"
 #include "raylib.h"
 
-Game::Game(GameData* data) noexcept
-    : Scene(data)
-    , _chrono(NEW_TIMER(data->timeParty))
+Game::Game(GameData* data, Core& core_ref) noexcept
+    : Scene()
+    , data_(data)
+    , chrono_(NEW_TIMER(data_->timeParty))
     , isHurry(false)
     , nbBlockPlaced(0)
+    , core_entry_(core_ref)
 {
     // Assignation des bombes aux joueurs
-    for (auto& player : data->players) {
+    for (auto& player : data_->players) {
         if (player->getEntityType() != EntityType::E_PLAYER) continue;
-        ((std::unique_ptr<Player>&)player)->setBombArray(&_entities);
+        ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
     }
     createMap();
     loop_music_ = LoadMusicStream(GAME_MUSIC);
@@ -57,52 +59,62 @@ void Game::display3D() noexcept
     DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
-            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 == 0 && x % 2 == 0)
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
+                    { 1.0f, 1.0f },
+                    { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0)
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
+                    { 1.0f, 1.0f },
+                    { 0, 181, 48, 255 });
         }
 
-    for (auto& player : PLAYERS) player->Display();
-    for (auto& entity : _entities) entity->Display();
+    for (auto& player : data_->players) player->Display();
+    for (auto& entity : entities_) entity->Display();
 }
 
 void Game::display2D() noexcept
 {
     DrawFPS(10, 10);
     DrawText("Game", 10, 30, 20, GREEN);
-    if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
+    if (chrono_->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
     else
-        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);
+        DrawText(std::to_string(int(round(chrono_->getTime()))).data(),
+            10,
+            50,
+            20,
+            BLUE);
 
     if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
 }
 
-void Game::action(Cameraman& camera) noexcept
+void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
 {
     DestroyPool();
     CollisionPool();
-    _chrono->updateTimer();
+    chrono_->updateTimer();
 
-    for (auto& player : PLAYERS) player->Update();
-    for (auto& entity : _entities) entity->Update();
+    for (auto& player : data_->players) player->Update();
+    for (auto& entity : entities_) entity->Update();
 
-    if (!camera.isMoving) camera.lookBetweenEntities(PLAYERS);
+    if (!camera.isMoving) camera.lookBetweenEntity(data_->players);
 
     // Modificatoin de nombre de joueur à l'écran
-    if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
-        data->nbPlayer++;
-        auto tempPlayer = NEW_PLAYER(data->nbPlayer - 1, data);
-        tempPlayer->setBombArray(&_entities);
-        PLAYERS.emplace_back(std::move(tempPlayer));
+    if (IsKeyPressed(KEY_C) && data_->nbPlayer < 4) {
+        data_->nbPlayer++;
+        auto tempPlayer = std::make_unique<Player>(data_->nbPlayer - 1, data_);
+        tempPlayer->setBombArray(&entities_);
+        data_->players.emplace_back(std::move(tempPlayer));
     }
-    if (IsKeyPressed(KEY_V) && data->nbPlayer > 1) {
-        data->nbPlayer--;
-        PLAYERS.erase(PLAYERS.begin() + data->nbPlayer);
+    if (IsKeyPressed(KEY_V) && data_->nbPlayer > 1) {
+        data_->nbPlayer--;
+        data_->players.erase(data_->players.begin() + data_->nbPlayer);
     }
 
     // Activation du Hurry Up !
-    if (int(round(_chrono->getTime())) <= 55 && !isHurry) {
+    if (int(round(chrono_->getTime())) <= 55 && !isHurry) {
         isHurry            = true;
-        lastTimeBlockPlace = _chrono->getTime();
+        lastTimeBlockPlace = chrono_->getTime();
     }
     hurryUp();
 }
@@ -110,10 +122,10 @@ void Game::action(Cameraman& camera) noexcept
 void Game::DestroyPool() noexcept
 {
     // suppression des entités désacivées
-    size_t len = _entities.size();
+    size_t len = entities_.size();
     for (size_t i = 0; i != len; i++) {
-        if (!_entities[i]->getEnabledValue()) {
-            _entities.erase(_entities.begin() + i);
+        if (!entities_[i]->getEnabledValue()) {
+            entities_.erase(entities_.begin() + i);
             len--;
             i--;
         }
@@ -123,23 +135,27 @@ void Game::DestroyPool() noexcept
 void Game::CollisionPool() noexcept
 {
     // Collisions jouers/entités
-    for (auto& player : PLAYERS) {
-        for (auto& entity : _entities) {
+    for (auto& player : data_->players) {
+        for (auto& entity : entities_) {
             auto hitbox       = player->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
+                continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 player->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(player);
             }
         }
     }
-    for (auto& entity1 : _entities) {
-        for (auto& entity : _entities) {
+    for (auto& entity1 : entities_) {
+        for (auto& entity : entities_) {
             auto hitbox       = entity1->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
-            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
+                continue;
+            if (!hitbox->get().getIsSolid()
+                || !other_hitbox->get().getIsSolid())
+                continue;
             if (entity1 == entity) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 entity1->OnCollisionEnter(entity);
@@ -149,7 +165,7 @@ void Game::CollisionPool() noexcept
     }
 }
 
-void Game::createMap(void) noexcept
+void Game::createMap() noexcept
 {
     Vector3 vectorTemp;
 
@@ -158,7 +174,7 @@ void Game::createMap(void) noexcept
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                _entities.emplace_back(NEW_WALL(vectorTemp));
+                entities_.emplace_back(NEW_WALL(vectorTemp));
             }
 
     // Ajout des murs une case sur deux
@@ -166,21 +182,24 @@ void Game::createMap(void) noexcept
         for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                _entities.emplace_back(NEW_WALL(vectorTemp));
+                entities_.emplace_back(NEW_WALL(vectorTemp));
             }
 
     // Génération des boites
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if ((x == -6 && z == -4) || (x == 6 && z == -4) || (x == -6 && z == 6) || (x == 6 && z == 6)
-                || (x == -6 && z == -3) || (x == 6 && z == -3) || (x == -6 && z == 5) || (x == 6 && z == 5)
-                || (x == -5 && z == -4) || (x == 5 && z == -4) || (x == -5 && z == 6) || (x == 5 && z == 6))
+            if ((x == -6 && z == -4) || (x == 6 && z == -4)
+                || (x == -6 && z == 6) || (x == 6 && z == 6)
+                || (x == -6 && z == -3) || (x == 6 && z == -3)
+                || (x == -6 && z == 5) || (x == 6 && z == 5)
+                || (x == -5 && z == -4) || (x == 5 && z == -4)
+                || (x == -5 && z == 6) || (x == 5 && z == 6))
                 continue;
 
             Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
 
             bool spawnCrate = true;
-            for (auto& entity : _entities) {
+            for (auto& entity : entities_) {
                 auto transform = entity->getComponent<Transform3D>();
                 if (transform == std::nullopt) continue;
 
@@ -191,7 +210,9 @@ void Game::createMap(void) noexcept
                 }
             }
 
-            if (rand() % 100 < 80 && spawnCrate) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
+            if (rand() % 100 < 80 && spawnCrate)
+                entities_.emplace_back(
+                    NEW_CRATE(vectorTemp, data_, &entities_));
         }
 }
 
@@ -199,7 +220,7 @@ void Game::hurryUp(void) noexcept
 {
     if (!isHurry) return;
 
-    float time = _chrono->getTime();
+    float time = chrono_->getTime();
 
     if (lastTimeBlockPlace - time >= 0.37f) {
         Vector3 vectorTemp;
@@ -237,8 +258,8 @@ void Game::hurryUp(void) noexcept
         }
 
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
-        _entities.emplace_back(NEW_WALL(vectorTemp));
-        lastTimeBlockPlace = _chrono->getTime();
+        entities_.emplace_back(NEW_WALL(vectorTemp));
+        lastTimeBlockPlace = chrono_->getTime();
         nbBlockPlaced++;
     }
 
@@ -264,3 +285,5 @@ Color Game::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }
+
+void Game::setButtons() noexcept {}

@@ -7,12 +7,18 @@
 
 #pragma once
 
+#include <vector>
+
+#include "Button.hpp"
+#include "Core.hpp"
 #include "Scene.hpp"
+
+static const inline char *MENU_MUSIC = "assets/audios/Menu.mp3";
 
 class Home : public Scene
 {
   public:
-    Home(GameData* data) noexcept;
+    Home(GameData* data, Core& core_ref) noexcept;
     ~Home() noexcept;
     Home(const Home& other) noexcept = delete;
     Home(Home&& other) noexcept      = delete;
@@ -22,7 +28,7 @@ class Home : public Scene
     void    resetCamera(Cameraman& camera) noexcept final;
     void    display3D(void) noexcept final;
     void    display2D(void) noexcept final;
-    void    action(Cameraman& camera) noexcept final;
+    void    action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
     void    DestroyPool() noexcept final;
     void    CollisionPool() noexcept final;
     void    playMusic() const noexcept final;
@@ -31,11 +37,25 @@ class Home : public Scene
     Vector3 getCameraTarget() const noexcept final;
     Vector3 getCameraUp() const noexcept final;
     Color   getBackgroundColor() const noexcept final;
+    void    setButtons() noexcept final;
+    void    drawBackground() const noexcept final;
 
   private:
-    Music   loop_music_;
-    Vector3 camera_position_  = { 20.0f, 50.0f, 20.0f };
-    Vector3 camera_target_    = { 0.0f, 0.0f, 0.0f };
-    Vector3 camera_up_        = { 0.0f, 1.0f, 0.0f };
-    Color   background_color_ = RAYWHITE;
+    // methods
+    void unloadTextures() noexcept;
+    void unloadSounds() noexcept;
+    void drawButtons() const noexcept;
+
+    // attributes
+    Music               loop_music_;
+    Vector3             camera_position_  = { 20.0f, 50.0f, 20.0f };
+    Vector3             camera_target_    = { 0.0f, 0.0f, 0.0f };
+    Vector3             camera_up_        = { 0.0f, 1.0f, 0.0f };
+    Color               background_color_ = RAYWHITE;
+    std::vector<Button> buttons_          = {};
+    GameData*           data_;
+    Core&               core_entry_;
+    // a faire : classe pour handle un background
+    Texture2D texture;
+    Texture2D title;
 };

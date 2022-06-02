@@ -26,12 +26,14 @@ class Core
     Core& operator=(Core&& rhs) noexcept = delete;
 
     void run() noexcept;
+    void switchScene(const SceneType& scene) noexcept;
 
   private:
     // methods
-    void switchScene(const int& scene) noexcept;
-    void closeElements() noexcept;
-    bool WindowIsOpened() const noexcept;
+    void   closeElements() noexcept;
+    bool   WindowIsOpened() const noexcept;
+    void   UpdateLoopingMusic() noexcept;
+    Scene& findScene() noexcept;
 
     // attributes
     Cameraman                           camera;

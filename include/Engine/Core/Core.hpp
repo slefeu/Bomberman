@@ -31,6 +31,7 @@ class Core
     // methods
     void switchScene(const int& scene) noexcept;
     void closeElements() noexcept;
+    bool WindowIsOpened() const noexcept;
 
     // attributes
     Cameraman                           camera;

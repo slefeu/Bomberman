@@ -51,7 +51,7 @@ void Core::switchScene(const int& scene) noexcept
 
 void Core::run() noexcept
 {
-    while (!WindowShouldClose()) {
+    while (WindowIsOpened()) {
         // Events -------------------------------------------------------------
         // Va partir, c'est que pour les tests
         if (IsKeyPressed(KEY_LEFT)) switchScene((data->currentScene - 1) % scenes.size());
@@ -83,4 +83,9 @@ void Core::closeElements() noexcept
 {
     CloseAudioDevice();
     CloseWindow();
+}
+
+bool Core::WindowIsOpened() const noexcept
+{
+    return (!WindowShouldClose());
 }

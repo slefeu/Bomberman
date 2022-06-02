@@ -10,7 +10,6 @@
 #include <iostream>
 
 #include "Bomb.hpp"
-#include "Collision.hpp"
 #include "Error.hpp"
 
 Player::Player(const int newId, GameData* data)
@@ -29,6 +28,7 @@ Player::Player(const int newId, GameData* data)
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
+
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
     renderer->get().setRenderType(RenderType::R_CUBE);

@@ -16,8 +16,10 @@ Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
+
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the bomb element.\n"));
+
     transform->get().setPosition(pos);
     transform->get().setScale(0.017f);
     renderer->get().setRenderType(RenderType::R_3DMODEL);

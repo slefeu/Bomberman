@@ -29,8 +29,7 @@ Item::Item(Vector3 pos, GameData* data)
     transform->get().setRotationAngle(90.0f);
     renderer->get().setRenderType(RenderType::R_3DMODEL_ROTATE);
 
-    Vector3 scale = { 1.0f, 1.0f, 0.5f };
-    addComponent(BoxCollider(transform->get().getPosition(), scale, true));
+    addComponent(BoxCollider(transform->get().getPosition(), { 1.0f, 1.0f, 0.5f }, true));
     auto hitbox = getComponent<BoxCollider>();
 
     if (!hitbox.has_value()) throw(Error("Error, could not instanciate the item element.\n"));

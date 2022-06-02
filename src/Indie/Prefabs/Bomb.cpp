@@ -29,16 +29,17 @@ Bomb::Bomb(Vector3                          pos,
     , animeDir(1)
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value()) throw(Error("Error, could not instanciate the bomb element.\n"));
+    auto renderer  = getComponent<Render>();
+
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error, could not instanciate the bomb element.\n"));
+
     transform->get().setScale(0.07f);
     transform->get().setPosition({ round(pos.x), 0.0f - transform->get().getScale(), round(pos.z) });
-    auto renderer = getComponent<Render>();
-    if (!renderer.has_value()) throw(Error("Error, could not instanciate the bomb element.\n"));
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
-    Vector3 hitbox_size = { 0.8f, 1.2f, 0.8f };
-    addComponent(BoxCollider(transform->get().getPosition(), hitbox_size, false));
+    addComponent(BoxCollider(transform->get().getPosition(), { 0.8f, 1.2f, 0.8f }, false));
 }
 
 void Bomb::Display()

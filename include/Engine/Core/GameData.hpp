@@ -6,8 +6,10 @@
 */
 #pragma once
 
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "Model3D.hpp"
+#include "Mouse.hpp"
+#include "Scene.hpp"
 
 class GameData
 {
@@ -19,15 +21,23 @@ class GameData
     GameData& operator=(const GameData& rhs) noexcept = delete;
     GameData& operator=(GameData&& rhs) noexcept = delete;
 
+    Vector2   getMousePosition() const noexcept;
+    void      updateMouse() noexcept;
+    void      setCurrentScene(const SceneType& scene) noexcept;
+    SceneType getCurrentScene() const noexcept;
+
   public:
     int   fps;
     int   winWidth;
     int   winHeight;
     int   nbPlayer;
-    int   currentScene;
     float timeParty;
 
-  public:
-    std::vector<std::unique_ptr<Model3D>>  models;
-    std::vector<std::unique_ptr<Entities>> players;
+    std::vector<std::unique_ptr<Model3D>> models;
+    std::vector<std::unique_ptr<Entity>>  players;
+
+  protected:
+  private:
+    MouseHandler mouse_handler_;
+    SceneType    current_scene_ = SceneType::MENU;
 };

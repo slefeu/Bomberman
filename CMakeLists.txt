@@ -34,7 +34,7 @@ set(
   src/Engine/Core/Collision.cpp
   src/Engine/Core/GameData.cpp
   src/Engine/Core/Model3D.cpp
-  src/Engine/Core/Entities.cpp
+  src/Engine/Core/Entity.cpp
 
   src/Engine/Components/BoxCollider.cpp
   src/Engine/Components/Transform3D.cpp
@@ -49,6 +49,9 @@ set(
 
   src/Indie/Scenes/Game.cpp
   src/Indie/Scenes/Home.cpp
+
+  src/Indie/UI/Button.cpp
+  src/Indie/UI/Mouse.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
@@ -61,4 +64,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Prefabs)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/UI)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie)

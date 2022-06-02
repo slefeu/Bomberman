@@ -29,7 +29,7 @@ bool Entities::getEnabledValue() const noexcept
     return (is_enabled_);
 }
 
-void Entities::setEnabledValue(bool value) noexcept
+void Entities::setEnabledValue(const bool value) noexcept
 {
     is_enabled_ = value;
 }

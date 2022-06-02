@@ -29,8 +29,7 @@ Fire::Fire(Vector3 posi, float newSize)
     transform->get().setSize({ newSize, newSize, newSize });
     renderer->get().setRenderType(RenderType::R_CUBE);
     renderer->get().setColor(RED);
-    addComponent(BoxCollider(
-        transform->get().getPosition(), transform->get().getSize(), true));
+    addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
 }
 
 void Fire::Display()
@@ -53,8 +52,7 @@ void Fire::Update()
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER)
-        other->setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_PLAYER) other->setEnabledValue(false);
 }
 
 bool Fire::ExplodeElements(std::unique_ptr<Entities>& other) noexcept

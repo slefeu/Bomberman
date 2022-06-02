@@ -33,5 +33,5 @@ class Core
     void run() noexcept;
 
   private:
-    void switchScene(int scene) noexcept;
+    void switchScene(const int& scene) noexcept;
 };

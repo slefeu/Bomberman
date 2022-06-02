@@ -21,42 +21,39 @@ Vector3 BoxCollider::getPosition() const noexcept
     return (position_);
 }
 
-void BoxCollider::setPosition(Vector3 pos) noexcept
+void BoxCollider::setPosition(const Vector3& pos) noexcept
 {
     position_ = pos;
 }
 
-void BoxCollider::setPositionZ(int pos) noexcept
+void BoxCollider::setPositionZ(const int& pos) noexcept
 {
     position_.z = pos;
 }
 
-void BoxCollider::setPositionY(int pos) noexcept
+void BoxCollider::setPositionY(const int& pos) noexcept
 {
     position_.y = pos;
 }
 
-void BoxCollider::display() noexcept
+void BoxCollider::display() const noexcept
 {
     if (debug) DrawCubeWiresV(position_, size_, GREEN);
 }
 
-void BoxCollider::update(Vector3 newPos) noexcept
+void BoxCollider::update(const Vector3 newPos) noexcept
 {
     position_ = newPos;
 }
 
-bool BoxCollider::isColliding(const BoxCollider& other) noexcept
+bool BoxCollider::isColliding(const BoxCollider& other) const noexcept
 {
-    return Collision().isColliding(
-        position_, size_, other.getPosition(), other.getSize());
+    return Collision().isColliding(position_, size_, other.getPosition(), other.getSize());
 }
 
-bool BoxCollider::isColliding(
-    const BoxCollider& otherHit, Vector3& otherPos) noexcept
+bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3& otherPos) const noexcept
 {
-    return Collision().isColliding(
-        position_, size_, otherPos, otherHit.getSize());
+    return Collision().isColliding(position_, size_, otherPos, otherHit.getSize());
 }
 
 ComponentType BoxCollider::getComponentType() const noexcept
@@ -69,7 +66,7 @@ Vector3 BoxCollider::getSize() const noexcept
     return (size_);
 }
 
-void BoxCollider::setIsSolid(bool value) noexcept
+void BoxCollider::setIsSolid(const bool& value) noexcept
 {
     is_solid_ = value;
 }
@@ -79,17 +76,17 @@ bool BoxCollider::getIsSolid() const noexcept
     return (is_solid_);
 }
 
-void BoxCollider::addX(float x) noexcept
+void BoxCollider::addX(const float& x) noexcept
 {
     position_.x += x;
 }
 
-void BoxCollider::addY(float y) noexcept
+void BoxCollider::addY(const float& y) noexcept
 {
     position_.y += y;
 }
 
-void BoxCollider::addZ(float z) noexcept
+void BoxCollider::addZ(const float& z) noexcept
 {
     position_.z += z;
 }

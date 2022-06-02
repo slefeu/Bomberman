@@ -52,12 +52,12 @@ float Transform3D::getRotationAngle() const noexcept
     return rotationAngle;
 }
 
-void Transform3D::setPosition(Vector3 position) noexcept
+void Transform3D::setPosition(const Vector3& position) noexcept
 {
     this->position = position;
 }
 
-void Transform3D::setSize(Vector3 size) noexcept
+void Transform3D::setSize(const Vector3& size) noexcept
 {
     this->size = size;
 }
@@ -67,7 +67,7 @@ void Transform3D::setScale(float scale) noexcept
     this->scale = scale;
 }
 
-void Transform3D::setRotationAxis(Vector3 rotationAxis) noexcept
+void Transform3D::setRotationAxis(const Vector3& rotationAxis) noexcept
 {
     this->rotationAxis = rotationAxis;
 }
@@ -77,47 +77,47 @@ void Transform3D::setRotationAngle(float rotationAngle) noexcept
     this->rotationAngle = rotationAngle;
 }
 
-void Transform3D::moveX(float x) noexcept
+void Transform3D::moveX(const float& x) noexcept
 {
     position.x += x * GetFrameTime();
 }
 
-void Transform3D::moveY(float y) noexcept
+void Transform3D::moveY(const float& y) noexcept
 {
     position.y += y * GetFrameTime();
 }
 
-void Transform3D::moveZ(float z) noexcept
+void Transform3D::moveZ(const float& z) noexcept
 {
     position.z += z * GetFrameTime();
 }
 
-void Transform3D::setX(float x) noexcept
+void Transform3D::setX(const float& x) noexcept
 {
     position.x = x;
 }
 
-void Transform3D::setY(float y) noexcept
+void Transform3D::setY(const float& y) noexcept
 {
     position.y = y;
 }
 
-void Transform3D::setZ(float z) noexcept
+void Transform3D::setZ(const float& z) noexcept
 {
     position.z = z;
 }
 
-void Transform3D::addX(float x) noexcept
+void Transform3D::addX(const float& x) noexcept
 {
     position.x += x;
 }
 
-void Transform3D::addY(float y) noexcept
+void Transform3D::addY(const float& y) noexcept
 {
     position.y += y;
 }
 
-void Transform3D::addZ(float z) noexcept
+void Transform3D::addZ(const float& z) noexcept
 {
     position.z += z;
 }

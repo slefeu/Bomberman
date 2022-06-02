@@ -7,6 +7,8 @@
 
 #include "Core.hpp"
 
+#include <type_traits>
+
 #include "Game.hpp"
 #include "Home.hpp"
 
@@ -20,60 +22,67 @@ Core::Core(GameData* newData) noexcept
     InitAudioDevice();
 
     // Chargement des models 3D
-    data->models.emplace_back(NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
 
     // Génération des joueurs
-    for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(NEW_PLAYER(i, data));
+    for (int i = 0; i != data->nbPlayer; i++)
+        data->players.emplace_back(std::make_unique<Player>(i, data));
 
     // Loading all scenes
-    scenes.emplace_back(std::make_unique<Home>(data));
-    scenes.emplace_back(std::make_unique<Game>(data));
-    SCENE->playMusic();
+    scenes.emplace_back(std::make_unique<Home>(data, *this));
+    scenes.emplace_back(std::make_unique<Game>(data, *this));
+    findScene().playMusic();
 
     // Setting the first camera
-    camera.position = SCENE->getCameraPosition();
-    camera.target   = SCENE->getCameraTarget();
-    camera.up       = SCENE->getCameraUp();
+    camera.position = findScene().getCameraPosition();
+    camera.target   = findScene().getCameraTarget();
+    camera.up       = findScene().getCameraUp();
 }
 
-void Core::switchScene(const int& scene) noexcept
+Scene& Core::findScene() noexcept
 {
-    data->currentScene = scene;
-    SCENE->resetCamera(camera);
-    SCENE->playMusic();
+    return (*scenes[static_cast<typename std::underlying_type<SceneType>::type>(
+        data->getCurrentScene())]);
+}
+
+void Core::switchScene(const SceneType& scene) noexcept
+{
+    data->setCurrentScene(scene);
+    findScene().resetCamera(camera);
+    findScene().playMusic();
 }
 
 void Core::run() noexcept
 {
     while (WindowIsOpened()) {
-        // Events -------------------------------------------------------------
-        // Va partir, c'est que pour les tests
-        if (IsKeyPressed(KEY_LEFT)) switchScene((data->currentScene - 1) % scenes.size());
-        if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
-        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
-
-        if (IsGamepadAvailable(0))
-            if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN))
-                switchScene((data->currentScene - 1) % scenes.size());
-
         // Update -------------------------------------------------------------
         if (camera.isMoving) camera.isMoving = camera.smoothMove();
-        SCENE->action(camera);
-        UpdateMusicStream(SCENE->getLoopMusic()); // Update music buffer with new stream data
+        UpdateLoopingMusic();
+        data->updateMouse();
+        findScene().action(camera, data->getMousePosition());
+        // findScene().setButtons();
 
         // Display ------------------------------------------------------------
         BeginDrawing();
-        ClearBackground(SCENE->getBackgroundColor());
+        ClearBackground(findScene().getBackgroundColor());
+        findScene().drawBackground();
         BeginMode3D(camera);
-        SCENE->display3D();
+        findScene().display3D();
         EndMode3D();
-        SCENE->display2D();
+        findScene().display2D();
         EndDrawing();
     }
     closeElements();
@@ -85,6 +94,10 @@ void Core::closeElements() noexcept
     CloseWindow();
 }
 
+void Core::UpdateLoopingMusic() noexcept
+{
+    UpdateMusicStream(findScene().getLoopMusic());
+}
 bool Core::WindowIsOpened() const noexcept
 {
     return (!WindowShouldClose());

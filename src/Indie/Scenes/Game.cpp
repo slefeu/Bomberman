@@ -92,7 +92,6 @@ void Game::action(Cameraman& camera) noexcept
         isHurry            = true;
         lastTimeBlockPlace = _chrono->getTime();
     }
-    if (nbBlockPlaced >= 80) isHurry = false;
     hurryUp();
 }
 
@@ -142,18 +141,19 @@ void Game::createMap(void) noexcept
 {
     Vector3 vectorTemp;
 
-    // Ajout des murs une case sur deux
-    for (int z = -4; z < 6; z++)
-        for (int x = -5; x < 6; x++)
-            if (x % 2 != 0 && z % 2 != 0) {
-                vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                _entities.emplace_back(NEW_WALL(vectorTemp));
-            }
-
     // Ajout des murs autour de la carte
     for (int z = -5; z < 8; z++)
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
+                vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
+                _entities.emplace_back(NEW_WALL(vectorTemp));
+                std::cout << _entities.size() << std::endl;
+            }
+
+    // Ajout des murs une case sur deux
+    for (int z = -4; z < 6; z++)
+        for (int x = -5; x < 6; x++)
+            if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 _entities.emplace_back(NEW_WALL(vectorTemp));
             }
@@ -230,4 +230,6 @@ void Game::hurryUp(void) noexcept
         lastTimeBlockPlace = _chrono->getTime();
         nbBlockPlaced++;
     }
+
+    if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }

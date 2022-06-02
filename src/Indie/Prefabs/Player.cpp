@@ -66,6 +66,7 @@ void Player::Update()
     }
 
     if (IsGamepadAvailable(id)) {
+        std::cout << "Gamepad " << id << " is available" << std::endl;
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
         float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
@@ -168,8 +169,6 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others,
         position.x + (speed * xdir * GetFrameTime()), position.y, position.z + (speed * zdir * GetFrameTime())
     };
 
-    std::cout << wallpass << " " << wallpassEnd << std::endl;
-
     if (!getEnabledValue()) return false;
     for (auto& other : others) {
         if (hitbox == std::nullopt || other->getComponent<BoxCollider>() == std::nullopt) continue;
@@ -178,10 +177,7 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others,
             if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (other_hitbox->get().isColliding(hitbox->get(), nextTurn)) {
                 if (other->getEntityType() == EntityType::E_BOMB) return true;
-                if (other->getEntityType() == EntityType::E_WALL) {
-                    std::cout << "WALL" << std::endl;
-                    return true;
-                }
+                if (other->getEntityType() == EntityType::E_WALL) return true;
                 if (other->getEntityType() == EntityType::E_CRATE) {
                     if (wallpass) return false;
                     if (!wallpass && wallpassEnd) return false;

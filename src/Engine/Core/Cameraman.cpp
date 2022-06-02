@@ -25,17 +25,17 @@ Cameraman::Cameraman() noexcept
 
 void Cameraman::moveX(const float& x) noexcept
 {
-    position.x += Round().myRound(x * GetFrameTime(), 1);
+    position.x += Round::round(x * GetFrameTime(), 1);
 }
 
 void Cameraman::moveY(const float& y) noexcept
 {
-    position.y += Round().myRound(y * GetFrameTime(), 1);
+    position.y += Round::round(y * GetFrameTime(), 1);
 }
 
 void Cameraman::moveZ(const float& z) noexcept
 {
-    position.z += Round().myRound(z * GetFrameTime(), 1);
+    position.z += Round::round(z * GetFrameTime(), 1);
 }
 
 void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept
@@ -57,8 +57,8 @@ void Cameraman::tpTo(const Vector3& to, const Vector3& tar, const Vector3& newUp
 bool Cameraman::smoothMove(void) noexcept
 {
     bool    thereIsMovement = false;
-    Vector3 roundPos        = Round().roundVector(position, 1);
-    Vector3 roundTarget     = Round().roundVector(targetPosition, 1);
+    Vector3 roundPos        = Round::roundVector(position, 1);
+    Vector3 roundTarget     = Round::roundVector(targetPosition, 1);
     Vector3 dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
         (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };

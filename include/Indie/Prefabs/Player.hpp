@@ -30,7 +30,7 @@ class Player : public Entities
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
     void setStats(int bomb, int sp, int size) noexcept;
-    const void setStatMax(int nbBomb, int speed, int size) noexcept;
+    void setStatMax(int nbBomb, int speed, int size) noexcept;
     void setBombArray(
         std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
     void setWallPass(bool pass);

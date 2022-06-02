@@ -254,7 +254,7 @@ void Player::setWallPass(bool pass)
     wallpass = pass;
 }
 
-const void Player::setStatMax(int nbBomb, int speed, int size) noexcept
+void Player::setStatMax(int nbBomb, int speed, int size) noexcept
 {
     this->nbBombMax = nbBomb;
     this->speedMax  = speed;

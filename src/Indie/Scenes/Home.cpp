@@ -109,7 +109,7 @@ void Home::unloadSounds() noexcept
 
 void Home::drawBackground() const noexcept
 {
-    Vector2 position = { 10, -45 };
+    Vector2 position = { 0, -45 };
     DrawTextureEx(
         texture, position, 0, 1, CLITERAL(Color){ 255, 255, 255, 175 });
     DrawTexture(title, 30, 30, WHITE);

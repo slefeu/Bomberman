@@ -29,9 +29,6 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     }
     createMap();
     loop_music_ = LoadMusicStream(GAME_MUSIC);
-
-    // Sound sound = LoadSound("Assets/Audios/Menu.wav");
-    // sounds.push_back(std::make_unique<Sound>(sound));
 }
 
 Game::~Game() noexcept

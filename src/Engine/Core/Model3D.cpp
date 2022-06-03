@@ -20,4 +20,23 @@ Model3D::~Model3D() noexcept
 {
     UnloadTexture(texture);
     UnloadModel(model);
+
+    if (!anims) return;
+
+    for (unsigned int i = 0; i < animsCount; i++) UnloadModelAnimation(anims[i]);
+    RL_FREE(anims);
+}
+
+void Model3D::addAnimation(std::string path) noexcept
+{
+    anims = LoadModelAnimations(path.c_str(), &animsCount);
+}
+
+void Model3D::updateAnimation() noexcept
+{
+    if (anims == nullptr) return;
+
+    animFrameCounter += 1.0f;
+    UpdateModelAnimation(model, anims[0], animFrameCounter);
+    if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
 }

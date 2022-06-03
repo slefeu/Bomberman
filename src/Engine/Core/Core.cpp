@@ -26,6 +26,9 @@ Core::Core(GameData* newData) noexcept
     data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_fire.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/item.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/fire.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player.png"));
+
+    data->models[(int)ModelType::M_PLAYER]->addAnimation("assets/models/player.iqm");
 
     // Chargement des sprites
     data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/white.png", 0, 0, 0.5f));

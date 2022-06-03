@@ -7,8 +7,6 @@
 
 #include "Game.hpp"
 
-#include <iostream>
-
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
@@ -55,11 +53,8 @@ void Game::display3D() noexcept
 
 void Game::display2D() noexcept
 {
-    // DrawFPS(10, 10);
-    // DrawText("Game", 10, 30, 20, GREEN);
     if (!_chrono->timerDone()) {
         auto time = std::to_string(int(round(_chrono->getTime())));
-        std::cout << time.size() << std::endl;
         DrawText(time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
     }
 

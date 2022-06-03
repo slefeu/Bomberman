@@ -22,6 +22,23 @@ void Render::display(const Transform3D& transform) noexcept
         DrawCubeWiresV(transform.getPosition(), transform.getSize(), color);
         return;
     }
+    if (type == RenderType::R_ANIMATE) {
+        model->get()->updateAnimation();
+        Vector3 rotationAxis  = transform.getRotationAxis();
+        float   rotationAngle = transform.getRotationAngle();
+        float   scale         = transform.getScale();
+        DrawModelEx(
+            model->get()->model, transform.getPosition(), rotationAxis, rotationAngle, { scale, scale, scale }, WHITE);
+
+        // for (int i = 0; i < model->get()->model.boneCount; i++) {
+        //     DrawCube(model->get()->anims[0].framePoses[model->get()->animFrameCounter][i].translation,
+        //         0.2f,
+        //         0.2f,
+        //         0.2f,
+        //         RED);
+        // }
+        return;
+    }
 }
 
 void Render::setRenderType(const RenderType& type) noexcept

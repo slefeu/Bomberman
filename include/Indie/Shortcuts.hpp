@@ -9,7 +9,21 @@
 
 enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
 
-enum class ModelType { M_BOMB, M_WALL, M_CRATE, M_IROLLER, M_IBOMB, M_IFIRE, M_IWALL, M_FIRE, M_PLAYER, M_NONE };
+enum class ModelType {
+    M_BOMB,
+    M_WALL,
+    M_CRATE,
+    M_IROLLER,
+    M_IBOMB,
+    M_IFIRE,
+    M_IWALL,
+    M_FIRE,
+    M_PLAYER_1,
+    M_PLAYER_2,
+    M_PLAYER_3,
+    M_PLAYER_4,
+    M_NONE
+};
 
 enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM };
 

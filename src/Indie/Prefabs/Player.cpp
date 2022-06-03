@@ -31,8 +31,12 @@ Player::Player(const int newId, GameData* data)
 
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
-    renderer->get().setRenderType(RenderType::R_CUBE);
-    renderer->get().setColor(colors[id]);
+    transform->get().setRotationAxis({ 0.0f, 0.0f, 0.0f });
+    transform->get().setRotationAngle(0.0f);
+    transform->get().setScale(0.65f);
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
+
+    renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
     setKeyboard();
     setPosition();
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
@@ -42,9 +46,11 @@ void Player::Display()
 {
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
+    auto hitbox    = getComponent<BoxCollider>();
     if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying the player element.\n"));
     if (!getEnabledValue()) return;
     renderer->get().display(transform->get());
+    hitbox->get().display();
 }
 
 void Player::Update()

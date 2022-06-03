@@ -21,7 +21,7 @@ Game::Game(GameData* data) noexcept
     , isHurry(false)
     , nbBlockPlaced(0)
 {
-    cameraPosition  = { 0.0f, 11.0f, 1.0f };
+    cameraPosition  = { 0.0f, 13.0f, 1.0f };
     cameraTarget    = { 0.0f, 0.0f, 1.0f };
     cameraUp        = { 0.0f, 2.0f, 0.0f };
     backgroundColor = BLACK;
@@ -56,7 +56,7 @@ void Game::display3D() noexcept
 void Game::display2D() noexcept
 {
     DrawFPS(10, 10);
-    DrawText("Game", 10, 30, 20, GREEN);
+    // DrawText("Game", 10, 30, 20, GREEN);
     if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
     else
         DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);

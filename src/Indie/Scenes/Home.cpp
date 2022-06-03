@@ -18,8 +18,8 @@ Home::Home(GameData* data, Core& core_ref) noexcept
     createButtons();
 
     // background attributes
-    Image background = LoadImage("assets/textures/home/background.png");
-    Image title_bg   = LoadImage("assets/textures/home/title.png");
+    Image background = LoadImage("assets/textures/home/background2.png");
+    Image title_bg   = LoadImage("assets/textures/home/title2.png");
     title            = LoadTextureFromImage(title_bg);
     texture          = LoadTextureFromImage(background);
     UnloadImage(background);
@@ -30,32 +30,46 @@ Home::~Home() noexcept
 {
     UnloadMusicStream(loop_music_);
     unloadTextures();
-    unloadSounds();
+    unloadButtons();
 }
 
 void Home::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",
         1,
-        data_->winWidth / 2.5,
+        data_->winWidth / 2,
         data_->winHeight / 4,
         std::function<void(void)>([this](void) {
             return (core_entry_.switchScene(SceneType::GAME));
         }),
-        1);
+        1,
+        "assets/fonts/menu.ttf",
+        "Play",
+        data_->winWidth / 2 + 100,
+        data_->winHeight / 4 + 45);
+
     buttons_.emplace_back("assets/textures/home/button.png",
         1,
-        data_->winWidth / 2.5,
+        data_->winWidth / 2,
         (data_->winHeight / 4) + (150 * buttons_.size()),
+        std::function<void(void)>([](void) { return; }),
+        1,
+        "assets/fonts/menu.ttf",
+        "Load",
+        data_->winWidth / 2 + 100,
+        data_->winHeight / 4 + 150 * buttons_.size() + 45);
+
+    buttons_.emplace_back("assets/textures/home/button.png",
+        1,
+        data_->winWidth / 2,
+        data_->winHeight / 4 + (150 * buttons_.size()),
         std::function<void(void)>(
             [this](void) { return (core_entry_.setExit(true)); }),
-        1);
-    buttons_.emplace_back("assets/textures/home/button.png",
         1,
-        data_->winWidth / 2.5,
-        data_->winHeight / 4 + (150 * buttons_.size()),
-        std::function<void(void)>([](void) { return; }),
-        1);
+        "assets/fonts/menu.ttf",
+        "Exit",
+        data_->winWidth / 2 + 110,
+        data_->winHeight / 4 + 150 * buttons_.size() + 45);
 }
 
 void Home::resetCamera(Cameraman& camera) noexcept
@@ -123,20 +137,20 @@ void Home::unloadTextures() noexcept
     UnloadTexture(texture);
 }
 
-void Home::unloadSounds() noexcept
-{
-    for (auto it : buttons_) { it.unload(); }
-}
-
 void Home::drawBackground() const noexcept
 {
-    Vector2 position = { 0, -45 };
+    Vector2 position = { 0, 0 };
     DrawTextureEx(
-        texture, position, 0, 1, CLITERAL(Color){ 255, 255, 255, 175 });
+        texture, position, 0, 1.1, CLITERAL(Color){ 255, 255, 255, 175 });
     DrawTexture(title, 30, 30, WHITE);
 }
 
 void Home::drawButtons() const noexcept
 {
     for (auto it : buttons_) { it.draw(); }
+}
+
+void Home::unloadButtons() noexcept
+{
+    for (auto it : buttons_) { it.unload(); }
 }

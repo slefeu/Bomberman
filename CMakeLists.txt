@@ -52,6 +52,8 @@ set(
 
   src/Indie/UI/Button.cpp
   src/Indie/UI/Mouse.cpp
+  src/Indie/UI/Font.cpp
+  src/Indie/UI/Text.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

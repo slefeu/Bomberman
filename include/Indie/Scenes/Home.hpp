@@ -56,6 +56,7 @@ class Home : public Scene
     std::vector<Button> buttons_          = {};
     GameData*           data_;
     Core&               core_entry_;
+
     // a faire : classe pour handle un background
     Texture2D texture;
     Texture2D title;

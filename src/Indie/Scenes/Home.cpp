@@ -15,16 +15,15 @@ Home::Home(GameData* data, Core& core_ref) noexcept
     , data_(data)
 {
     loop_music_ = LoadMusicStream(MENU_MUSIC);
+    createButtons();
 
     // background attributes
-    Image background = LoadImage("assets/textures/menu_background.png");
-    Image title_bg   = LoadImage("assets/textures/menu_title.png");
+    Image background = LoadImage("assets/textures/home/background.png");
+    Image title_bg   = LoadImage("assets/textures/home/title.png");
     title            = LoadTextureFromImage(title_bg);
     texture          = LoadTextureFromImage(background);
     UnloadImage(background);
     UnloadImage(title_bg);
-
-    createButtons();
 }
 
 Home::~Home() noexcept
@@ -36,14 +35,29 @@ Home::~Home() noexcept
 
 void Home::createButtons() noexcept
 {
-    buttons_.emplace_back("assets/textures/blankPage.png",
+    buttons_.emplace_back("assets/textures/home/button.png",
         1,
-        300,
-        300,
+        data_->winWidth / 2.5,
+        data_->winHeight / 4,
         std::function<void(void)>([this](void) {
             return (core_entry_.switchScene(SceneType::GAME));
-        }));
+        }),
+        1);
+    buttons_.emplace_back("assets/textures/home/button.png",
+        1,
+        data_->winWidth / 2.5,
+        (data_->winHeight / 4) + (150 * buttons_.size()),
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.setExit(true)); }),
+        1);
+    buttons_.emplace_back("assets/textures/home/button.png",
+        1,
+        data_->winWidth / 2.5,
+        data_->winHeight / 4 + (150 * buttons_.size()),
+        std::function<void(void)>([](void) { return; }),
+        1);
 }
+
 void Home::resetCamera(Cameraman& camera) noexcept
 {
     camera.moveTo(camera_position_, camera_target_, camera_up_);

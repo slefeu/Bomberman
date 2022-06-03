@@ -27,11 +27,13 @@ class Core
 
     void run() noexcept;
     void switchScene(const SceneType& scene) noexcept;
+    void setExit(bool value) noexcept;
 
+  protected:
   private:
     // methods
     void   closeElements() noexcept;
-    bool   WindowIsOpened() const noexcept;
+    void   checkExit() noexcept;
     void   UpdateLoopingMusic() noexcept;
     Scene& findScene() noexcept;
 
@@ -39,4 +41,5 @@ class Core
     Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes;
     GameData*                           data;
+    bool                                exit_;
 };

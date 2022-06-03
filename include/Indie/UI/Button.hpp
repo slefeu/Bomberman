@@ -23,7 +23,8 @@ class Button
         unsigned int              frames,
         float                     pos_x,
         float                     pos_y,
-        std::function<void(void)> function) noexcept;
+        std::function<void(void)> function,
+        float                     scale) noexcept;
     Button(const Button& other) noexcept = default;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;
@@ -50,4 +51,5 @@ class Button
     unsigned int              frames_;
     Rectangle                 rectangle_;
     std::function<void(void)> task_;
+    float                     scale_;
 };

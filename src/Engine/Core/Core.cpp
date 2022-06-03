@@ -67,8 +67,9 @@ void Core::switchScene(const SceneType& scene) noexcept
 
 void Core::run() noexcept
 {
-    while (WindowIsOpened()) {
+    while (!exit_) {
         // Update -------------------------------------------------------------
+        checkExit();
         if (camera.isMoving) camera.isMoving = camera.smoothMove();
         UpdateLoopingMusic();
         data->updateMouse();
@@ -98,7 +99,13 @@ void Core::UpdateLoopingMusic() noexcept
 {
     UpdateMusicStream(findScene().getLoopMusic());
 }
-bool Core::WindowIsOpened() const noexcept
+void Core::checkExit() noexcept
 {
-    return (!WindowShouldClose());
+    if (WindowShouldClose())
+        exit_ = true;
+}
+
+void Core::setExit(bool value) noexcept
+{
+    exit_ = value;
 }

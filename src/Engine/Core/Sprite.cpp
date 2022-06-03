@@ -5,14 +5,25 @@ Sprite::Sprite(std::string path) noexcept
     , texture(LoadTextureFromImage(image))
     , posX(0)
     , posY(0)
+    , scale(1.0f)
 {
 }
 
-Sprite::Sprite(std::string path, int x, int y) noexcept
+Sprite::Sprite(std::string path, float x, float y) noexcept
     : image(LoadImage(path.c_str()))
     , texture(LoadTextureFromImage(image))
     , posX(x)
     , posY(y)
+    , scale(1.0f)
+{
+}
+
+Sprite::Sprite(std::string path, float x, float y, float scale) noexcept
+    : image(LoadImage(path.c_str()))
+    , texture(LoadTextureFromImage(image))
+    , posX(x)
+    , posY(y)
+    , scale(scale)
 {
 }
 
@@ -22,7 +33,7 @@ Sprite::~Sprite() noexcept
     UnloadTexture(texture);
 }
 
-void Sprite::setPos(int x, int y) noexcept
+void Sprite::setPos(float x, float y) noexcept
 {
     posX = x;
     posY = y;
@@ -40,5 +51,10 @@ int Sprite::getPosY() const noexcept
 
 void Sprite::draw() noexcept
 {
-    DrawTexture(texture, posX, posY, WHITE);
+    DrawTextureEx(texture, { posX, posY }, 0.0f, scale, WHITE);
+}
+
+void Sprite::setScale(float scale) noexcept
+{
+    this->scale = scale;
 }

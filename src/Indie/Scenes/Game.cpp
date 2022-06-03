@@ -62,6 +62,13 @@ void Game::display2D() noexcept
         DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);
 
     if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
+
+    for (size_t i = 0; i != data->players.size(); i++) { data->sprites[i]->draw(); }
+
+    // data->sprites[(int)SpriteType::S_WHITE]->draw();
+    // data->sprites[(int)SpriteType::S_BLACK]->draw();
+    // data->sprites[(int)SpriteType::S_RED]->draw();
+    // data->sprites[(int)SpriteType::S_BLUE]->draw();
 }
 
 void Game::action(Cameraman& camera) noexcept
@@ -93,6 +100,13 @@ void Game::action(Cameraman& camera) noexcept
         lastTimeBlockPlace = _chrono->getTime();
     }
     hurryUp();
+
+    int xPos[4] = { 10, GetScreenWidth() - 50, 10, GetScreenWidth() - 50 };
+    int yPos[4] = { 10, 10, GetScreenHeight() - 50, GetScreenHeight() - 50 };
+    for (size_t i = 0; i != data->players.size(); i++) {
+        std::cout << xPos[i] << " " << yPos[i] << std::endl;
+        data->sprites[i]->setPos(xPos[i], yPos[i]);
+    }
 }
 
 void Game::DestroyPool() noexcept

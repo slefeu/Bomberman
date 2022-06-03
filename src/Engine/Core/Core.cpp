@@ -27,10 +27,11 @@ Core::Core(GameData* newData) noexcept
     data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/item.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/fire.png"));
 
-    data->sprites.emplace_back(NEW_SPRITE("assets/icones/white.png"));
-    data->sprites.emplace_back(NEW_SPRITE("assets/icones/red.png"));
-    data->sprites.emplace_back(NEW_SPRITE("assets/icones/blue.png"));
-    data->sprites.emplace_back(NEW_SPRITE("assets/icones/black.png"));
+    // Chargement des sprites
+    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/white.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/red.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/blue.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/black.png", 0, 0, 0.5f));
 
     resetData();
     camera.tpTo(SCENE->cameraPosition, SCENE->cameraTarget, SCENE->cameraUp);

@@ -16,6 +16,8 @@
 
 #define NEW_PLAYER(id, data) std::make_unique<Player>(id, data)
 
+enum class playerType { NORMAL, ATTACK, TACTICAL, RUNNER };
+
 class Player : public Entities
 {
   public:
@@ -29,11 +31,18 @@ class Player : public Entities
     void Display() final;
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
+  
     void setStats(int bomb, int sp, int size) noexcept;
-    void setStatMax(int nbBomb, int speed, int size) noexcept;
     void setBombArray(
         std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
     void setWallPass(bool pass);
+    void setPlayerType(playerType type) noexcept;
+    void setPlayerTypeStats(playerType type) noexcept;
+    void setStatMax(playerType type) noexcept;
+  
+    int getNbBombMax(void) const noexcept;
+    float getSpeedMax(void) const noexcept;
+    int getBombSizeMax(void) const noexcept;
 
   public:
     int   nbBomb;
@@ -58,6 +67,7 @@ class Player : public Entities
     std::unique_ptr<Timer>                  wallpassTimer;
     bool                                    wallpassEnd;
     int                                     nbBombMax;
-    int                                     speedMax;
+    float                                   speedMax;
     int                                     bombSizeMax;
+    playerType                              type;
 };

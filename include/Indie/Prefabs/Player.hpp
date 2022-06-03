@@ -53,4 +53,5 @@ class Player : public Entities
     bool                                    wallpass;
     std::unique_ptr<Timer>                  wallpassTimer;
     bool                                    wallpassEnd;
+    Color                                   colors[4] = { WHITE, BLACK, BLUE, RED };
 };

@@ -57,18 +57,15 @@ void Game::display2D() noexcept
 {
     // DrawFPS(10, 10);
     // DrawText("Game", 10, 30, 20, GREEN);
-    if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
-    else
-        DrawText(std::to_string(int(round(_chrono->getTime()))).data(), 10, 50, 20, BLUE);
+    if (!_chrono->timerDone()) {
+        auto time = std::to_string(int(round(_chrono->getTime())));
+        std::cout << time.size() << std::endl;
+        DrawText(time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
+    }
 
-    if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
+    if (isHurry) { DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED); }
 
     for (size_t i = 0; i != data->players.size(); i++) { data->sprites[i]->draw(); }
-
-    // data->sprites[(int)SpriteType::S_WHITE]->draw();
-    // data->sprites[(int)SpriteType::S_BLACK]->draw();
-    // data->sprites[(int)SpriteType::S_RED]->draw();
-    // data->sprites[(int)SpriteType::S_BLUE]->draw();
 }
 
 void Game::action(Cameraman& camera) noexcept
@@ -98,15 +95,13 @@ void Game::action(Cameraman& camera) noexcept
     if (int(round(_chrono->getTime())) <= 55 && !isHurry) {
         isHurry            = true;
         lastTimeBlockPlace = _chrono->getTime();
+        HurryUpX           = GetScreenWidth() - 100;
     }
     hurryUp();
 
-    int xPos[4] = { 10, GetScreenWidth() - 50, 10, GetScreenWidth() - 50 };
-    int yPos[4] = { 10, 10, GetScreenHeight() - 50, GetScreenHeight() - 50 };
-    for (size_t i = 0; i != data->players.size(); i++) {
-        std::cout << xPos[i] << " " << yPos[i] << std::endl;
-        data->sprites[i]->setPos(xPos[i], yPos[i]);
-    }
+    int xPos[4] = { 10, GetScreenWidth() - 50, GetScreenWidth() - 50, 10 };
+    int yPos[4] = { 10, GetScreenHeight() - 50, 10, GetScreenHeight() - 50 };
+    for (size_t i = 0; i != data->players.size(); i++) data->sprites[i]->setPos(xPos[i], yPos[i]);
 }
 
 void Game::DestroyPool() noexcept
@@ -243,6 +238,8 @@ void Game::hurryUp(void) noexcept
         lastTimeBlockPlace = _chrono->getTime();
         nbBlockPlaced++;
     }
+
+    HurryUpX -= 500.0f * GetFrameTime();
 
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }

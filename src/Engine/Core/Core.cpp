@@ -29,9 +29,9 @@ Core::Core(GameData* newData) noexcept
 
     // Chargement des sprites
     data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/white.png", 0, 0, 0.5f));
-    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/red.png", 0, 0, 0.5f));
-    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/blue.png", 0, 0, 0.5f));
     data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/black.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/blue.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(NEW_SPRITE_SCALE("assets/icones/red.png", 0, 0, 0.5f));
 
     resetData();
     camera.tpTo(SCENE->cameraPosition, SCENE->cameraTarget, SCENE->cameraUp);

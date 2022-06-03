@@ -32,7 +32,7 @@ Player::Player(const int newId, GameData* data)
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
     renderer->get().setRenderType(RenderType::R_CUBE);
-    renderer->get().setColor(MAGENTA);
+    renderer->get().setColor(colors[id]);
     setKeyboard();
     setPosition();
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
@@ -184,7 +184,7 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others,
     }
     if (wallpassEnd) {
         wallpassEnd = false;
-        renderer->get().setColor(MAGENTA);
+        renderer->get().setColor(colors[id]);
     }
     return false;
 }
@@ -216,7 +216,7 @@ void Player::setWallPass(const bool& pass)
     auto renderer = getComponent<Render>();
     if (!renderer.has_value()) throw(Error("Error in setting the wall pass.\n"));
 
-    renderer->get().setColor(BLUE);
+    renderer->get().setColor(PINK);
 
     wallpass = pass;
 }

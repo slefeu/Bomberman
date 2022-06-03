@@ -38,6 +38,7 @@ class Game : public Scene
     int       minX      = -5;
     int       minZ      = -4;
     Direction direction = Direction::UP;
+    float     HurryUpX;
 
   public:
     Game(GameData* data) noexcept;

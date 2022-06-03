@@ -127,6 +127,7 @@ void Bomb::createFire(Vector3 mul) noexcept
     }
 }
 
-void Bomb::OnCollisionEnter([[maybe_unused]]std::unique_ptr<Entity>& other) noexcept
+void Bomb::OnCollisionEnter(
+    [[maybe_unused]] std::unique_ptr<Entity>& other) noexcept
 {
 }

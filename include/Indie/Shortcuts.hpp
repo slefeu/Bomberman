@@ -34,6 +34,11 @@ enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM };
 #define MODEL model->get()
 #define NEW_HITBOX(pos, size, isSolid) \
     std::make_unique<BoxCollider>(pos, size, isSolid);
-#define NEW_WALL(pos) std::make_unique<Wall>(pos, &data_->models[static_cast<int>(ModelType::M_WALL)])
-#define NEW_CRATE(pos, data, Entity) \
-    std::make_unique<Crate>((Vector3)pos, &data_->models[static_cast<int>(ModelType::M_CRATE)], data, Entity)
+#define NEW_WALL(pos)       \
+    std::make_unique<Wall>( \
+        pos, &data_->models[static_cast<int>(ModelType::M_WALL)])
+#define NEW_CRATE(pos, data, Entity)                          \
+    std::make_unique<Crate>((Vector3)pos,                     \
+        &data_->models[static_cast<int>(ModelType::M_CRATE)], \
+        data,                                                 \
+        Entity)

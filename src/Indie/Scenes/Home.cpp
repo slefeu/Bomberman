@@ -21,11 +21,10 @@ Home::Home(GameData* data, Core& core_ref) noexcept
     Image title_bg   = LoadImage("assets/textures/menu_title.png");
     title            = LoadTextureFromImage(title_bg);
     texture          = LoadTextureFromImage(background);
-    UnloadImage(background); // Unload image from RAM
+    UnloadImage(background);
     UnloadImage(title_bg);
 
-    // button attributes
-    buttons_.emplace_back("assets/textures/blankPage.png", 1, 300, 300);
+    createButtons();
 }
 
 Home::~Home() noexcept
@@ -35,6 +34,16 @@ Home::~Home() noexcept
     unloadSounds();
 }
 
+void Home::createButtons() noexcept
+{
+    buttons_.emplace_back("assets/textures/blankPage.png",
+        1,
+        300,
+        300,
+        std::function<void(void)>([this](void) {
+            return (core_entry_.switchScene(SceneType::GAME));
+        }));
+}
 void Home::resetCamera(Cameraman& camera) noexcept
 {
     camera.moveTo(camera_position_, camera_target_, camera_up_);
@@ -52,9 +61,7 @@ void Home::action(Cameraman& camera, Vector2 mouse_pos) noexcept
 {
     (void)camera;
     for (auto& it : buttons_) {
-        if (it.checkCollision(mouse_pos)) {
-            core_entry_.switchScene(SceneType::GAME);
-        }
+        if (it.checkCollision(mouse_pos)) { it.action(); }
     }
 }
 
@@ -99,7 +106,7 @@ void Home::setButtons() noexcept
 
 void Home::unloadTextures() noexcept
 {
-    UnloadTexture(texture); // Texture unloading
+    UnloadTexture(texture);
 }
 
 void Home::unloadSounds() noexcept

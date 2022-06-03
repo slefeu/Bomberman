@@ -13,7 +13,7 @@
 #include "Core.hpp"
 #include "Scene.hpp"
 
-static const inline char *MENU_MUSIC = "assets/audios/Menu.mp3";
+static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
 
 class Home : public Scene
 {
@@ -45,6 +45,7 @@ class Home : public Scene
     void unloadTextures() noexcept;
     void unloadSounds() noexcept;
     void drawButtons() const noexcept;
+    void createButtons() noexcept;
 
     // attributes
     Music               loop_music_;

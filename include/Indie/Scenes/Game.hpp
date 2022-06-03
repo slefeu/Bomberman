@@ -52,7 +52,7 @@ class Game : public Scene
     void hurryUp(void) noexcept;
 
     // attributes
-    GameData* data_;
+    GameData*                            data_;
     std::vector<std::unique_ptr<Entity>> entities_;
     std::unique_ptr<Timer>               chrono_;
 

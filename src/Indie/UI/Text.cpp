@@ -25,8 +25,12 @@ void TextHandler::unload() noexcept
 
 void TextHandler::draw() const noexcept
 {
-    DrawTextEx(
-        font_.getFont(), message_.c_str(), position_, font_.getFontSize(), 0, color_);
+    DrawTextEx(font_.getFont(),
+        message_.c_str(),
+        position_,
+        font_.getFontSize(),
+        0,
+        color_);
 }
 
 void TextHandler::setTextColor(Color color) noexcept

@@ -101,8 +101,7 @@ void Core::UpdateLoopingMusic() noexcept
 }
 void Core::checkExit() noexcept
 {
-    if (WindowShouldClose())
-        exit_ = true;
+    if (WindowShouldClose()) exit_ = true;
 }
 
 void Core::setExit(bool value) noexcept

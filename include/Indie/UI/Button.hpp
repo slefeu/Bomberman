@@ -57,4 +57,5 @@ class Button
     std::function<void(void)> task_;
     float                     scale_;
     TextHandler               text_;
+    Color                     color_ = WHITE;
 };

@@ -59,11 +59,8 @@ void Button::unload() noexcept
 
 void Button::draw() const noexcept
 {
-    if (scale_ != 1) {
-        Vector2 position = { rectangle_.x, rectangle_.y };
-        DrawTextureEx(texture_, position, 0, scale_, WHITE);
-    } else
-        DrawTexture(texture_, rectangle_.x, rectangle_.y, WHITE);
+    Vector2 position = { rectangle_.x, rectangle_.y };
+    DrawTextureEx(texture_, position, 0, scale_, color_);
     text_.draw();
 }
 
@@ -73,12 +70,16 @@ bool Button::checkCollision(const Vector2& mouse_pos) noexcept
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { state_ = 2; }
         if (state_ == 0) {
             state_ = 1;
+            color_ = PINK;
             PlaySound(fx_hover_);
         }
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) { is_action_ = true; }
-    } else
+    } else {
+        color_ = WHITE;
         state_ = 0;
+    }
     if (is_action_) {
+        color_ = WHITE;
         PlaySound(fx_clicked_);
         is_action_ = false;
         return (true);

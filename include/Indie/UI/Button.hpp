@@ -10,7 +10,7 @@
 #include <functional>
 #include <string>
 
-#include "raylib.h"
+#include "Text.hpp"
 
 static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
 static const inline char* ON_HOVER = "assets/audios/menu_hover.ogg";
@@ -24,7 +24,11 @@ class Button
         float                     pos_x,
         float                     pos_y,
         std::function<void(void)> function,
-        float                     scale) noexcept;
+        float                     scale,
+        const std::string&        font_path,
+        const std::string&        message,
+        int                       textPosX,
+        int                       textPosY) noexcept;
     Button(const Button& other) noexcept = default;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;
@@ -52,4 +56,5 @@ class Button
     Rectangle                 rectangle_;
     std::function<void(void)> task_;
     float                     scale_;
+    TextHandler               text_;
 };

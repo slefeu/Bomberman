@@ -14,10 +14,15 @@ Button::Button(const std::string& texture_path,
     float                         pos_x,
     float                         pos_y,
     std::function<void(void)>     function,
-    float                         scale) noexcept
+    float                         scale,
+    const std::string&            font_path,
+    const std::string&            message,
+    int                           textPosX,
+    int                           textPosY) noexcept
     : frames_(frames)
     , task_(function)
     , scale_(scale)
+    , text_(font_path, message, textPosX, textPosY)
 {
     fx_clicked_ = LoadSound(ON_CLICK);
     fx_hover_   = LoadSound(ON_HOVER);
@@ -49,6 +54,7 @@ void Button::unload() noexcept
     UnloadSound(fx_clicked_);
     UnloadSound(fx_hover_);
     UnloadTexture(texture_);
+    text_.unload();
 }
 
 void Button::draw() const noexcept
@@ -58,6 +64,7 @@ void Button::draw() const noexcept
         DrawTextureEx(texture_, position, 0, scale_, WHITE);
     } else
         DrawTexture(texture_, rectangle_.x, rectangle_.y, WHITE);
+    text_.draw();
 }
 
 bool Button::checkCollision(const Vector2& mouse_pos) noexcept

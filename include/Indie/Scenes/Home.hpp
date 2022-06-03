@@ -43,7 +43,7 @@ class Home : public Scene
   private:
     // methods
     void unloadTextures() noexcept;
-    void unloadSounds() noexcept;
+    void unloadButtons() noexcept;
     void drawButtons() const noexcept;
     void createButtons() noexcept;
 

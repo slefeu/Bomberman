@@ -38,7 +38,7 @@ class Player : public Entities
     void setWallPass(bool pass);
     void setPlayerType(playerType type) noexcept;
     void setPlayerTypeStats(playerType type) noexcept;
-    void setStatMax(playerType type) noexcept;
+    void setPlayerTypeStatMax(playerType type) noexcept;
   
     int getNbBombMax(void) const noexcept;
     float getSpeedMax(void) const noexcept;

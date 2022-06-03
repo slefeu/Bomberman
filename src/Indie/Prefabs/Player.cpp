@@ -37,6 +37,7 @@ Player::Player(int newId, GameData* data)
     renderer->get().setColor(MAGENTA);
     setKeyboard();
     setPosition();
+    setPlayerTypeStatMax(type);
     addComponent(BoxCollider(
         transform->get().getPosition(), transform->get().getSize(), true));
 }
@@ -287,7 +288,7 @@ void Player::setPlayerTypeStats(playerType type) noexcept
     }
 }
 
-void Player::setStatMax(playerType type) noexcept
+void Player::setPlayerTypeStatMax(playerType type) noexcept
 {
     switch (type) {
         case playerType::NORMAL:

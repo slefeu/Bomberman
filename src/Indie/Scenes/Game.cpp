@@ -55,7 +55,7 @@ void Game::display3D() noexcept
 
 void Game::display2D() noexcept
 {
-    DrawFPS(10, 10);
+    // DrawFPS(10, 10);
     // DrawText("Game", 10, 30, 20, GREEN);
     if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
     else

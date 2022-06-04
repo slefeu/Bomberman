@@ -7,8 +7,6 @@
 
 #include "Mouse.hpp"
 
-#include <iostream>
-
 Vector2 MouseHandler::getPosition() const noexcept
 {
     return (mouse_);

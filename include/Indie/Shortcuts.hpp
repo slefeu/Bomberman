@@ -8,15 +8,7 @@
 #pragma once
 #include <cstddef>
 
-enum class EntityType {
-    E_PLAYER,
-    E_BOX,
-    E_BOMB,
-    E_CRATE,
-    E_WALL,
-    E_FIRE,
-    E_ITEM
-};
+enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
 
 enum class ModelType {
     M_BOMB,

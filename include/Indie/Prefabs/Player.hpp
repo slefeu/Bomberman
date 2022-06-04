@@ -22,11 +22,11 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData* data);
-    ~Player() noexcept                   = default;
-    Player(const Player& other) noexcept = delete;
-    Player(Player&& other) noexcept      = delete;
+    ~Player() noexcept                            = default;
+    Player(const Player& other) noexcept          = delete;
+    Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept = delete;
+    Player& operator=(Player&& rhs) noexcept      = delete;
 
     void  Display() final;
     void  Update() final;
@@ -58,35 +58,35 @@ class Player : public Entity
     int       id;
     GameData* data;
     std::vector<std::unique_ptr<Entity>>* bombs;
-    bool                                    wallpass;
-    std::unique_ptr<Timer>                  wallpassTimer;
-    bool                                    wallpassEnd;
-    int                                     nbBomb;
-    float                                   speed;
-    int                                     bombSize;
-    int                                     nbBombMax;
-    float                                   speedMax;
-    int                                     bombSizeMax;
-    PlayerType                              type;
-    int                                     colorIndex = 0;
-    std::vector<Color>                      colors     = { LIGHTGRAY,
-                                 GRAY,
-                                 YELLOW,
-                                 GOLD,
-                                 ORANGE,
-                                 PINK,
-                                 RED,
-                                 MAROON,
-                                 GREEN,
-                                 LIME,
-                                 DARKGREEN,
-                                 SKYBLUE,
-                                 BLUE,
-                                 DARKBLUE,
-                                 PURPLE,
-                                 VIOLET,
-                                 DARKPURPLE,
-                                 BEIGE,
-                                 BROWN,
-                                 DARKBROWN };
+    bool                                  wallpass;
+    std::unique_ptr<Timer>                wallpassTimer;
+    bool                                  wallpassEnd;
+    int                                   nbBomb;
+    float                                 speed;
+    int                                   bombSize;
+    int                                   nbBombMax;
+    float                                 speedMax;
+    int                                   bombSizeMax;
+    PlayerType                            type;
+    int                                   colorIndex = 0;
+    std::vector<Color>                    colors     = { LIGHTGRAY,
+                               GRAY,
+                               YELLOW,
+                               GOLD,
+                               ORANGE,
+                               PINK,
+                               RED,
+                               MAROON,
+                               GREEN,
+                               LIME,
+                               DARKGREEN,
+                               SKYBLUE,
+                               BLUE,
+                               DARKBLUE,
+                               PURPLE,
+                               VIOLET,
+                               DARKPURPLE,
+                               BEIGE,
+                               BROWN,
+                               DARKBROWN };
 };

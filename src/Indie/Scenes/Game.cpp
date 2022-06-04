@@ -58,13 +58,9 @@ void Game::display3D() noexcept
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
             if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
-                    { 1.0f, 1.0f },
-                    { 0, 181, 48, 255 });
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
             if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
-                    { 1.0f, 1.0f },
-                    { 0, 181, 48, 255 });
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
     for (auto& player : data_->players) player->Display();
@@ -77,13 +73,10 @@ void Game::display2D() noexcept
 
     if (!chrono_->timerDone()) {
         auto time = std::to_string(int(round(chrono_->getTime())));
-        DrawText(
-            time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
+        DrawText(time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
     }
 
-    if (isHurry) {
-        DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED);
-    }
+    if (isHurry) { DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED); }
 
     for (size_t i = 0; i != data_->players.size(); i++) {
         data_->sprites[i]->draw();
@@ -92,15 +85,10 @@ void Game::display2D() noexcept
         std::string speed = std::to_string(player->getSpeed());
         speed             = speed.substr(0, speed.find(".") + 2);
         std::string stats = std::to_string(player->getNbBomb()) + ", "
-                            + std::to_string(player->getBombSize()) + ", "
-                            + speed;
+                            + std::to_string(player->getBombSize()) + ", " + speed;
         int size    = stats.size() / 1.4 * 20;
-        int xPos[4] = {
-            55, GetScreenWidth() - size, GetScreenWidth() - size, 55
-        };
-        int yPos[4] = {
-            28, GetScreenHeight() - 30, 28, GetScreenHeight() - 30
-        };
+        int xPos[4] = { 55, GetScreenWidth() - size, GetScreenWidth() - size, 55 };
+        int yPos[4] = { 28, GetScreenHeight() - 30, 28, GetScreenHeight() - 30 };
 
         DrawText(stats.c_str(), xPos[i], yPos[i], 20, WHITE);
     }
@@ -139,8 +127,7 @@ void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
 
     int xPos[4] = { 10, GetScreenWidth() - 50, GetScreenWidth() - 50, 10 };
     int yPos[4] = { 10, GetScreenHeight() - 50, 10, GetScreenHeight() - 50 };
-    for (size_t i = 0; i != data_->players.size(); i++)
-        data_->sprites[i]->setPos(xPos[i], yPos[i]);
+    for (size_t i = 0; i != data_->players.size(); i++) data_->sprites[i]->setPos(xPos[i], yPos[i]);
 }
 
 void Game::DestroyPool() noexcept
@@ -163,8 +150,7 @@ void Game::CollisionPool() noexcept
         for (auto& entity : entities_) {
             auto hitbox       = player->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
-                continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 player->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(player);
@@ -175,11 +161,8 @@ void Game::CollisionPool() noexcept
         for (auto& entity : entities_) {
             auto hitbox       = entity1->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
-                continue;
-            if (!hitbox->get().getIsSolid()
-                || !other_hitbox->get().getIsSolid())
-                continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
+            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (entity1 == entity) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 entity1->OnCollisionEnter(entity);
@@ -198,8 +181,8 @@ void Game::createMap() noexcept
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                entities_.emplace_back(std::make_unique<Wall>(
-                    vectorTemp, &data_->models[(int)ModelType::M_WALL]));
+                entities_.emplace_back(
+                    std::make_unique<Wall>(vectorTemp, &data_->models[(int)ModelType::M_WALL]));
             }
 
     // Ajout des murs une case sur deux
@@ -207,19 +190,17 @@ void Game::createMap() noexcept
         for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                entities_.emplace_back(std::make_unique<Wall>(vectorTemp,
-                    &data_->models[static_cast<int>(ModelType::M_WALL)]));
+                entities_.emplace_back(std::make_unique<Wall>(
+                    vectorTemp, &data_->models[static_cast<int>(ModelType::M_WALL)]));
             }
 
     // Génération des boites
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if ((x == -6 && z == -4) || (x == 6 && z == -4)
-                || (x == -6 && z == 6) || (x == 6 && z == 6)
-                || (x == -6 && z == -3) || (x == 6 && z == -3)
-                || (x == -6 && z == 5) || (x == 6 && z == 5)
-                || (x == -5 && z == -4) || (x == 5 && z == -4)
-                || (x == -5 && z == 6) || (x == 5 && z == 6))
+            if ((x == -6 && z == -4) || (x == 6 && z == -4) || (x == -6 && z == 6)
+                || (x == 6 && z == 6) || (x == -6 && z == -3) || (x == 6 && z == -3)
+                || (x == -6 && z == 5) || (x == 6 && z == 5) || (x == -5 && z == -4)
+                || (x == 5 && z == -4) || (x == -5 && z == 6) || (x == 5 && z == 6))
                 continue;
 
             Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
@@ -236,8 +217,10 @@ void Game::createMap() noexcept
                 }
             }
             if (rand() % 100 < 80 && spawnCrate)
-                entities_.emplace_back(
-                    std::make_unique<Crate>(vectorTemp, &data_->models[static_cast<int>(ModelType::M_CRATE)], data_, &entities_));
+                entities_.emplace_back(std::make_unique<Crate>(vectorTemp,
+                    &data_->models[static_cast<int>(ModelType::M_CRATE)],
+                    data_,
+                    &entities_));
         }
 }
 

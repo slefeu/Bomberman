@@ -22,14 +22,16 @@ class BoxCollider : public Component
     ~BoxCollider() noexcept                        = default;
 
     BoxCollider& operator=(const BoxCollider& rhs) noexcept = default;
-    BoxCollider& operator=(BoxCollider&& rhs) noexcept = default;
+    BoxCollider& operator=(BoxCollider&& rhs) noexcept      = default;
 
-    void display() const noexcept; // pour du débugage
-    void update(Vector3 pos) noexcept;
-    bool isColliding(const BoxCollider& other) noexcept;
-    bool isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept;
-    bool checkCollision(
-        const Vector3& pos, const Vector3& size, const Vector3& otherPos, const Vector3& otherSize) noexcept;
+    void          display() const noexcept; // pour du débugage
+    void          update(Vector3 pos) noexcept;
+    bool          isColliding(const BoxCollider& other) noexcept;
+    bool          isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept;
+    bool          checkCollision(const Vector3& pos,
+                 const Vector3&                 size,
+                 const Vector3&                 otherPos,
+                 const Vector3&                 otherSize) noexcept;
     Vector3       getPosition() const noexcept;
     void          setPosition(const Vector3& pos) noexcept;
     Vector3       getSize() const noexcept;

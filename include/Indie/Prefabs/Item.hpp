@@ -16,11 +16,11 @@ class Item : public Entity
 {
   public:
     Item(Vector3 pos, GameData* data);
-    ~Item() noexcept                 = default;
-    Item(const Item& other) noexcept = delete;
-    Item(Item&& other) noexcept      = delete;
+    ~Item() noexcept                          = default;
+    Item(const Item& other) noexcept          = delete;
+    Item(Item&& other) noexcept               = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
-    Item& operator=(Item&& rhs) noexcept = delete;
+    Item& operator=(Item&& rhs) noexcept      = delete;
 
     void Display() final;
     void Update() final;

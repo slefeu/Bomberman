@@ -20,10 +20,10 @@ class Home : public Scene
   public:
     Home(GameData* data, Core& core_ref) noexcept;
     ~Home() noexcept;
-    Home(const Home& other) noexcept = delete;
-    Home(Home&& other) noexcept      = delete;
+    Home(const Home& other) noexcept          = delete;
+    Home(Home&& other) noexcept               = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept = delete;
+    Home& operator=(Home&& rhs) noexcept      = delete;
 
     void display3D(void) noexcept final;
     void display2D(void) noexcept final;
@@ -49,8 +49,8 @@ class Home : public Scene
 
     // attributes
     MusicManager        loop_music_;
-    Vector3             camera_position_  = { 20.0f, 50.0f, 20.0f };
-    Vector3             camera_target_    = { 0.0f, 0.0f, 0.0f };
+    Vector3             camera_position_  = { 20.0f, 50.0f, 30.0f };
+    Vector3             camera_target_    = { 0.0f, 0.0f, 1.0f };
     Vector3             camera_up_        = { 0.0f, 1.0f, 0.0f };
     Color               background_color_ = RAYWHITE;
     std::vector<Button> buttons_          = {};

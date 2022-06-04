@@ -19,7 +19,7 @@ class SoundManager
     ~SoundManager() noexcept                         = default;
 
     SoundManager& operator=(const SoundManager& rhs) noexcept = default;
-    SoundManager& operator=(SoundManager&& rhs) noexcept = default;
+    SoundManager& operator=(SoundManager&& rhs) noexcept      = default;
 
     void unload() noexcept;
     void play() const noexcept;

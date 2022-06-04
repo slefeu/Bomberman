@@ -11,16 +11,14 @@
 class TextHandler
 {
   public:
-    TextHandler(const std::string& font_path,
-        const std::string&         message,
-        int                        posX,
-        int                        posY) noexcept;
+    TextHandler(
+        const std::string& font_path, const std::string& message, int posX, int posY) noexcept;
     TextHandler(const TextHandler& other) noexcept = default;
     TextHandler(TextHandler&& other) noexcept      = default;
     ~TextHandler() noexcept                        = default;
 
     TextHandler& operator=(const TextHandler& rhs) noexcept = default;
-    TextHandler& operator=(TextHandler&& rhs) noexcept = default;
+    TextHandler& operator=(TextHandler&& rhs) noexcept      = default;
 
     void draw() const noexcept;
     void setTextColor(Color color) noexcept;

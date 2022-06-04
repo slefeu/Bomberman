@@ -19,11 +19,11 @@ class Timer
 
   public:
     Timer(float lifeTime) noexcept;
-    ~Timer() noexcept                  = default;
-    Timer(const Timer& other) noexcept = delete;
-    Timer(Timer&& other) noexcept      = delete;
+    ~Timer() noexcept                           = default;
+    Timer(const Timer& other) noexcept          = delete;
+    Timer(Timer&& other) noexcept               = delete;
     Timer& operator=(const Timer& rhs) noexcept = delete;
-    Timer& operator=(Timer&& rhs) noexcept = delete;
+    Timer& operator=(Timer&& rhs) noexcept      = delete;
 
     void  updateTimer(void) noexcept;
     bool  timerDone(void) const noexcept;

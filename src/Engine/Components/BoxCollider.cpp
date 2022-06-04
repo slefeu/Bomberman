@@ -14,8 +14,10 @@ BoxCollider::BoxCollider(Vector3 newPos, Vector3 newSize, bool solid) noexcept
 {
 }
 
-bool BoxCollider::checkCollision(
-    const Vector3& pos, const Vector3& size, const Vector3& otherPos, const Vector3& otherSize) noexcept
+bool BoxCollider::checkCollision(const Vector3& pos,
+    const Vector3&                              size,
+    const Vector3&                              otherPos,
+    const Vector3&                              otherSize) noexcept
 {
     Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
     Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };

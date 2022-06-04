@@ -17,7 +17,7 @@ class MouseHandler
     ~MouseHandler() noexcept                         = default;
 
     MouseHandler& operator=(const MouseHandler& rhs) noexcept = default;
-    MouseHandler& operator=(MouseHandler&& rhs) noexcept = default;
+    MouseHandler& operator=(MouseHandler&& rhs) noexcept      = default;
 
     void    update() noexcept;
     Vector2 getPosition() const noexcept;

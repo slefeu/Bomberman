@@ -35,7 +35,7 @@ class Button
     ~Button() noexcept                   = default;
 
     Button& operator=(const Button& rhs) noexcept = default;
-    Button& operator=(Button&& rhs) noexcept = default;
+    Button& operator=(Button&& rhs) noexcept      = default;
 
     void draw() const noexcept;
     bool checkCollision(const Vector2& mouse_pos) noexcept;
@@ -47,7 +47,7 @@ class Button
     SoundManager              fx_clicked_;
     SoundManager              fx_hover_;
     Texture2D                 texture_;
-    int                       state_ = 0; // 0 : NORMAL, 1 : HOVER, 2 : PRESSED
+    int                       state_     = 0; // 0 : NORMAL, 1 : HOVER, 2 : PRESSED
     bool                      is_action_ = false;
     unsigned int              frames_;
     Rectangle                 rectangle_;

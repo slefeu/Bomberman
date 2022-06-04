@@ -29,9 +29,7 @@ Button::Button(const std::string& texture_path,
     texture_ = LoadTexture(texture_path.c_str());
 
     float frameHeight = static_cast<float>(texture_.height) / frames_;
-    rectangle_        = {
-        pos_x, pos_y, static_cast<float>(texture_.width), frameHeight
-    };
+    rectangle_        = { pos_x, pos_y, static_cast<float>(texture_.width), frameHeight };
 }
 
 void Button::unload() noexcept

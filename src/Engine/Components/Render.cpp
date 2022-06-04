@@ -10,8 +10,12 @@ void Render::display(const Transform3D& transform) noexcept
         Vector3 rotationAxis  = transform.getRotationAxis();
         float   rotationAngle = transform.getRotationAngle();
         float   scale         = transform.getScale();
-        DrawModelEx(
-            model->get()->model, transform.getPosition(), rotationAxis, rotationAngle, { scale, scale, scale }, color);
+        DrawModelEx(model->get()->model,
+            transform.getPosition(),
+            rotationAxis,
+            rotationAngle,
+            { scale, scale, scale },
+            color);
         return;
     }
     if (type == RenderType::R_CUBE) {
@@ -27,8 +31,12 @@ void Render::display(const Transform3D& transform) noexcept
         Vector3 rotationAxis  = transform.getRotationAxis();
         float   rotationAngle = transform.getRotationAngle();
         float   scale         = transform.getScale();
-        DrawModelEx(
-            model->get()->model, transform.getPosition(), rotationAxis, rotationAngle, { scale, scale, scale }, color);
+        DrawModelEx(model->get()->model,
+            transform.getPosition(),
+            rotationAxis,
+            rotationAngle,
+            { scale, scale, scale },
+            color);
         return;
     }
 }

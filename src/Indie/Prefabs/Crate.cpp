@@ -31,8 +31,10 @@ Crate::Crate(Vector3                      pos,
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
-    addComponent(BoxCollider(
-        { transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() }, { 0.8f, 0.8f, 0.8f }, true));
+    addComponent(
+        BoxCollider({ transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() },
+            { 0.8f, 0.8f, 0.8f },
+            true));
 }
 
 void Crate::Display()

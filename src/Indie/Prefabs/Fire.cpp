@@ -37,7 +37,8 @@ void Fire::Display()
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
-    if (!transform.has_value() || !renderer.has_value()) throw(Error("Error in displaying the player element.\n"));
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error in displaying the player element.\n"));
     renderer->get().display(transform->get());
 }
 
@@ -49,8 +50,7 @@ void Fire::Update()
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER)
-        other->setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_PLAYER) other->setEnabledValue(false);
 }
 
 bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept

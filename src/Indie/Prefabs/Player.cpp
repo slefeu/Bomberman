@@ -7,8 +7,6 @@
 
 #include "Player.hpp"
 
-#include <iostream>
-
 #include "Bomb.hpp"
 #include "Error.hpp"
 
@@ -79,27 +77,52 @@ void Player::Update()
         colorIndex = (colorIndex + 1) % colors.size();
     }
 
-    // Mouvements au clavier
-    if (controller->get().isKeyDown(moveUp) || controller->get().isKeyDown(moveDown)
-        || controller->get().isKeyDown(moveLeft) || controller->get().isKeyDown(moveRight))
-        animate = true;
-    if (controller->get().isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
-        transform->get().setRotationAngle(270.0f);
-        transform->get().moveZ(-speed);
+    if (controller->get().isGamepadConnected(id)) {
+        // Mouvements au joystick
+        float axisX = controller->get().getGamepadAxis(id, Axis::G_AXIS_LEFT_X);
+        float axisY = controller->get().getGamepadAxis(id, Axis::G_AXIS_LEFT_Y);
+
+        if (axisX != 0 || axisY != 0) animate = true;
+        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
+            transform->get().moveZ(-speed);
+        }
+        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
+            transform->get().moveZ(speed);
+        }
+        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
+            transform->get().moveX(-speed);
+        }
+        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
+            transform->get().moveX(speed);
+        }
+        if (controller->get().isGamepadButtonPressed(id, G_Button::G_B)) placeBomb();
+    } else {
+        // Mouvements au clavier
+        if (controller->get().isKeyDown(moveUp) || controller->get().isKeyDown(moveDown)
+            || controller->get().isKeyDown(moveLeft) || controller->get().isKeyDown(moveRight))
+            animate = true;
+        if (controller->get().isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
+            transform->get().moveZ(-speed);
+        }
+        if (controller->get().isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
+            transform->get().moveZ(speed);
+        }
+        if (controller->get().isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
+            transform->get().moveX(-speed);
+        }
+        if (controller->get().isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
+            transform->get().moveX(speed);
+        }
+        if (controller->get().isKeyPressed(dropBomb)) placeBomb();
     }
-    if (controller->get().isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
-        transform->get().setRotationAngle(90.0f);
-        transform->get().moveZ(speed);
-    }
-    if (controller->get().isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
-        transform->get().setRotationAngle(0.0f);
-        transform->get().moveX(-speed);
-    }
-    if (controller->get().isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
-        transform->get().setRotationAngle(180.0f);
-        transform->get().moveX(speed);
-    }
-    if (controller->get().isKeyPressed(dropBomb)) placeBomb();
 
     if (!animate) model->resetAnimation(20);
 }

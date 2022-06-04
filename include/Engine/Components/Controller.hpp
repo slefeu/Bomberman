@@ -6,7 +6,6 @@
 */
 
 #pragma once
-
 #include "Component.hpp"
 
 enum class Key {
@@ -122,6 +121,36 @@ enum class Key {
     KEY_VOLUME_DOWN = 25
 };
 
+enum class Axis {
+    G_AXIS_LEFT_X        = 0,
+    G_AXIS_LEFT_Y        = 1,
+    G_AXIS_RIGHT_X       = 2,
+    G_AXIS_RIGHT_Y       = 3,
+    G_AXIS_LEFT_TRIGGER  = 4,
+    G_AXIS_RIGHT_TRIGGER = 5
+};
+
+enum class G_Button {
+    G_UNKNOWN = 0,
+    G_DPAD_UP,
+    G_DPAD_RIGHT,
+    G_DPAD_DOWN,
+    G_DPAD_LEFT,
+    G_Y,
+    G_B,
+    G_A,
+    G_X,
+    G_LEFT_TRIGGER_1,
+    G_LEFT_TRIGGER_2,
+    G_RIGHT_TRIGGER_1,
+    G_RIGHT_TRIGGER_2,
+    G_SELECT,
+    G_HOME,
+    G_START,
+    G_LEFT_THUMB,
+    G_BUTTON
+};
+
 class Controller : public Component
 {
   public:
@@ -137,6 +166,9 @@ class Controller : public Component
 
     static constexpr ComponentType TYPE = ComponentType::CONTROLLER;
 
-    bool isKeyDown(Key key) const noexcept;
-    bool isKeyPressed(Key key) const noexcept;
+    bool  isKeyDown(Key key) const noexcept;
+    bool  isKeyPressed(Key key) const noexcept;
+    bool  isGamepadConnected(int id) const noexcept;
+    bool  isGamepadButtonPressed(int id, G_Button button) const noexcept;
+    float getGamepadAxis(int id, Axis axis) const noexcept;
 };

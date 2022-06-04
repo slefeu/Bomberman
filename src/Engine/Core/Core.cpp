@@ -74,7 +74,6 @@ void Core::run() noexcept
         UpdateLoopingMusic();
         data->updateMouse();
         findScene().action(camera, data->getMousePosition());
-        // findScene().setButtons();
 
         // Display ------------------------------------------------------------
         BeginDrawing();

@@ -282,5 +282,3 @@ Color Game::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }
-
-void Game::setButtons() noexcept {}

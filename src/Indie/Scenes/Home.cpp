@@ -127,11 +127,6 @@ Color Home::getBackgroundColor() const noexcept
     return (background_color_);
 }
 
-void Home::setButtons() noexcept
-{
-    for (auto& it : buttons_) { it.setButtonAction(false); }
-}
-
 void Home::unloadTextures() noexcept
 {
     UnloadTexture(texture);

@@ -10,6 +10,7 @@
 #include <functional>
 #include <string>
 
+#include "Sound.hpp"
 #include "Text.hpp"
 
 static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
@@ -36,19 +37,15 @@ class Button
     Button& operator=(const Button& rhs) noexcept = default;
     Button& operator=(Button&& rhs) noexcept = default;
 
-    Texture2D getTexture() const noexcept;
-    Sound     getHoverSound() const noexcept;
-    Sound     getClickedSound() const noexcept;
-    void      draw() const noexcept;
-    bool      checkCollision(const Vector2& mouse_pos) noexcept;
-    void      unload() noexcept;
-    void      setButtonAction(bool value) noexcept;
-    void      action() const noexcept;
+    void draw() const noexcept;
+    bool checkCollision(const Vector2& mouse_pos) noexcept;
+    void unload() noexcept;
+    void action() const noexcept;
 
   protected:
   private:
-    Sound                     fx_clicked_;
-    Sound                     fx_hover_;
+    SoundManager              fx_clicked_;
+    SoundManager              fx_hover_;
     Texture2D                 texture_;
     int                       state_ = 0; // 0 : NORMAL, 1 : HOVER, 2 : PRESSED
     bool                      is_action_ = false;

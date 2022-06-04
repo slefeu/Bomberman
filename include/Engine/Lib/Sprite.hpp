@@ -27,8 +27,10 @@ class Sprite
     Sprite& operator=(const Sprite& rhs) noexcept = default;
     Sprite& operator=(Sprite&& rhs) noexcept = default;
 
-    void  draw() const noexcept;
-    void  draw(const std::array<unsigned char, 3>& color) const noexcept;
+    void draw() const noexcept;
+    void draw(const std::array<unsigned char, 3>& color) const noexcept;
+    void draw(const std::array<unsigned char, 4>& color) const noexcept;
+
     void  setPos(float x, float y) noexcept;
     void  setScale(float scale) noexcept;
     int   getPosX() const noexcept;

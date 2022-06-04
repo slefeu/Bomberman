@@ -24,7 +24,7 @@ void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
     auto color = scene.getBackgroundColor().getColor();
 
     BeginDrawing();
-    ClearBackground((Color){color[0], color[1], color[2], 255});
+    ClearBackground((Color){ color[0], color[1], color[2], 255 });
     scene.drawBackground();
     BeginMode3D(camera.getCamera());
     scene.display3D();

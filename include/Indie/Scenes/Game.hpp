@@ -19,7 +19,6 @@
 #include "Timer.hpp"
 
 enum class Direction { UP, RIGHT, DOWN, LEFT };
-static const inline char* GAME_MUSIC = "assets/audios/Game.mp3";
 
 class Game : public Scene
 {
@@ -54,8 +53,6 @@ class Game : public Scene
     GameData*                              data_;
     std::vector<std::unique_ptr<Entity>>   entities_;
     std::unique_ptr<Timer>                 chrono_;
-    std::vector<std::unique_ptr<Entity>>*  _players;
-    std::vector<std::unique_ptr<Model3D>>* _models;
 
     float lastTimeBlockPlace;
     bool  isHurry;
@@ -75,4 +72,6 @@ class Game : public Scene
     Core&        core_entry_;
     float        HurryUpX;
     ColorManager background_color_;
+
+    static const inline char* GAME_MUSIC = "assets/audios/Game.mp3";
 };

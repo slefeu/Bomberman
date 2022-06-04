@@ -13,17 +13,15 @@
 #include "Core.hpp"
 #include "Scene.hpp"
 
-static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
-
 class Home : public Scene
 {
   public:
     Home(GameData* data, Core& core_ref) noexcept;
-    ~Home() noexcept;
     Home(const Home& other) noexcept = delete;
     Home(Home&& other) noexcept      = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
     Home& operator=(Home&& rhs) noexcept = delete;
+    ~Home() noexcept;
 
     void display3D() noexcept final;
     void display2D() noexcept final;
@@ -42,7 +40,6 @@ class Home : public Scene
 
   private:
     // methods
-    void unloadTextures() noexcept;
     void unloadButtons() noexcept;
     void drawButtons() const noexcept;
     void createButtons() noexcept;
@@ -56,8 +53,10 @@ class Home : public Scene
     GameData*           data_;
     Core&               core_entry_;
     ColorManager        background_color_;
+    Sprite              background_;
+    Sprite              title_;
 
-    // a faire : classe pour handle un background
-    Texture2D texture;
-    Texture2D title;
+    static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
+    static const inline char* BG_PATH    = "assets/textures/home/background.png";
+    static const inline char* TITLE_PATH = "assets/textures/home/title.png";
 };

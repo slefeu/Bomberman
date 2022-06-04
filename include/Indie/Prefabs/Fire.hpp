@@ -11,7 +11,7 @@
 #include "GameData.hpp"
 #include "Timer.hpp"
 
-#define NEW_FIRE(pos, size) std::make_unique<Fire>(pos, size)
+#define NEW_FIRE(pos) std::make_unique<Fire>(pos, MODELS(M_FIRE))
 
 class Fire : public Entities
 {
@@ -20,7 +20,7 @@ class Fire : public Entities
     std::unique_ptr<Timer> explodeTimer;
 
   public:
-    Fire(Vector3 posi, float newSize);
+    Fire(Vector3 posi, std::unique_ptr<Model3D>* model);
     ~Fire() noexcept                          = default;
     Fire(const Fire& other) noexcept          = delete;
     Fire(Fire&& other) noexcept               = delete;

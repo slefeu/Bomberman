@@ -28,10 +28,10 @@ class Scene
     Scene& operator=(const Scene& rhs) noexcept = delete;
     Scene& operator=(Scene&& rhs) noexcept      = delete;
 
-    virtual void resetCamera(Cameraman& camera) noexcept = 0;
-    virtual void display3D(void) noexcept                = 0;
-    virtual void display2D(void) noexcept                = 0;
-    virtual void action(Cameraman& camera) noexcept      = 0;
-    virtual void DestroyPool() noexcept                  = 0;
-    virtual void CollisionPool() noexcept                = 0;
+    virtual void resetCameraman(Cameraman& camera) noexcept = 0;
+    virtual void display3D(void) noexcept                   = 0;
+    virtual void display2D(void) noexcept                   = 0;
+    virtual void action(Cameraman& camera) noexcept         = 0;
+    virtual void DestroyPool() noexcept                     = 0;
+    virtual void CollisionPool() noexcept                   = 0;
 };

@@ -7,8 +7,6 @@
 
 #include "Bomb.hpp"
 
-#include <iostream>
-
 #include "Error.hpp"
 
 Bomb::Bomb(Vector3                          pos,
@@ -29,16 +27,17 @@ Bomb::Bomb(Vector3                          pos,
     , animeDir(1)
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value()) throw(Error("Error, could not instanciate the bomb element.\n"));
+    auto renderer  = getComponent<Render>();
+
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error, could not instanciate the bomb element.\n"));
+
     transform->get().setScale(0.07f);
     transform->get().setPosition({ round(pos.x), 0.0f - transform->get().getScale(), round(pos.z) });
-    auto renderer = getComponent<Render>();
-    if (!renderer.has_value()) throw(Error("Error, could not instanciate the bomb element.\n"));
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
-    Vector3 hitbox_size = { 0.8f, 1.2f, 0.8f };
-    addComponent(BoxCollider(transform->get().getPosition(), hitbox_size, false));
+    addComponent(BoxCollider(transform->get().getPosition(), { 0.8f, 1.2f, 0.8f }, false));
 }
 
 void Bomb::Display()
@@ -84,8 +83,8 @@ void Bomb::explode() noexcept
     if (is_exploding_) return;
     is_exploding_ = true;
     hitbox->get().setIsSolid(false);
-    player->nbBomb++;
-    fires.emplace_back(NEW_FIRE(getComponent<Transform3D>()->get().getPosition(), 0.9f));
+    if (player->getNbBombMax() > player->getNbBomb()) player->setNbBomb(player->getNbBomb() + 1);
+    fires.emplace_back(NEW_FIRE(getComponent<Transform3D>()->get().getPosition()));
     createFire({ 1.0f, 0.0f, 0.0f });
     createFire({ -1.0f, 0.0f, 0.0f });
     createFire({ 0.0f, 0.0f, 1.0f });
@@ -98,7 +97,6 @@ void Bomb::explode() noexcept
 void Bomb::createFire(Vector3 mul) noexcept
 {
     Vector3 position = getComponent<Transform3D>()->get().getPosition();
-    float   scale    = 0.5f;
     Vector3 newPos;
     bool    exit = false;
 
@@ -106,7 +104,7 @@ void Bomb::createFire(Vector3 mul) noexcept
         newPos.x = position.x + (float(i) * mul.x);
         newPos.y = position.y + (float(i) * mul.y);
         newPos.z = position.z + (float(i) * mul.z);
-        fires.emplace_back(NEW_FIRE(newPos, scale));
+        fires.emplace_back(NEW_FIRE(newPos));
 
         auto& fire = fires.back();
         for (auto& other : *entities) {
@@ -120,5 +118,5 @@ void Bomb::createFire(Vector3 mul) noexcept
 
 void Bomb::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
-    (void)other;
+    if (other->getEntityType() == EntityType::E_WALL) explode();
 }

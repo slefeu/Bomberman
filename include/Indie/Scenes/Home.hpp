@@ -19,7 +19,7 @@ class Home : public Scene
     Home& operator=(const Home& rhs) noexcept = delete;
     Home& operator=(Home&& rhs) noexcept      = delete;
 
-    void resetCamera(Cameraman& camera) noexcept;
+    void resetCameraman(Cameraman& camera) noexcept;
     void display3D(void) noexcept;
     void display2D(void) noexcept;
     void action(Cameraman& camera) noexcept;

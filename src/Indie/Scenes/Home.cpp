@@ -7,18 +7,16 @@
 
 #include "Home.hpp"
 
-#include <iostream>
-
 Home::Home(GameData* data) noexcept
     : Scene(data)
 {
-    cameraPosition  = { 20.0f, 50.0f, 20.0f };
+    cameraPosition  = { 0.0f, 11.0f, 20.0f };
     cameraTarget    = { 0.0f, 0.0f, 0.0f };
-    cameraUp        = { 0.0f, 1.0f, 0.0f };
+    cameraUp        = { 0.0f, 2.0f, 0.0f };
     backgroundColor = RAYWHITE;
 }
 
-void Home::resetCamera(Cameraman& camera) noexcept
+void Home::resetCameraman(Cameraman& camera) noexcept
 {
     camera.moveTo(cameraPosition, cameraTarget, cameraUp);
 }

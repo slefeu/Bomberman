@@ -7,8 +7,6 @@
 
 #include "Item.hpp"
 
-#include <iostream>
-
 #include "Error.hpp"
 #include "Player.hpp"
 #include "Render.hpp"
@@ -29,8 +27,7 @@ Item::Item(Vector3 pos, GameData* data)
     transform->get().setRotationAngle(90.0f);
     renderer->get().setRenderType(RenderType::R_3DMODEL_ROTATE);
 
-    Vector3 scale = { 1.0f, 1.0f, 0.5f };
-    addComponent(BoxCollider(transform->get().getPosition(), scale, true));
+    addComponent(BoxCollider(transform->get().getPosition(), { 1.0f, 1.0f, 0.5f }, true));
     auto hitbox = getComponent<BoxCollider>();
 
     if (!hitbox.has_value()) throw(Error("Error, could not instanciate the item element.\n"));
@@ -56,12 +53,9 @@ void Item::Display()
 {
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
-    auto hitbox    = getComponent<BoxCollider>();
 
-    if (!renderer.has_value() || !transform.has_value() || !hitbox.has_value())
-        throw(Error("Error in displaying an item element.\n"));
+    if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying an item element.\n"));
     renderer->get().display(transform->get());
-    hitbox->get().display();
 }
 
 void Item::Update() {}
@@ -77,9 +71,15 @@ void Item::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
 {
     switch (itemType) {
-        case ItemType::I_SPEEDUP: p->speed += 0.2f; break;
-        case ItemType::I_BOMBUP: p->nbBomb += 1; break;
-        case ItemType::I_FIREUP: p->bombSize += 1; break;
+        case ItemType::I_SPEEDUP:
+            if (p->getSpeed() < p->getSpeedMax()) p->setSpeed(p->getSpeed() + 0.2f);
+            break;
+        case ItemType::I_BOMBUP:
+            if (p->getNbBomb() < p->getNbBombMax()) p->setNbBomb(p->getNbBomb() + 1);
+            break;
+        case ItemType::I_FIREUP:
+            if (p->getBombSize() < p->getBombSizeMax()) p->setBombSize(p->getBombSize() + 1);
+            break;
         case ItemType::I_WALL: p->setWallPass(true); break;
         default: break;
     }

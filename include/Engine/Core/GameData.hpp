@@ -8,6 +8,7 @@
 
 #include "Entities.hpp"
 #include "Model3D.hpp"
+#include "Sprite.hpp"
 
 class GameData
 {
@@ -29,5 +30,6 @@ class GameData
 
   public:
     std::vector<std::unique_ptr<Model3D>>  models;
+    std::vector<std::unique_ptr<Sprite>>   sprites;
     std::vector<std::unique_ptr<Entities>> players;
 };

@@ -7,28 +7,23 @@
 
 #include "Home.hpp"
 
-
 Home::Home(GameData* data, Core& core_ref) noexcept
     : Scene()
     , loop_music_(MENU_MUSIC)
     , core_entry_(core_ref)
     , data_(data)
+    , background_color_(Colors::C_WHITE)
+    , background_(BG_PATH)
+    , title_(TITLE_PATH, 30, 30)
 {
     createButtons();
-
-    // background attributes
-    Image background = LoadImage("assets/textures/home/background2.png");
-    Image title_bg   = LoadImage("assets/textures/home/title2.png");
-    title            = LoadTextureFromImage(title_bg);
-    texture          = LoadTextureFromImage(background);
-    UnloadImage(background);
-    UnloadImage(title_bg);
 }
 
 Home::~Home() noexcept
 {
     loop_music_.unload();
-    unloadTextures();
+    background_.unload();
+    title_.unload();
     unloadButtons();
 }
 
@@ -38,9 +33,8 @@ void Home::createButtons() noexcept
         1,
         data_->winWidth / 2,
         data_->winHeight / 4,
-        std::function<void(void)>([this](void) {
-            return (core_entry_.switchScene(SceneType::GAME));
-        }),
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
         1,
         "assets/fonts/menu.ttf",
         "Play",
@@ -62,8 +56,7 @@ void Home::createButtons() noexcept
         1,
         data_->winWidth / 2,
         data_->winHeight / 4 + (150 * buttons_.size()),
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.setExit(true)); }),
+        std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),
         1,
         "assets/fonts/menu.ttf",
         "Exit",
@@ -80,13 +73,12 @@ void Home::display3D() noexcept {}
 
 void Home::display2D() noexcept
 {
-    DrawFPS(10, 10);
+    FpsHandler::draw(10, 10);
     drawButtons();
 }
 
-void Home::action(Cameraman& camera, Vector2 mouse_pos) noexcept
+void Home::action([[maybe_unused]] Cameraman& camera, Vector2 mouse_pos) noexcept
 {
-    (void)camera;
     for (auto& it : buttons_) {
         if (it.checkCollision(mouse_pos)) { it.action(); }
     }
@@ -121,22 +113,10 @@ Vector3 Home::getCameraUp() const noexcept
     return (camera_up_);
 }
 
-Color Home::getBackgroundColor() const noexcept
-{
-    return (background_color_);
-}
-
-void Home::unloadTextures() noexcept
-{
-    UnloadTexture(texture);
-}
-
 void Home::drawBackground() const noexcept
 {
-    Vector2 position = { 0, 0 };
-    DrawTextureEx(
-        texture, position, 0, 1.1, CLITERAL(Color){ 255, 255, 255, 175 });
-    DrawTexture(title, 30, 30, WHITE);
+    background_.draw({ 255, 255, 255, 175 });
+    title_.draw();
 }
 
 void Home::drawButtons() const noexcept
@@ -147,4 +127,9 @@ void Home::drawButtons() const noexcept
 void Home::unloadButtons() noexcept
 {
     for (auto it : buttons_) { it.unload(); }
+}
+
+ColorManager Home::getBackgroundColor() const noexcept
+{
+    return (background_color_);
 }

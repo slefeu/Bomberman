@@ -16,6 +16,11 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
 {
 }
 
+GameData::~GameData() noexcept
+{
+    for (auto& it : sprites) { it->unload(); }
+}
+
 void GameData::updateMouse() noexcept
 {
     mouse_handler_.update();

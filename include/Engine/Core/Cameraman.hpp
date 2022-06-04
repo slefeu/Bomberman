@@ -26,11 +26,9 @@ class Cameraman
     void moveX(const float& x) noexcept;
     void moveY(const float& y) noexcept;
     void moveZ(const float& z) noexcept;
-    void moveTo(
-        const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
-    void tpTo(
-        const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
-    bool smoothMove(void) noexcept;
+    void moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
+    void tpTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
+    bool smoothMove() noexcept;
     void lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity);
 
     Vector3  getPosition() const noexcept;

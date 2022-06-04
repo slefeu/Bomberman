@@ -19,9 +19,9 @@ class Fire : public Entity
 
   public:
     Fire(Vector3 posi, std::unique_ptr<Model3D>* model);
-    ~Fire() noexcept                          = default;
-    Fire(const Fire& other) noexcept          = delete;
-    Fire(Fire&& other) noexcept               = delete;
+    ~Fire() noexcept                 = default;
+    Fire(const Fire& other) noexcept = delete;
+    Fire(Fire&& other) noexcept      = delete;
     Fire& operator=(const Fire& rhs) noexcept = delete;
     Fire& operator=(Fire&& rhs) noexcept = delete;
 

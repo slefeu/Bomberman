@@ -7,8 +7,6 @@
 
 #include "Button.hpp"
 
-#include "Shortcuts.hpp"
-
 Button::Button(const std::string& texture_path,
     unsigned int                  frames,
     float                         pos_x,
@@ -21,31 +19,29 @@ Button::Button(const std::string& texture_path,
     int                           textPosY) noexcept
     : fx_clicked_(ON_CLICK)
     , fx_hover_(ON_HOVER)
+    , texture_(texture_path)
     , frames_(frames)
     , task_(function)
-    , scale_(scale)
     , text_(font_path, message, textPosX, textPosY)
+    , color_(Colors::C_WHITE)
 {
-    texture_ = LoadTexture(texture_path.c_str());
-
-    float frameHeight = static_cast<float>(texture_.height) / frames_;
-    rectangle_        = {
-        pos_x, pos_y, static_cast<float>(texture_.width), frameHeight
-    };
+    float frameHeight = static_cast<float>(texture_.getHeight()) / frames_;
+    rectangle_        = { pos_x, pos_y, static_cast<float>(texture_.getWidth()), frameHeight };
+    texture_.setPos(rectangle_.x, rectangle_.y);
+    texture_.setScale(scale);
 }
 
 void Button::unload() noexcept
 {
     fx_clicked_.unload();
     fx_hover_.unload();
-    UnloadTexture(texture_);
     text_.unload();
+    texture_.unload();
 }
 
 void Button::draw() const noexcept
 {
-    Vector2 position = { rectangle_.x, rectangle_.y };
-    DrawTextureEx(texture_, position, 0, scale_, color_);
+    texture_.draw(color_.getColor());
     text_.draw();
 }
 
@@ -55,16 +51,16 @@ bool Button::checkCollision(const Vector2& mouse_pos) noexcept
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { state_ = 2; }
         if (state_ == 0) {
             state_ = 1;
-            color_ = PINK;
+            color_.setColor(Colors::C_PINK);
             fx_hover_.play();
         }
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) { is_action_ = true; }
     } else {
-        color_ = WHITE;
+        color_.setColor(Colors::C_WHITE);
         state_ = 0;
     }
     if (is_action_) {
-        color_ = WHITE;
+        color_.setColor(Colors::C_WHITE);
         fx_clicked_.play();
         is_action_ = false;
         return (true);

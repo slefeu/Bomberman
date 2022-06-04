@@ -8,8 +8,6 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 
-#define NEW_ITEM(pos, data) std::make_unique<Item>((Vector3)pos, data)
-
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
 
 class Item : public Entity

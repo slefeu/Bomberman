@@ -6,15 +6,14 @@
 */
 
 #pragma once
+#include "Color.hpp"
 #include "Font.hpp"
 
 class TextHandler
 {
   public:
-    TextHandler(const std::string& font_path,
-        const std::string&         message,
-        int                        posX,
-        int                        posY) noexcept;
+    TextHandler(
+        const std::string& font_path, const std::string& message, int posX, int posY) noexcept;
     TextHandler(const TextHandler& other) noexcept = default;
     TextHandler(TextHandler&& other) noexcept      = default;
     ~TextHandler() noexcept                        = default;
@@ -23,14 +22,14 @@ class TextHandler
     TextHandler& operator=(TextHandler&& rhs) noexcept = default;
 
     void draw() const noexcept;
-    void setTextColor(Color color) noexcept;
+    void setTextColor(const std::array<unsigned char, 3>& color) noexcept;
     void setTextSize(int size) noexcept;
     void unload() noexcept;
 
   protected:
   private:
-    FontHandler font_;
-    std::string message_;
-    Vector2     position_;
-    Color       color_ = WHITE;
+    FontHandler  font_;
+    std::string  message_;
+    Vector2      position_;
+    ColorManager color_;
 };

@@ -16,7 +16,7 @@
 
 Cameraman::Cameraman() noexcept
     : isMoving(false)
-    , speed(10.0f)
+    , speed(0.5f)
 {
     camera.fovy       = 60.0f;
     camera.projection = CAMERA_PERSPECTIVE;
@@ -24,21 +24,20 @@ Cameraman::Cameraman() noexcept
 
 void Cameraman::moveX(const float& x) noexcept
 {
-    camera.position.x += Round::round(x * GetFrameTime(), 1);
+    camera.position.x += x;
 }
 
 void Cameraman::moveY(const float& y) noexcept
 {
-    camera.position.y += Round::round(y * GetFrameTime(), 1);
+    camera.position.y += y;
 }
 
 void Cameraman::moveZ(const float& z) noexcept
 {
-    camera.position.z += Round::round(z * GetFrameTime(), 1);
+    camera.position.z += z;
 }
 
-void Cameraman::moveTo(
-    const Vector3& to, const Vector3& target, const Vector3& up) noexcept
+void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept
 {
     targetPosition = to;
     targetTarget   = target;
@@ -46,8 +45,7 @@ void Cameraman::moveTo(
     isMoving       = true;
 }
 
-void Cameraman::tpTo(
-    const Vector3& to, const Vector3& tar, const Vector3& newUp) noexcept
+void Cameraman::tpTo(const Vector3& to, const Vector3& tar, const Vector3& newUp) noexcept
 {
     camera.position = to;
     camera.target   = tar;
@@ -55,7 +53,7 @@ void Cameraman::tpTo(
     isMoving        = false;
 }
 
-bool Cameraman::smoothMove(void) noexcept
+bool Cameraman::smoothMove() noexcept
 {
     bool    thereIsMovement = false;
     Vector3 roundPos        = Round::roundVector(camera.position, 1);
@@ -64,18 +62,15 @@ bool Cameraman::smoothMove(void) noexcept
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
         (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
 
-    if ((dir.z == 1 && roundTarget.z > roundPos.z)
-        || (dir.z == -1 && roundTarget.z < roundPos.z)) {
+    if ((dir.z == 1 && roundTarget.z > roundPos.z) || (dir.z == -1 && roundTarget.z < roundPos.z)) {
         thereIsMovement = true;
         moveZ(dir.z * speed);
     }
-    if ((dir.x == 1 && roundTarget.x > roundPos.x)
-        || (dir.x == -1 && roundTarget.x < roundPos.x)) {
+    if ((dir.x == 1 && roundTarget.x > roundPos.x) || (dir.x == -1 && roundTarget.x < roundPos.x)) {
         thereIsMovement = true;
         moveX(dir.x * speed);
     }
-    if ((dir.y == 1 && roundTarget.y > roundPos.y)
-        || (dir.y == -1 && roundTarget.y < roundPos.y)) {
+    if ((dir.y == 1 && roundTarget.y > roundPos.y) || (dir.y == -1 && roundTarget.y < roundPos.y)) {
         thereIsMovement = true;
         moveY(dir.y * speed);
     }

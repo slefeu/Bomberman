@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Crate.hpp"
-#include "Shortcuts.hpp"
 
 class Wall : public Entity
 {

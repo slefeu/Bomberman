@@ -160,7 +160,7 @@ class Controller : public Component
     Controller(Controller&& other) noexcept      = default;
 
     Controller& operator=(const Controller& rhs) noexcept = default;
-    Controller& operator=(Controller&& rhs) noexcept      = default;
+    Controller& operator=(Controller&& rhs) noexcept = default;
 
     ComponentType getComponentType() const noexcept;
 

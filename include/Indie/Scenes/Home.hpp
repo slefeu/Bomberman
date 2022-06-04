@@ -12,21 +12,20 @@
 #include "Button.hpp"
 #include "Core.hpp"
 #include "Scene.hpp"
-
-static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
+#include "Fps.hpp"
 
 class Home : public Scene
 {
   public:
     Home(GameData* data, Core& core_ref) noexcept;
-    ~Home() noexcept;
     Home(const Home& other) noexcept = delete;
     Home(Home&& other) noexcept      = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
     Home& operator=(Home&& rhs) noexcept = delete;
+    ~Home() noexcept;
 
-    void display3D(void) noexcept final;
-    void display2D(void) noexcept final;
+    void display3D() noexcept final;
+    void display2D() noexcept final;
     void action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
@@ -36,28 +35,29 @@ class Home : public Scene
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;
     Vector3      getCameraUp() const noexcept final;
-    Color        getBackgroundColor() const noexcept final;
     void         drawBackground() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept;
+    ColorManager getBackgroundColor() const noexcept final;
 
   private:
     // methods
-    void unloadTextures() noexcept;
     void unloadButtons() noexcept;
     void drawButtons() const noexcept;
     void createButtons() noexcept;
 
     // attributes
     MusicManager        loop_music_;
-    Vector3             camera_position_  = { 20.0f, 50.0f, 20.0f };
-    Vector3             camera_target_    = { 0.0f, 0.0f, 0.0f };
-    Vector3             camera_up_        = { 0.0f, 1.0f, 0.0f };
-    Color               background_color_ = RAYWHITE;
-    std::vector<Button> buttons_          = {};
+    Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
+    Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
+    Vector3             camera_up_       = { 0.0f, 1.0f, 0.0f };
+    std::vector<Button> buttons_         = {};
     GameData*           data_;
     Core&               core_entry_;
+    ColorManager        background_color_;
+    Sprite              background_;
+    Sprite              title_;
 
-    // a faire : classe pour handle un background
-    Texture2D texture;
-    Texture2D title;
+    static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
+    static const inline char* BG_PATH    = "assets/textures/home/background.png";
+    static const inline char* TITLE_PATH = "assets/textures/home/title.png";
 };

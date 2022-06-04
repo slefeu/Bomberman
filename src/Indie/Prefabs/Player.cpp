@@ -15,7 +15,7 @@ Player::Player(const int newId, GameData* data)
     , id(newId)
     , data(data)
     , wallpass(false)
-    , wallpassTimer(NEW_TIMER(5.0f))
+    , wallpassTimer(std::make_unique<Timer>(5.0f))
     , wallpassEnd(false)
 {
     auto transform = getComponent<Transform3D>();
@@ -58,7 +58,8 @@ void Player::Update()
     auto model      = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
     bool animate    = false;
 
-    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value() || !controller.has_value())
+    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value()
+        || !controller.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
 
@@ -134,11 +135,10 @@ void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
     if (other->getEntityType() == EntityType::E_FIRE) setEnabledValue(false);
 }
 
-void Player::setPosition(void)
+void Player::setPosition()
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
-        throw(Error("Error in setting player position.\n"));
+    if (!transform.has_value()) throw(Error("Error in setting player position.\n"));
     switch (id) {
         case 0:
             transform->get().setX(-6.0f);
@@ -161,7 +161,7 @@ void Player::setPosition(void)
     }
 }
 
-void Player::setKeyboard(void) noexcept
+void Player::setKeyboard() noexcept
 {
     switch (id) {
         case 0:
@@ -196,8 +196,7 @@ void Player::setKeyboard(void) noexcept
     }
 }
 
-bool Player::isCollidingNextTurn(
-    std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir)
+bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir)
 {
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
@@ -212,14 +211,10 @@ bool Player::isCollidingNextTurn(
 
     if (!getEnabledValue()) return false;
     for (auto& other : others) {
-        if (hitbox == std::nullopt
-            || other->getComponent<BoxCollider>() == std::nullopt)
-            continue;
+        if (hitbox == std::nullopt || other->getComponent<BoxCollider>() == std::nullopt) continue;
         auto other_hitbox = other->getComponent<BoxCollider>();
         if (other_hitbox.has_value()) {
-            if (!hitbox->get().getIsSolid()
-                || !other_hitbox->get().getIsSolid())
-                continue;
+            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (other_hitbox->get().isColliding(hitbox->get(), nextTurn)) {
                 if (other->getEntityType() == EntityType::E_BOMB) return true;
                 if (other->getEntityType() == EntityType::E_WALL) return true;
@@ -233,7 +228,7 @@ bool Player::isCollidingNextTurn(
     }
     if (wallpassEnd) {
         wallpassEnd = false;
-        renderer->get().setColor(WHITE);
+        renderer->get().setColor(Colors::C_WHITE);
     }
     return false;
 }
@@ -241,15 +236,12 @@ bool Player::isCollidingNextTurn(
 void Player::placeBomb()
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
-        throw(Error("Error in updating the placement of bombs.\n"));
+    if (!transform.has_value()) throw(Error("Error in updating the placement of bombs.\n"));
     for (auto& i : *bombs) {
         auto bomb = i->getComponent<Transform3D>();
         if (bomb.has_value()
-            && bomb->get().getPosition().x
-                   == round(transform->get().getPosition().x)
-            && bomb->get().getPosition().z
-                   == round(transform->get().getPosition().z))
+            && bomb->get().getPosition().x == round(transform->get().getPosition().x)
+            && bomb->get().getPosition().z == round(transform->get().getPosition().z))
             return;
     }
     if (nbBomb <= 0) return;
@@ -262,14 +254,14 @@ void Player::placeBomb()
         bombs));
 }
 
-void Player::setBombArray(
-    std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept
+void Player::setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept
 {
     bombs = bombsArray;
 }
 
 void Player::setWallPass(const bool& pass) noexcept
 {
+    this->wallpassTimer->resetTimer();
     wallpass = pass;
 }
 
@@ -313,17 +305,17 @@ void Player::setPlayerType(PlayerType type) noexcept
     }
 }
 
-int Player::getNbBombMax(void) const noexcept
+int Player::getNbBombMax() const noexcept
 {
     return nbBombMax;
 }
 
-float Player::getSpeedMax(void) const noexcept
+float Player::getSpeedMax() const noexcept
 {
     return speedMax;
 }
 
-int Player::getBombSizeMax(void) const noexcept
+int Player::getBombSizeMax() const noexcept
 {
     return bombSizeMax;
 }
@@ -343,7 +335,7 @@ int Player::getBombSize() const noexcept
     return bombSize;
 }
 
-void Player::setSpeed(const int& speed) noexcept
+void Player::setSpeed(const float& speed) noexcept
 {
     this->speed = speed;
 }

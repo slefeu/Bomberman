@@ -12,67 +12,57 @@
 #include "Game.hpp"
 #include "Home.hpp"
 
-Core::Core(GameData* newData) noexcept
+Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
+    , window_(window)
 {
-    createWindow();
+    window_->launch(data->winWidth, data->winHeight, data->fps);
 
     // Chargement des models 3D
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/bomb.glb", "assets/textures/entities/bomb.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/box.glb", "assets/textures/entities/wall.png"));
     data->models.emplace_back(
-        NEW_MODEL("assets/models/box.glb", "assets/textures/entities/box.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/item.glb", "assets/textures/items/i_roller.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/item.glb", "assets/textures/items/i_bomb.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/item.glb", "assets/textures/items/i_fire.png"));
+        std::make_unique<Model3D>("assets/models/bomb.glb", "assets/textures/entities/bomb.png"));
     data->models.emplace_back(
-        NEW_MODEL("assets/models/item.glb", "assets/textures/items/item.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/fire.glb", "assets/textures/entities/fire.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/player.iqm", "assets/textures/player/white.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/player.iqm", "assets/textures/player/black.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/player.iqm", "assets/textures/player/blue.png"));
-    data->models.emplace_back(NEW_MODEL(
-        "assets/models/player.iqm", "assets/textures/player/red.png"));
+        std::make_unique<Model3D>("assets/models/box.glb", "assets/textures/entities/wall.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/box.glb", "assets/textures/entities/box.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/i_roller.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/i_bomb.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/i_fire.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/item.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/fire.glb", "assets/textures/entities/fire.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/white.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/black.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/blue.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/red.png"));
 
-    data->models[(int)ModelType::M_PLAYER_1]->addAnimation(
-        "assets/models/player.iqm");
-    data->models[(int)ModelType::M_PLAYER_2]->addAnimation(
-        "assets/models/player.iqm");
-    data->models[(int)ModelType::M_PLAYER_3]->addAnimation(
-        "assets/models/player.iqm");
-    data->models[(int)ModelType::M_PLAYER_4]->addAnimation(
-        "assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_1]->addAnimation("assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_2]->addAnimation("assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_3]->addAnimation("assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_4]->addAnimation("assets/models/player.iqm");
+
+    data->models[(int)ModelType::M_PLAYER_1]->setSkipFrame(2);
+    data->models[(int)ModelType::M_PLAYER_2]->setSkipFrame(2);
+    data->models[(int)ModelType::M_PLAYER_3]->setSkipFrame(2);
+    data->models[(int)ModelType::M_PLAYER_4]->setSkipFrame(2);
 
     // Chargement des sprites
-    data->sprites.emplace_back(
-        NEW_SPRITE_SCALE("assets/icones/white.png", 0, 0, 0.5f));
-    data->sprites.emplace_back(
-        NEW_SPRITE_SCALE("assets/icones/black.png", 0, 0, 0.5f));
-    data->sprites.emplace_back(
-        NEW_SPRITE_SCALE("assets/icones/blue.png", 0, 0, 0.5f));
-    data->sprites.emplace_back(
-        NEW_SPRITE_SCALE("assets/icones/red.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/white.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/black.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/blue.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/red.png", 0, 0, 0.5f));
 
     resetData();
-    camera.tpTo(findScene().getCameraPosition(),
-        findScene().getCameraTarget(),
-        findScene().getCameraUp());
-}
-
-void Core::createWindow() noexcept
-{
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
-    SetTargetFPS(data->fps);
+    camera.tpTo(
+        findScene().getCameraPosition(), findScene().getCameraTarget(), findScene().getCameraUp());
 }
 
 void Core::resetData() noexcept
@@ -114,20 +104,13 @@ void Core::run() noexcept
         findScene().action(camera, data->getMousePosition());
 
         // Display ------------------------------------------------------------
-        BeginDrawing();
-        ClearBackground(findScene().getBackgroundColor());
-        findScene().drawBackground();
-        BeginMode3D(camera.getCamera());
-        findScene().display3D();
-        EndMode3D();
-        findScene().display2D();
-        EndDrawing();
+        window_->display(findScene(), camera);
     }
 }
 
 void Core::checkExit() noexcept
 {
-    if (WindowShouldClose()) exit_ = true;
+    if (window_->isExit()) { exit_ = true; }
 }
 
 void Core::setExit(bool value) noexcept

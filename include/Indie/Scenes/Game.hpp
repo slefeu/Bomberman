@@ -17,9 +17,9 @@
 #include "Model3D.hpp"
 #include "Scene.hpp"
 #include "Timer.hpp"
+#include "Fps.hpp"
 
 enum class Direction { UP, RIGHT, DOWN, LEFT };
-static const inline char* GAME_MUSIC = "assets/audios/Game.mp3";
 
 class Game : public Scene
 {
@@ -31,8 +31,8 @@ class Game : public Scene
     Game& operator=(const Game& rhs) noexcept = delete;
     Game& operator=(Game&& rhs) noexcept = delete;
 
-    void         display3D(void) noexcept final;
-    void         display2D(void) noexcept final;
+    void         display3D() noexcept final;
+    void         display2D() noexcept final;
     void         action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
     void         DestroyPool() noexcept final;
     void         CollisionPool() noexcept final;
@@ -42,20 +42,18 @@ class Game : public Scene
     Vector3      getCameraTarget() const noexcept final;
     Vector3      getCameraUp() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept final;
-    Color        getBackgroundColor() const noexcept final;
     void         drawBackground() const noexcept final{};
+    ColorManager getBackgroundColor() const noexcept final;
 
   private:
     // methods
-    void createMap(void) noexcept;
-    void hurryUp(void) noexcept;
+    void createMap() noexcept;
+    void hurryUp() noexcept;
 
     // attributes
-    GameData*                               data_;
-    std::vector<std::unique_ptr<Entity>>    entities_;
-    std::unique_ptr<Timer>                  chrono_;
-    std::vector<std::unique_ptr<Entity>>* _players;
-    std::vector<std::unique_ptr<Model3D>>*  _models;
+    GameData*                              data_;
+    std::vector<std::unique_ptr<Entity>>   entities_;
+    std::unique_ptr<Timer>                 chrono_;
 
     float lastTimeBlockPlace;
     bool  isHurry;
@@ -69,10 +67,12 @@ class Game : public Scene
 
     Direction    direction = Direction::UP;
     MusicManager loop_music_;
-    Vector3      camera_position_  = { 0.0f, 11.0f, 1.0f };
-    Vector3      camera_target_    = { 0.0f, 0.0f, 1.0f };
-    Vector3      camera_up_        = { 0.0f, 2.0f, 0.0f };
-    Color        background_color_ = BLACK;
+    Vector3      camera_position_ = { 0.0f, 13.0f, 2.0f };
+    Vector3      camera_target_   = { 0.0f, 0.0f, 1.0f };
+    Vector3      camera_up_       = { 0.0f, 2.0f, 0.0f };
     Core&        core_entry_;
     float        HurryUpX;
+    ColorManager background_color_;
+
+    static const inline char* GAME_MUSIC = "assets/audios/Game.mp3";
 };

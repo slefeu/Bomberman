@@ -31,8 +31,10 @@ Crate::Crate(Vector3                      pos,
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
-    addComponent(BoxCollider(
-        { transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() }, { 0.8f, 0.8f, 0.8f }, true));
+    addComponent(
+        BoxCollider({ transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() },
+            { 0.8f, 0.8f, 0.8f },
+            true));
 }
 
 void Crate::Display()
@@ -57,7 +59,7 @@ void Crate::dropItem()
 
     if (!transform.has_value()) throw(Error("Error in dropping item.\n"));
     if (rand() % 3 != 0) return;
-    entities->emplace_back(NEW_ITEM(transform->get().getPosition(), data));
+    entities->emplace_back(std::make_unique<Item>((Vector3)transform->get().getPosition(), data));
 }
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

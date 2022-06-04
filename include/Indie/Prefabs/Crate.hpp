@@ -8,7 +8,6 @@
 #pragma once
 #include "Entity.hpp"
 #include "GameData.hpp"
-#include "Shortcuts.hpp"
 
 class Crate : public Entity
 {

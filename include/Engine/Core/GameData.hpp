@@ -17,11 +17,11 @@ class GameData
 {
   public:
     GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept;
-    ~GameData() noexcept                              = default;
-    GameData(const GameData& other) noexcept          = delete;
-    GameData(GameData&& other) noexcept               = delete;
+    GameData(const GameData& other) noexcept = delete;
+    GameData(GameData&& other) noexcept      = delete;
     GameData& operator=(const GameData& rhs) noexcept = delete;
-    GameData& operator=(GameData&& rhs) noexcept      = delete;
+    GameData& operator=(GameData&& rhs) noexcept = delete;
+    ~GameData() noexcept;
 
     Vector2   getMousePosition() const noexcept;
     void      updateMouse() noexcept;

@@ -10,9 +10,10 @@
 #include <functional>
 #include <string>
 
+#include "Color.hpp"
 #include "Sound.hpp"
 #include "Text.hpp"
-
+#include "Sprite.hpp"
 static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
 static const inline char* ON_HOVER = "assets/audios/menu_hover.ogg";
 
@@ -35,7 +36,7 @@ class Button
     ~Button() noexcept                   = default;
 
     Button& operator=(const Button& rhs) noexcept = default;
-    Button& operator=(Button&& rhs) noexcept      = default;
+    Button& operator=(Button&& rhs) noexcept = default;
 
     void draw() const noexcept;
     bool checkCollision(const Vector2& mouse_pos) noexcept;
@@ -46,13 +47,12 @@ class Button
   private:
     SoundManager              fx_clicked_;
     SoundManager              fx_hover_;
-    Texture2D                 texture_;
+    Sprite                    texture_;
     int                       state_     = 0; // 0 : NORMAL, 1 : HOVER, 2 : PRESSED
     bool                      is_action_ = false;
     unsigned int              frames_;
     Rectangle                 rectangle_;
     std::function<void(void)> task_;
-    float                     scale_;
     TextHandler               text_;
-    Color                     color_ = WHITE;
+    ColorManager              color_;
 };

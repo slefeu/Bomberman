@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Font.hpp"
+#include "Color.hpp"
 
 class TextHandler
 {
@@ -21,7 +22,7 @@ class TextHandler
     TextHandler& operator=(TextHandler&& rhs) noexcept      = default;
 
     void draw() const noexcept;
-    void setTextColor(Color color) noexcept;
+    void setTextColor(const std::array<unsigned char, 3>& color) noexcept;
     void setTextSize(int size) noexcept;
     void unload() noexcept;
 
@@ -30,5 +31,5 @@ class TextHandler
     FontHandler font_;
     std::string message_;
     Vector2     position_;
-    Color       color_ = WHITE;
+    ColorManager       color_;
 };

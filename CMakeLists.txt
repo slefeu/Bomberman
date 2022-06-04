@@ -34,7 +34,6 @@ set(
   src/Engine/Core/GameData.cpp
   src/Engine/Core/Model3D.cpp
   src/Engine/Core/Entity.cpp
-  src/Engine/Core/Sprite.cpp
 
   src/Engine/Components/BoxCollider.cpp
   src/Engine/Components/Transform3D.cpp
@@ -59,6 +58,8 @@ set(
   src/Engine/Lib/Music.cpp
   src/Engine/Lib/Sound.cpp
   src/Engine/Lib/AudioDevice.cpp
+  src/Engine/Lib/Sprite.cpp
+  src/Engine/Lib/Color.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

@@ -228,7 +228,7 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, i
     }
     if (wallpassEnd) {
         wallpassEnd = false;
-        renderer->get().setColor(WHITE);
+        renderer->get().setColor(Colors::C_WHITE);
     }
     return false;
 }

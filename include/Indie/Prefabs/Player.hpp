@@ -10,11 +10,10 @@
 #include <memory>
 #include <vector>
 
+#include "Color.hpp"
 #include "Entity.hpp"
 #include "GameData.hpp"
 #include "Timer.hpp"
-
-#define NEW_PLAYER(id, data) std::make_unique<Player>(id, data)
 
 enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER };
 
@@ -22,11 +21,11 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData* data);
-    ~Player() noexcept                            = default;
-    Player(const Player& other) noexcept          = delete;
-    Player(Player&& other) noexcept               = delete;
+    ~Player() noexcept                   = default;
+    Player(const Player& other) noexcept = delete;
+    Player(Player&& other) noexcept      = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept      = delete;
+    Player& operator=(Player&& rhs) noexcept = delete;
 
     void  Display() final;
     void  Update() final;
@@ -57,36 +56,36 @@ class Player : public Entity
     Key       dropBomb;
     int       id;
     GameData* data;
-    std::vector<std::unique_ptr<Entity>>* bombs;
-    bool                                  wallpass;
-    std::unique_ptr<Timer>                wallpassTimer;
-    bool                                  wallpassEnd;
-    int                                   nbBomb;
-    float                                 speed;
-    int                                   bombSize;
-    int                                   nbBombMax;
-    float                                 speedMax;
-    int                                   bombSizeMax;
-    PlayerType                            type;
-    int                                   colorIndex = 0;
-    std::vector<Color>                    colors     = { LIGHTGRAY,
-                               GRAY,
-                               YELLOW,
-                               GOLD,
-                               ORANGE,
-                               PINK,
-                               RED,
-                               MAROON,
-                               GREEN,
-                               LIME,
-                               DARKGREEN,
-                               SKYBLUE,
-                               BLUE,
-                               DARKBLUE,
-                               PURPLE,
-                               VIOLET,
-                               DARKPURPLE,
-                               BEIGE,
-                               BROWN,
-                               DARKBROWN };
+    std::vector<std::unique_ptr<Entity>>*     bombs;
+    bool                                      wallpass;
+    std::unique_ptr<Timer>                    wallpassTimer;
+    bool                                      wallpassEnd;
+    int                                       nbBomb;
+    float                                     speed;
+    int                                       bombSize;
+    int                                       nbBombMax;
+    float                                     speedMax;
+    int                                       bombSizeMax;
+    PlayerType                                type;
+    int                                       colorIndex = 0;
+    std::vector<std::array<unsigned char, 3>> colors     = { Colors::C_LIGHTGRAY,
+        Colors::C_GRAY,
+        Colors::C_YELLOW,
+        Colors::C_GOLD,
+        Colors::C_ORANGE,
+        Colors::C_PINK,
+        Colors::C_RED,
+        Colors::C_MAROON,
+        Colors::C_GREEN,
+        Colors::C_LIME,
+        Colors::C_DARKGREEN,
+        Colors::C_SKYBLUE,
+        Colors::C_BLUE,
+        Colors::C_DARKBLUE,
+        Colors::C_PURPLE,
+        Colors::C_VIOLET,
+        Colors::C_DARKPURPLE,
+        Colors::C_BEIGE,
+        Colors::C_BROWN,
+        Colors::C_DARKBROWN };
 };

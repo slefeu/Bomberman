@@ -72,16 +72,15 @@ void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
 {
     switch (itemType) {
         case ItemType::I_SPEEDUP:
-            if (p->speed < p->getSpeedMax()) p->speed += 0.2f;
+            if (p->getSpeed() < p->getSpeedMax()) p->setSpeed(p->getSpeed() + 0.2f);
             break;
         case ItemType::I_BOMBUP:
-            if (p->nbBomb < p->getNbBombMax()) p->nbBomb += 1;
+            if (p->getNbBomb() < p->getNbBombMax()) p->setNbBomb(p->getNbBomb() + 1);
             break;
         case ItemType::I_FIREUP:
-            if (p->bombSize < p->getBombSizeMax()) p->bombSize += 1;
+            if (p->getBombSize() < p->getBombSizeMax()) p->setBombSize(p->getBombSize() + 1);
             break;
-        case ItemType::I_WALL: p->setWallPass(true); 
-            break;
-    default: break;
+        case ItemType::I_WALL: p->setWallPass(true); break;
+        default: break;
     }
 }

@@ -14,15 +14,11 @@
 
 Player::Player(const int newId, GameData* data)
     : Entities(EntityType::E_PLAYER)
-    , nbBomb(1)
-    , speed(2.0f)
-    , bombSize(3)
     , id(newId)
     , data(data)
     , wallpass(false)
     , wallpassTimer(NEW_TIMER(5.0f))
     , wallpassEnd(false)
-    , type(playerType::NORMAL)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -40,9 +36,8 @@ Player::Player(const int newId, GameData* data)
     renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
     setKeyboard();
     setPosition();
-    setPlayerTypeStatMax(type);
-    addComponent(BoxCollider(
-        transform->get().getPosition(), transform->get().getSize(), true));
+    setPlayerType(PlayerType::RUNNER);
+    addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
 }
 
 void Player::Display()
@@ -255,69 +250,46 @@ void Player::setBombArray(std::vector<std::unique_ptr<Entities>>* bombsArray) no
     bombs = bombsArray;
 }
 
-void Player::setWallPass(const bool& pass)
+void Player::setWallPass(const bool& pass) noexcept
 {
-    // change te color of the player
-    auto renderer = getComponent<Render>();
-    if (!renderer.has_value()) throw(Error("Error in setting the wall pass.\n"));
-
     wallpass = pass;
 }
 
-void Player::setPlayerType(playerType type) noexcept
+void Player::setPlayerType(PlayerType type) noexcept
 {
     this->type = type;
-}
-
-void Player::setPlayerTypeStats(playerType type) noexcept
-{
     switch (type) {
-        case playerType::NORMAL:
-            nbBomb = 1;
-            speed  = 2.0f;
-            bombSize = 3;
-            break;
-        case playerType::ATTACK:
-            nbBomb = 1;
-            speed  = 2.0f;
-            bombSize = 4;
-            break;
-        case playerType::TACTICAL:
-            nbBomb = 2;
-            speed  = 2.0f;
-            bombSize = 3;
-            break;
-        case playerType::RUNNER:
-            nbBomb = 1;
-            speed  = 2.5f;
-            bombSize = 3;
-            break;
-        default: break;
-    }
-}
-
-void Player::setPlayerTypeStatMax(playerType type) noexcept
-{
-    switch (type) {
-        case playerType::NORMAL:
-            nbBombMax = 3;
-            speedMax  = 3.0f;
+        case PlayerType::NORMAL:
+            nbBomb      = 1;
+            speed       = 2.0f;
+            bombSize    = 3;
+            nbBombMax   = 6;
+            speedMax    = 3.5f;
             bombSizeMax = 6;
             break;
-        case playerType::ATTACK:
-            nbBombMax = 3;
-            speedMax  = 3.0f;
+        case PlayerType::ATTACK:
+            nbBomb      = 2;
+            speed       = 1.7f;
+            bombSize    = 4;
+            nbBombMax   = 10;
+            speedMax    = 2.5f;
             bombSizeMax = 10;
             break;
-        case playerType::TACTICAL:
-            nbBombMax = 5;
-            speedMax  = 3.0f;
-            bombSizeMax = 6;
+        case PlayerType::TACTICAL:
+            nbBomb      = 2;
+            speed       = 2.0f;
+            bombSize    = 2;
+            nbBombMax   = 5;
+            speedMax    = 3.0f;
+            bombSizeMax = 10;
             break;
-        case playerType::RUNNER:
-            nbBombMax = 3;
-            speedMax  = 3.5f;
-            bombSizeMax = 6;
+        case PlayerType::RUNNER:
+            nbBomb      = 1;
+            speed       = 2.5f;
+            bombSize    = 2;
+            nbBombMax   = 3;
+            speedMax    = 5.0f;
+            bombSizeMax = 5;
             break;
         default: break;
     }
@@ -336,4 +308,34 @@ float Player::getSpeedMax(void) const noexcept
 int Player::getBombSizeMax(void) const noexcept
 {
     return bombSizeMax;
+}
+
+float Player::getSpeed() const noexcept
+{
+    return speed;
+}
+
+int Player::getNbBomb() const noexcept
+{
+    return nbBomb;
+}
+
+int Player::getBombSize() const noexcept
+{
+    return bombSize;
+}
+
+void Player::setSpeed(const int& speed) noexcept
+{
+    this->speed = speed;
+}
+
+void Player::setNbBomb(const int& nbBomb) noexcept
+{
+    this->nbBomb = nbBomb;
+}
+
+void Player::setBombSize(const int& bombSize) noexcept
+{
+    this->bombSize = bombSize;
 }

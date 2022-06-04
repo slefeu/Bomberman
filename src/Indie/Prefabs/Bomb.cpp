@@ -83,7 +83,7 @@ void Bomb::explode() noexcept
     if (is_exploding_) return;
     is_exploding_ = true;
     hitbox->get().setIsSolid(false);
-    player->nbBomb++;
+    if (player->getNbBombMax() > player->getNbBomb()) player->setNbBomb(player->getNbBomb() + 1);
     fires.emplace_back(NEW_FIRE(getComponent<Transform3D>()->get().getPosition()));
     createFire({ 1.0f, 0.0f, 0.0f });
     createFire({ -1.0f, 0.0f, 0.0f });

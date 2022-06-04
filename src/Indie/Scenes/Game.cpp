@@ -10,6 +10,7 @@
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
+#include "Round.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
 
@@ -60,7 +61,19 @@ void Game::display2D() noexcept
 
     if (isHurry) { DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED); }
 
-    for (size_t i = 0; i != data->players.size(); i++) { data->sprites[i]->draw(); }
+    for (size_t i = 0; i != data->players.size(); i++) {
+        data->sprites[i]->draw();
+        auto player = (&(std::unique_ptr<Player>&)(data->players[i]))->get();
+
+        std::string speed   = std::to_string(player->speed);
+        speed               = speed.substr(0, speed.find(".") + 2);
+        std::string stats   = std::to_string(player->nbBomb) + ", " + std::to_string(player->bombSize) + ", " + speed;
+        int         size    = stats.size() / 1.4 * 20;
+        int         xPos[4] = { 55, GetScreenWidth() - size, GetScreenWidth() - size, 55 };
+        int         yPos[4] = { 28, GetScreenHeight() - 30, 28, GetScreenHeight() - 30 };
+
+        DrawText(stats.c_str(), xPos[i], yPos[i], 20, WHITE);
+    }
 }
 
 void Game::action(Cameraman& camera) noexcept

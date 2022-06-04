@@ -12,6 +12,7 @@
 #include "Bomb.hpp"
 #include "Collision.hpp"
 #include "Error.hpp"
+#include "Item.hpp"
 
 Player::Player(const int newId, GameData* data)
     : Entities(EntityType::E_PLAYER)

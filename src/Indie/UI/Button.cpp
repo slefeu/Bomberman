@@ -19,14 +19,14 @@ Button::Button(const std::string& texture_path,
     const std::string&            message,
     int                           textPosX,
     int                           textPosY) noexcept
-    : frames_(frames)
+    : fx_clicked_(ON_CLICK)
+    , fx_hover_(ON_HOVER)
+    , frames_(frames)
     , task_(function)
     , scale_(scale)
     , text_(font_path, message, textPosX, textPosY)
 {
-    fx_clicked_ = LoadSound(ON_CLICK);
-    fx_hover_   = LoadSound(ON_HOVER);
-    texture_    = LoadTexture(texture_path.c_str());
+    texture_ = LoadTexture(texture_path.c_str());
 
     float frameHeight = static_cast<float>(texture_.height) / frames_;
     rectangle_        = {
@@ -34,25 +34,10 @@ Button::Button(const std::string& texture_path,
     };
 }
 
-Texture2D Button::getTexture() const noexcept
-{
-    return (texture_);
-}
-
-Sound Button::getHoverSound() const noexcept
-{
-    return (fx_hover_);
-}
-
-Sound Button::getClickedSound() const noexcept
-{
-    return (fx_clicked_);
-}
-
 void Button::unload() noexcept
 {
-    UnloadSound(fx_clicked_);
-    UnloadSound(fx_hover_);
+    fx_clicked_.unload();
+    fx_hover_.unload();
     UnloadTexture(texture_);
     text_.unload();
 }
@@ -71,7 +56,7 @@ bool Button::checkCollision(const Vector2& mouse_pos) noexcept
         if (state_ == 0) {
             state_ = 1;
             color_ = PINK;
-            PlaySound(fx_hover_);
+            fx_hover_.play();
         }
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) { is_action_ = true; }
     } else {
@@ -80,16 +65,11 @@ bool Button::checkCollision(const Vector2& mouse_pos) noexcept
     }
     if (is_action_) {
         color_ = WHITE;
-        PlaySound(fx_clicked_);
+        fx_clicked_.play();
         is_action_ = false;
         return (true);
     }
     return (false);
-}
-
-void Button::setButtonAction(bool value) noexcept
-{
-    is_action_ = value;
 }
 
 void Button::action() const noexcept

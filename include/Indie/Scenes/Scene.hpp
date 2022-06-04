@@ -34,6 +34,5 @@ class Scene
     virtual Vector3 getCameraTarget() const noexcept                      = 0;
     virtual Vector3 getCameraUp() const noexcept                          = 0;
     virtual Color   getBackgroundColor() const noexcept                   = 0;
-    virtual void    setButtons() noexcept                                 = 0;
     virtual void    drawBackground() const noexcept                       = 0;
 };

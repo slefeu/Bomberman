@@ -37,7 +37,6 @@ class Home : public Scene
     Vector3 getCameraTarget() const noexcept final;
     Vector3 getCameraUp() const noexcept final;
     Color   getBackgroundColor() const noexcept final;
-    void    setButtons() noexcept final;
     void    drawBackground() const noexcept final;
 
   private:

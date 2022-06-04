@@ -16,3 +16,8 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
     , timeParty(120.0f)
 {
 }
+
+void GameData::setEntities(std::vector<std::unique_ptr<Entities>>* entities)
+{
+    _entities = entities;
+}

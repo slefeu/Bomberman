@@ -18,6 +18,7 @@ class GameData
     GameData(GameData&& other) noexcept               = delete;
     GameData& operator=(const GameData& rhs) noexcept = delete;
     GameData& operator=(GameData&& rhs) noexcept      = delete;
+    void      setEntities(std::vector<std::unique_ptr<Entities>>* entities);
 
   public:
     int   fps;
@@ -28,6 +29,7 @@ class GameData
     float timeParty;
 
   public:
-    std::vector<std::unique_ptr<Model3D>>  models;
-    std::vector<std::unique_ptr<Entities>> players;
+    std::vector<std::unique_ptr<Model3D>>   models;
+    std::vector<std::unique_ptr<Entities>>  players;
+    std::vector<std::unique_ptr<Entities>>* _entities;
 };

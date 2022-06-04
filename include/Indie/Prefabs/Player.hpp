@@ -16,6 +16,8 @@
 
 #define NEW_PLAYER(id, data) std::make_unique<Player>(id, data)
 
+enum class ItemType;
+
 class Player : public Entities
 {
   public:
@@ -31,6 +33,8 @@ class Player : public Entities
     void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
     void setBombArray(std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
     void setWallPass(const bool& pass);
+    void dispatchItem(void) noexcept;
+    void addItem(ItemType item);
 
   public:
     int   nbBomb;
@@ -42,6 +46,7 @@ class Player : public Entities
     void        setPosition(void);
     void        placeBomb(void);
     bool        isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
+    bool        entitiesHere(const Vector3& pos) noexcept;
     KeyboardKey moveUp;
     KeyboardKey moveDown;
     KeyboardKey moveLeft;
@@ -50,6 +55,7 @@ class Player : public Entities
     int         id;
     GameData*   data;
     std::vector<std::unique_ptr<Entities>>* bombs;
+    std::vector<ItemType>                   items;
     bool                                    wallpass;
     std::unique_ptr<Timer>                  wallpassTimer;
     bool                                    wallpassEnd;

@@ -49,7 +49,6 @@ void Wall::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
     auto transform = getComponent<Transform3D>();
 
-    if (other->getEntityType() == EntityType::E_WALL
-        && transform->get().getPosition().y > 0)
+    if (other->getEntityType() == EntityType::E_WALL && transform->get().getPosition().y > 0)
         other->setEnabledValue(false);
 }

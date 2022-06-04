@@ -224,3 +224,36 @@ void Player::setWallPass(const bool& pass)
 
     wallpass = pass;
 }
+
+void Player::addItem(ItemType itemType)
+{
+    items.emplace_back(itemType);
+}
+
+void Player::dispatchItem(void) noexcept
+{
+    Vector3 pos;
+    int     x;
+    int     z;
+
+    std::cout << "dispatch item" << std::endl;
+    for (auto& item : items) {
+        do {
+            x   = rand() % 12 - 6;
+            z   = rand() % 12 - 6;
+            pos = { x * 1.0f, 0.01f, z * 1.0f };
+        } while (!entitiesHere(pos));
+        std::cout << "Item from Player drop at x:" << pos.x << " z:" << pos.z << std::endl;
+        data->_entities->emplace_back(std::make_unique<Item>(pos, data, item));
+    }
+    items.clear();
+}
+
+bool Player::entitiesHere(const Vector3& pos) noexcept
+{
+    for (auto& entity : *data->_entities) {
+        auto transform = entity->getComponent<Transform3D>();
+        if (pos.x == transform->get().getPositionX() && pos.z == transform->get().getPositionZ()) return true;
+    }
+    return false;
+}

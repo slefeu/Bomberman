@@ -32,6 +32,8 @@ Game::Game(GameData* data) noexcept
         ((std::unique_ptr<Player>&)player)->setBombArray(&_entities);
     }
 
+    // Add entites to data
+    data->setEntities(&_entities);
     createMap();
 }
 

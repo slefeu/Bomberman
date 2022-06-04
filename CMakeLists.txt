@@ -51,9 +51,12 @@ set(
   src/Indie/Scenes/Home.cpp
 
   src/Indie/UI/Button.cpp
-  src/Indie/UI/Mouse.cpp
-  src/Indie/UI/Font.cpp
-  src/Indie/UI/Text.cpp
+
+  src/Engine/Lib/Mouse.cpp
+  src/Engine/Lib/Font.cpp
+  src/Engine/Lib/Text.cpp
+  src/Engine/Lib/Music.cpp
+  src/Engine/Lib/Sound.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
@@ -64,6 +67,7 @@ target_link_libraries(${PROJECT_NAME} raylib)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Components)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Lib)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Prefabs)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/UI)

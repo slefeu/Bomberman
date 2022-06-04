@@ -16,14 +16,14 @@ Core::Core(GameData* newData) noexcept
     createWindow();
 
     // Chargement des models 3D
-    data->models.emplace_back(NEW_MODEL("assets/models/bomb.glb", "assets/textures/bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.glb", "assets/textures/wall.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.glb", "assets/textures/box.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_roller.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_fire.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/item.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/fire.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/bomb.glb", "assets/textures/entities/bomb.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/box.glb", "assets/textures/entities/wall.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/box.glb", "assets/textures/entities/box.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/items/i_roller.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/items/i_bomb.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/items/i_fire.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/items/item.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/entities/fire.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/white.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/black.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/blue.png"));

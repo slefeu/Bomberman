@@ -4,6 +4,7 @@
 ** File description:
 ** GameData
 */
+
 #pragma once
 
 #include "Entity.hpp"

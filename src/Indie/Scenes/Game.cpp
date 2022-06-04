@@ -20,6 +20,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , chrono_(NEW_TIMER(data_->timeParty))
     , isHurry(false)
     , nbBlockPlaced(0)
+    , loop_music_(GAME_MUSIC)
     , core_entry_(core_ref)
 {
     // Assignation des bombes aux joueurs
@@ -28,22 +29,21 @@ Game::Game(GameData* data, Core& core_ref) noexcept
         ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
     }
     createMap();
-    loop_music_ = LoadMusicStream(GAME_MUSIC);
 }
 
 Game::~Game() noexcept
 {
-    UnloadMusicStream(loop_music_);
-}
-
-Music Game::getLoopMusic() const noexcept
-{
-    return (loop_music_);
+    loop_music_.unload();
 }
 
 void Game::playMusic() const noexcept
 {
-    PlayMusicStream(loop_music_);
+    loop_music_.play();
+}
+
+MusicManager Game::getMusicManager() const noexcept
+{
+    return (loop_music_);
 }
 
 void Game::resetCamera(Cameraman& camera) noexcept

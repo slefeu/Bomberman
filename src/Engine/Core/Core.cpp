@@ -19,7 +19,6 @@ Core::Core(GameData* newData) noexcept
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
     SetTargetFPS(data->fps);
-    InitAudioDevice();
 
     // Chargement des models 3D
     data->models.emplace_back(
@@ -71,7 +70,7 @@ void Core::run() noexcept
         // Update -------------------------------------------------------------
         checkExit();
         if (camera.isMoving) camera.isMoving = camera.smoothMove();
-        UpdateLoopingMusic();
+        audio_.update(findScene());
         data->updateMouse();
         findScene().action(camera, data->getMousePosition());
 
@@ -85,19 +84,8 @@ void Core::run() noexcept
         findScene().display2D();
         EndDrawing();
     }
-    closeElements();
 }
 
-void Core::closeElements() noexcept
-{
-    CloseAudioDevice();
-    CloseWindow();
-}
-
-void Core::UpdateLoopingMusic() noexcept
-{
-    UpdateMusicStream(findScene().getLoopMusic());
-}
 void Core::checkExit() noexcept
 {
     if (WindowShouldClose()) exit_ = true;

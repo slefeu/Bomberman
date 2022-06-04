@@ -11,10 +11,10 @@
 
 Home::Home(GameData* data, Core& core_ref) noexcept
     : Scene()
+    , loop_music_(MENU_MUSIC)
     , core_entry_(core_ref)
     , data_(data)
 {
-    loop_music_ = LoadMusicStream(MENU_MUSIC);
     createButtons();
 
     // background attributes
@@ -28,7 +28,7 @@ Home::Home(GameData* data, Core& core_ref) noexcept
 
 Home::~Home() noexcept
 {
-    UnloadMusicStream(loop_music_);
+    loop_music_.unload();
     unloadTextures();
     unloadButtons();
 }
@@ -97,14 +97,14 @@ void Home::DestroyPool() noexcept {}
 
 void Home::CollisionPool() noexcept {}
 
-Music Home::getLoopMusic() const noexcept
-{
-    return (loop_music_);
-}
-
 void Home::playMusic() const noexcept
 {
-    PlayMusicStream(loop_music_);
+    loop_music_.play();
+}
+
+MusicManager Home::getMusicManager() const noexcept
+{
+    return (loop_music_);
 }
 
 Vector3 Home::getCameraPosition() const noexcept

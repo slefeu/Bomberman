@@ -57,6 +57,7 @@ set(
   src/Engine/Lib/Text.cpp
   src/Engine/Lib/Music.cpp
   src/Engine/Lib/Sound.cpp
+  src/Engine/Lib/AudioDevice.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
@@ -64,11 +65,11 @@ add_executable(${PROJECT_NAME} ${INDIE_SRC})
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Ajouter ici les dossiers contenants les .hpp
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Components)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Lib)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Prefabs)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/UI)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie)

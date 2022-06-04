@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 
+#include "AudioDevice.hpp"
 #include "Cameraman.hpp"
 #include "GameData.hpp"
 #include "Player.hpp"
@@ -32,12 +33,11 @@ class Core
   protected:
   private:
     // methods
-    void   closeElements() noexcept;
     void   checkExit() noexcept;
-    void   UpdateLoopingMusic() noexcept;
     Scene& findScene() noexcept;
 
     // attributes
+    AudioDevice                         audio_;
     Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes;
     GameData*                           data;

@@ -16,7 +16,7 @@
 Fire::Fire(Vector3 posi, std::unique_ptr<Model3D>* model)
     : Entity(EntityType::E_FIRE)
     , explodeTime(0.5f)
-    , explodeTimer(NEW_TIMER(explodeTime))
+    , explodeTimer(std::make_unique<Timer>(explodeTime))
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();

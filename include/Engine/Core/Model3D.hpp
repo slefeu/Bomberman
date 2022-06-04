@@ -11,7 +11,21 @@
 
 #include "raylib.h"
 
-#define NEW_MODEL(obj, texture) std::make_unique<Model3D>(obj, texture)
+enum class ModelType {
+    M_BOMB,
+    M_WALL,
+    M_CRATE,
+    M_IROLLER,
+    M_IBOMB,
+    M_IFIRE,
+    M_IWALL,
+    M_FIRE,
+    M_PLAYER_1,
+    M_PLAYER_2,
+    M_PLAYER_3,
+    M_PLAYER_4,
+    M_NONE
+};
 
 class Model3D
 {
@@ -22,6 +36,7 @@ class Model3D
     int             animFrameCounter = 0;
     unsigned int    animsCount       = 0;
     bool            isAnimated       = true;
+    int             skipFrame        = 1;
 
   public:
     Model3D(std::string path, std::string texturePath) noexcept;
@@ -34,4 +49,5 @@ class Model3D
     void addAnimation(std::string path) noexcept;
     void updateAnimation() noexcept;
     void resetAnimation(int frame) noexcept;
+    void setSkipFrame(int frame) noexcept;
 };

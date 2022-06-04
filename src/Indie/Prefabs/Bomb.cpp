@@ -17,7 +17,7 @@ Bomb::Bomb(Vector3                        pos,
     std::vector<std::unique_ptr<Entity>>* entities)
     : Entity(EntityType::E_BOMB)
     , lifeTime(3.0f)
-    , lifeTimer(NEW_TIMER(lifeTime))
+    , lifeTimer(std::make_unique<Timer>(lifeTime))
     , player(p)
     , size(bombSize)
     , hasHitbox(false)

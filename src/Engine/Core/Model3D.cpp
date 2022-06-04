@@ -34,7 +34,7 @@ void Model3D::updateAnimation() noexcept
 {
     if (anims == nullptr) return;
     if (isAnimated) {
-        animFrameCounter += 1.0f;
+        animFrameCounter += 1.0f * skipFrame;
         UpdateModelAnimation(model, anims[0], animFrameCounter);
         if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
     }
@@ -45,4 +45,9 @@ void Model3D::resetAnimation(int frame) noexcept
     if (anims == nullptr) return;
     animFrameCounter = frame;
     UpdateModelAnimation(model, anims[0], animFrameCounter);
+}
+
+void Model3D::setSkipFrame(int frame) noexcept
+{
+    skipFrame = frame;
 }

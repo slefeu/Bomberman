@@ -41,7 +41,7 @@ class Player : public Entity
     float getSpeed() const noexcept;
     int   getNbBomb() const noexcept;
     int   getBombSize() const noexcept;
-    void  setSpeed(const int& speed) noexcept;
+    void  setSpeed(const float& speed) noexcept;
     void  setNbBomb(const int& nbBomb) noexcept;
     void  setBombSize(const int& bombSize) noexcept;
 

@@ -11,14 +11,13 @@
 #include "Item.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
-#include "Shortcuts.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
 
 Game::Game(GameData* data, Core& core_ref) noexcept
     : Scene()
     , data_(data)
-    , chrono_(NEW_TIMER(data_->timeParty))
+    , chrono_(std::make_unique<Timer>(data_->timeParty))
     , isHurry(false)
     , nbBlockPlaced(0)
     , loop_music_(GAME_MUSIC)
@@ -103,7 +102,7 @@ void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
     for (auto& player : data_->players) player->Update();
     for (auto& entity : entities_) entity->Update();
 
-    if (!camera.getIsMoving()) camera.lookBetweenEntity(PLAYERS);
+    if (!camera.getIsMoving()) camera.lookBetweenEntity(data_->players);
 
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data_->nbPlayer < 4) {

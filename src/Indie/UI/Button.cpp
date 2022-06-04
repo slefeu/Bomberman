@@ -7,8 +7,6 @@
 
 #include "Button.hpp"
 
-#include "Shortcuts.hpp"
-
 Button::Button(const std::string& texture_path,
     unsigned int                  frames,
     float                         pos_x,

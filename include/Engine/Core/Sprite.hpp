@@ -11,9 +11,7 @@
 
 #include "raylib.h"
 
-#define NEW_SPRITE(path) std::make_unique<Sprite>(path)
-#define NEW_SPRITE_POS(path, x, y) std::make_unique<Sprite>(path, x, y)
-#define NEW_SPRITE_SCALE(path, x, y, scale) std::make_unique<Sprite>(path, x, y, scale)
+enum class SpriteType { S_WHITE, S_RED, S_BLUE, S_BLACK, S_NONE };
 
 class Sprite
 {

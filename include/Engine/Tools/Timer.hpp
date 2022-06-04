@@ -9,8 +9,6 @@
 
 #include "raylib.h"
 
-#define NEW_TIMER(time) std::make_unique<Timer>(time)
-
 class Timer
 {
   private:

@@ -15,7 +15,7 @@ Player::Player(const int newId, GameData* data)
     , id(newId)
     , data(data)
     , wallpass(false)
-    , wallpassTimer(NEW_TIMER(5.0f))
+    , wallpassTimer(std::make_unique<Timer>(5.0f))
     , wallpassEnd(false)
 {
     auto transform = getComponent<Transform3D>();
@@ -261,6 +261,7 @@ void Player::setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noex
 
 void Player::setWallPass(const bool& pass) noexcept
 {
+    this->wallpassTimer->resetTimer();
     wallpass = pass;
 }
 
@@ -334,7 +335,7 @@ int Player::getBombSize() const noexcept
     return bombSize;
 }
 
-void Player::setSpeed(const int& speed) noexcept
+void Player::setSpeed(const float& speed) noexcept
 {
     this->speed = speed;
 }

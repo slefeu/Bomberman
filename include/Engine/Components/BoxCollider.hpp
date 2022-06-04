@@ -10,7 +10,6 @@
 #include <memory>
 
 #include "Component.hpp"
-#include "Shortcuts.hpp"
 #include "raylib.h"
 
 class BoxCollider : public Component

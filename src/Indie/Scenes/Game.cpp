@@ -69,7 +69,7 @@ void Game::display3D() noexcept
 
 void Game::display2D() noexcept
 {
-    DrawFPS(50, 50);
+    FpsHandler::draw(50, 50);
 
     if (!chrono_->timerDone()) {
         auto time = std::to_string(int(round(chrono_->getTime())));

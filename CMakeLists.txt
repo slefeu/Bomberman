@@ -61,6 +61,7 @@ set(
   src/Engine/Lib/Sprite.cpp
   src/Engine/Lib/Color.cpp
   src/Engine/Lib/Window.cpp
+  src/Engine/Lib/Fps.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

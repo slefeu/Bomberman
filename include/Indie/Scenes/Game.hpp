@@ -17,6 +17,7 @@
 #include "Model3D.hpp"
 #include "Scene.hpp"
 #include "Timer.hpp"
+#include "Fps.hpp"
 
 enum class Direction { UP, RIGHT, DOWN, LEFT };
 

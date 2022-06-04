@@ -73,7 +73,7 @@ void Home::display3D() noexcept {}
 
 void Home::display2D() noexcept
 {
-    DrawFPS(10, 10);
+    FpsHandler::draw(10, 10);
     drawButtons();
 }
 

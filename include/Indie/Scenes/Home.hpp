@@ -12,6 +12,7 @@
 #include "Button.hpp"
 #include "Core.hpp"
 #include "Scene.hpp"
+#include "Fps.hpp"
 
 class Home : public Scene
 {

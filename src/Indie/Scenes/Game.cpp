@@ -7,11 +7,10 @@
 
 #include "Game.hpp"
 
-#include <iostream>
-
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
+#include "Round.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
 
@@ -21,7 +20,7 @@ Game::Game(GameData* data) noexcept
     , isHurry(false)
     , nbBlockPlaced(0)
 {
-    cameraPosition  = { 0.0f, 11.0f, 1.0f };
+    cameraPosition  = { 0.0f, 13.0f, 1.0f };
     cameraTarget    = { 0.0f, 0.0f, 1.0f };
     cameraUp        = { 0.0f, 2.0f, 0.0f };
     backgroundColor = BLACK;
@@ -35,7 +34,7 @@ Game::Game(GameData* data) noexcept
     createMap();
 }
 
-void Game::resetCamera(Cameraman& camera) noexcept
+void Game::resetCameraman(Cameraman& camera) noexcept
 {
     camera.moveTo(cameraPosition, cameraTarget, cameraUp);
 }
@@ -45,14 +44,8 @@ void Game::display3D() noexcept
     DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
-                    { 1.0f, 1.0f },
-                    { 0, 181, 48, 255 });
-            if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f },
-                    { 1.0f, 1.0f },
-                    { 0, 181, 48, 255 });
+            if (z % 2 == 0 && x % 2 == 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0) DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
     for (auto& player : PLAYERS) player->Display();
@@ -61,17 +54,28 @@ void Game::display3D() noexcept
 
 void Game::display2D() noexcept
 {
-    DrawFPS(10, 10);
-    DrawText("Game", 10, 30, 20, GREEN);
-    if (_chrono->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
-    else
-        DrawText(std::to_string(int(round(_chrono->getTime()))).data(),
-            10,
-            50,
-            20,
-            BLUE);
+    DrawFPS(50, 50);
 
-    if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
+    if (!_chrono->timerDone()) {
+        auto time = std::to_string(int(round(_chrono->getTime())));
+        DrawText(time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
+    }
+
+    if (isHurry) { DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED); }
+
+    for (size_t i = 0; i != data->players.size(); i++) {
+        data->sprites[i]->draw();
+        auto player = (&(std::unique_ptr<Player>&)(data->players[i]))->get();
+
+        std::string speed   = std::to_string(player->speed);
+        speed               = speed.substr(0, speed.find(".") + 2);
+        std::string stats   = std::to_string(player->nbBomb) + ", " + std::to_string(player->bombSize) + ", " + speed;
+        int         size    = stats.size() / 1.4 * 20;
+        int         xPos[4] = { 55, GetScreenWidth() - size, GetScreenWidth() - size, 55 };
+        int         yPos[4] = { 28, GetScreenHeight() - 30, 28, GetScreenHeight() - 30 };
+
+        DrawText(stats.c_str(), xPos[i], yPos[i], 20, WHITE);
+    }
 }
 
 void Game::action(Cameraman& camera) noexcept
@@ -83,7 +87,7 @@ void Game::action(Cameraman& camera) noexcept
     for (auto& player : PLAYERS) player->Update();
     for (auto& entity : _entities) entity->Update();
 
-    if (!camera.isMoving) camera.lookBetweenEntities(PLAYERS);
+    if (!camera.getIsMoving()) camera.lookBetweenEntities(PLAYERS);
 
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data->nbPlayer < 4) {
@@ -101,8 +105,13 @@ void Game::action(Cameraman& camera) noexcept
     if (int(round(_chrono->getTime())) <= 55 && !isHurry) {
         isHurry            = true;
         lastTimeBlockPlace = _chrono->getTime();
+        HurryUpX           = GetScreenWidth() - 100;
     }
     hurryUp();
+
+    int xPos[4] = { 10, GetScreenWidth() - 50, GetScreenWidth() - 50, 10 };
+    int yPos[4] = { 10, GetScreenHeight() - 50, 10, GetScreenHeight() - 50 };
+    for (size_t i = 0; i != data->players.size(); i++) data->sprites[i]->setPos(xPos[i], yPos[i]);
 }
 
 void Game::DestroyPool() noexcept
@@ -125,8 +134,7 @@ void Game::CollisionPool() noexcept
         for (auto& entity : _entities) {
             auto hitbox       = player->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
-                continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 player->OnCollisionEnter(entity);
                 entity->OnCollisionEnter(player);
@@ -137,11 +145,8 @@ void Game::CollisionPool() noexcept
         for (auto& entity : _entities) {
             auto hitbox       = entity1->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt)
-                continue;
-            if (!hitbox->get().getIsSolid()
-                || !other_hitbox->get().getIsSolid())
-                continue;
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
+            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (entity1 == entity) continue;
             if (hitbox->get().isColliding(other_hitbox->get())) {
                 entity1->OnCollisionEnter(entity);
@@ -161,7 +166,6 @@ void Game::createMap(void) noexcept
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 _entities.emplace_back(NEW_WALL(vectorTemp));
-                std::cout << _entities.size() << std::endl;
             }
 
     // Ajout des murs une case sur deux
@@ -175,12 +179,9 @@ void Game::createMap(void) noexcept
     // Génération des boites
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
-            if ((x == -6 && z == -4) || (x == 6 && z == -4)
-                || (x == -6 && z == 6) || (x == 6 && z == 6)
-                || (x == -6 && z == -3) || (x == 6 && z == -3)
-                || (x == -6 && z == 5) || (x == 6 && z == 5)
-                || (x == -5 && z == -4) || (x == 5 && z == -4)
-                || (x == -5 && z == 6) || (x == 5 && z == 6))
+            if ((x == -6 && z == -4) || (x == 6 && z == -4) || (x == -6 && z == 6) || (x == 6 && z == 6)
+                || (x == -6 && z == -3) || (x == 6 && z == -3) || (x == -6 && z == 5) || (x == 6 && z == 5)
+                || (x == -5 && z == -4) || (x == 5 && z == -4) || (x == -5 && z == 6) || (x == 5 && z == 6))
                 continue;
 
             Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
@@ -197,8 +198,7 @@ void Game::createMap(void) noexcept
                 }
             }
 
-            if (rand() % 100 < 80 && spawnCrate)
-                _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
+            if (rand() % 100 < 80 && spawnCrate) _entities.emplace_back(NEW_CRATE(vectorTemp, data, &_entities));
         }
 }
 
@@ -248,6 +248,8 @@ void Game::hurryUp(void) noexcept
         lastTimeBlockPlace = _chrono->getTime();
         nbBlockPlaced++;
     }
+
+    HurryUpX -= 500.0f * GetFrameTime();
 
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }

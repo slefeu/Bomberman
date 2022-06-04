@@ -7,8 +7,6 @@
 
 #include "Item.hpp"
 
-#include <iostream>
-
 #include "Error.hpp"
 #include "Player.hpp"
 #include "Render.hpp"
@@ -29,12 +27,10 @@ Item::Item(Vector3 pos, GameData* data)
     transform->get().setRotationAngle(90.0f);
     renderer->get().setRenderType(RenderType::R_3DMODEL_ROTATE);
 
-    Vector3 scale = { 1.0f, 1.0f, 0.5f };
-    addComponent(BoxCollider(transform->get().getPosition(), scale, true));
+    addComponent(BoxCollider(transform->get().getPosition(), { 1.0f, 1.0f, 0.5f }, true));
     auto hitbox = getComponent<BoxCollider>();
 
-    if (!hitbox.has_value())
-        throw(Error("Error, could not instanciate the item element.\n"));
+    if (!hitbox.has_value()) throw(Error("Error, could not instanciate the item element.\n"));
     hitbox->get().setIsSolid(false);
     transform->get().addZ((transform->get().getScale() / 2) * -1);
     transform->get().addY((transform->get().getScale() / 2));
@@ -45,15 +41,9 @@ Item::Item(Vector3 pos, GameData* data)
 
     itemType = (ItemType)(static_cast<int>(rand() % 4));
     switch (itemType) {
-        case ItemType::I_SPEEDUP:
-            renderer->get().setModel(MODELS(M_IROLLER));
-            break;
-        case ItemType::I_BOMBUP:
-            renderer->get().setModel(MODELS(M_IBOMB));
-            break;
-        case ItemType::I_FIREUP:
-            renderer->get().setModel(MODELS(M_IFIRE));
-            break;
+        case ItemType::I_SPEEDUP: renderer->get().setModel(MODELS(M_IROLLER)); break;
+        case ItemType::I_BOMBUP: renderer->get().setModel(MODELS(M_IBOMB)); break;
+        case ItemType::I_FIREUP: renderer->get().setModel(MODELS(M_IFIRE)); break;
         case ItemType::I_WALL: renderer->get().setModel(MODELS(M_IWALL)); break;
         default: break;
     }
@@ -63,12 +53,9 @@ void Item::Display()
 {
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
-    auto hitbox    = getComponent<BoxCollider>();
 
-    if (!renderer.has_value() || !transform.has_value() || !hitbox.has_value())
-        throw(Error("Error in displaying an item element.\n"));
+    if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying an item element.\n"));
     renderer->get().display(transform->get());
-    hitbox->get().display();
 }
 
 void Item::Update() {}

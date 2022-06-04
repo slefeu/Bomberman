@@ -21,7 +21,7 @@ enum class playerType { NORMAL, ATTACK, TACTICAL, RUNNER };
 class Player : public Entities
 {
   public:
-    Player(int newId, GameData* data);
+    Player(const int newId, GameData* data);
     ~Player() noexcept                            = default;
     Player(const Player& other) noexcept          = delete;
     Player(Player&& other) noexcept               = delete;
@@ -31,7 +31,6 @@ class Player : public Entities
     void Display() final;
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
-  
     void setStats(int bomb, int sp, int size) noexcept;
     void setBombArray(
         std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
@@ -50,18 +49,17 @@ class Player : public Entities
     int   bombSize;
 
   private:
-    void setKeyboard(void) noexcept;
-    void setPosition(void);
-    void placeBomb(void);
-    bool isCollidingNextTurn(
-        std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
-    KeyboardKey                             moveUp;
-    KeyboardKey                             moveDown;
-    KeyboardKey                             moveLeft;
-    KeyboardKey                             moveRight;
-    KeyboardKey                             dropBomb;
-    int                                     id;
-    GameData*                               data;
+    void        setKeyboard(void) noexcept;
+    void        setPosition(void);
+    void        placeBomb(void);
+    bool        isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
+    KeyboardKey moveUp;
+    KeyboardKey moveDown;
+    KeyboardKey moveLeft;
+    KeyboardKey moveRight;
+    KeyboardKey dropBomb;
+    int         id;
+    GameData*   data;
     std::vector<std::unique_ptr<Entities>>* bombs;
     bool                                    wallpass;
     std::unique_ptr<Timer>                  wallpassTimer;
@@ -70,4 +68,25 @@ class Player : public Entities
     float                                   speedMax;
     int                                     bombSizeMax;
     playerType                              type;
+    int                                     colorIndex = 0;
+    std::vector<Color>                      colors     = { LIGHTGRAY,
+                                 GRAY,
+                                 YELLOW,
+                                 GOLD,
+                                 ORANGE,
+                                 PINK,
+                                 RED,
+                                 MAROON,
+                                 GREEN,
+                                 LIME,
+                                 DARKGREEN,
+                                 SKYBLUE,
+                                 BLUE,
+                                 DARKBLUE,
+                                 PURPLE,
+                                 VIOLET,
+                                 DARKPURPLE,
+                                 BEIGE,
+                                 BROWN,
+                                 DARKBROWN };
 };

@@ -16,8 +16,12 @@
 class Model3D
 {
   public:
-    Model     model;
-    Texture2D texture;
+    Model           model;
+    Texture2D       texture;
+    ModelAnimation* anims            = nullptr;
+    int             animFrameCounter = 0;
+    unsigned int    animsCount       = 0;
+    bool            isAnimated       = true;
 
   public:
     Model3D(std::string path, std::string texturePath) noexcept;
@@ -26,4 +30,8 @@ class Model3D
     Model3D(Model3D&& other) noexcept               = delete;
     Model3D& operator=(const Model3D& rhs) noexcept = delete;
     Model3D& operator=(Model3D&& rhs) noexcept      = delete;
+
+    void addAnimation(std::string path) noexcept;
+    void updateAnimation() noexcept;
+    void resetAnimation(int frame) noexcept;
 };

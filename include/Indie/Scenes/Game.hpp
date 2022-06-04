@@ -38,6 +38,7 @@ class Game : public Scene
     int       minX      = -5;
     int       minZ      = -4;
     Direction direction = Direction::UP;
+    float     HurryUpX;
 
   public:
     Game(GameData* data) noexcept;
@@ -47,7 +48,7 @@ class Game : public Scene
     Game& operator=(const Game& rhs) noexcept = delete;
     Game& operator=(Game&& rhs) noexcept      = delete;
 
-    void resetCamera(Cameraman& camera) noexcept;
+    void resetCameraman(Cameraman& camera) noexcept;
     void display3D(void) noexcept;
     void display2D(void) noexcept;
     void action(Cameraman& camera) noexcept;

@@ -10,10 +10,9 @@
 #include <iostream>
 
 #include "Bomb.hpp"
-#include "Collision.hpp"
 #include "Error.hpp"
 
-Player::Player(int newId, GameData* data)
+Player::Player(const int newId, GameData* data)
     : Entities(EntityType::E_PLAYER)
     , nbBomb(1)
     , speed(2.0f)
@@ -30,11 +29,15 @@ Player::Player(int newId, GameData* data)
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
+
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
-    transform->get().setPosition(
-        { 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
-    renderer->get().setRenderType(RenderType::R_CUBE);
-    renderer->get().setColor(MAGENTA);
+    transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
+    transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
+    transform->get().setRotationAngle(90.0f + (90.0f * id));
+    transform->get().setScale(0.65f);
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
+
+    renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
     setKeyboard();
     setPosition();
     setPlayerTypeStatMax(type);
@@ -46,8 +49,7 @@ void Player::Display()
 {
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying the player element.\n"));
+    if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying the player element.\n"));
     if (!getEnabledValue()) return;
     renderer->get().display(transform->get());
 }
@@ -56,7 +58,11 @@ void Player::Update()
 {
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
-    if (!hitbox.has_value() || !transform.has_value())
+    auto renderer  = getComponent<Render>();
+    auto model     = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
+    bool animate   = false;
+
+    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
 
@@ -71,50 +77,69 @@ void Player::Update()
         }
     }
 
+    if (wallpass || wallpassEnd) {
+        renderer->get().setColor(colors[colorIndex]);
+        colorIndex = (colorIndex + 1) % colors.size();
+    }
+
     if (IsGamepadAvailable(id)) {
-        std::cout << "Gamepad " << id << " is available" << std::endl;
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
         float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
 
-        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1))
+        if (axisX != 0 || axisY != 0) animate = true;
+        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
-        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1))
+        }
+        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
-        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0))
+        }
+        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
-        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0))
+        }
+        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
-        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT))
-            placeBomb();
+        }
+        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
     } else {
         // Mouvements au clavier
-        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1))
+        if (IsKeyDown(moveUp) || IsKeyDown(moveDown) || IsKeyDown(moveLeft) || IsKeyDown(moveRight)) animate = true;
+        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
-        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1))
+        }
+        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
-        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0))
+        }
+        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
-        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0))
+        }
+        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
+        }
         if (IsKeyPressed(dropBomb)) placeBomb();
     }
+
+    if (!animate) model->resetAnimation(20);
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
-    if (other->getEntityType() == EntityType::E_FIRE) {
-        std::cout << "Player " << id << " has been killed" << std::endl;
-        setEnabledValue(false);
-    }
+    if (other->getEntityType() == EntityType::E_FIRE) setEnabledValue(false);
 }
 
 void Player::setPosition(void)
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
-        throw(Error("Error in setting player position.\n"));
+    if (!transform.has_value()) throw(Error("Error in setting player position.\n"));
     switch (id) {
         case 0:
             transform->get().setX(-6.0f);
@@ -172,8 +197,7 @@ void Player::setKeyboard(void) noexcept
     }
 }
 
-bool Player::isCollidingNextTurn(
-    std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir)
+bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir)
 {
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
@@ -182,20 +206,16 @@ bool Player::isCollidingNextTurn(
         throw(Error("Error in updating the collision of the player.\n"));
 
     Vector3 position = transform->get().getPosition();
-    Vector3 nextTurn = { position.x + (speed * xdir * GetFrameTime()),
-        position.y,
-        position.z + (speed * zdir * GetFrameTime()) };
+    Vector3 nextTurn = {
+        position.x + (speed * xdir * GetFrameTime()), position.y, position.z + (speed * zdir * GetFrameTime())
+    };
 
     if (!getEnabledValue()) return false;
     for (auto& other : others) {
-        if (hitbox == std::nullopt
-            || other->getComponent<BoxCollider>() == std::nullopt)
-            continue;
+        if (hitbox == std::nullopt || other->getComponent<BoxCollider>() == std::nullopt) continue;
         auto other_hitbox = other->getComponent<BoxCollider>();
         if (other_hitbox.has_value()) {
-            if (!hitbox->get().getIsSolid()
-                || !other_hitbox->get().getIsSolid())
-                continue;
+            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (other_hitbox->get().isColliding(hitbox->get(), nextTurn)) {
                 if (other->getEntityType() == EntityType::E_BOMB) return true;
                 if (other->getEntityType() == EntityType::E_WALL) return true;
@@ -209,7 +229,7 @@ bool Player::isCollidingNextTurn(
     }
     if (wallpassEnd) {
         wallpassEnd = false;
-        renderer->get().setColor(MAGENTA);
+        renderer->get().setColor(WHITE);
     }
     return false;
 }
@@ -217,41 +237,29 @@ bool Player::isCollidingNextTurn(
 void Player::placeBomb()
 {
     auto transform = getComponent<Transform3D>();
-    if (!transform.has_value())
-        throw(Error("Error in updating the placement of bombs.\n"));
+    if (!transform.has_value()) throw(Error("Error in updating the placement of bombs.\n"));
     for (auto& i : *bombs) {
         auto bomb = i->getComponent<Transform3D>();
-        if (bomb.has_value()
-            && bomb->get().getPosition().x
-                   == round(transform->get().getPosition().x)
-            && bomb->get().getPosition().z
-                   == round(transform->get().getPosition().z))
+        if (bomb.has_value() && bomb->get().getPosition().x == round(transform->get().getPosition().x)
+            && bomb->get().getPosition().z == round(transform->get().getPosition().z))
             return;
     }
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),
-        this,
-        MODELS(M_BOMB),
-        bombSize,
-        data,
-        bombs));
+    bombs->emplace_back(
+        std::make_unique<Bomb>(transform->get().getPosition(), this, MODELS(M_BOMB), bombSize, data, bombs));
 }
 
-void Player::setBombArray(
-    std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept
+void Player::setBombArray(std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept
 {
     bombs = bombsArray;
 }
 
-void Player::setWallPass(bool pass)
+void Player::setWallPass(const bool& pass)
 {
     // change te color of the player
     auto renderer = getComponent<Render>();
-    if (!renderer.has_value())
-        throw(Error("Error in setting the wall pass.\n"));
-
-    renderer->get().setColor(BLUE);
+    if (!renderer.has_value()) throw(Error("Error in setting the wall pass.\n"));
 
     wallpass = pass;
 }

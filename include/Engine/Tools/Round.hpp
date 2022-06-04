@@ -9,16 +9,8 @@
 
 #include "raylib.h"
 
-class Round
+namespace Round
 {
-  public:
-    Round() noexcept                            = default;
-    ~Round() noexcept                           = default;
-    Round(const Round& other) noexcept          = delete;
-    Round(Round&& other) noexcept               = delete;
-    Round& operator=(const Round& rhs) noexcept = delete;
-    Round& operator=(Round&& rhs) noexcept      = delete;
-
-    float   myRound(float x, int n = 0) noexcept;
-    Vector3 roundVector(Vector3 x, int n = 0) noexcept;
+float   round(const float& x, const int& n = 0) noexcept;
+Vector3 roundVector(const Vector3& x, const int& n = 0) noexcept;
 };

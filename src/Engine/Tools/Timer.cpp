@@ -18,12 +18,12 @@ void Timer::updateTimer(void) noexcept
     if (lifeTime > 0) lifeTime -= GetFrameTime();
 }
 
-bool Timer::timerDone(void) noexcept
+bool Timer::timerDone(void) const noexcept
 {
     return lifeTime <= 0;
 }
 
-float Timer::getTime(void) noexcept
+float Timer::getTime(void) const noexcept
 {
     return lifeTime;
 }

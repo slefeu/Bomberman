@@ -7,7 +7,6 @@
 
 #include "Home.hpp"
 
-#include "Shortcuts.hpp"
 
 Home::Home(GameData* data, Core& core_ref) noexcept
     : Scene()
@@ -72,7 +71,7 @@ void Home::createButtons() noexcept
         data_->winHeight / 4 + 150 * buttons_.size() + 45);
 }
 
-void Home::resetCamera(Cameraman& camera) noexcept
+void Home::resetCameraman(Cameraman& camera) noexcept
 {
     camera.moveTo(camera_position_, camera_target_, camera_up_);
 }

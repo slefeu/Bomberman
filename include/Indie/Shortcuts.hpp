@@ -26,19 +26,19 @@ enum class ModelType {
     M_IBOMB,
     M_IFIRE,
     M_IWALL,
+    M_FIRE,
+    M_PLAYER_1,
+    M_PLAYER_2,
+    M_PLAYER_3,
+    M_PLAYER_4,
     M_NONE
 };
 
-enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM };
+enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER };
+
+enum class SpriteType { S_WHITE, S_RED, S_BLUE, S_BLACK, S_NONE };
 
 #define MODEL model->get()
-#define NEW_HITBOX(pos, size, isSolid) \
-    std::make_unique<BoxCollider>(pos, size, isSolid);
-#define NEW_WALL(pos)       \
-    std::make_unique<Wall>( \
-        pos, &data_->models[static_cast<int>(ModelType::M_WALL)])
-#define NEW_CRATE(pos, data, Entity)                          \
-    std::make_unique<Crate>((Vector3)pos,                     \
-        &data_->models[static_cast<int>(ModelType::M_CRATE)], \
-        data,                                                 \
-        Entity)
+#define SPRITES(type) &data_->sprites[(int)SpriteType::type]
+#define PLAYERS data_->players
+#define NEW_HITBOX(pos, size, isSolid) std::make_unique<BoxCollider>(pos, size, isSolid);

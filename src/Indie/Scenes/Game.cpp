@@ -10,6 +10,7 @@
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
+#include "Round.hpp"
 #include "Shortcuts.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
@@ -46,7 +47,7 @@ MusicManager Game::getMusicManager() const noexcept
     return (loop_music_);
 }
 
-void Game::resetCamera(Cameraman& camera) noexcept
+void Game::resetCameraman(Cameraman& camera) noexcept
 {
     camera.moveTo(camera_position_, camera_target_, camera_up_);
 }
@@ -72,17 +73,37 @@ void Game::display3D() noexcept
 
 void Game::display2D() noexcept
 {
-    DrawFPS(10, 10);
-    DrawText("Game", 10, 30, 20, GREEN);
-    if (chrono_->timerDone()) DrawText("Party end", 10, 50, 20, BLUE);
-    else
-        DrawText(std::to_string(int(round(chrono_->getTime()))).data(),
-            10,
-            50,
-            20,
-            BLUE);
+    DrawFPS(50, 50);
 
-    if (isHurry) { DrawText("Hurry up !", 10, 70, 20, RED); }
+    if (!chrono_->timerDone()) {
+        auto time = std::to_string(int(round(chrono_->getTime())));
+        DrawText(
+            time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
+    }
+
+    if (isHurry) {
+        DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED);
+    }
+
+    for (size_t i = 0; i != data_->players.size(); i++) {
+        data_->sprites[i]->draw();
+        auto player = (&(std::unique_ptr<Player>&)(data_->players[i]))->get();
+
+        std::string speed = std::to_string(player->getSpeed());
+        speed             = speed.substr(0, speed.find(".") + 2);
+        std::string stats = std::to_string(player->getNbBomb()) + ", "
+                            + std::to_string(player->getBombSize()) + ", "
+                            + speed;
+        int size    = stats.size() / 1.4 * 20;
+        int xPos[4] = {
+            55, GetScreenWidth() - size, GetScreenWidth() - size, 55
+        };
+        int yPos[4] = {
+            28, GetScreenHeight() - 30, 28, GetScreenHeight() - 30
+        };
+
+        DrawText(stats.c_str(), xPos[i], yPos[i], 20, WHITE);
+    }
 }
 
 void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
@@ -94,7 +115,7 @@ void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
     for (auto& player : data_->players) player->Update();
     for (auto& entity : entities_) entity->Update();
 
-    if (!camera.isMoving) camera.lookBetweenEntity(data_->players);
+    if (!camera.getIsMoving()) camera.lookBetweenEntity(PLAYERS);
 
     // Modificatoin de nombre de joueur à l'écran
     if (IsKeyPressed(KEY_C) && data_->nbPlayer < 4) {
@@ -112,8 +133,14 @@ void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
     if (int(round(chrono_->getTime())) <= 55 && !isHurry) {
         isHurry            = true;
         lastTimeBlockPlace = chrono_->getTime();
+        HurryUpX           = GetScreenWidth() - 100;
     }
     hurryUp();
+
+    int xPos[4] = { 10, GetScreenWidth() - 50, GetScreenWidth() - 50, 10 };
+    int yPos[4] = { 10, GetScreenHeight() - 50, 10, GetScreenHeight() - 50 };
+    for (size_t i = 0; i != data_->players.size(); i++)
+        data_->sprites[i]->setPos(xPos[i], yPos[i]);
 }
 
 void Game::DestroyPool() noexcept
@@ -171,7 +198,8 @@ void Game::createMap() noexcept
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                entities_.emplace_back(NEW_WALL(vectorTemp));
+                entities_.emplace_back(std::make_unique<Wall>(
+                    vectorTemp, &data_->models[(int)ModelType::M_WALL]));
             }
 
     // Ajout des murs une case sur deux
@@ -179,7 +207,8 @@ void Game::createMap() noexcept
         for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                entities_.emplace_back(NEW_WALL(vectorTemp));
+                entities_.emplace_back(std::make_unique<Wall>(vectorTemp,
+                    &data_->models[static_cast<int>(ModelType::M_WALL)]));
             }
 
     // Génération des boites
@@ -206,10 +235,9 @@ void Game::createMap() noexcept
                     break;
                 }
             }
-
             if (rand() % 100 < 80 && spawnCrate)
                 entities_.emplace_back(
-                    NEW_CRATE(vectorTemp, data_, &entities_));
+                    std::make_unique<Crate>(vectorTemp, &data_->models[static_cast<int>(ModelType::M_CRATE)], data_, &entities_));
         }
 }
 
@@ -255,10 +283,13 @@ void Game::hurryUp(void) noexcept
         }
 
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
-        entities_.emplace_back(NEW_WALL(vectorTemp));
+        entities_.emplace_back(std::make_unique<Wall>(
+            vectorTemp, &data_->models[static_cast<int>(ModelType::M_WALL)]));
         lastTimeBlockPlace = chrono_->getTime();
         nbBlockPlaced++;
     }
+
+    HurryUpX -= 500.0f * GetFrameTime();
 
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }

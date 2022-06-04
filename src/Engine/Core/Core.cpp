@@ -15,26 +15,70 @@
 Core::Core(GameData* newData) noexcept
     : data(newData)
 {
-    // Create Window
+    createWindow();
+
+    // Chargement des models 3D
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/bomb.glb", "assets/textures/entities/bomb.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/box.glb", "assets/textures/entities/wall.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/box.glb", "assets/textures/entities/box.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/item.glb", "assets/textures/items/i_roller.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/item.glb", "assets/textures/items/i_bomb.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/item.glb", "assets/textures/items/i_fire.png"));
+    data->models.emplace_back(
+        NEW_MODEL("assets/models/item.glb", "assets/textures/items/item.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/fire.glb", "assets/textures/entities/fire.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/player.iqm", "assets/textures/player/white.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/player.iqm", "assets/textures/player/black.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/player.iqm", "assets/textures/player/blue.png"));
+    data->models.emplace_back(NEW_MODEL(
+        "assets/models/player.iqm", "assets/textures/player/red.png"));
+
+    data->models[(int)ModelType::M_PLAYER_1]->addAnimation(
+        "assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_2]->addAnimation(
+        "assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_3]->addAnimation(
+        "assets/models/player.iqm");
+    data->models[(int)ModelType::M_PLAYER_4]->addAnimation(
+        "assets/models/player.iqm");
+
+    // Chargement des sprites
+    data->sprites.emplace_back(
+        NEW_SPRITE_SCALE("assets/icones/white.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(
+        NEW_SPRITE_SCALE("assets/icones/black.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(
+        NEW_SPRITE_SCALE("assets/icones/blue.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(
+        NEW_SPRITE_SCALE("assets/icones/red.png", 0, 0, 0.5f));
+
+    resetData();
+    camera.tpTo(findScene().getCameraPosition(),
+        findScene().getCameraTarget(),
+        findScene().getCameraUp());
+}
+
+void Core::createWindow() noexcept
+{
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
     SetTargetFPS(data->fps);
+}
 
-    // Chargement des models 3D
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
-    data->models.emplace_back(
-        NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
+void Core::resetData() noexcept
+{
+    if (scenes.size() != 0) scenes.clear();
+    if (data->players.size() != 0) data->players.clear();
 
     // Génération des joueurs
     for (int i = 0; i != data->nbPlayer; i++)
@@ -44,11 +88,6 @@ Core::Core(GameData* newData) noexcept
     scenes.emplace_back(std::make_unique<Home>(data, *this));
     scenes.emplace_back(std::make_unique<Game>(data, *this));
     findScene().playMusic();
-
-    // Setting the first camera
-    camera.position = findScene().getCameraPosition();
-    camera.target   = findScene().getCameraTarget();
-    camera.up       = findScene().getCameraUp();
 }
 
 Scene& Core::findScene() noexcept
@@ -60,7 +99,7 @@ Scene& Core::findScene() noexcept
 void Core::switchScene(const SceneType& scene) noexcept
 {
     data->setCurrentScene(scene);
-    findScene().resetCamera(camera);
+    findScene().resetCameraman(camera);
     findScene().playMusic();
 }
 
@@ -69,7 +108,7 @@ void Core::run() noexcept
     while (!exit_) {
         // Update -------------------------------------------------------------
         checkExit();
-        if (camera.isMoving) camera.isMoving = camera.smoothMove();
+        if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         audio_.update(findScene());
         data->updateMouse();
         findScene().action(camera, data->getMousePosition());
@@ -78,7 +117,7 @@ void Core::run() noexcept
         BeginDrawing();
         ClearBackground(findScene().getBackgroundColor());
         findScene().drawBackground();
-        BeginMode3D(camera);
+        BeginMode3D(camera.getCamera());
         findScene().display3D();
         EndMode3D();
         findScene().display2D();

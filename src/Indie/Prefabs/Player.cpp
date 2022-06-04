@@ -8,14 +8,10 @@
 #include "Player.hpp"
 
 #include "Bomb.hpp"
-#include "Collision.hpp"
 #include "Error.hpp"
 
 Player::Player(const int newId, GameData* data)
     : Entity(EntityType::E_PLAYER)
-    , nbBomb(1)
-    , speed(2.0f)
-    , bombSize(3)
     , id(newId)
     , data(data)
     , wallpass(false)
@@ -27,15 +23,20 @@ Player::Player(const int newId, GameData* data)
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
+
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
-    transform->get().setPosition(
-        { 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
-    renderer->get().setRenderType(RenderType::R_CUBE);
-    renderer->get().setColor(MAGENTA);
+    transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
+    transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
+    transform->get().setRotationAngle(90.0f + (90.0f * id));
+    transform->get().setScale(0.65f);
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
+
+    renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
     setKeyboard();
     setPosition();
-    addComponent(BoxCollider(
-        transform->get().getPosition(), transform->get().getSize(), true));
+    setPlayerType(PlayerType::RUNNER);
+    addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
+    addComponent(Controller());
 }
 
 void Player::Display()
@@ -50,9 +51,14 @@ void Player::Display()
 
 void Player::Update()
 {
-    auto hitbox    = getComponent<BoxCollider>();
-    auto transform = getComponent<Transform3D>();
-    if (!hitbox.has_value() || !transform.has_value())
+    auto hitbox     = getComponent<BoxCollider>();
+    auto transform  = getComponent<Transform3D>();
+    auto renderer   = getComponent<Render>();
+    auto controller = getComponent<Controller>();
+    auto model      = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
+    bool animate    = false;
+
+    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value() || !controller.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
 
@@ -67,41 +73,65 @@ void Player::Update()
         }
     }
 
-    if (IsGamepadAvailable(id)) {
-        // Mouvements au joystick
-        float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
-        float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
+    if (wallpass || wallpassEnd) {
+        renderer->get().setColor(colors[colorIndex]);
+        colorIndex = (colorIndex + 1) % colors.size();
+    }
 
-        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1))
+    if (controller->get().isGamepadConnected(id)) {
+        // Mouvements au joystick
+        float axisX = controller->get().getGamepadAxis(id, Axis::G_AXIS_LEFT_X);
+        float axisY = controller->get().getGamepadAxis(id, Axis::G_AXIS_LEFT_Y);
+
+        if (axisX != 0 || axisY != 0) animate = true;
+        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
-        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1))
+        }
+        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
-        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0))
+        }
+        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
-        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0))
+        }
+        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
-        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT))
-            placeBomb();
+        }
+        if (controller->get().isGamepadButtonPressed(id, G_Button::G_B)) placeBomb();
     } else {
         // Mouvements au clavier
-        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1))
+        if (controller->get().isKeyDown(moveUp) || controller->get().isKeyDown(moveDown)
+            || controller->get().isKeyDown(moveLeft) || controller->get().isKeyDown(moveRight))
+            animate = true;
+        if (controller->get().isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
-        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1))
+        }
+        if (controller->get().isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
-        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0))
+        }
+        if (controller->get().isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
-        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0))
+        }
+        if (controller->get().isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
-        if (IsKeyPressed(dropBomb)) placeBomb();
+        }
+        if (controller->get().isKeyPressed(dropBomb)) placeBomb();
     }
+
+    if (!animate) model->resetAnimation(20);
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
-    if (other->getEntityType() == EntityType::E_FIRE) {
-        setEnabledValue(false);
-    }
+    if (other->getEntityType() == EntityType::E_FIRE) setEnabledValue(false);
 }
 
 void Player::setPosition(void)
@@ -135,32 +165,32 @@ void Player::setKeyboard(void) noexcept
 {
     switch (id) {
         case 0:
-            moveUp    = KEY_W;
-            moveDown  = KEY_S;
-            moveLeft  = KEY_A;
-            moveRight = KEY_D;
-            dropBomb  = KEY_Q;
+            moveUp    = Key::K_W;
+            moveDown  = Key::K_S;
+            moveLeft  = Key::K_A;
+            moveRight = Key::K_D;
+            dropBomb  = Key::K_Q;
             break;
         case 1:
-            moveUp    = KEY_KP_8;
-            moveDown  = KEY_KP_5;
-            moveLeft  = KEY_KP_4;
-            moveRight = KEY_KP_6;
-            dropBomb  = KEY_KP_7;
+            moveUp    = Key::K_KP_8;
+            moveDown  = Key::K_KP_5;
+            moveLeft  = Key::K_KP_4;
+            moveRight = Key::K_KP_6;
+            dropBomb  = Key::K_KP_7;
             break;
         case 2:
-            moveUp    = KEY_T;
-            moveDown  = KEY_G;
-            moveLeft  = KEY_F;
-            moveRight = KEY_H;
-            dropBomb  = KEY_R;
+            moveUp    = Key::K_T;
+            moveDown  = Key::K_G;
+            moveLeft  = Key::K_F;
+            moveRight = Key::K_H;
+            dropBomb  = Key::K_R;
             break;
         case 3:
-            moveUp    = KEY_I;
-            moveDown  = KEY_K;
-            moveLeft  = KEY_J;
-            moveRight = KEY_L;
-            dropBomb  = KEY_U;
+            moveUp    = Key::K_I;
+            moveDown  = Key::K_K;
+            moveLeft  = Key::K_J;
+            moveRight = Key::K_L;
+            dropBomb  = Key::K_U;
             break;
         default: break;
     }
@@ -203,7 +233,7 @@ bool Player::isCollidingNextTurn(
     }
     if (wallpassEnd) {
         wallpassEnd = false;
-        renderer->get().setColor(MAGENTA);
+        renderer->get().setColor(WHITE);
     }
     return false;
 }
@@ -238,14 +268,92 @@ void Player::setBombArray(
     bombs = bombsArray;
 }
 
-void Player::setWallPass(const bool& pass)
+void Player::setWallPass(const bool& pass) noexcept
 {
-    // change te color of the player
-    auto renderer = getComponent<Render>();
-    if (!renderer.has_value())
-        throw(Error("Error in setting the wall pass.\n"));
-
-    renderer->get().setColor(BLUE);
-
     wallpass = pass;
+}
+
+void Player::setPlayerType(PlayerType type) noexcept
+{
+    this->type = type;
+    switch (type) {
+        case PlayerType::NORMAL:
+            nbBomb      = 1;
+            speed       = 2.0f;
+            bombSize    = 3;
+            nbBombMax   = 6;
+            speedMax    = 3.5f;
+            bombSizeMax = 6;
+            break;
+        case PlayerType::ATTACK:
+            nbBomb      = 2;
+            speed       = 1.7f;
+            bombSize    = 4;
+            nbBombMax   = 10;
+            speedMax    = 2.5f;
+            bombSizeMax = 10;
+            break;
+        case PlayerType::TACTICAL:
+            nbBomb      = 2;
+            speed       = 2.0f;
+            bombSize    = 2;
+            nbBombMax   = 5;
+            speedMax    = 3.0f;
+            bombSizeMax = 10;
+            break;
+        case PlayerType::RUNNER:
+            nbBomb      = 1;
+            speed       = 2.5f;
+            bombSize    = 2;
+            nbBombMax   = 3;
+            speedMax    = 5.0f;
+            bombSizeMax = 5;
+            break;
+        default: break;
+    }
+}
+
+int Player::getNbBombMax(void) const noexcept
+{
+    return nbBombMax;
+}
+
+float Player::getSpeedMax(void) const noexcept
+{
+    return speedMax;
+}
+
+int Player::getBombSizeMax(void) const noexcept
+{
+    return bombSizeMax;
+}
+
+float Player::getSpeed() const noexcept
+{
+    return speed;
+}
+
+int Player::getNbBomb() const noexcept
+{
+    return nbBomb;
+}
+
+int Player::getBombSize() const noexcept
+{
+    return bombSize;
+}
+
+void Player::setSpeed(const int& speed) noexcept
+{
+    this->speed = speed;
+}
+
+void Player::setNbBomb(const int& nbBomb) noexcept
+{
+    this->nbBomb = nbBomb;
+}
+
+void Player::setBombSize(const int& bombSize) noexcept
+{
+    this->bombSize = bombSize;
 }

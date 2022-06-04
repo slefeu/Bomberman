@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "BoxCollider.hpp"
+#include "Controller.hpp"
 #include "Model3D.hpp"
 #include "Render.hpp"
 #include "Shortcuts.hpp"

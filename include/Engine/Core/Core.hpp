@@ -42,4 +42,7 @@ class Core
     std::vector<std::unique_ptr<Scene>> scenes;
     GameData*                           data;
     bool                                exit_;
+    void switchScene(const int& scene) noexcept;
+    void createWindow() noexcept;
+    void resetData() noexcept;
 };

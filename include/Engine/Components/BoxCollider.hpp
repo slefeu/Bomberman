@@ -26,9 +26,10 @@ class BoxCollider : public Component
 
     void display() const noexcept; // pour du débugage
     void update(Vector3 pos) noexcept;
-    bool isColliding(const BoxCollider& other) const noexcept;
-    bool isColliding(
-        const BoxCollider& otherHit, Vector3& otherPos) const noexcept;
+    bool isColliding(const BoxCollider& other) noexcept;
+    bool isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept;
+    bool checkCollision(
+        const Vector3& pos, const Vector3& size, const Vector3& otherPos, const Vector3& otherSize) noexcept;
     Vector3       getPosition() const noexcept;
     void          setPosition(const Vector3& pos) noexcept;
     Vector3       getSize() const noexcept;

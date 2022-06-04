@@ -17,6 +17,7 @@ enum class RenderType {
     R_3DMODEL_ROTATE,
     R_CUBE,
     R_WIRED_CUBE,
+    R_ANIMATE,
     R_NONE,
 };
 
@@ -43,5 +44,5 @@ class Render : public Component
   private:
     RenderType                type  = RenderType::R_NONE;
     std::unique_ptr<Model3D>* model = nullptr;
-    Color                     color = GREEN;
+    Color                     color = WHITE;
 };

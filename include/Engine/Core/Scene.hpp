@@ -29,10 +29,10 @@ class Scene
     virtual void  drawBackground() const noexcept                       = 0;
 
     // methods for camera
-    virtual void    resetCamera(Cameraman& camera) noexcept = 0;
-    virtual Vector3 getCameraPosition() const noexcept      = 0;
-    virtual Vector3 getCameraTarget() const noexcept        = 0;
-    virtual Vector3 getCameraUp() const noexcept            = 0;
+    virtual void    resetCameraman(Cameraman& camera) noexcept = 0;
+    virtual Vector3 getCameraPosition() const noexcept         = 0;
+    virtual Vector3 getCameraTarget() const noexcept           = 0;
+    virtual Vector3 getCameraUp() const noexcept               = 0;
 
     // methods for musics
     virtual void         playMusic() const noexcept       = 0;

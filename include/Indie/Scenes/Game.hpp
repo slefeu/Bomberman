@@ -41,7 +41,7 @@ class Game : public Scene
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;
     Vector3      getCameraUp() const noexcept final;
-    void         resetCamera(Cameraman& camera) noexcept final;
+    void         resetCameraman(Cameraman& camera) noexcept final;
     Color        getBackgroundColor() const noexcept final;
     void         drawBackground() const noexcept final{};
 
@@ -51,9 +51,11 @@ class Game : public Scene
     void hurryUp(void) noexcept;
 
     // attributes
-    GameData*                            data_;
-    std::vector<std::unique_ptr<Entity>> entities_;
-    std::unique_ptr<Timer>               chrono_;
+    GameData*                               data_;
+    std::vector<std::unique_ptr<Entity>>    entities_;
+    std::unique_ptr<Timer>                  chrono_;
+    std::vector<std::unique_ptr<Entity>>* _players;
+    std::vector<std::unique_ptr<Model3D>>*  _models;
 
     float lastTimeBlockPlace;
     bool  isHurry;
@@ -72,4 +74,5 @@ class Game : public Scene
     Vector3      camera_up_        = { 0.0f, 2.0f, 0.0f };
     Color        background_color_ = BLACK;
     Core&        core_entry_;
+    float        HurryUpX;
 };

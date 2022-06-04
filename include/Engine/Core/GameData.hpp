@@ -11,6 +11,7 @@
 #include "Model3D.hpp"
 #include "Mouse.hpp"
 #include "Scene.hpp"
+#include "Sprite.hpp"
 
 class GameData
 {
@@ -34,7 +35,9 @@ class GameData
     int   nbPlayer;
     float timeParty;
 
+  public:
     std::vector<std::unique_ptr<Model3D>> models;
+    std::vector<std::unique_ptr<Sprite>>  sprites;
     std::vector<std::unique_ptr<Entity>>  players;
 
   protected:

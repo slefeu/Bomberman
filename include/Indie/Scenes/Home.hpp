@@ -25,7 +25,6 @@ class Home : public Scene
     Home& operator=(const Home& rhs) noexcept = delete;
     Home& operator=(Home&& rhs) noexcept = delete;
 
-    void resetCamera(Cameraman& camera) noexcept final;
     void display3D(void) noexcept final;
     void display2D(void) noexcept final;
     void action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
@@ -39,6 +38,7 @@ class Home : public Scene
     Vector3      getCameraUp() const noexcept final;
     Color        getBackgroundColor() const noexcept final;
     void         drawBackground() const noexcept final;
+    void         resetCameraman(Cameraman& camera) noexcept;
 
   private:
     // methods

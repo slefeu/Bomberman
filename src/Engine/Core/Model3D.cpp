@@ -7,8 +7,6 @@
 
 #include "Model3D.hpp"
 
-#include <iostream>
-
 Model3D::Model3D(std::string path, std::string texturePath) noexcept
     : model(LoadModel(path.c_str()))
     , texture(LoadTexture(texturePath.c_str()))
@@ -35,8 +33,9 @@ void Model3D::addAnimation(std::string path) noexcept
 void Model3D::updateAnimation() noexcept
 {
     if (anims == nullptr) return;
-
-    animFrameCounter += 1.0f;
-    UpdateModelAnimation(model, anims[0], animFrameCounter);
-    if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
+    if (isAnimated) {
+        animFrameCounter += 1.0f;
+        UpdateModelAnimation(model, anims[0], animFrameCounter);
+        if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
+    }
 }

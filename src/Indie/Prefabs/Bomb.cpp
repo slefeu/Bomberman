@@ -7,8 +7,6 @@
 
 #include "Bomb.hpp"
 
-#include <iostream>
-
 #include "Error.hpp"
 
 Bomb::Bomb(Vector3                          pos,

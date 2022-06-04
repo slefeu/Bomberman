@@ -21,6 +21,7 @@ class Model3D
     ModelAnimation* anims            = nullptr;
     int             animFrameCounter = 0;
     unsigned int    animsCount       = 0;
+    bool            isAnimated       = true;
 
   public:
     Model3D(std::string path, std::string texturePath) noexcept;

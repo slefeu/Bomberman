@@ -7,8 +7,6 @@
 
 #include "Wall.hpp"
 
-#include <iostream>
-
 #include "Error.hpp"
 
 Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)

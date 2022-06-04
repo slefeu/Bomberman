@@ -10,7 +10,6 @@
 #include <math.h>
 
 #include <cmath>
-#include <iostream>
 
 #include "Error.hpp"
 #include "Round.hpp"

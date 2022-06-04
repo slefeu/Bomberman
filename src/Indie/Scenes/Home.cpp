@@ -7,8 +7,6 @@
 
 #include "Home.hpp"
 
-#include <iostream>
-
 Home::Home(GameData* data) noexcept
     : Scene(data)
 {

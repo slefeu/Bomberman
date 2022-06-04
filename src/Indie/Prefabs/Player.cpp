@@ -7,8 +7,6 @@
 
 #include "Player.hpp"
 
-#include <iostream>
-
 #include "Bomb.hpp"
 #include "Error.hpp"
 
@@ -31,8 +29,8 @@ Player::Player(const int newId, GameData* data)
 
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
-    transform->get().setRotationAxis({ 0.0f, 0.0f, 0.0f });
-    transform->get().setRotationAngle(0.0f);
+    transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
+    transform->get().setRotationAngle(90.0f + (90.0f * id));
     transform->get().setScale(0.65f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
 
@@ -57,8 +55,14 @@ void Player::Update()
 {
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
-    if (!hitbox.has_value() || !transform.has_value()) throw(Error("Error in updating the player element.\n"));
+    auto renderer  = getComponent<Render>();
+    auto model     = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
+
+    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
+        throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
+
+    model->isAnimated = false;
 
     hitbox->get().update(transform->get().getPosition());
 
@@ -71,22 +75,59 @@ void Player::Update()
         }
     }
 
+    if (wallpass || wallpassEnd) {
+        renderer->get().setColor(colors[colorIndex]);
+        colorIndex = (colorIndex + 1) % colors.size();
+    }
+
     if (IsGamepadAvailable(id)) {
         // Mouvements au joystick
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
         float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
 
-        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) transform->get().moveZ(-speed);
-        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) transform->get().moveZ(speed);
-        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) transform->get().moveX(-speed);
-        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) transform->get().moveX(speed);
+        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
+            model->isAnimated = true;
+            transform->get().moveZ(-speed);
+        }
+        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
+            model->isAnimated = true;
+            transform->get().moveZ(speed);
+        }
+        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
+            model->isAnimated = true;
+            transform->get().moveX(-speed);
+        }
+        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
+            model->isAnimated = true;
+            transform->get().moveX(speed);
+        }
         if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
     } else {
         // Mouvements au clavier
-        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) transform->get().moveZ(-speed);
-        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) transform->get().moveZ(speed);
-        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) transform->get().moveX(-speed);
-        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) transform->get().moveX(speed);
+        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+            transform->get().setRotationAngle(270.0f);
+            model->isAnimated = true;
+            transform->get().moveZ(-speed);
+        }
+        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+            transform->get().setRotationAngle(90.0f);
+            model->isAnimated = true;
+            transform->get().moveZ(speed);
+        }
+        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+            transform->get().setRotationAngle(0.0f);
+            model->isAnimated = true;
+            transform->get().moveX(-speed);
+        }
+        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+            transform->get().setRotationAngle(180.0f);
+            model->isAnimated = true;
+            transform->get().moveX(speed);
+        }
         if (IsKeyPressed(dropBomb)) placeBomb();
     }
 }
@@ -190,7 +231,7 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others,
     }
     if (wallpassEnd) {
         wallpassEnd = false;
-        renderer->get().setColor(colors[id]);
+        renderer->get().setColor(WHITE);
     }
     return false;
 }
@@ -221,8 +262,6 @@ void Player::setWallPass(const bool& pass)
     // change te color of the player
     auto renderer = getComponent<Render>();
     if (!renderer.has_value()) throw(Error("Error in setting the wall pass.\n"));
-
-    renderer->get().setColor(PINK);
 
     wallpass = pass;
 }

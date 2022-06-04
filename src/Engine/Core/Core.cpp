@@ -7,8 +7,6 @@
 
 #include "Core.hpp"
 
-#include <iostream>
-
 #include "Game.hpp"
 #include "Home.hpp"
 
@@ -26,10 +24,10 @@ Core::Core(GameData* newData) noexcept
     data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/i_fire.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/item.glb", "assets/textures/item.png"));
     data->models.emplace_back(NEW_MODEL("assets/models/fire.glb", "assets/textures/fire.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/green.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/cyan.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/purple.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/white.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/black.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/blue.png"));
+    data->models.emplace_back(NEW_MODEL("assets/models/player.iqm", "assets/textures/player/red.png"));
 
     data->models[(int)ModelType::M_PLAYER_1]->addAnimation("assets/models/player.iqm");
     data->models[(int)ModelType::M_PLAYER_2]->addAnimation("assets/models/player.iqm");

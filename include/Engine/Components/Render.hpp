@@ -44,5 +44,5 @@ class Render : public Component
   private:
     RenderType                type  = RenderType::R_NONE;
     std::unique_ptr<Model3D>* model = nullptr;
-    Color                     color = GREEN;
+    Color                     color = WHITE;
 };

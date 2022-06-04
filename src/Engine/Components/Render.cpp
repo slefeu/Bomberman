@@ -29,14 +29,6 @@ void Render::display(const Transform3D& transform) noexcept
         float   scale         = transform.getScale();
         DrawModelEx(
             model->get()->model, transform.getPosition(), rotationAxis, rotationAngle, { scale, scale, scale }, color);
-
-        // for (int i = 0; i < model->get()->model.boneCount; i++) {
-        //     DrawCube(model->get()->anims[0].framePoses[model->get()->animFrameCounter][i].translation,
-        //         0.2f,
-        //         0.2f,
-        //         0.2f,
-        //         RED);
-        // }
         return;
     }
 }

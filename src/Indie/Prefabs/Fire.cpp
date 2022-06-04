@@ -36,12 +36,9 @@ void Fire::Display()
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
-    auto hitbox    = getComponent<BoxCollider>();
 
-    if (!transform.has_value() || !renderer.has_value() || !hitbox.has_value())
-        throw(Error("Error in displaying the player element.\n"));
+    if (!transform.has_value() || !renderer.has_value()) throw(Error("Error in displaying the player element.\n"));
     renderer->get().display(transform->get());
-    hitbox->get().display();
 }
 
 void Fire::Update()

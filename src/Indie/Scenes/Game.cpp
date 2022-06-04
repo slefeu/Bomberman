@@ -54,6 +54,8 @@ void Game::display3D() noexcept
 
 void Game::display2D() noexcept
 {
+    DrawFPS(50, 50);
+
     if (!_chrono->timerDone()) {
         auto time = std::to_string(int(round(_chrono->getTime())));
         DrawText(time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);

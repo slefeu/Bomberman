@@ -53,12 +53,9 @@ void Item::Display()
 {
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
-    auto hitbox    = getComponent<BoxCollider>();
 
-    if (!renderer.has_value() || !transform.has_value() || !hitbox.has_value())
-        throw(Error("Error in displaying an item element.\n"));
+    if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying an item element.\n"));
     renderer->get().display(transform->get());
-    hitbox->get().display();
 }
 
 void Item::Update() {}

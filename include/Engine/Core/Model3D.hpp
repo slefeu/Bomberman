@@ -33,4 +33,5 @@ class Model3D
 
     void addAnimation(std::string path) noexcept;
     void updateAnimation() noexcept;
+    void resetAnimation(int frame) noexcept;
 };

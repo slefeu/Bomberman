@@ -39,3 +39,10 @@ void Model3D::updateAnimation() noexcept
         if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
     }
 }
+
+void Model3D::resetAnimation(int frame) noexcept
+{
+    if (anims == nullptr) return;
+    animFrameCounter = frame;
+    UpdateModelAnimation(model, anims[0], animFrameCounter);
+}

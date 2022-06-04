@@ -7,6 +7,8 @@
 
 #include "Player.hpp"
 
+#include <iostream>
+
 #include "Bomb.hpp"
 #include "Error.hpp"
 
@@ -44,11 +46,9 @@ void Player::Display()
 {
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
-    auto hitbox    = getComponent<BoxCollider>();
     if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying the player element.\n"));
     if (!getEnabledValue()) return;
     renderer->get().display(transform->get());
-    hitbox->get().display();
 }
 
 void Player::Update()
@@ -57,12 +57,11 @@ void Player::Update()
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
     auto model     = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
+    bool animate   = false;
 
     if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
-
-    model->isAnimated = false;
 
     hitbox->get().update(transform->get().getPosition());
 
@@ -85,51 +84,47 @@ void Player::Update()
         float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
         float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
 
+        if (axisX != 0 || axisY != 0) animate = true;
         if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
             transform->get().setRotationAngle(270.0f);
-            model->isAnimated = true;
             transform->get().moveZ(-speed);
         }
         if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
             transform->get().setRotationAngle(90.0f);
-            model->isAnimated = true;
             transform->get().moveZ(speed);
         }
         if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
             transform->get().setRotationAngle(0.0f);
-            model->isAnimated = true;
             transform->get().moveX(-speed);
         }
         if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
             transform->get().setRotationAngle(180.0f);
-            model->isAnimated = true;
             transform->get().moveX(speed);
         }
         if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
     } else {
         // Mouvements au clavier
+        if (IsKeyDown(moveUp) || IsKeyDown(moveDown) || IsKeyDown(moveLeft) || IsKeyDown(moveRight)) animate = true;
         if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
             transform->get().setRotationAngle(270.0f);
-            model->isAnimated = true;
             transform->get().moveZ(-speed);
         }
         if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
             transform->get().setRotationAngle(90.0f);
-            model->isAnimated = true;
             transform->get().moveZ(speed);
         }
         if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
             transform->get().setRotationAngle(0.0f);
-            model->isAnimated = true;
             transform->get().moveX(-speed);
         }
         if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
             transform->get().setRotationAngle(180.0f);
-            model->isAnimated = true;
             transform->get().moveX(speed);
         }
         if (IsKeyPressed(dropBomb)) placeBomb();
     }
+
+    if (!animate) model->resetAnimation(20);
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept

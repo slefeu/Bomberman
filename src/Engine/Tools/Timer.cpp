@@ -13,17 +13,17 @@ Timer::Timer(float newLifeTime) noexcept
 {
 }
 
-void Timer::updateTimer(void) noexcept
+void Timer::updateTimer() noexcept
 {
     if (lifeTime > 0) lifeTime -= GetFrameTime();
 }
 
-bool Timer::timerDone(void) const noexcept
+bool Timer::timerDone() const noexcept
 {
     return lifeTime <= 0;
 }
 
-float Timer::getTime(void) const noexcept
+float Timer::getTime() const noexcept
 {
     return lifeTime;
 }
@@ -33,7 +33,7 @@ void Timer::setLifeTime(float const& newLifeTime) noexcept
     lifeTime = newLifeTime;
 }
 
-void Timer::resetTimer(void) noexcept
+void Timer::resetTimer() noexcept
 {
     lifeTime = defaultTime;
 }

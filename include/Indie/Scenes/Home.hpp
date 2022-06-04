@@ -25,8 +25,8 @@ class Home : public Scene
     Home& operator=(const Home& rhs) noexcept = delete;
     Home& operator=(Home&& rhs) noexcept = delete;
 
-    void display3D(void) noexcept final;
-    void display2D(void) noexcept final;
+    void display3D() noexcept final;
+    void display2D() noexcept final;
     void action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
@@ -36,9 +36,9 @@ class Home : public Scene
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;
     Vector3      getCameraUp() const noexcept final;
-    Color        getBackgroundColor() const noexcept final;
     void         drawBackground() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept;
+    ColorManager getBackgroundColor() const noexcept final;
 
   private:
     // methods
@@ -49,13 +49,13 @@ class Home : public Scene
 
     // attributes
     MusicManager        loop_music_;
-    Vector3             camera_position_  = { 20.0f, 50.0f, 30.0f };
-    Vector3             camera_target_    = { 0.0f, 0.0f, 1.0f };
-    Vector3             camera_up_        = { 0.0f, 1.0f, 0.0f };
-    Color               background_color_ = RAYWHITE;
-    std::vector<Button> buttons_          = {};
+    Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
+    Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
+    Vector3             camera_up_       = { 0.0f, 1.0f, 0.0f };
+    std::vector<Button> buttons_         = {};
     GameData*           data_;
     Core&               core_entry_;
+    ColorManager        background_color_;
 
     // a faire : classe pour handle un background
     Texture2D texture;

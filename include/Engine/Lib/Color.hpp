@@ -31,6 +31,7 @@ static inline constexpr std::array<unsigned char, 3> C_DARKPURPLE = { 112, 31, 1
 static inline constexpr std::array<unsigned char, 3> C_BEIGE      = { 211, 176, 131 };
 static inline constexpr std::array<unsigned char, 3> C_BROWN      = { 127, 106, 79 };
 static inline constexpr std::array<unsigned char, 3> C_DARKBROWN  = { 76, 63, 47 };
+static inline constexpr std::array<unsigned char, 3> C_BLACK      = { 0, 0, 0 };
 }
 
 class ColorManager

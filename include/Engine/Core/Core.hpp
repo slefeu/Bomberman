@@ -15,11 +15,12 @@
 #include "GameData.hpp"
 #include "Player.hpp"
 #include "Scene.hpp"
+#include "Window.hpp"
 
 class Core
 {
   public:
-    Core(GameData* data) noexcept;
+    Core(GameData* data, WindowManager* window) noexcept;
     ~Core() noexcept                 = default;
     Core(const Core& other) noexcept = delete;
     Core(Core&& other) noexcept      = delete;
@@ -45,4 +46,5 @@ class Core
     void                                switchScene(const int& scene) noexcept;
     void                                createWindow() noexcept;
     void                                resetData() noexcept;
+    WindowManager*                      window_;
 };

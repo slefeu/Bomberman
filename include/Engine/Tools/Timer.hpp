@@ -23,9 +23,9 @@ class Timer
     Timer& operator=(const Timer& rhs) noexcept = delete;
     Timer& operator=(Timer&& rhs) noexcept = delete;
 
-    void  updateTimer(void) noexcept;
-    bool  timerDone(void) const noexcept;
-    float getTime(void) const noexcept;
+    void  updateTimer() noexcept;
+    bool  timerDone() const noexcept;
+    float getTime() const noexcept;
     void  setLifeTime(float const& newLifeTime) noexcept;
-    void  resetTimer(void) noexcept;
+    void  resetTimer() noexcept;
 };

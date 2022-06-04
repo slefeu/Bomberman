@@ -12,6 +12,7 @@ Home::Home(GameData* data, Core& core_ref) noexcept
     , loop_music_(MENU_MUSIC)
     , core_entry_(core_ref)
     , data_(data)
+    , background_color_(Colors::C_WHITE)
 {
     createButtons();
 
@@ -81,9 +82,8 @@ void Home::display2D() noexcept
     drawButtons();
 }
 
-void Home::action(Cameraman& camera, Vector2 mouse_pos) noexcept
+void Home::action([[maybe_unused]] Cameraman& camera, Vector2 mouse_pos) noexcept
 {
-    (void)camera;
     for (auto& it : buttons_) {
         if (it.checkCollision(mouse_pos)) { it.action(); }
     }
@@ -118,11 +118,6 @@ Vector3 Home::getCameraUp() const noexcept
     return (camera_up_);
 }
 
-Color Home::getBackgroundColor() const noexcept
-{
-    return (background_color_);
-}
-
 void Home::unloadTextures() noexcept
 {
     UnloadTexture(texture);
@@ -143,4 +138,9 @@ void Home::drawButtons() const noexcept
 void Home::unloadButtons() noexcept
 {
     for (auto it : buttons_) { it.unload(); }
+}
+
+ColorManager Home::getBackgroundColor() const noexcept
+{
+    return (background_color_);
 }

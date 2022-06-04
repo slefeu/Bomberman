@@ -60,6 +60,7 @@ set(
   src/Engine/Lib/AudioDevice.cpp
   src/Engine/Lib/Sprite.cpp
   src/Engine/Lib/Color.cpp
+  src/Engine/Lib/Window.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

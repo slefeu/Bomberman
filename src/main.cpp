@@ -3,18 +3,21 @@
 
 #include "Core.hpp"
 #include "Error.hpp"
+#include "Window.hpp"
 
-int main(void)
+int main()
 {
     try {
         srand(time(NULL));
 
-        std::unique_ptr<GameData> data = std::make_unique<GameData>(60, 1920, 1080, 1);
-        std::unique_ptr<Core>     core = std::make_unique<Core>(data.get());
+        auto data   = std::make_unique<GameData>(60, 1920, 1080, 1);
+        auto window = std::make_unique<WindowManager>();
+        auto core   = std::make_unique<Core>(data.get(), window.get());
+
         core->run();
         data.reset();
         core.reset();
-        CloseWindow();
+        // window->close();
     } catch (const Error& error) {
         std::cerr << error.what() << std::endl;
         return (84);

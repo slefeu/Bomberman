@@ -22,6 +22,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , nbBlockPlaced(0)
     , loop_music_(GAME_MUSIC)
     , core_entry_(core_ref)
+    , background_color_(Colors::C_BLACK)
 {
     // Assignation des bombes aux joueurs
     for (auto& player : data_->players) {
@@ -223,7 +224,7 @@ void Game::createMap() noexcept
         }
 }
 
-void Game::hurryUp(void) noexcept
+void Game::hurryUp() noexcept
 {
     if (!isHurry) return;
 
@@ -291,7 +292,7 @@ Vector3 Game::getCameraUp() const noexcept
     return (camera_up_);
 }
 
-Color Game::getBackgroundColor() const noexcept
+ColorManager Game::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }

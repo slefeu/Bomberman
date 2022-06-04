@@ -34,9 +34,9 @@ class Player : public Entity
     void  setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept;
     void  setPlayerType(PlayerType type) noexcept;
     void  setWallPass(const bool& pass) noexcept;
-    int   getNbBombMax(void) const noexcept;
-    float getSpeedMax(void) const noexcept;
-    int   getBombSizeMax(void) const noexcept;
+    int   getNbBombMax() const noexcept;
+    float getSpeedMax() const noexcept;
+    int   getBombSizeMax() const noexcept;
     float getSpeed() const noexcept;
     int   getNbBomb() const noexcept;
     int   getBombSize() const noexcept;
@@ -45,9 +45,9 @@ class Player : public Entity
     void  setBombSize(const int& bombSize) noexcept;
 
   private:
-    void      setKeyboard(void) noexcept;
-    void      setPosition(void);
-    void      placeBomb(void);
+    void      setKeyboard() noexcept;
+    void      setPosition();
+    void      placeBomb();
     bool      isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir);
     Key       moveUp;
     Key       moveDown;

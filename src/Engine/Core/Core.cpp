@@ -12,10 +12,11 @@
 #include "Game.hpp"
 #include "Home.hpp"
 
-Core::Core(GameData* newData) noexcept
+Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
+    , window_(window)
 {
-    createWindow();
+    window_->launch(data->winWidth, data->winHeight, data->fps);
 
     // Chargement des models 3D
     data->models.emplace_back(
@@ -64,13 +65,6 @@ Core::Core(GameData* newData) noexcept
         findScene().getCameraPosition(), findScene().getCameraTarget(), findScene().getCameraUp());
 }
 
-void Core::createWindow() noexcept
-{
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
-    SetTargetFPS(data->fps);
-}
-
 void Core::resetData() noexcept
 {
     if (scenes.size() != 0) scenes.clear();
@@ -110,20 +104,13 @@ void Core::run() noexcept
         findScene().action(camera, data->getMousePosition());
 
         // Display ------------------------------------------------------------
-        BeginDrawing();
-        ClearBackground(findScene().getBackgroundColor());
-        findScene().drawBackground();
-        BeginMode3D(camera.getCamera());
-        findScene().display3D();
-        EndMode3D();
-        findScene().display2D();
-        EndDrawing();
+        window_->display(findScene(), camera);
     }
 }
 
 void Core::checkExit() noexcept
 {
-    if (WindowShouldClose()) exit_ = true;
+    if (window_->isExit()) { exit_ = true; }
 }
 
 void Core::setExit(bool value) noexcept

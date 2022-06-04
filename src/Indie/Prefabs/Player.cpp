@@ -135,7 +135,7 @@ void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
     if (other->getEntityType() == EntityType::E_FIRE) setEnabledValue(false);
 }
 
-void Player::setPosition(void)
+void Player::setPosition()
 {
     auto transform = getComponent<Transform3D>();
     if (!transform.has_value()) throw(Error("Error in setting player position.\n"));
@@ -161,7 +161,7 @@ void Player::setPosition(void)
     }
 }
 
-void Player::setKeyboard(void) noexcept
+void Player::setKeyboard() noexcept
 {
     switch (id) {
         case 0:
@@ -305,17 +305,17 @@ void Player::setPlayerType(PlayerType type) noexcept
     }
 }
 
-int Player::getNbBombMax(void) const noexcept
+int Player::getNbBombMax() const noexcept
 {
     return nbBombMax;
 }
 
-float Player::getSpeedMax(void) const noexcept
+float Player::getSpeedMax() const noexcept
 {
     return speedMax;
 }
 
-int Player::getBombSizeMax(void) const noexcept
+int Player::getBombSizeMax() const noexcept
 {
     return bombSizeMax;
 }

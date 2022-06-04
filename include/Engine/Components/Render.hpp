@@ -33,9 +33,9 @@ class Render : public Component
     Render& operator=(const Render& rhs) noexcept = default;
     Render& operator=(Render&& rhs) noexcept = default;
 
-    void display(const Transform3D& transform) noexcept;
-    void setRenderType(const RenderType& type) noexcept;
-    void setModel(std::unique_ptr<Model3D>* model) noexcept;
+    void          display(const Transform3D& transform) noexcept;
+    void          setRenderType(const RenderType& type) noexcept;
+    void          setModel(std::unique_ptr<Model3D>* model) noexcept;
     void          setColor(const std::array<unsigned char, 3>& color) noexcept;
     RenderType    getRenderType() const noexcept;
     ComponentType getComponentType() const noexcept;

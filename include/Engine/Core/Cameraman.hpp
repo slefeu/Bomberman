@@ -17,11 +17,11 @@ class Cameraman
 {
   public:
     Cameraman() noexcept;
-    ~Cameraman() noexcept                               = default;
-    Cameraman(const Cameraman& other) noexcept          = delete;
-    Cameraman(Cameraman&& other) noexcept               = delete;
+    ~Cameraman() noexcept                      = default;
+    Cameraman(const Cameraman& other) noexcept = delete;
+    Cameraman(Cameraman&& other) noexcept      = delete;
     Cameraman& operator=(const Cameraman& rhs) noexcept = delete;
-    Cameraman& operator=(Cameraman&& rhs) noexcept      = delete;
+    Cameraman& operator=(Cameraman&& rhs) noexcept = delete;
 
     void moveX(const float& x) noexcept;
     void moveY(const float& y) noexcept;

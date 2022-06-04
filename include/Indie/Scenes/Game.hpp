@@ -26,10 +26,10 @@ class Game : public Scene
   public:
     Game(GameData* data, Core& core_ref) noexcept;
     ~Game() noexcept;
-    Game(const Game& other) noexcept          = delete;
-    Game(Game&& other) noexcept               = delete;
+    Game(const Game& other) noexcept = delete;
+    Game(Game&& other) noexcept      = delete;
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
+    Game& operator=(Game&& rhs) noexcept = delete;
 
     void         display3D(void) noexcept final;
     void         display2D(void) noexcept final;

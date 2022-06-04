@@ -20,10 +20,10 @@ class Home : public Scene
   public:
     Home(GameData* data, Core& core_ref) noexcept;
     ~Home() noexcept;
-    Home(const Home& other) noexcept          = delete;
-    Home(Home&& other) noexcept               = delete;
+    Home(const Home& other) noexcept = delete;
+    Home(Home&& other) noexcept      = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept      = delete;
+    Home& operator=(Home&& rhs) noexcept = delete;
 
     void display3D(void) noexcept final;
     void display2D(void) noexcept final;

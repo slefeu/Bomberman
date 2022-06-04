@@ -15,12 +15,12 @@ enum class SceneType : std::size_t { MENU, GAME };
 class Scene
 {
   public:
-    Scene() noexcept                            = default;
-    virtual ~Scene() noexcept                   = default;
-    Scene(const Scene& other) noexcept          = delete;
-    Scene(Scene&& other) noexcept               = delete;
+    Scene() noexcept                   = default;
+    virtual ~Scene() noexcept          = default;
+    Scene(const Scene& other) noexcept = delete;
+    Scene(Scene&& other) noexcept      = delete;
     Scene& operator=(const Scene& rhs) noexcept = delete;
-    Scene& operator=(Scene&& rhs) noexcept      = delete;
+    Scene& operator=(Scene&& rhs) noexcept = delete;
 
     virtual void  action(Cameraman& camera, Vector2 mouse_pos) noexcept = 0;
     virtual void  DestroyPool() noexcept                                = 0;

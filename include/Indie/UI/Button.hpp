@@ -12,8 +12,8 @@
 
 #include "Color.hpp"
 #include "Sound.hpp"
-#include "Text.hpp"
 #include "Sprite.hpp"
+#include "Text.hpp"
 static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
 static const inline char* ON_HOVER = "assets/audios/menu_hover.ogg";
 

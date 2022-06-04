@@ -38,6 +38,7 @@ Player::Player(const int newId, GameData* data)
     setPosition();
     setPlayerType(PlayerType::RUNNER);
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
+    addComponent(Controller());
 }
 
 void Player::Display()
@@ -51,13 +52,14 @@ void Player::Display()
 
 void Player::Update()
 {
-    auto hitbox    = getComponent<BoxCollider>();
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-    auto model     = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
-    bool animate   = false;
+    auto hitbox     = getComponent<BoxCollider>();
+    auto transform  = getComponent<Transform3D>();
+    auto renderer   = getComponent<Render>();
+    auto controller = getComponent<Controller>();
+    auto model      = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
+    bool animate    = false;
 
-    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
+    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value() || !controller.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
 
@@ -77,50 +79,27 @@ void Player::Update()
         colorIndex = (colorIndex + 1) % colors.size();
     }
 
-    if (IsGamepadAvailable(id)) {
-        // Mouvements au joystick
-        float axisX = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_X);
-        float axisY = GetGamepadAxisMovement(id, GAMEPAD_AXIS_LEFT_Y);
-
-        if (axisX != 0 || axisY != 0) animate = true;
-        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
-            transform->get().setRotationAngle(270.0f);
-            transform->get().moveZ(-speed);
-        }
-        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
-            transform->get().setRotationAngle(90.0f);
-            transform->get().moveZ(speed);
-        }
-        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
-            transform->get().setRotationAngle(0.0f);
-            transform->get().moveX(-speed);
-        }
-        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
-            transform->get().setRotationAngle(180.0f);
-            transform->get().moveX(speed);
-        }
-        if (IsGamepadButtonPressed(id, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) placeBomb();
-    } else {
-        // Mouvements au clavier
-        if (IsKeyDown(moveUp) || IsKeyDown(moveDown) || IsKeyDown(moveLeft) || IsKeyDown(moveRight)) animate = true;
-        if (IsKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
-            transform->get().setRotationAngle(270.0f);
-            transform->get().moveZ(-speed);
-        }
-        if (IsKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
-            transform->get().setRotationAngle(90.0f);
-            transform->get().moveZ(speed);
-        }
-        if (IsKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
-            transform->get().setRotationAngle(0.0f);
-            transform->get().moveX(-speed);
-        }
-        if (IsKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
-            transform->get().setRotationAngle(180.0f);
-            transform->get().moveX(speed);
-        }
-        if (IsKeyPressed(dropBomb)) placeBomb();
+    // Mouvements au clavier
+    if (controller->get().isKeyDown(moveUp) || controller->get().isKeyDown(moveDown)
+        || controller->get().isKeyDown(moveLeft) || controller->get().isKeyDown(moveRight))
+        animate = true;
+    if (controller->get().isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+        transform->get().setRotationAngle(270.0f);
+        transform->get().moveZ(-speed);
     }
+    if (controller->get().isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+        transform->get().setRotationAngle(90.0f);
+        transform->get().moveZ(speed);
+    }
+    if (controller->get().isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+        transform->get().setRotationAngle(0.0f);
+        transform->get().moveX(-speed);
+    }
+    if (controller->get().isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+        transform->get().setRotationAngle(180.0f);
+        transform->get().moveX(speed);
+    }
+    if (controller->get().isKeyPressed(dropBomb)) placeBomb();
 
     if (!animate) model->resetAnimation(20);
 }
@@ -161,32 +140,32 @@ void Player::setKeyboard(void) noexcept
 {
     switch (id) {
         case 0:
-            moveUp    = KEY_W;
-            moveDown  = KEY_S;
-            moveLeft  = KEY_A;
-            moveRight = KEY_D;
-            dropBomb  = KEY_Q;
+            moveUp    = Key::K_W;
+            moveDown  = Key::K_S;
+            moveLeft  = Key::K_A;
+            moveRight = Key::K_D;
+            dropBomb  = Key::K_Q;
             break;
         case 1:
-            moveUp    = KEY_KP_8;
-            moveDown  = KEY_KP_5;
-            moveLeft  = KEY_KP_4;
-            moveRight = KEY_KP_6;
-            dropBomb  = KEY_KP_7;
+            moveUp    = Key::K_KP_8;
+            moveDown  = Key::K_KP_5;
+            moveLeft  = Key::K_KP_4;
+            moveRight = Key::K_KP_6;
+            dropBomb  = Key::K_KP_7;
             break;
         case 2:
-            moveUp    = KEY_T;
-            moveDown  = KEY_G;
-            moveLeft  = KEY_F;
-            moveRight = KEY_H;
-            dropBomb  = KEY_R;
+            moveUp    = Key::K_T;
+            moveDown  = Key::K_G;
+            moveLeft  = Key::K_F;
+            moveRight = Key::K_H;
+            dropBomb  = Key::K_R;
             break;
         case 3:
-            moveUp    = KEY_I;
-            moveDown  = KEY_K;
-            moveLeft  = KEY_J;
-            moveRight = KEY_L;
-            dropBomb  = KEY_U;
+            moveUp    = Key::K_I;
+            moveDown  = Key::K_K;
+            moveLeft  = Key::K_J;
+            moveRight = Key::K_L;
+            dropBomb  = Key::K_U;
             break;
         default: break;
     }

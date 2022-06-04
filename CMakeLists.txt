@@ -40,6 +40,7 @@ set(
   src/Engine/Components/BoxCollider.cpp
   src/Engine/Components/Transform3D.cpp
   src/Engine/Components/Render.cpp
+  src/Engine/Components/Controller.cpp
 
   src/Indie/Prefabs/Player.cpp
   src/Indie/Prefabs/Bomb.cpp

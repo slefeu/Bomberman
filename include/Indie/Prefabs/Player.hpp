@@ -46,17 +46,17 @@ class Player : public Entities
     void  setBombSize(const int& bombSize) noexcept;
 
   private:
-    void        setKeyboard(void) noexcept;
-    void        setPosition(void);
-    void        placeBomb(void);
-    bool        isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
-    KeyboardKey moveUp;
-    KeyboardKey moveDown;
-    KeyboardKey moveLeft;
-    KeyboardKey moveRight;
-    KeyboardKey dropBomb;
-    int         id;
-    GameData*   data;
+    void      setKeyboard(void) noexcept;
+    void      setPosition(void);
+    void      placeBomb(void);
+    bool      isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
+    Key       moveUp;
+    Key       moveDown;
+    Key       moveLeft;
+    Key       moveRight;
+    Key       dropBomb;
+    int       id;
+    GameData* data;
     std::vector<std::unique_ptr<Entities>>* bombs;
     bool                                    wallpass;
     std::unique_ptr<Timer>                  wallpassTimer;

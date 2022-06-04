@@ -25,7 +25,7 @@ enum class ModelType {
     M_NONE
 };
 
-enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM };
+enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER };
 
 enum class SpriteType { S_WHITE, S_RED, S_BLUE, S_BLACK, S_NONE };
 

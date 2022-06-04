@@ -10,20 +10,20 @@
 #include "Crate.hpp"
 #include "Shortcuts.hpp"
 
-class Wall : public Entities
+class Wall : public Entity
 {
   public:
     Wall(Vector3 pos, std::unique_ptr<Model3D>* model);
-    Wall(const Wall& other) noexcept = default;
-    Wall(Wall&& other) noexcept      = default;
+    Wall(const Wall& other) noexcept = delete;
+    Wall(Wall&& other) noexcept      = delete;
     ~Wall() noexcept                 = default;
 
-    Wall& operator=(const Wall& rhs) noexcept = default;
-    Wall& operator=(Wall&& rhs) noexcept      = default;
+    Wall& operator=(const Wall& rhs) noexcept = delete;
+    Wall& operator=(Wall&& rhs) noexcept = delete;
 
     void Update() final;
     void Display() final;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
+    void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
 
   protected:
   private:

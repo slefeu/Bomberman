@@ -6,8 +6,17 @@
 */
 
 #pragma once
+#include <cstddef>
 
-enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
+enum class EntityType {
+    E_PLAYER,
+    E_BOX,
+    E_BOMB,
+    E_CRATE,
+    E_WALL,
+    E_FIRE,
+    E_ITEM
+};
 
 enum class ModelType {
     M_BOMB,
@@ -30,10 +39,6 @@ enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER };
 enum class SpriteType { S_WHITE, S_RED, S_BLUE, S_BLACK, S_NONE };
 
 #define MODEL model->get()
-#define MODELS(type) &data->models[(int)ModelType::type]
-#define SPRITES(type) &data->sprites[(int)SpriteType::type]
-#define SCENE scenes[data->currentScene]
-#define PLAYERS data->players
+#define SPRITES(type) &data_->sprites[(int)SpriteType::type]
+#define PLAYERS data_->players
 #define NEW_HITBOX(pos, size, isSolid) std::make_unique<BoxCollider>(pos, size, isSolid);
-#define NEW_WALL(pos) std::make_unique<Wall>(pos, MODELS(M_WALL))
-#define NEW_CRATE(pos, data, entities) std::make_unique<Crate>((Vector3)pos, MODELS(M_CRATE), data, entities)

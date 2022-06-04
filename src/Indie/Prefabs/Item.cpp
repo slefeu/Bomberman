@@ -13,7 +13,7 @@
 #include "Transform3D.hpp"
 
 Item::Item(Vector3 pos, GameData* data)
-    : Entities(EntityType::E_ITEM)
+    : Entity(EntityType::E_ITEM)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -30,7 +30,8 @@ Item::Item(Vector3 pos, GameData* data)
     addComponent(BoxCollider(transform->get().getPosition(), { 1.0f, 1.0f, 0.5f }, true));
     auto hitbox = getComponent<BoxCollider>();
 
-    if (!hitbox.has_value()) throw(Error("Error, could not instanciate the item element.\n"));
+    if (!hitbox.has_value())
+        throw(Error("Error, could not instanciate the item element.\n"));
     hitbox->get().setIsSolid(false);
     transform->get().addZ((transform->get().getScale() / 2) * -1);
     transform->get().addY((transform->get().getScale() / 2));
@@ -41,10 +42,22 @@ Item::Item(Vector3 pos, GameData* data)
 
     itemType = (ItemType)(static_cast<int>(rand() % 4));
     switch (itemType) {
-        case ItemType::I_SPEEDUP: renderer->get().setModel(MODELS(M_IROLLER)); break;
-        case ItemType::I_BOMBUP: renderer->get().setModel(MODELS(M_IBOMB)); break;
-        case ItemType::I_FIREUP: renderer->get().setModel(MODELS(M_IFIRE)); break;
-        case ItemType::I_WALL: renderer->get().setModel(MODELS(M_IWALL)); break;
+        case ItemType::I_SPEEDUP:
+            renderer->get().setModel(
+                &data->models[static_cast<int>(ModelType::M_IROLLER)]);
+            break;
+        case ItemType::I_BOMBUP:
+            renderer->get().setModel(
+                &data->models[static_cast<int>(ModelType::M_IBOMB)]);
+            break;
+        case ItemType::I_FIREUP:
+            renderer->get().setModel(
+                &data->models[static_cast<int>(ModelType::M_IFIRE)]);
+            break;
+        case ItemType::I_WALL:
+            renderer->get().setModel(
+                &data->models[static_cast<int>(ModelType::M_IWALL)]);
+            break;
         default: break;
     }
 }
@@ -60,7 +73,7 @@ void Item::Display()
 
 void Item::Update() {}
 
-void Item::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
+void Item::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_PLAYER) {
         setPlayerStat((std::unique_ptr<Player>&)other);

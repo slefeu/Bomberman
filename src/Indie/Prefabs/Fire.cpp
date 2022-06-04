@@ -10,11 +10,11 @@
 
 #include "Bomb.hpp"
 #include "Crate.hpp"
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "Error.hpp"
 
 Fire::Fire(Vector3 posi, std::unique_ptr<Model3D>* model)
-    : Entities(EntityType::E_FIRE)
+    : Entity(EntityType::E_FIRE)
     , explodeTime(0.5f)
     , explodeTimer(NEW_TIMER(explodeTime))
 {
@@ -47,12 +47,13 @@ void Fire::Update()
     if (explodeTimer->timerDone()) setEnabledValue(false);
 }
 
-void Fire::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
+void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER) other->setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_PLAYER)
+        other->setEnabledValue(false);
 }
 
-bool Fire::ExplodeElements(std::unique_ptr<Entities>& other) noexcept
+bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_CRATE) {
         ((std::unique_ptr<Crate>&)other)->dropItem();

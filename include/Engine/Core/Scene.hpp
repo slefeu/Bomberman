@@ -8,30 +8,37 @@
 #pragma once
 
 #include "Cameraman.hpp"
-#include "GameData.hpp"
+#include "Music.hpp"
+
+enum class SceneType : std::size_t { MENU, GAME };
 
 class Scene
 {
   public:
-    Vector3   cameraPosition;
-    Vector3   cameraTarget;
-    Vector3   cameraUp;
-    GameData* data;
-    Color     backgroundColor;
-
-  public:
-    Scene(GameData* data) noexcept
-        : data(data){};
-    virtual ~Scene() noexcept                   = default;
-    Scene(const Scene& other) noexcept          = delete;
-    Scene(Scene&& other) noexcept               = delete;
+    Scene() noexcept                   = default;
+    virtual ~Scene() noexcept          = default;
+    Scene(const Scene& other) noexcept = delete;
+    Scene(Scene&& other) noexcept      = delete;
     Scene& operator=(const Scene& rhs) noexcept = delete;
-    Scene& operator=(Scene&& rhs) noexcept      = delete;
+    Scene& operator=(Scene&& rhs) noexcept = delete;
 
-    virtual void resetCameraman(Cameraman& camera) noexcept = 0;
-    virtual void display3D(void) noexcept                   = 0;
-    virtual void display2D(void) noexcept                   = 0;
-    virtual void action(Cameraman& camera) noexcept         = 0;
-    virtual void DestroyPool() noexcept                     = 0;
-    virtual void CollisionPool() noexcept                   = 0;
+    virtual void  action(Cameraman& camera, Vector2 mouse_pos) noexcept = 0;
+    virtual void  DestroyPool() noexcept                                = 0;
+    virtual void  CollisionPool() noexcept                              = 0;
+    virtual Color getBackgroundColor() const noexcept                   = 0;
+    virtual void  drawBackground() const noexcept                       = 0;
+
+    // methods for camera
+    virtual void    resetCameraman(Cameraman& camera) noexcept = 0;
+    virtual Vector3 getCameraPosition() const noexcept         = 0;
+    virtual Vector3 getCameraTarget() const noexcept           = 0;
+    virtual Vector3 getCameraUp() const noexcept               = 0;
+
+    // methods for musics
+    virtual void         playMusic() const noexcept       = 0;
+    virtual MusicManager getMusicManager() const noexcept = 0;
+
+    // methods for display
+    virtual void display3D(void) noexcept = 0;
+    virtual void display2D(void) noexcept = 0;
 };

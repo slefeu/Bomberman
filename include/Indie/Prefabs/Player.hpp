@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "GameData.hpp"
 #include "Timer.hpp"
 
@@ -18,21 +18,21 @@
 
 enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER };
 
-class Player : public Entities
+class Player : public Entity
 {
   public:
     Player(const int newId, GameData* data);
-    ~Player() noexcept                            = default;
-    Player(const Player& other) noexcept          = delete;
-    Player(Player&& other) noexcept               = delete;
+    ~Player() noexcept                   = default;
+    Player(const Player& other) noexcept = delete;
+    Player(Player&& other) noexcept      = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept      = delete;
+    Player& operator=(Player&& rhs) noexcept = delete;
 
     void  Display() final;
     void  Update() final;
-    void  OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
+    void  OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     void  setStats(int bomb, int sp, int size) noexcept;
-    void  setBombArray(std::vector<std::unique_ptr<Entities>>* bombsArray) noexcept;
+    void  setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept;
     void  setPlayerType(PlayerType type) noexcept;
     void  setWallPass(const bool& pass) noexcept;
     int   getNbBombMax(void) const noexcept;
@@ -49,7 +49,7 @@ class Player : public Entities
     void      setKeyboard(void) noexcept;
     void      setPosition(void);
     void      placeBomb(void);
-    bool      isCollidingNextTurn(std::vector<std::unique_ptr<Entities>>& others, int xdir, int zdir);
+    bool      isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir);
     Key       moveUp;
     Key       moveDown;
     Key       moveLeft;
@@ -57,7 +57,7 @@ class Player : public Entities
     Key       dropBomb;
     int       id;
     GameData* data;
-    std::vector<std::unique_ptr<Entities>>* bombs;
+    std::vector<std::unique_ptr<Entity>>* bombs;
     bool                                    wallpass;
     std::unique_ptr<Timer>                  wallpassTimer;
     bool                                    wallpassEnd;

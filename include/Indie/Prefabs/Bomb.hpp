@@ -11,7 +11,11 @@
 
 #include "Fire.hpp"
 #include "Player.hpp"
+#include "Sound.hpp"
 #include "Timer.hpp"
+
+static const inline char* DROP_BOMB = "assets/audios/DropBomb.wav";
+static const inline char* EXPLODE   = "assets/audios/Explode.wav";
 
 class Bomb : public Entity
 {
@@ -22,11 +26,11 @@ class Bomb : public Entity
         int                                   bombSize,
         GameData*                             data,
         std::vector<std::unique_ptr<Entity>>* Entity);
-    ~Bomb() noexcept                 = default;
-    Bomb(const Bomb& other) noexcept = delete;
-    Bomb(Bomb&& other) noexcept      = delete;
+    ~Bomb() noexcept                          = default;
+    Bomb(const Bomb& other) noexcept          = delete;
+    Bomb(Bomb&& other) noexcept               = delete;
     Bomb& operator=(const Bomb& rhs) noexcept = delete;
-    Bomb& operator=(Bomb&& rhs) noexcept = delete;
+    Bomb& operator=(Bomb&& rhs) noexcept      = delete;
 
     void Display() final;
     void Update() final;
@@ -50,4 +54,6 @@ class Bomb : public Entity
     std::vector<std::unique_ptr<Player>>* players;
     bool                                  is_exploding_;
     int                                   animeDir;
+    SoundManager                          dropSound_;
+    SoundManager                          explodeSound;
 };

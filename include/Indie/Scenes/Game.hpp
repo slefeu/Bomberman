@@ -14,10 +14,11 @@
 
 #include "Core.hpp"
 #include "Entity.hpp"
+#include "Fps.hpp"
 #include "Model3D.hpp"
 #include "Scene.hpp"
+#include "Sound.hpp"
 #include "Timer.hpp"
-#include "Fps.hpp"
 
 enum class Direction { UP, RIGHT, DOWN, LEFT };
 
@@ -26,10 +27,10 @@ class Game : public Scene
   public:
     Game(GameData* data, Core& core_ref) noexcept;
     ~Game() noexcept;
-    Game(const Game& other) noexcept = delete;
-    Game(Game&& other) noexcept      = delete;
+    Game(const Game& other) noexcept          = delete;
+    Game(Game&& other) noexcept               = delete;
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept = delete;
+    Game& operator=(Game&& rhs) noexcept      = delete;
 
     void         display3D() noexcept final;
     void         display2D() noexcept final;
@@ -51,9 +52,9 @@ class Game : public Scene
     void hurryUp() noexcept;
 
     // attributes
-    GameData*                              data_;
-    std::vector<std::unique_ptr<Entity>>   entities_;
-    std::unique_ptr<Timer>                 chrono_;
+    GameData*                            data_;
+    std::vector<std::unique_ptr<Entity>> entities_;
+    std::unique_ptr<Timer>               chrono_;
 
     float lastTimeBlockPlace;
     bool  isHurry;
@@ -66,6 +67,8 @@ class Game : public Scene
     int   minZ = -4;
 
     Direction    direction = Direction::UP;
+    SoundManager startSound_;
+    SoundManager hurryUpSound_;
     MusicManager loop_music_;
     Vector3      camera_position_ = { 0.0f, 13.0f, 2.0f };
     Vector3      camera_target_   = { 0.0f, 0.0f, 1.0f };
@@ -74,5 +77,7 @@ class Game : public Scene
     float        HurryUpX;
     ColorManager background_color_;
 
-    static const inline char* GAME_MUSIC = "assets/audios/Game.mp3";
+    static const inline char* GAME_MUSIC = "assets/audios/Battle.mp3";
+    static const inline char* START      = "assets/audios/Start.wav";
+    static const inline char* HURRY_UP   = "assets/audios/HurryUp.wav";
 };

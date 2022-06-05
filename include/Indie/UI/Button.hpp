@@ -14,8 +14,8 @@
 #include "Sound.hpp"
 #include "Sprite.hpp"
 #include "Text.hpp"
-static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
-static const inline char* ON_HOVER = "assets/audios/menu_hover.ogg";
+static const inline char* ON_CLICK = "assets/audios/Btn_clicked.wav";
+static const inline char* ON_HOVER = "assets/audios/menu_hover.wav";
 
 class Button
 {
@@ -36,7 +36,7 @@ class Button
     ~Button() noexcept                   = default;
 
     Button& operator=(const Button& rhs) noexcept = default;
-    Button& operator=(Button&& rhs) noexcept = default;
+    Button& operator=(Button&& rhs) noexcept      = default;
 
     void draw() const noexcept;
     bool checkCollision(const Vector2& mouse_pos) noexcept;

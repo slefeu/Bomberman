@@ -10,6 +10,7 @@
 MusicManager::MusicManager(const std::string& path) noexcept
     : music_(LoadMusicStream(path.c_str()))
 {
+    setVolume(0.8f);
 }
 
 void MusicManager::unload() noexcept
@@ -25,4 +26,9 @@ void MusicManager::play() const noexcept
 void MusicManager::update() noexcept
 {
     UpdateMusicStream(music_);
+}
+
+void MusicManager::setVolume(float volume) noexcept
+{
+    SetMusicVolume(music_, volume);
 }

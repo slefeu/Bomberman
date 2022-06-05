@@ -11,17 +11,17 @@
 
 #include "Button.hpp"
 #include "Core.hpp"
-#include "Scene.hpp"
 #include "Fps.hpp"
+#include "Scene.hpp"
 
 class Home : public Scene
 {
   public:
     Home(GameData* data, Core& core_ref) noexcept;
-    Home(const Home& other) noexcept = delete;
-    Home(Home&& other) noexcept      = delete;
+    Home(const Home& other) noexcept          = delete;
+    Home(Home&& other) noexcept               = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept = delete;
+    Home& operator=(Home&& rhs) noexcept      = delete;
     ~Home() noexcept;
 
     void display3D() noexcept final;
@@ -57,7 +57,7 @@ class Home : public Scene
     Sprite              background_;
     Sprite              title_;
 
-    static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
+    static const inline char* MENU_MUSIC = "assets/audios/MainMenu.mp3";
     static const inline char* BG_PATH    = "assets/textures/home/background.png";
     static const inline char* TITLE_PATH = "assets/textures/home/title.png";
 };

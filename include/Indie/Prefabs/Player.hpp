@@ -14,7 +14,10 @@
 #include "Controller.hpp"
 #include "Entity.hpp"
 #include "GameData.hpp"
+#include "Sound.hpp"
 #include "Timer.hpp"
+
+static const inline char* KILL = "assets/audios/Kill.wav";
 
 enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER };
 
@@ -50,6 +53,7 @@ class Player : public Entity
     void setPosition();
     void placeBomb();
     bool isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir);
+    SoundManager                              killSound_;
     Controller                                controller;
     Key                                       moveUp;
     Key                                       moveDown;

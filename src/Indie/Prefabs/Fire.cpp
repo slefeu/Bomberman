@@ -25,7 +25,7 @@ Fire::Fire(Vector3 posi, std::unique_ptr<Model3D>* model)
         throw(Error("Error, could not instanciate the player element.\n"));
 
     transform->get().setPosition({ posi.x, posi.y - 0.3f, posi.z });
-    transform->get().setScale(1.0f);
+    transform->get().setScale(1.2f);
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
     transform->get().setRotationAngle(-90.0f);

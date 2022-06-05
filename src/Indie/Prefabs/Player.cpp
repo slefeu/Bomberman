@@ -17,6 +17,7 @@ Player::Player(const int newId, GameData* data)
     , wallpass(false)
     , wallpassTimer(std::make_unique<Timer>(5.0f))
     , wallpassEnd(false)
+    , killSound_(KILL)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -135,8 +136,11 @@ void Player::Update()
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
-    if (other->getEntityType() == EntityType::E_FIRE) setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_WALL
+        || other->getEntityType() == EntityType::E_FIRE) {
+        killSound_.play();
+        setEnabledValue(false);
+    }
 }
 
 void Player::setPosition()

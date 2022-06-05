@@ -18,10 +18,10 @@ class Home : public Scene
 {
   public:
     Home(GameData* data, Core& core_ref) noexcept;
-    Home(const Home& other) noexcept          = delete;
-    Home(Home&& other) noexcept               = delete;
+    Home(const Home& other) noexcept = delete;
+    Home(Home&& other) noexcept      = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept      = delete;
+    Home& operator=(Home&& rhs) noexcept = delete;
     ~Home() noexcept;
 
     void display3D() noexcept final;
@@ -38,6 +38,7 @@ class Home : public Scene
     void         drawBackground() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept;
     ColorManager getBackgroundColor() const noexcept final;
+    void         switchAction() noexcept final;
 
   private:
     // methods

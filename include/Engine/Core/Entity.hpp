@@ -32,6 +32,7 @@ class Entity
     Entity& operator=(Entity&& rhs) noexcept = delete;
 
     virtual void Display()                                                 = 0;
+    virtual void displayModel(const Vector3& position)                     = 0;
     virtual void Update()                                                  = 0;
     virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;
     template <typename T>

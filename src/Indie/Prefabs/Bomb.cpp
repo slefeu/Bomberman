@@ -131,3 +131,5 @@ void Bomb::OnCollisionEnter([[maybe_unused]] std::unique_ptr<Entity>& other) noe
 {
     if (other->getEntityType() == EntityType::E_WALL) explode();
 }
+
+void Bomb::displayModel(const Vector3& position) {}

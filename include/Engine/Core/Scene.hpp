@@ -35,6 +35,7 @@ class Scene
     virtual Vector3 getCameraPosition() const noexcept         = 0;
     virtual Vector3 getCameraTarget() const noexcept           = 0;
     virtual Vector3 getCameraUp() const noexcept               = 0;
+    virtual void    switchAction() noexcept                    = 0;
 
     // methods for musics
     virtual void         playMusic() const noexcept       = 0;

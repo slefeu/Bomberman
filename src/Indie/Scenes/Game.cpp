@@ -26,13 +26,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , startSound_(START)
     , hurryUpSound_(HURRY_UP)
 {
-    // Assignation des bombes aux joueurs
-    for (auto& player : data_->players) {
-        if (player->getEntityType() != EntityType::E_PLAYER) continue;
-        ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
-    }
     createMap();
-
     startSound_.play();
     hurryUpSound_.setVolume(0.7f);
 }
@@ -40,6 +34,14 @@ Game::Game(GameData* data, Core& core_ref) noexcept
 Game::~Game() noexcept
 {
     loop_music_.unload();
+}
+
+void Game::switchAction() noexcept
+{
+    for (auto& player : data_->players) {
+        if (player->getEntityType() != EntityType::E_PLAYER) continue;
+        ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
+    }
 }
 
 void Game::playMusic() const noexcept
@@ -138,7 +140,7 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
 
 void Game::DestroyPool() noexcept
 {
-    // suppression des entités désacivées
+    // suppression des entités désactivées
     size_t len = entities_.size();
     for (size_t i = 0; i != len; i++) {
         if (!entities_[i]->getEnabledValue()) {

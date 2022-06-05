@@ -27,6 +27,8 @@ Home::~Home() noexcept
     unloadButtons();
 }
 
+void Home::switchAction() noexcept {}
+
 void Home::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",

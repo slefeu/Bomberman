@@ -28,7 +28,7 @@ Player::Player(const int newId, GameData* data)
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
-    transform->get().setRotationAngle(90.0f + (90.0f * id));
+    transform->get().setRotationAngle(direction[id]);
     transform->get().setScale(0.65f);
 
     renderer->get().setRenderType(RenderType::R_ANIMATE);
@@ -49,6 +49,22 @@ void Player::Display()
         throw(Error("Error in displaying the player element.\n"));
     if (!getEnabledValue()) return;
     renderer->get().display(transform->get());
+}
+
+void Player::displayModel(const Vector3& position)
+{
+    auto renderer = getComponent<Render>();
+    if (!renderer.has_value()) throw(Error("Error in displaying the player element.\n"));
+
+    Transform3D transform;
+    transform.setSize({ 0.5f, 0.5f, 0.5f });
+    transform.setPosition(position);
+    transform.setRotationAxis({ 0.0f, 1.0f, 0.0f });
+    transform.setRotationAngle(180.0f);
+    transform.setScale(0.7f);
+
+    renderer->get().display(transform);
+    renderer->get().setAnimationId(1);
 }
 
 void Player::Update()

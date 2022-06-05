@@ -12,6 +12,7 @@
 #include "Game.hpp"
 #include "Home.hpp"
 #include "PlayerSelect.hpp"
+#include "raylib.h"
 
 Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
@@ -61,10 +62,6 @@ void Core::resetData() noexcept
     if (scenes.size() != 0) scenes.clear();
     if (data->players.size() != 0) data->players.clear();
 
-    // Génération des joueurs
-    for (int i = 0; i != data->nbPlayer; i++)
-        data->players.emplace_back(std::make_unique<Player>(i, data));
-
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data, *this));
     scenes.emplace_back(std::make_unique<Game>(data, *this));
@@ -83,12 +80,14 @@ void Core::switchScene(const SceneType& scene) noexcept
     data->setCurrentScene(scene);
     findScene().resetCameraman(camera);
     findScene().playMusic();
+    findScene().switchAction();
 }
 
 void Core::run() noexcept
 {
     while (!exit_) {
         // Update -------------------------------------------------------------
+        SetMasterVolume(0);     // à enlever !!!
         checkExit();
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         audio_.update(findScene());

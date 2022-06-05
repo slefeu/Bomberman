@@ -7,11 +7,15 @@
 
 #pragma once
 
+#include <string>
+
+#include "Button.hpp"
 #include "Core.hpp"
 #include "Fps.hpp"
 #include "GameData.hpp"
 #include "Mouse.hpp"
 #include "Scene.hpp"
+#include "Text.hpp"
 
 class PlayerSelect : public Scene
 {
@@ -30,6 +34,7 @@ class PlayerSelect : public Scene
     void action(Cameraman& camera, MouseHandler mouse_) noexcept final;
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
+    void switchAction() noexcept final;
 
     // music methods
     void         playMusic() const noexcept final;
@@ -47,17 +52,25 @@ class PlayerSelect : public Scene
 
   protected:
   private:
-    MusicManager loop_music_;
-    Vector3      camera_position_ = { 20.0f, 50.0f, 30.0f };
-    Vector3      camera_target_   = { 0.0f, 0.0f, 1.0f };
-    Vector3      camera_up_       = { 0.0f, 1.0f, 0.0f };
-    GameData*    data_;
-    Core&        core_entry_;
-    ColorManager background_color_;
-    Sprite       background_;
-    Sprite       title_;
+    // methods
+    void createButtons() noexcept;
+    void drawButtons() const noexcept;
 
-    static const inline char* MUSIC      = "assets/audios/Select.mp3";
-    static const inline char* BG_PATH    = "assets/textures/home/background.png";
-    static const inline char* TITLE_PATH = "assets/textures/selection/title.png";
+    // attributes
+    MusicManager        loop_music_;
+    Vector3             camera_position_ = { 4.0f, 2.0f, 1.5f };
+    Vector3             camera_target_   = { 0.0f, 1.0f, 1.5f };
+    Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
+    GameData*           data_;
+    Core&               core_entry_;
+    ColorManager        background_color_;
+    Sprite              background_;
+    Sprite              title_;
+    TextHandler         choose_;
+    std::vector<Button> buttons_ = {};
+
+    static const inline char*       MUSIC      = "assets/audios/Select.mp3";
+    static const inline char*       BG_PATH    = "assets/textures/home/background.png";
+    static const inline char*       TITLE_PATH = "assets/textures/selection/title.png";
+    static const inline std::string SELECT     = "assets/fonts/menu.ttf";
 };

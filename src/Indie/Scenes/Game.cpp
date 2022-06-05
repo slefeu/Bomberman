@@ -99,7 +99,7 @@ void Game::display2D() noexcept
     }
 }
 
-void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
+void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
 {
     DestroyPool();
     CollisionPool();

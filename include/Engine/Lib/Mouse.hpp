@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include "Rectangle.hpp"
 #include "raylib.h"
 
 class MouseHandler
@@ -19,8 +20,10 @@ class MouseHandler
     MouseHandler& operator=(const MouseHandler& rhs) noexcept = default;
     MouseHandler& operator=(MouseHandler&& rhs) noexcept = default;
 
-    void    update() noexcept;
-    Vector2 getPosition() const noexcept;
+    void update() noexcept;
+    bool isColliding(const RectangleManager& bounds) noexcept;
+    bool isClicking() const noexcept;
+    bool isClicked() const noexcept;
 
   protected:
   private:

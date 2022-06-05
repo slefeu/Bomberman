@@ -24,10 +24,12 @@ Button::Button(const std::string& texture_path,
     , task_(function)
     , text_(font_path, message, textPosX, textPosY)
     , color_(Colors::C_WHITE)
+    , rectangle_(pos_x,
+          pos_y,
+          static_cast<float>(texture_.getWidth()),
+          static_cast<float>(texture_.getHeight()) / frames_)
 {
-    float frameHeight = static_cast<float>(texture_.getHeight()) / frames_;
-    rectangle_        = { pos_x, pos_y, static_cast<float>(texture_.getWidth()), frameHeight };
-    texture_.setPos(rectangle_.x, rectangle_.y);
+    texture_.setPos(rectangle_.getX(), rectangle_.getY());
     texture_.setScale(scale);
 }
 
@@ -45,16 +47,16 @@ void Button::draw() const noexcept
     text_.draw();
 }
 
-bool Button::checkCollision(const Vector2& mouse_pos) noexcept
+bool Button::checkCollision(MouseHandler& mouse_) noexcept
 {
-    if (CheckCollisionPointRec(mouse_pos, rectangle_)) {
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { state_ = 2; }
+    if (mouse_.isColliding(rectangle_)) {
+        if (mouse_.isClicking()) { state_ = 2; };
         if (state_ == 0) {
             state_ = 1;
             color_.setColor(Colors::C_PINK);
             fx_hover_.play();
         }
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) { is_action_ = true; }
+        if (mouse_.isClicked()) { is_action_ = true; }
     } else {
         color_.setColor(Colors::C_WHITE);
         state_ = 0;

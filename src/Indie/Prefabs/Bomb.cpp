@@ -25,6 +25,8 @@ Bomb::Bomb(Vector3                        pos,
     , entities(entities)
     , is_exploding_(false)
     , animeDir(1)
+    , dropSound_(DROP_BOMB)
+    , explodeSound(EXPLODE)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -39,6 +41,9 @@ Bomb::Bomb(Vector3                        pos,
     renderer->get().setModel(newModel);
 
     addComponent(BoxCollider(transform->get().getPosition(), { 0.8f, 1.2f, 0.8f }, false));
+
+    explodeSound.setVolume(0.5f);
+    dropSound_.play();
 }
 
 void Bomb::Display()
@@ -82,6 +87,8 @@ void Bomb::Update()
 void Bomb::explode() noexcept
 {
     auto hitbox = getComponent<BoxCollider>();
+
+    explodeSound.play();
 
     if (is_exploding_) return;
     is_exploding_ = true;

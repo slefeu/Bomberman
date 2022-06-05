@@ -14,6 +14,8 @@
 
 Item::Item(Vector3 pos, GameData* data)
     : Entity(EntityType::E_ITEM)
+    , getItemSound(GET_ITEM)
+    , newItemSound(NEW_ITEM)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -55,6 +57,8 @@ Item::Item(Vector3 pos, GameData* data)
             break;
         default: break;
     }
+
+    newItemSound.play();
 }
 
 void Item::Display()
@@ -73,6 +77,7 @@ void Item::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_PLAYER) {
         setPlayerStat((std::unique_ptr<Player>&)other);
+        getItemSound.play();
         setEnabledValue(false);
     }
 }

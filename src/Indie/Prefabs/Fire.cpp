@@ -24,11 +24,15 @@ Fire::Fire(Vector3 posi, std::unique_ptr<Model3D>* model)
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
 
-    transform->get().setPosition({ posi.x - 5.6f, posi.y - 0.5f, posi.z - 3.5f });
-    transform->get().setScale(2.0f);
+    transform->get().setPosition({ posi.x, posi.y - 0.3f, posi.z });
+    transform->get().setScale(1.2f);
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
-    renderer->get().setRenderType(RenderType::R_3DMODEL);
+    transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
+    transform->get().setRotationAngle(-90.0f);
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
     renderer->get().setModel(model);
+    renderer->get().addAnimation("assets/models/fire.iqm");
+
     addComponent(BoxCollider({ posi.x, posi.y, posi.z }, transform->get().getSize(), true));
 }
 

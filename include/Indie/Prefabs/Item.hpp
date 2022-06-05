@@ -7,18 +7,22 @@
 
 #include "Entity.hpp"
 #include "Player.hpp"
+#include "Sound.hpp"
 
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
+
+static const inline char* GET_ITEM = "assets/audios/GetItem.wav";
+static const inline char* NEW_ITEM = "assets/audios/NewItem.wav";
 
 class Item : public Entity
 {
   public:
     Item(Vector3 pos, GameData* data);
-    ~Item() noexcept                 = default;
-    Item(const Item& other) noexcept = delete;
-    Item(Item&& other) noexcept      = delete;
+    ~Item() noexcept                          = default;
+    Item(const Item& other) noexcept          = delete;
+    Item(Item&& other) noexcept               = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
-    Item& operator=(Item&& rhs) noexcept = delete;
+    Item& operator=(Item&& rhs) noexcept      = delete;
 
     void Display() final;
     void Update() final;
@@ -28,7 +32,9 @@ class Item : public Entity
     void setPlayerStat(std::unique_ptr<Player>& p) noexcept;
 
   private:
-    ItemType itemType;
+    ItemType     itemType;
+    SoundManager getItemSound;
+    SoundManager newItemSound;
 };
 
 #pragma once

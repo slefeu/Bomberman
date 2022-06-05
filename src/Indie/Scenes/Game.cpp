@@ -23,6 +23,8 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , loop_music_(GAME_MUSIC)
     , core_entry_(core_ref)
     , background_color_(Colors::C_BLACK)
+    , startSound_(START)
+    , hurryUpSound_(HURRY_UP)
 {
     // Assignation des bombes aux joueurs
     for (auto& player : data_->players) {
@@ -30,6 +32,9 @@ Game::Game(GameData* data, Core& core_ref) noexcept
         ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
     }
     createMap();
+
+    startSound_.play();
+    hurryUpSound_.setVolume(0.7f);
 }
 
 Game::~Game() noexcept
@@ -122,6 +127,7 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
         isHurry            = true;
         lastTimeBlockPlace = chrono_->getTime();
         HurryUpX           = GetScreenWidth() - 100;
+        hurryUpSound_.play();
     }
     hurryUp();
 

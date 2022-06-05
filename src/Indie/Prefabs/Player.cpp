@@ -17,6 +17,7 @@ Player::Player(const int newId, GameData* data)
     , wallpass(false)
     , wallpassTimer(std::make_unique<Timer>(5.0f))
     , wallpassEnd(false)
+    , killSound_(KILL)
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -29,14 +30,15 @@ Player::Player(const int newId, GameData* data)
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setRotationAngle(90.0f + (90.0f * id));
     transform->get().setScale(0.65f);
-    renderer->get().setRenderType(RenderType::R_ANIMATE);
 
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
     renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
+    renderer->get().addAnimation("assets/models/player.iqm");
+
     setKeyboard();
     setPosition();
-    setPlayerType(PlayerType::RUNNER);
+    setPlayerType(PlayerType::NORMAL);
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
-    addComponent(Controller());
 }
 
 void Player::Display()
@@ -51,15 +53,12 @@ void Player::Display()
 
 void Player::Update()
 {
-    auto hitbox     = getComponent<BoxCollider>();
-    auto transform  = getComponent<Transform3D>();
-    auto renderer   = getComponent<Render>();
-    auto controller = getComponent<Controller>();
-    auto model      = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
-    bool animate    = false;
+    auto hitbox    = getComponent<BoxCollider>();
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
+    bool animate   = false;
 
-    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value()
-        || !controller.has_value())
+    if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
 
@@ -79,10 +78,10 @@ void Player::Update()
         colorIndex = (colorIndex + 1) % colors.size();
     }
 
-    if (controller->get().isGamepadConnected(id)) {
+    if (controller.isGamepadConnected(id)) {
         // Mouvements au joystick
-        float axisX = controller->get().getGamepadAxis(id, Axis::G_AXIS_LEFT_X);
-        float axisY = controller->get().getGamepadAxis(id, Axis::G_AXIS_LEFT_Y);
+        float axisX = controller.getGamepadAxis(id, Axis::G_AXIS_LEFT_X);
+        float axisY = controller.getGamepadAxis(id, Axis::G_AXIS_LEFT_Y);
 
         if (axisX != 0 || axisY != 0) animate = true;
         if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
@@ -101,38 +100,47 @@ void Player::Update()
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
-        if (controller->get().isGamepadButtonPressed(id, G_Button::G_B)) placeBomb();
+        if (controller.isGamepadButtonPressed(id, G_Button::G_B)) placeBomb();
     } else {
         // Mouvements au clavier
-        if (controller->get().isKeyDown(moveUp) || controller->get().isKeyDown(moveDown)
-            || controller->get().isKeyDown(moveLeft) || controller->get().isKeyDown(moveRight))
+        if (controller.isKeyDown(moveUp) || controller.isKeyDown(moveDown)
+            || controller.isKeyDown(moveLeft) || controller.isKeyDown(moveRight))
             animate = true;
-        if (controller->get().isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+        if (controller.isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
             transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
         }
-        if (controller->get().isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+        if (controller.isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
             transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
         }
-        if (controller->get().isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+        if (controller.isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
             transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
         }
-        if (controller->get().isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+        if (controller.isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
-        if (controller->get().isKeyPressed(dropBomb)) placeBomb();
+        if (controller.isKeyPressed(dropBomb)) placeBomb();
     }
 
-    if (!animate) model->resetAnimation(20);
+    if (!animate) {
+        renderer->get().setSkipFrame(1);
+        renderer->get().setAnimationId(1);
+    } else {
+        renderer->get().setSkipFrame(2);
+        renderer->get().setAnimationId(0);
+    }
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
-    if (other->getEntityType() == EntityType::E_FIRE) setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_WALL
+        || other->getEntityType() == EntityType::E_FIRE) {
+        killSound_.play();
+        setEnabledValue(false);
+    }
 }
 
 void Player::setPosition()

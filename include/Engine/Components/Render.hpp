@@ -26,12 +26,12 @@ class Render : public Component
 {
   public:
     Render() noexcept;
+    ~Render() noexcept;
     Render(const Render& other) noexcept = default;
     Render(Render&& other) noexcept      = default;
-    ~Render() noexcept                   = default;
 
     Render& operator=(const Render& rhs) noexcept = default;
-    Render& operator=(Render&& rhs) noexcept = default;
+    Render& operator=(Render&& rhs) noexcept      = default;
 
     void          display(const Transform3D& transform) noexcept;
     void          setRenderType(const RenderType& type) noexcept;
@@ -40,10 +40,22 @@ class Render : public Component
     RenderType    getRenderType() const noexcept;
     ComponentType getComponentType() const noexcept;
 
+    void addAnimation(std::string path) noexcept;
+    void updateAnimation() noexcept;
+    void resetAnimation(int frame) noexcept;
+    void setSkipFrame(int frame) noexcept;
+    void setAnimationId(int id) noexcept;
+
     static constexpr ComponentType TYPE = ComponentType::RENDER;
 
   private:
-    RenderType                type   = RenderType::R_NONE;
-    std::unique_ptr<Model3D>* model_ = nullptr;
-    ColorManager              color_ = Colors::C_WHITE;
+    RenderType                type             = RenderType::R_NONE;
+    std::unique_ptr<Model3D>* model_           = nullptr;
+    ColorManager              color_           = Colors::C_WHITE;
+    ModelAnimation*           anims            = nullptr;
+    int                       animFrameCounter = 0;
+    unsigned int              animsCount       = 0;
+    bool                      isAnimated       = true;
+    int                       skipFrame        = 1;
+    int                       animationId      = 0;
 };

@@ -13,7 +13,7 @@ Home::Home(GameData* data, Core& core_ref) noexcept
     , core_entry_(core_ref)
     , data_(data)
     , background_color_(Colors::C_WHITE)
-    , background_(BG_PATH)
+    , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
 {
     createButtons();
@@ -34,7 +34,7 @@ void Home::createButtons() noexcept
         data_->winWidth / 2,
         data_->winHeight / 4,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
+            [this](void) { return (core_entry_.switchScene(SceneType::SELECT)); }),
         1,
         "assets/fonts/menu.ttf",
         "Play",

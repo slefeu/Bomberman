@@ -26,7 +26,7 @@ class Bomb : public Entity
         int                                   bombSize,
         GameData*                             data,
         std::vector<std::unique_ptr<Entity>>* Entity);
-    ~Bomb() noexcept                          = default;
+    ~Bomb() noexcept;
     Bomb(const Bomb& other) noexcept          = delete;
     Bomb(Bomb&& other) noexcept               = delete;
     Bomb& operator=(const Bomb& rhs) noexcept = delete;

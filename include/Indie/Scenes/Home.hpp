@@ -30,7 +30,7 @@ class Home : public Scene
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
 
-    void         playMusic() const noexcept final;
+    void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;

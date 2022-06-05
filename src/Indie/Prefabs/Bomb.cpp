@@ -46,6 +46,12 @@ Bomb::Bomb(Vector3                        pos,
     dropSound_.play();
 }
 
+Bomb::~Bomb() noexcept
+{
+    dropSound_.unload();
+    explodeSound.unload();
+}
+
 void Bomb::Display()
 {
     auto transform = getComponent<Transform3D>();

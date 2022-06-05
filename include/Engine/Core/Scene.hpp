@@ -11,17 +11,17 @@
 #include "Color.hpp"
 #include "Music.hpp"
 
-enum class SceneType : std::size_t { MENU, GAME };
+enum class SceneType : std::size_t { MENU, GAME, ENDGAME };
 
 class Scene
 {
   public:
-    Scene() noexcept                   = default;
-    virtual ~Scene() noexcept          = default;
-    Scene(const Scene& other) noexcept = delete;
-    Scene(Scene&& other) noexcept      = delete;
+    Scene() noexcept                            = default;
+    virtual ~Scene() noexcept                   = default;
+    Scene(const Scene& other) noexcept          = delete;
+    Scene(Scene&& other) noexcept               = delete;
     Scene& operator=(const Scene& rhs) noexcept = delete;
-    Scene& operator=(Scene&& rhs) noexcept = delete;
+    Scene& operator=(Scene&& rhs) noexcept      = delete;
 
     virtual void         action(Cameraman& camera, Vector2 mouse_pos) noexcept = 0;
     virtual void         DestroyPool() noexcept                                = 0;
@@ -36,7 +36,7 @@ class Scene
     virtual Vector3 getCameraUp() const noexcept               = 0;
 
     // methods for musics
-    virtual void         playMusic() const noexcept       = 0;
+    virtual void         playMusic() noexcept             = 0;
     virtual MusicManager getMusicManager() const noexcept = 0;
 
     // methods for display

@@ -12,7 +12,7 @@
 #include "Mouse.hpp"
 #include "Music.hpp"
 
-enum class SceneType : std::size_t { MENU, GAME };
+enum class SceneType : std::size_t { MENU, GAME, SELECT };
 
 class Scene
 {

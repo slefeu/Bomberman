@@ -11,6 +11,7 @@
 
 #include "Game.hpp"
 #include "Home.hpp"
+#include "PlayerSelect.hpp"
 
 Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
@@ -67,6 +68,7 @@ void Core::resetData() noexcept
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data, *this));
     scenes.emplace_back(std::make_unique<Game>(data, *this));
+    scenes.emplace_back(std::make_unique<PlayerSelect>(data, *this));
     findScene().playMusic();
 }
 

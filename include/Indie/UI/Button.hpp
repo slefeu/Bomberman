@@ -56,6 +56,6 @@ class Button
     TextHandler               text_;
     ColorManager              color_;
 
-    static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
-    static const inline char* ON_HOVER = "assets/audios/menu_hover.ogg";
+    static const inline char* ON_CLICK = "assets/audios/OnClick.wav";
+    static const inline char* ON_HOVER = "assets/audios/MenuHover.wav";
 };

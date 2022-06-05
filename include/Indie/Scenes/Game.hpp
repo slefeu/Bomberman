@@ -14,10 +14,10 @@
 
 #include "Core.hpp"
 #include "Entity.hpp"
+#include "Fps.hpp"
 #include "Model3D.hpp"
 #include "Scene.hpp"
 #include "Timer.hpp"
-#include "Fps.hpp"
 
 enum class Direction { UP, RIGHT, DOWN, LEFT };
 
@@ -33,7 +33,7 @@ class Game : public Scene
 
     void         display3D() noexcept final;
     void         display2D() noexcept final;
-    void         action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
+    void         action(Cameraman& camera, MouseHandler mouse_) noexcept final;
     void         DestroyPool() noexcept final;
     void         CollisionPool() noexcept final;
     void         playMusic() const noexcept final;
@@ -51,9 +51,9 @@ class Game : public Scene
     void hurryUp() noexcept;
 
     // attributes
-    GameData*                              data_;
-    std::vector<std::unique_ptr<Entity>>   entities_;
-    std::unique_ptr<Timer>                 chrono_;
+    GameData*                            data_;
+    std::vector<std::unique_ptr<Entity>> entities_;
+    std::unique_ptr<Timer>               chrono_;
 
     float lastTimeBlockPlace;
     bool  isHurry;

@@ -23,12 +23,12 @@ GameData::~GameData() noexcept
 
 void GameData::updateMouse() noexcept
 {
-    mouse_handler_.update();
+    mouse_.update();
 }
 
-Vector2 GameData::getMousePosition() const noexcept
+MouseHandler GameData::getMouseHandler() const noexcept
 {
-    return (mouse_handler_.getPosition());
+    return (mouse_);
 }
 
 void GameData::setCurrentScene(const SceneType& scene) noexcept

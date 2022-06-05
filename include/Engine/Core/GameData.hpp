@@ -23,10 +23,10 @@ class GameData
     GameData& operator=(GameData&& rhs) noexcept = delete;
     ~GameData() noexcept;
 
-    Vector2   getMousePosition() const noexcept;
-    void      updateMouse() noexcept;
-    void      setCurrentScene(const SceneType& scene) noexcept;
-    SceneType getCurrentScene() const noexcept;
+    MouseHandler getMouseHandler() const noexcept;
+    void         updateMouse() noexcept;
+    void         setCurrentScene(const SceneType& scene) noexcept;
+    SceneType    getCurrentScene() const noexcept;
 
   public:
     int   fps;
@@ -42,6 +42,6 @@ class GameData
 
   protected:
   private:
-    MouseHandler mouse_handler_;
+    MouseHandler mouse_;
     SceneType    current_scene_ = SceneType::MENU;
 };

@@ -101,7 +101,7 @@ void Core::run() noexcept
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         audio_.update(findScene());
         data->updateMouse();
-        findScene().action(camera, data->getMousePosition());
+        findScene().action(camera, data->getMouseHandler());
 
         // Display ------------------------------------------------------------
         window_->display(findScene(), camera);

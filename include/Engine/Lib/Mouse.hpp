@@ -21,7 +21,6 @@ class MouseHandler
     MouseHandler& operator=(MouseHandler&& rhs) noexcept = default;
 
     void update() noexcept;
-    // Vector2 getPosition() const noexcept;
     bool isColliding(const RectangleManager& bounds) noexcept;
     bool isClicking() const noexcept;
     bool isClicked() const noexcept;

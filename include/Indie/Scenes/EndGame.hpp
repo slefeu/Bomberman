@@ -42,15 +42,16 @@ class EndGame : public Scene
 
   private:
     // attributes
-    Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
-    Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
-    Vector3             camera_up_       = { 0.0f, 1.0f, 0.0f };
+    Vector3             camera_position_ = { 0.0f, 1.0f, 2.0f };
+    Vector3             camera_target_   = { 0.0f, 1.0f, 0.0f };
+    Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
     std::vector<Button> buttons_         = {};
     GameData*           data_;
     Core&               core_entry_;
     ColorManager        background_color_;
     Controller          controller;
     MusicManager        victory_music_;
+    bool                isEnd = false;
 
     static const inline char* VICTORY_MUSIC = "assets/audios/Victory.mp3";
 };

@@ -115,7 +115,7 @@ void Game::action(Cameraman& camera, Vector2 mouse_pos) noexcept
     int alive = 0;
     for (auto& player : data_->players)
         if (player->getEnabledValue()) alive++;
-    if (alive == 1 || alive == 0) core_entry_.switchScene(SceneType::ENDGAME);
+    if (alive == 1 || alive == 0) { core_entry_.switchScene(SceneType::ENDGAME); }
 
     for (auto& player : data_->players) player->Update();
     for (auto& entity : entities_) entity->Update();

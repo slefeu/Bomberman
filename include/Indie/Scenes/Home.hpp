@@ -49,7 +49,7 @@ class Home : public Scene
     MusicManager        loop_music_;
     Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
     Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
-    Vector3             camera_up_       = { 0.0f, 1.0f, 0.0f };
+    Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
     std::vector<Button> buttons_         = {};
     GameData*           data_;
     Core&               core_entry_;

@@ -32,13 +32,11 @@ set(
   src/Engine/Core/Cameraman.cpp
   src/Engine/Core/Core.cpp
   src/Engine/Core/GameData.cpp
-  src/Engine/Core/Model3D.cpp
   src/Engine/Core/Entity.cpp
 
   src/Engine/Components/BoxCollider.cpp
   src/Engine/Components/Transform3D.cpp
   src/Engine/Components/Render.cpp
-  src/Engine/Components/Controller.cpp
 
   src/Indie/Prefabs/Player.cpp
   src/Indie/Prefabs/Bomb.cpp
@@ -62,6 +60,8 @@ set(
   src/Engine/Lib/Color.cpp
   src/Engine/Lib/Window.cpp
   src/Engine/Lib/Fps.cpp
+  src/Engine/Lib/Controller.cpp
+  src/Engine/Lib/Model3D.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

@@ -6,7 +6,6 @@
 */
 
 #pragma once
-#include "Component.hpp"
 
 enum class Key {
     K_NULL          = 0,
@@ -151,7 +150,7 @@ enum class G_Button {
     G_BUTTON
 };
 
-class Controller : public Component
+class Controller
 {
   public:
     Controller() noexcept                        = default;
@@ -160,11 +159,7 @@ class Controller : public Component
     Controller(Controller&& other) noexcept      = default;
 
     Controller& operator=(const Controller& rhs) noexcept = default;
-    Controller& operator=(Controller&& rhs) noexcept = default;
-
-    ComponentType getComponentType() const noexcept;
-
-    static constexpr ComponentType TYPE = ComponentType::CONTROLLER;
+    Controller& operator=(Controller&& rhs) noexcept      = default;
 
     bool  isKeyDown(Key key) const noexcept;
     bool  isKeyPressed(Key key) const noexcept;

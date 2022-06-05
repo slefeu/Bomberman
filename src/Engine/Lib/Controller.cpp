@@ -19,11 +19,6 @@ bool Controller::isKeyPressed(Key key) const noexcept
     return IsKeyPressed(static_cast<KeyboardKey>(key));
 }
 
-ComponentType Controller::getComponentType() const noexcept
-{
-    return this->TYPE;
-}
-
 bool Controller::isGamepadConnected(int id) const noexcept
 {
     return IsGamepadAvailable(id);

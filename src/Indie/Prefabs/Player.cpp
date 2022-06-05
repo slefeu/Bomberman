@@ -29,12 +29,14 @@ Player::Player(const int newId, GameData* data)
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setRotationAngle(90.0f + (90.0f * id));
     transform->get().setScale(0.65f);
-    renderer->get().setRenderType(RenderType::R_ANIMATE);
 
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
     renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
+    renderer->get().addAnimation("assets/models/player.iqm");
+
     setKeyboard();
     setPosition();
-    setPlayerType(PlayerType::RUNNER);
+    setPlayerType(PlayerType::NORMAL);
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
     addComponent(Controller());
 }
@@ -55,7 +57,6 @@ void Player::Update()
     auto transform  = getComponent<Transform3D>();
     auto renderer   = getComponent<Render>();
     auto controller = getComponent<Controller>();
-    auto model      = (&data->models[((int)ModelType::M_PLAYER_1) + id])->get();
     bool animate    = false;
 
     if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value()
@@ -126,7 +127,13 @@ void Player::Update()
         if (controller->get().isKeyPressed(dropBomb)) placeBomb();
     }
 
-    if (!animate) model->resetAnimation(20);
+    if (!animate) {
+        renderer->get().setSkipFrame(1);
+        renderer->get().setAnimationId(1);
+    } else {
+        renderer->get().setSkipFrame(2);
+        renderer->get().setAnimationId(0);
+    }
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

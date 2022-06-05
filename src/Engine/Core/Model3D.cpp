@@ -18,36 +18,4 @@ Model3D::~Model3D() noexcept
 {
     UnloadTexture(texture);
     UnloadModel(model);
-
-    if (!anims) return;
-
-    for (unsigned int i = 0; i < animsCount; i++) UnloadModelAnimation(anims[i]);
-    RL_FREE(anims);
-}
-
-void Model3D::addAnimation(std::string path) noexcept
-{
-    anims = LoadModelAnimations(path.c_str(), &animsCount);
-}
-
-void Model3D::updateAnimation() noexcept
-{
-    if (anims == nullptr) return;
-    if (isAnimated) {
-        animFrameCounter += 1.0f * skipFrame;
-        UpdateModelAnimation(model, anims[0], animFrameCounter);
-        if (animFrameCounter >= anims[0].frameCount) animFrameCounter = 0;
-    }
-}
-
-void Model3D::resetAnimation(int frame) noexcept
-{
-    if (anims == nullptr) return;
-    animFrameCounter = frame;
-    UpdateModelAnimation(model, anims[0], animFrameCounter);
-}
-
-void Model3D::setSkipFrame(int frame) noexcept
-{
-    skipFrame = frame;
 }

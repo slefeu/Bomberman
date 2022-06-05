@@ -34,7 +34,7 @@ Core::Core(GameData* newData, WindowManager* window) noexcept
     data->models.emplace_back(
         std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/item.png"));
     data->models.emplace_back(
-        std::make_unique<Model3D>("assets/models/fire.glb", "assets/textures/entities/fire.png"));
+        std::make_unique<Model3D>("assets/models/fire.iqm", "assets/textures/entities/fire.png"));
     data->models.emplace_back(
         std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/white.png"));
     data->models.emplace_back(
@@ -43,16 +43,6 @@ Core::Core(GameData* newData, WindowManager* window) noexcept
         std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/blue.png"));
     data->models.emplace_back(
         std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/red.png"));
-
-    data->models[(int)ModelType::M_PLAYER_1]->addAnimation("assets/models/player.iqm");
-    data->models[(int)ModelType::M_PLAYER_2]->addAnimation("assets/models/player.iqm");
-    data->models[(int)ModelType::M_PLAYER_3]->addAnimation("assets/models/player.iqm");
-    data->models[(int)ModelType::M_PLAYER_4]->addAnimation("assets/models/player.iqm");
-
-    data->models[(int)ModelType::M_PLAYER_1]->setSkipFrame(2);
-    data->models[(int)ModelType::M_PLAYER_2]->setSkipFrame(2);
-    data->models[(int)ModelType::M_PLAYER_3]->setSkipFrame(2);
-    data->models[(int)ModelType::M_PLAYER_4]->setSkipFrame(2);
 
     // Chargement des sprites
     data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/white.png", 0, 0, 0.5f));

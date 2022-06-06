@@ -9,6 +9,7 @@
 
 #include <type_traits>
 
+#include "EndGame.hpp"
 #include "Game.hpp"
 #include "Home.hpp"
 
@@ -67,6 +68,7 @@ void Core::resetData() noexcept
     // Loading all scenes
     scenes.emplace_back(std::make_unique<Home>(data, *this));
     scenes.emplace_back(std::make_unique<Game>(data, *this));
+    scenes.emplace_back(std::make_unique<EndGame>(data, *this));
     findScene().playMusic();
 }
 

@@ -21,12 +21,15 @@ class MusicManager
     MusicManager& operator=(const MusicManager& rhs) noexcept = default;
     MusicManager& operator=(MusicManager&& rhs) noexcept      = default;
 
-    void play() const noexcept;
+    void play() noexcept;
     void update() noexcept;
     void unload() noexcept;
     void setVolume(float volume) noexcept;
+    void stop() noexcept;
+    bool getIsPlaying() const noexcept;
 
   protected:
   private:
     Music music_;
+    bool  isPlaying;
 };

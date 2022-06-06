@@ -25,7 +25,7 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData* data);
-    ~Player() noexcept                            = default;
+    ~Player() noexcept;
     Player(const Player& other) noexcept          = delete;
     Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;

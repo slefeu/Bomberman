@@ -53,3 +53,5 @@ void Wall::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
     if (other->getEntityType() == EntityType::E_WALL && transform->get().getPosition().y > 0)
         other->setEnabledValue(false);
 }
+
+void Wall::displayModel(const Vector3& position) {}

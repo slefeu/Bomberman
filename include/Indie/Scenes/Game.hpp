@@ -27,10 +27,10 @@ class Game : public Scene
   public:
     Game(GameData* data, Core& core_ref) noexcept;
     ~Game() noexcept;
-    Game(const Game& other) noexcept          = delete;
-    Game(Game&& other) noexcept               = delete;
+    Game(const Game& other) noexcept = delete;
+    Game(Game&& other) noexcept      = delete;
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
+    Game& operator=(Game&& rhs) noexcept = delete;
 
     void         display3D() noexcept final;
     void         display2D() noexcept final;
@@ -45,6 +45,7 @@ class Game : public Scene
     void         resetCameraman(Cameraman& camera) noexcept final;
     void         drawBackground() const noexcept final{};
     ColorManager getBackgroundColor() const noexcept final;
+    void         switchAction() noexcept final;
 
   private:
     // methods

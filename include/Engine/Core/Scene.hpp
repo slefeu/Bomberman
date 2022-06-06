@@ -12,7 +12,7 @@
 #include "Mouse.hpp"
 #include "Music.hpp"
 
-enum class SceneType : std::size_t { MENU, GAME };
+enum class SceneType : std::size_t { MENU, GAME, SELECT };
 
 class Scene
 {
@@ -35,6 +35,7 @@ class Scene
     virtual Vector3 getCameraPosition() const noexcept         = 0;
     virtual Vector3 getCameraTarget() const noexcept           = 0;
     virtual Vector3 getCameraUp() const noexcept               = 0;
+    virtual void    switchAction() noexcept                    = 0;
 
     // methods for musics
     virtual void         playMusic() const noexcept       = 0;

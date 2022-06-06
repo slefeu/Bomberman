@@ -13,8 +13,7 @@ TextHandler::TextHandler(
     , message_(message)
     , color_(Colors::C_WHITE)
 {
-    position_.x = posX;
-    position_.y = posY;
+    setPos(posX, posY);
 }
 
 void TextHandler::unload() noexcept
@@ -42,4 +41,10 @@ void TextHandler::setTextColor(const std::array<unsigned char, 3>& color) noexce
 void TextHandler::setTextSize(int size) noexcept
 {
     font_.setFontSize(size);
+}
+
+void TextHandler::setPos(int posX, int posY) noexcept
+{
+    position_.x = posX;
+    position_.y = posY;
 }

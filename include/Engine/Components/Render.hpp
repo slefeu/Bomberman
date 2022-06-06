@@ -31,7 +31,7 @@ class Render : public Component
     Render(Render&& other) noexcept      = default;
 
     Render& operator=(const Render& rhs) noexcept = default;
-    Render& operator=(Render&& rhs) noexcept      = default;
+    Render& operator=(Render&& rhs) noexcept = default;
 
     void          display(const Transform3D& transform) noexcept;
     void          setRenderType(const RenderType& type) noexcept;

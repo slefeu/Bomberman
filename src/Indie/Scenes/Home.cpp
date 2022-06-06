@@ -13,7 +13,7 @@ Home::Home(GameData* data, Core& core_ref) noexcept
     , core_entry_(core_ref)
     , data_(data)
     , background_color_(Colors::C_WHITE)
-    , background_(BG_PATH)
+    , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
 {
     createButtons();
@@ -27,22 +27,22 @@ Home::~Home() noexcept
     unloadButtons();
 }
 
+void Home::switchAction() noexcept {}
+
 void Home::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 2,
         data_->winHeight / 4,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
+            [this](void) { return (core_entry_.switchScene(SceneType::SELECT)); }),
         1,
         "assets/fonts/menu.ttf",
-        "Play",
+        "Start",
         data_->winWidth / 2 + 100,
         data_->winHeight / 4 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 2,
         (data_->winHeight / 4) + (150 * buttons_.size()),
         std::function<void(void)>([](void) { return; }),
@@ -53,7 +53,6 @@ void Home::createButtons() noexcept
         data_->winHeight / 4 + 150 * buttons_.size() + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 2,
         data_->winHeight / 4 + (150 * buttons_.size()),
         std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),

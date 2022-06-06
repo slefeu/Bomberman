@@ -70,8 +70,8 @@ void PlayerSelect::createButtons() noexcept
         }),
         1,
         "assets/fonts/menu.ttf",
-        " Add",
-        data_->winWidth / 2 + 100,
+        "Add",
+        data_->winWidth / 2 + 105,
         data_->winHeight / 4 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
@@ -82,9 +82,9 @@ void PlayerSelect::createButtons() noexcept
             [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
         1,
         "assets/fonts/menu.ttf",
-        " Play game",
-        data_->winWidth - (data_->winWidth / 5 + 50),
-        data_->winHeight - 50);
+        "Play game",
+        data_->winWidth - (data_->winWidth / 5 - 35),
+        data_->winHeight - (data_->winHeight / 4 - 40));
 }
 
 void PlayerSelect::drawButtons() const noexcept

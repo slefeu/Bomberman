@@ -31,26 +31,27 @@ class Player : public Entity
     Player& operator=(const Player& rhs) noexcept = delete;
     Player& operator=(Player&& rhs) noexcept      = delete;
 
-    void  Display() final;
-    void  Update() final;
-    void  OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
-    void  setStats(int bomb, int sp, int size) noexcept;
-    void  setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept;
-    void  setPlayerType(PlayerType type) noexcept;
-    void  setWallPass(const bool& pass) noexcept;
-    int   getNbBombMax() const noexcept;
-    float getSpeedMax() const noexcept;
-    int   getBombSizeMax() const noexcept;
-    float getSpeed() const noexcept;
-    int   getNbBomb() const noexcept;
-    int   getBombSize() const noexcept;
-    void  setSpeed(const float& speed) noexcept;
-    void  setNbBomb(const int& nbBomb) noexcept;
-    void  setBombSize(const int& bombSize) noexcept;
+    void       Display() final;
+    void       Update() final;
+    void       OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
+    void       setStats(int bomb, int sp, int size) noexcept;
+    void       setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept;
+    void       setPlayerType(PlayerType type) noexcept;
+    void       setWallPass(const bool& pass) noexcept;
+    int        getNbBombMax() const noexcept;
+    float      getSpeedMax() const noexcept;
+    int        getBombSizeMax() const noexcept;
+    float      getSpeed() const noexcept;
+    int        getNbBomb() const noexcept;
+    int        getBombSize() const noexcept;
+    void       setSpeed(const float& speed) noexcept;
+    void       setNbBomb(const int& nbBomb) noexcept;
+    void       setBombSize(const int& bombSize) noexcept;
+    PlayerType getPlayerType() const noexcept;
+    void       setPosition();
 
   private:
     void setKeyboard() noexcept;
-    void setPosition();
     void placeBomb();
     bool isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir);
     SoundManager                              killSound_;

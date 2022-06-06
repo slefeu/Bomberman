@@ -28,7 +28,6 @@ Player::Player(const int newId, GameData* data)
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
-    transform->get().setRotationAngle(direction[id]);
     transform->get().setScale(0.65f);
 
     renderer->get().setRenderType(RenderType::R_ANIMATE);
@@ -143,8 +142,10 @@ void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_WALL
         || other->getEntityType() == EntityType::E_FIRE) {
-        killSound_.play();
-        setEnabledValue(false);
+        if (other->getEnabledValue()) {
+            killSound_.play();
+            setEnabledValue(false);
+        }
     }
 }
 
@@ -152,6 +153,8 @@ void Player::setPosition()
 {
     auto transform = getComponent<Transform3D>();
     if (!transform.has_value()) throw(Error("Error in setting player position.\n"));
+
+    transform->get().setRotationAngle(direction[id]);
     switch (id) {
         case 0:
             transform->get().setX(-6.0f);
@@ -361,4 +364,9 @@ void Player::setNbBomb(const int& nbBomb) noexcept
 void Player::setBombSize(const int& bombSize) noexcept
 {
     this->bombSize = bombSize;
+}
+
+PlayerType Player::getPlayerType() const noexcept
+{
+    return type;
 }

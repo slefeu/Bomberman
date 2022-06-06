@@ -7,6 +7,8 @@
 
 #include "Game.hpp"
 
+#include <iostream>
+
 #include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
@@ -27,8 +29,6 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , startSound_(START)
     , hurryUpSound_(HURRY_UP)
 {
-    createMap();
-    startSound_.play();
     hurryUpSound_.setVolume(0.7f);
 }
 
@@ -42,10 +42,34 @@ Game::~Game() noexcept
 
 void Game::switchAction() noexcept
 {
+    std::cout << "Game::switchAction" << std::endl;
+
     for (auto& player : data_->players) {
         if (player->getEntityType() != EntityType::E_PLAYER) continue;
+        player->setEnabledValue(true);
         ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
+        auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
+        ((std::unique_ptr<Player>&)player)->setPlayerType(type);
+        ((std::unique_ptr<Player>&)player)->setPosition();
     }
+
+    chrono_->resetTimer();
+    loop_music_.play();
+    hurry_music_.stop();
+    startSound_.play();
+
+    entities_.clear();
+    createMap();
+
+    isHurry       = false;
+    nbBlockPlaced = 0;
+    x             = -6;
+    z             = 7;
+    maxX          = 6;
+    maxZ          = 6;
+    minX          = -5;
+    minZ          = -4;
+    direction     = Direction::UP;
 }
 
 void Game::playMusic() noexcept
@@ -116,7 +140,9 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
     int alive = 0;
     for (auto& player : data_->players)
         if (player->getEnabledValue()) alive++;
-    if (alive == 1 || alive == 0) { core_entry_.switchScene(SceneType::ENDGAME); }
+    if (alive == 1 || alive == 0 || chrono_->timerDone()) {
+        core_entry_.switchScene(SceneType::ENDGAME);
+    }
 
     for (auto& player : data_->players) player->Update();
     for (auto& entity : entities_) entity->Update();

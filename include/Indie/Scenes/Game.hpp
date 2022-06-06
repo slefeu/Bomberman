@@ -60,14 +60,14 @@ class Game : public Scene
     float lastTimeBlockPlace;
     bool  isHurry;
     int   nbBlockPlaced;
-    int   x    = -6;
-    int   z    = 7;
-    int   maxX = 6;
-    int   maxZ = 6;
-    int   minX = -5;
-    int   minZ = -4;
+    int   x;
+    int   z;
+    int   maxX;
+    int   maxZ;
+    int   minX;
+    int   minZ;
 
-    Direction    direction = Direction::UP;
+    Direction    direction;
     SoundManager startSound_;
     SoundManager hurryUpSound_;
     MusicManager loop_music_;

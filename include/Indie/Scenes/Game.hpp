@@ -59,6 +59,8 @@ class Game : public Scene
     void endGameDisplay() noexcept;
     // Buttons
     void createButtons() noexcept;
+    // Pause
+    void pauseAction(MouseHandler mouse_) noexcept;
 
     // attributes
     GameData*                            data_;
@@ -93,9 +95,11 @@ class Game : public Scene
     TextHandler              victoryText_;
     TextHandler              hurryUpText_;
     TextHandler              timeText_;
+    TextHandler              pauseText_;
     std::vector<TextHandler> playerText_ = {};
 
     bool end_game;
+    bool pause;
 
     static const inline char* GAME_MUSIC    = "assets/audios/Battle.mp3";
     static const inline char* HURRY_MUSIC   = "assets/audios/BattleHurryUp.mp3";

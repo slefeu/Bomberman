@@ -31,8 +31,12 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , hurryUpSound_(HURRY_UP)
     , victoryText_("assets/fonts/menu.ttf", "", 0, 30)
     , hurryUpText_(
-          "assets/fonts/menu.ttf", "Hurry Up !", 0, core_entry_.getWindow().getHeight() / 2 - 60)
+          "assets/fonts/menu.ttf", "Hurry Up !", 0, core_entry_.getWindow().getHeight() / 2 - 80)
     , timeText_("assets/fonts/menu.ttf", "Timer", 0, 10)
+    , pauseText_("assets/fonts/menu.ttf",
+          "Pause",
+          core_entry_.getWindow().getWidth() / 2 - 220,
+          core_entry_.getWindow().getHeight() / 2 - 80)
 {
     hurryUpSound_.setVolume(0.7f);
     createButtons();
@@ -41,6 +45,9 @@ Game::Game(GameData* data, Core& core_ref) noexcept
 
     victoryText_.setTextSize(100);
     victoryText_.setTextColor(Colors::C_GOLD);
+
+    pauseText_.setTextSize(100);
+    pauseText_.setTextColor(Colors::C_RED);
 
     int width   = core_entry_.getWindow().getWidth();
     int height  = core_entry_.getWindow().getHeight();
@@ -96,6 +103,7 @@ void Game::switchAction() noexcept
     direction     = Direction::UP;
 
     end_game = false;
+    pause    = false;
 }
 
 void Game::playMusic() noexcept
@@ -141,11 +149,12 @@ void Game::display2D() noexcept
         endGameDisplay();
         return;
     }
+    if (pause) { pauseText_.draw(); }
 
     if (!chrono_->timerDone()) {
         auto time = std::to_string(int(round(chrono_->getTime())));
         timeText_.setText(time);
-        timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - time.size(), 10);
+        timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - (time.size() * 2), 10);
         timeText_.draw();
     }
 
@@ -170,6 +179,11 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
 {
     DestroyPool();
     CollisionPool();
+
+    if (pause) {
+        pauseAction(mouse_);
+        return;
+    }
 
     for (auto& player : data_->players) player->Update();
 
@@ -206,6 +220,10 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
         10, core_entry_.getWindow().getHeight() - 50, 10, core_entry_.getWindow().getHeight() - 50
     };
     for (size_t i = 0; i != data_->players.size(); i++) data_->sprites[i]->setPos(xPos[i], yPos[i]);
+
+    if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
+        || controller.isKeyPressed(Key::K_ENTER))
+        pause = true;
 }
 
 void Game::DestroyPool() noexcept
@@ -468,4 +486,12 @@ void Game::createButtons() noexcept
             [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
         "assets/fonts/menu.ttf",
         "Menu");
+}
+
+void Game::pauseAction(MouseHandler mouse_) noexcept
+{
+    (void)mouse_;
+    if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
+        || controller.isKeyPressed(Key::K_ENTER))
+        pause = false;
 }

@@ -14,10 +14,10 @@ WindowManager::~WindowManager() noexcept
 
 void WindowManager::launch(int width, int height, int fps) const noexcept
 {
-    // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, "indie Studio - Bomberman");
     SetTargetFPS(fps);
-    ToggleFullscreen();
+    // ToggleFullscreen();
 }
 
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept

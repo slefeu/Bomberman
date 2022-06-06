@@ -18,12 +18,24 @@ void SoundManager::unload() noexcept
     UnloadSound(sound_);
 }
 
-void SoundManager::play() const noexcept
+void SoundManager::play() noexcept
 {
     PlaySound(sound_);
+    isPlaying = true;
 }
 
 void SoundManager::setVolume(float volume) noexcept
 {
     SetSoundVolume(sound_, volume);
+}
+
+void SoundManager::stop() noexcept
+{
+    StopSound(sound_);
+    isPlaying = false;
+}
+
+bool SoundManager::getIsPlaying() const noexcept
+{
+    return isPlaying;
 }

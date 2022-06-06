@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 
+#include "Controller.hpp"
 #include "Core.hpp"
 #include "Entity.hpp"
 #include "Fps.hpp"
@@ -37,7 +38,7 @@ class Game : public Scene
     void         action(Cameraman& camera, MouseHandler mouse_) noexcept final;
     void         DestroyPool() noexcept final;
     void         CollisionPool() noexcept final;
-    void         playMusic() const noexcept final;
+    void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;
@@ -70,15 +71,18 @@ class Game : public Scene
     Direction    direction = Direction::UP;
     SoundManager startSound_;
     SoundManager hurryUpSound_;
-    MusicManager loop_music_;
+    MusicManager game_music_;
+    MusicManager hurry_music_;
     Vector3      camera_position_ = { 0.0f, 13.0f, 2.0f };
     Vector3      camera_target_   = { 0.0f, 0.0f, 1.0f };
     Vector3      camera_up_       = { 0.0f, 2.0f, 0.0f };
     Core&        core_entry_;
     float        HurryUpX;
     ColorManager background_color_;
+    Controller   controller;
 
-    static const inline char* GAME_MUSIC = "assets/audios/Battle.mp3";
-    static const inline char* START      = "assets/audios/Start.wav";
-    static const inline char* HURRY_UP   = "assets/audios/HurryUp.wav";
+    static const inline char* GAME_MUSIC       = "assets/audios/Battle.mp3";
+    static const inline char* GAME_HURRY_MUSIC = "assets/audios/BattleHurryUp.mp3";
+    static const inline char* START            = "assets/audios/Start.wav";
+    static const inline char* HURRY_UP         = "assets/audios/HurryUp.wav";
 };

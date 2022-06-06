@@ -70,6 +70,28 @@ void Render::display(const Transform3D& transform) noexcept
     }
 }
 
+void Render::displayModel(const Vector3& pos, const Transform3D& transform) noexcept
+{
+    auto axis  = transform.getRotationAxis();
+    auto angle = transform.getRotationAngle();
+
+    displayModel(pos, axis, angle);
+}
+
+void Render::displayModel(const Vector3& pos, const Vector3& rotation, const float& angle) noexcept
+{
+    if (type == RenderType::R_ANIMATE) {
+        updateAnimation();
+        DrawModelEx(model_->get()->model,
+            pos,
+            rotation,
+            angle,
+            { 1.0f, 1.0f, 1.0f },
+            (Color){ 255, 255, 255, 255 });
+        return;
+    }
+}
+
 void Render::setRenderType(const RenderType& type) noexcept
 {
     this->type = type;

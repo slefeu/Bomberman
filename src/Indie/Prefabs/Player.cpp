@@ -41,6 +41,11 @@ Player::Player(const int newId, GameData* data)
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
 }
 
+Player::~Player() noexcept
+{
+    killSound_.unload();
+}
+
 void Player::Display()
 {
     auto renderer  = getComponent<Render>();

@@ -141,6 +141,8 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
         lastTimeBlockPlace = chrono_->getTime();
         HurryUpX           = GetScreenWidth() - 100;
         hurryUpSound_.play();
+        hurry_music_.play();
+        loop_music_.stop();
     }
     hurryUp();
 

@@ -21,6 +21,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , isHurry(false)
     , nbBlockPlaced(0)
     , loop_music_(GAME_MUSIC)
+    , hurry_music_(HURRY_MUSIC)
     , core_entry_(core_ref)
     , background_color_(Colors::C_BLACK)
     , startSound_(START)
@@ -34,6 +35,9 @@ Game::Game(GameData* data, Core& core_ref) noexcept
 Game::~Game() noexcept
 {
     loop_music_.unload();
+    hurry_music_.unload();
+    startSound_.unload();
+    hurryUpSound_.unload();
 }
 
 void Game::switchAction() noexcept
@@ -44,14 +48,16 @@ void Game::switchAction() noexcept
     }
 }
 
-void Game::playMusic() const noexcept
+void Game::playMusic() noexcept
 {
     loop_music_.play();
 }
 
 MusicManager Game::getMusicManager() const noexcept
 {
-    return (loop_music_);
+    if (loop_music_.isPlaying()) return loop_music_;
+    else
+        return hurry_music_;
 }
 
 void Game::resetCameraman(Cameraman& camera) noexcept
@@ -106,6 +112,11 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
     DestroyPool();
     CollisionPool();
     chrono_->updateTimer();
+
+    int alive = 0;
+    for (auto& player : data_->players)
+        if (player->getEnabledValue()) alive++;
+    if (alive == 1 || alive == 0) { core_entry_.switchScene(SceneType::ENDGAME); }
 
     for (auto& player : data_->players) player->Update();
     for (auto& entity : entities_) entity->Update();

@@ -9,10 +9,10 @@
 
 #include <type_traits>
 
+#include "EndGame.hpp"
 #include "Game.hpp"
 #include "Home.hpp"
 #include "PlayerSelect.hpp"
-#include "raylib.h"
 
 Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
@@ -66,6 +66,7 @@ void Core::resetData() noexcept
     scenes.emplace_back(std::make_unique<Home>(data, *this));
     scenes.emplace_back(std::make_unique<Game>(data, *this));
     scenes.emplace_back(std::make_unique<PlayerSelect>(data, *this));
+    scenes.emplace_back(std::make_unique<EndGame>(data, *this));
     findScene().playMusic();
 }
 
@@ -87,7 +88,6 @@ void Core::run() noexcept
 {
     while (!exit_) {
         // Update -------------------------------------------------------------
-        SetMasterVolume(0);     // à enlever !!!
         checkExit();
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         audio_.update(findScene());

@@ -18,10 +18,10 @@ class Home : public Scene
 {
   public:
     Home(GameData* data, Core& core_ref) noexcept;
-    Home(const Home& other) noexcept = delete;
-    Home(Home&& other) noexcept      = delete;
+    Home(const Home& other) noexcept          = delete;
+    Home(Home&& other) noexcept               = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept = delete;
+    Home& operator=(Home&& rhs) noexcept      = delete;
     ~Home() noexcept;
 
     void display3D() noexcept final;
@@ -30,7 +30,7 @@ class Home : public Scene
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
 
-    void         playMusic() const noexcept final;
+    void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;
@@ -50,7 +50,7 @@ class Home : public Scene
     MusicManager        loop_music_;
     Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
     Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
-    Vector3             camera_up_       = { 0.0f, 1.0f, 0.0f };
+    Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
     std::vector<Button> buttons_         = {};
     GameData*           data_;
     Core&               core_entry_;
@@ -58,7 +58,7 @@ class Home : public Scene
     Sprite              background_;
     Sprite              title_;
 
-    static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
+    static const inline char* MENU_MUSIC = "assets/audios/MainMenu.mp3";
     static const inline char* BG_PATH    = "assets/textures/home/background.png";
     static const inline char* TITLE_PATH = "assets/textures/home/title.png";
 };

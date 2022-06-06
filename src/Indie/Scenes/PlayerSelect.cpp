@@ -100,7 +100,7 @@ void PlayerSelect::DestroyPool() noexcept {}
 
 void PlayerSelect::CollisionPool() noexcept {}
 
-void PlayerSelect::playMusic() const noexcept
+void PlayerSelect::playMusic() noexcept
 {
     loop_music_.play();
 }

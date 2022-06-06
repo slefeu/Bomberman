@@ -36,7 +36,7 @@ class Button
     ~Button() noexcept                   = default;
 
     Button& operator=(const Button& rhs) noexcept = default;
-    Button& operator=(Button&& rhs) noexcept = default;
+    Button& operator=(Button&& rhs) noexcept      = default;
 
     void draw() const noexcept;
     void unload() noexcept;

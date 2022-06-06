@@ -90,7 +90,7 @@ void Home::DestroyPool() noexcept {}
 
 void Home::CollisionPool() noexcept {}
 
-void Home::playMusic() const noexcept
+void Home::playMusic() noexcept
 {
     loop_music_.play();
 }

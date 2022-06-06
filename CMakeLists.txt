@@ -61,6 +61,7 @@ set(
   src/Engine/Lib/Color.cpp
   src/Engine/Lib/Window.cpp
   src/Engine/Lib/Fps.cpp
+  src/Engine/Lib/Rectangle.cpp
   src/Engine/Lib/Controller.cpp
   src/Engine/Lib/Model3D.cpp
 )

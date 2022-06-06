@@ -11,11 +11,11 @@
 #include <string>
 
 #include "Color.hpp"
+#include "Mouse.hpp"
+#include "Rectangle.hpp"
 #include "Sound.hpp"
 #include "Sprite.hpp"
 #include "Text.hpp"
-static const inline char* ON_CLICK = "assets/audios/Btn_clicked.wav";
-static const inline char* ON_HOVER = "assets/audios/menu_hover.wav";
 
 class Button
 {
@@ -39,9 +39,9 @@ class Button
     Button& operator=(Button&& rhs) noexcept      = default;
 
     void draw() const noexcept;
-    bool checkCollision(const Vector2& mouse_pos) noexcept;
     void unload() noexcept;
     void action() const noexcept;
+    bool checkCollision(MouseHandler& mouse_) noexcept;
     void setState(int state) noexcept;
 
   protected:
@@ -49,11 +49,14 @@ class Button
     SoundManager              fx_clicked_;
     SoundManager              fx_hover_;
     Sprite                    texture_;
-    int                       state_     = 0; // 0 : NORMAL, 1 : HOVER, 2 : PRESSED
+    int                       state_     = 0;
     bool                      is_action_ = false;
     unsigned int              frames_;
-    Rectangle                 rectangle_;
+    RectangleManager          rectangle_;
     std::function<void(void)> task_;
     TextHandler               text_;
     ColorManager              color_;
+
+    static const inline char* ON_CLICK = "assets/audios/Btn_clicked.ogg";
+    static const inline char* ON_HOVER = "assets/audios/menu_hover.ogg";
 };

@@ -79,7 +79,7 @@ void Home::display2D() noexcept
     drawButtons();
 }
 
-void Home::action([[maybe_unused]] Cameraman& camera, Vector2 mouse_pos) noexcept
+void Home::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_) noexcept
 {
     if (controller.isGamepadConnected(0)) {
         if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))

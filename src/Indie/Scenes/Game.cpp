@@ -24,26 +24,50 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , nbBlockPlaced(0)
     , loop_music_(GAME_MUSIC)
     , hurry_music_(HURRY_MUSIC)
+    , victory_music_(VICTORY_MUSIC)
     , core_entry_(core_ref)
     , background_color_(Colors::C_BLACK)
     , startSound_(START)
     , hurryUpSound_(HURRY_UP)
+    , victoryText_("assets/fonts/menu.ttf", "", 0, 30)
+    , hurryUpText_(
+          "assets/fonts/menu.ttf", "Hurry Up !", 0, core_entry_.getWindow().getHeight() / 2 - 60)
+    , timeText_("assets/fonts/menu.ttf", "Timer", 0, 10)
 {
     hurryUpSound_.setVolume(0.7f);
+    createButtons();
+    hurryUpText_.setTextSize(100);
+    hurryUpText_.setTextColor(Colors::C_RED);
+
+    victoryText_.setTextSize(100);
+    victoryText_.setTextColor(Colors::C_GOLD);
+
+    int width   = core_entry_.getWindow().getWidth();
+    int height  = core_entry_.getWindow().getHeight();
+    int xPos[4] = { 55, width - 150, width - 150, 55 };
+    int yPos[4] = { 28, height - 30, 28, height - 30 };
+    for (int i = 0; i < 4; i++) {
+        playerText_.push_back(TextHandler("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]));
+        playerText_[i].setTextSize(20);
+    }
 }
 
 Game::~Game() noexcept
 {
     loop_music_.unload();
     hurry_music_.unload();
+    victory_music_.unload();
     startSound_.unload();
     hurryUpSound_.unload();
+    for (auto it : buttons_) { it.unload(); }
+    hurryUpText_.unload();
+    timeText_.unload();
+    victoryText_.unload();
+    for (auto it : playerText_) { it.unload(); }
 }
 
 void Game::switchAction() noexcept
 {
-    std::cout << "Game::switchAction" << std::endl;
-
     for (auto& player : data_->players) {
         if (player->getEntityType() != EntityType::E_PLAYER) continue;
         player->setEnabledValue(true);
@@ -70,6 +94,8 @@ void Game::switchAction() noexcept
     minX          = -5;
     minZ          = -4;
     direction     = Direction::UP;
+
+    end_game = false;
 }
 
 void Game::playMusic() noexcept
@@ -80,8 +106,10 @@ void Game::playMusic() noexcept
 MusicManager Game::getMusicManager() const noexcept
 {
     if (loop_music_.isPlaying()) return loop_music_;
-    else
+    else if (hurry_music_.isPlaying())
         return hurry_music_;
+    else
+        return victory_music_;
 }
 
 void Game::resetCameraman(Cameraman& camera) noexcept
@@ -109,13 +137,21 @@ void Game::display2D() noexcept
 {
     FpsHandler::draw(50, 50);
 
+    if (end_game) {
+        endGameDisplay();
+        return;
+    }
+
     if (!chrono_->timerDone()) {
         auto time = std::to_string(int(round(chrono_->getTime())));
-        DrawText(time.data(), core_entry_.getWindow().getWidth() / 2 - time.size(), 10, 30, WHITE);
+        timeText_.setText(time);
+        timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - time.size(), 10);
+        timeText_.draw();
     }
 
     if (isHurry) {
-        DrawText("Hurry up !", HurryUpX, core_entry_.getWindow().getHeight() / 2 - 60, 100, RED);
+        hurryUpText_.setPosition(HurryUpX, core_entry_.getWindow().getHeight() / 2 - 60);
+        hurryUpText_.draw();
     }
 
     for (size_t i = 0; i != data_->players.size(); i++) {
@@ -124,19 +160,9 @@ void Game::display2D() noexcept
 
         std::string speed = std::to_string(player->getSpeed());
         speed             = speed.substr(0, speed.find(".") + 2);
-        std::string stats = std::to_string(player->getNbBomb()) + ", "
-                            + std::to_string(player->getBombSize()) + ", " + speed;
-        int size    = stats.size() / 1.4 * 20;
-        int xPos[4] = { 55,
-            core_entry_.getWindow().getWidth() - size,
-            core_entry_.getWindow().getWidth() - size,
-            55 };
-        int yPos[4] = { 28,
-            core_entry_.getWindow().getHeight() - 30,
-            28,
-            core_entry_.getWindow().getHeight() - 30 };
-
-        DrawText(stats.c_str(), xPos[i], yPos[i], 20, WHITE);
+        playerText_[i].setText(std::to_string(player->getNbBomb()) + ", "
+                               + std::to_string(player->getBombSize()) + ", " + speed);
+        playerText_[i].draw();
     }
 }
 
@@ -144,16 +170,20 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
 {
     DestroyPool();
     CollisionPool();
-    chrono_->updateTimer();
-
-    int alive = 0;
-    for (auto& player : data_->players)
-        if (player->getEnabledValue()) alive++;
-    if (alive == 1 || alive == 0 || chrono_->timerDone()) {
-        core_entry_.switchScene(SceneType::ENDGAME);
-    }
 
     for (auto& player : data_->players) player->Update();
+
+    if (!end_game) {
+        int alive = 0;
+        for (auto& player : data_->players)
+            if (player->getEnabledValue()) alive++;
+        if (alive == 1 || alive == 0 || chrono_->timerDone()) endGame();
+    } else {
+        endGameAction(mouse_);
+        return;
+    }
+
+    chrono_->updateTimer();
     for (auto& entity : entities_) entity->Update();
 
     if (!camera.getIsMoving()) camera.lookBetweenEntity(data_->players);
@@ -343,4 +373,99 @@ Vector3 Game::getCameraUp() const noexcept
 ColorManager Game::getBackgroundColor() const noexcept
 {
     return (background_color_);
+}
+
+void Game::endGame() noexcept
+{
+    end_game = true;
+
+    loop_music_.stop();
+    hurry_music_.stop();
+    victory_music_.play();
+
+    core_entry_.getCameraman().lookBetweenEntity(data_->players);
+
+    auto pos    = core_entry_.getCameraman().getPosition();
+    auto target = core_entry_.getCameraman().getTarget();
+    auto up     = core_entry_.getCameraman().getUp();
+
+    int nbAlive = 0;
+    int index   = 0;
+    for (size_t i = 0; i < data_->players.size(); i++) {
+        auto trans  = data_->players[i]->getComponent<Transform3D>();
+        auto render = data_->players[i]->getComponent<Render>();
+
+        if (!trans.has_value() || !render.has_value()) continue;
+
+        render->get().setAnimationId(3);
+        trans->get().setRotationAngle(90.0f);
+
+        if (data_->players[i]->getEnabledValue()) {
+            nbAlive++;
+            index = i;
+        }
+    }
+
+    if (nbAlive == 1) {
+        victoryText_.setText("Player " + std::to_string(index + 1) + " win !");
+        victoryText_.setPosition(core_entry_.getWindow().getWidth() / 2 - 480, 30);
+        auto transform = data_->players[index]->getComponent<Transform3D>();
+
+        if (transform.has_value()) {
+            pos    = transform->get().getPosition();
+            target = pos;
+            target.z -= 1.0f;
+            core_entry_.getCameraman().moveTo({ pos.x, 5.0f, pos.z + 0.5f }, target, up);
+        } else
+            core_entry_.getCameraman().moveTo(pos, target, up);
+
+    } else {
+        victoryText_.setText("Draw !");
+        victoryText_.setPosition(core_entry_.getWindow().getWidth() / 2 - 200, 30);
+        core_entry_.getCameraman().moveTo(pos, target, up);
+    }
+}
+
+void Game::endGameAction(MouseHandler mouse_) noexcept
+{
+    if (controller.isGamepadConnected(0)) {
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_LEFT))
+            button_index_ = (button_index_ - 1) % buttons_.size();
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_RIGHT))
+            button_index_ = (button_index_ + 1) % buttons_.size();
+        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
+        for (auto& it : buttons_) it.setState(0);
+        buttons_[button_index_].setState(1);
+    } else {
+        for (auto& it : buttons_)
+            if (it.checkCollision(mouse_)) { it.action(); }
+    }
+}
+
+void Game::endGameDisplay() noexcept
+{
+    for (auto it : buttons_) { it.draw(); }
+    victoryText_.draw();
+}
+
+void Game::createButtons() noexcept
+{
+    int width  = core_entry_.getWindow().getWidth();
+    int height = core_entry_.getWindow().getHeight();
+
+    buttons_.emplace_back("assets/textures/home/button.png",
+        50,
+        height - 200,
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
+        "assets/fonts/menu.ttf",
+        "Restart");
+
+    buttons_.emplace_back("assets/textures/home/button.png",
+        width - 350,
+        height - 200,
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
+        "assets/fonts/menu.ttf",
+        "Menu");
 }

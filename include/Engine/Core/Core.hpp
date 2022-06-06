@@ -31,6 +31,7 @@ class Core
     void           switchScene(const SceneType& scene) noexcept;
     void           setExit(bool value) noexcept;
     WindowManager& getWindow() noexcept;
+    Cameraman&     getCameraman() noexcept;
 
   protected:
   private:

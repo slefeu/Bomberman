@@ -49,3 +49,8 @@ void TextHandler::setPosition(int posX, int posY) noexcept
     position_.x = posX;
     position_.y = posY;
 }
+
+void TextHandler::setText(const std::string& message) noexcept
+{
+    message_ = message;
+}

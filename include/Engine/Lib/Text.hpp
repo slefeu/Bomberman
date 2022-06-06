@@ -26,6 +26,7 @@ class TextHandler
     void setTextSize(int size) noexcept;
     void unload() noexcept;
     void setPosition(int posX, int posY) noexcept;
+    void setText(const std::string& message) noexcept;
 
   protected:
   private:

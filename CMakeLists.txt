@@ -48,7 +48,6 @@ set(
   src/Indie/Scenes/Game.cpp
   src/Indie/Scenes/Home.cpp
   src/Indie/Scenes/PlayerSelect.cpp
-  src/Indie/Scenes/EndGame.cpp
 
   src/Indie/UI/Button.cpp
 

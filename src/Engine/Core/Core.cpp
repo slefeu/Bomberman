@@ -9,7 +9,6 @@
 
 #include <type_traits>
 
-#include "EndGame.hpp"
 #include "Game.hpp"
 #include "Home.hpp"
 #include "PlayerSelect.hpp"
@@ -66,7 +65,6 @@ void Core::resetData() noexcept
     scenes.emplace_back(std::make_unique<Home>(data, *this));
     scenes.emplace_back(std::make_unique<Game>(data, *this));
     scenes.emplace_back(std::make_unique<PlayerSelect>(data, *this));
-    scenes.emplace_back(std::make_unique<EndGame>(data, *this));
     findScene().playMusic();
 }
 
@@ -112,4 +110,9 @@ void Core::setExit(bool value) noexcept
 WindowManager& Core::getWindow() noexcept
 {
     return *window_;
+}
+
+Cameraman& Core::getCameraman() noexcept
+{
+    return camera;
 }

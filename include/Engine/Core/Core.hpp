@@ -21,15 +21,16 @@ class Core
 {
   public:
     Core(GameData* data, WindowManager* window) noexcept;
-    ~Core() noexcept                 = default;
-    Core(const Core& other) noexcept = delete;
-    Core(Core&& other) noexcept      = delete;
+    ~Core() noexcept                          = default;
+    Core(const Core& other) noexcept          = delete;
+    Core(Core&& other) noexcept               = delete;
     Core& operator=(const Core& rhs) noexcept = delete;
-    Core& operator=(Core&& rhs) noexcept = delete;
+    Core& operator=(Core&& rhs) noexcept      = delete;
 
-    void run() noexcept;
-    void switchScene(const SceneType& scene) noexcept;
-    void setExit(bool value) noexcept;
+    void           run() noexcept;
+    void           switchScene(const SceneType& scene) noexcept;
+    void           setExit(bool value) noexcept;
+    WindowManager& getWindow() noexcept;
 
   protected:
   private:

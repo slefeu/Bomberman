@@ -38,7 +38,7 @@ void PlayerSelect::display3D() noexcept
 
         if (!render.has_value() || !transform.has_value()) continue;
 
-        Vector3 position = { 0, 0, 3 + (nbPlayers * -1) };
+        Vector3 position = { 0, 0, 4.7f - (nbPlayers * 2) };
         Vector3 rotation = { 0, 1, 0 };
 
         render->get().setAnimationId(1);
@@ -58,33 +58,36 @@ void PlayerSelect::switchAction() noexcept {}
 
 void PlayerSelect::createButtons() noexcept
 {
+    int width  = core_entry_.getWindow().getWidth();
+    int height = core_entry_.getWindow().getHeight();
+
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth / 2,
-        data_->winHeight / 4,
+        width / 2,
+        height / 4,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer < 4) {
                 data_->nbPlayer++;
                 data_->players.emplace_back(std::make_unique<Player>(data_->nbPlayer - 1, data_));
             }
         }),
-        1,
         "assets/fonts/menu.ttf",
-        "Add",
-        data_->winWidth / 2 + 105,
-        data_->winHeight / 4 + 45);
+        "Add");
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth - data_->winWidth / 5,
-        data_->winHeight - data_->winHeight / 4,
+        width - 350,
+        height - 200,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
-        1,
         "assets/fonts/menu.ttf",
-        "Play game",
-        data_->winWidth - (data_->winWidth / 5 - 35),
-        data_->winHeight - (data_->winHeight / 4 - 40));
+        "Play game");
+
+    buttons_.emplace_back("assets/textures/home/button.png",
+        50,
+        height - 200,
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
+        "assets/fonts/menu.ttf",
+        "Back");
 }
 
 void PlayerSelect::drawButtons() const noexcept

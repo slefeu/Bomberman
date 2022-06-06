@@ -22,15 +22,19 @@ class Button
   public:
     Button() noexcept = delete;
     Button(const std::string&     texture_path,
-        unsigned int              frames,
         float                     pos_x,
         float                     pos_y,
         std::function<void(void)> function,
-        float                     scale,
         const std::string&        font_path,
         const std::string&        message,
         int                       textPosX,
         int                       textPosY) noexcept;
+    Button(const std::string&     texture_path,
+        float                     pos_x,
+        float                     pos_y,
+        std::function<void(void)> function,
+        const std::string&        font_path,
+        const std::string&        message) noexcept;
     Button(const Button& other) noexcept = default;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;
@@ -51,7 +55,6 @@ class Button
     Sprite                    texture_;
     int                       state_     = 0;
     bool                      is_action_ = false;
-    unsigned int              frames_;
     RectangleManager          rectangle_;
     std::function<void(void)> task_;
     TextHandler               text_;

@@ -86,6 +86,7 @@ MusicManager Game::getMusicManager() const noexcept
 
 void Game::resetCameraman(Cameraman& camera) noexcept
 {
+    camera.tpTo({ 0.0f, 1.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 2.0f, 0.0f });
     camera.moveTo(camera_position_, camera_target_, camera_up_);
 }
 

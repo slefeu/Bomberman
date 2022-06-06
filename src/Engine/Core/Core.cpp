@@ -108,3 +108,8 @@ void Core::setExit(bool value) noexcept
 {
     exit_ = value;
 }
+
+WindowManager& Core::getWindow() noexcept
+{
+    return *window_;
+}

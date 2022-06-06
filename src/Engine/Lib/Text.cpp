@@ -43,3 +43,9 @@ void TextHandler::setTextSize(int size) noexcept
 {
     font_.setFontSize(size);
 }
+
+void TextHandler::setPosition(int posX, int posY) noexcept
+{
+    position_.x = posX;
+    position_.y = posY;
+}

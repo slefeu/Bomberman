@@ -8,11 +8,9 @@
 #include "Button.hpp"
 
 Button::Button(const std::string& texture_path,
-    unsigned int                  frames,
     float                         pos_x,
     float                         pos_y,
     std::function<void(void)>     function,
-    float                         scale,
     const std::string&            font_path,
     const std::string&            message,
     int                           textPosX,
@@ -20,17 +18,38 @@ Button::Button(const std::string& texture_path,
     : fx_clicked_(ON_CLICK)
     , fx_hover_(ON_HOVER)
     , texture_(texture_path)
-    , frames_(frames)
     , task_(function)
-    , text_(font_path, message, textPosX, textPosY)
+    , text_(font_path, message, 0, 0)
     , color_(Colors::C_WHITE)
     , rectangle_(pos_x,
           pos_y,
           static_cast<float>(texture_.getWidth()),
-          static_cast<float>(texture_.getHeight()) / frames_)
+          static_cast<float>(texture_.getHeight()))
 {
     texture_.setPos(rectangle_.getX(), rectangle_.getY());
-    texture_.setScale(scale);
+    text_.setPosition(
+        (pos_x + 150 - (message.size() * 35) / 2) + textPosX, (pos_y + 45) + textPosY);
+}
+
+Button::Button(const std::string& texture_path,
+    float                         pos_x,
+    float                         pos_y,
+    std::function<void(void)>     function,
+    const std::string&            font_path,
+    const std::string&            message) noexcept
+    : fx_clicked_(ON_CLICK)
+    , fx_hover_(ON_HOVER)
+    , texture_(texture_path)
+    , task_(function)
+    , text_(font_path, message, 0, 0)
+    , color_(Colors::C_WHITE)
+    , rectangle_(pos_x,
+          pos_y,
+          static_cast<float>(texture_.getWidth()),
+          static_cast<float>(texture_.getHeight()))
+{
+    texture_.setPos(rectangle_.getX(), rectangle_.getY());
+    text_.setPosition(pos_x + 150 - (message.size() * 30) / 2, pos_y + 45);
 }
 
 void Button::unload() noexcept

@@ -31,39 +31,30 @@ void Home::switchAction() noexcept {}
 
 void Home::createButtons() noexcept
 {
+    int width  = core_entry_.getWindow().getWidth();
+    int height = core_entry_.getWindow().getHeight();
+
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth / 2,
-        data_->winHeight / 4,
+        width / 2,
+        height / 4,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::SELECT)); }),
-        1,
         "assets/fonts/menu.ttf",
-        "Play",
-        data_->winWidth / 2 + 100,
-        data_->winHeight / 4 + 45);
+        "Play");
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth / 2,
-        (data_->winHeight / 4) + (150 * buttons_.size()),
+        width / 2,
+        (height / 4) + (150 * buttons_.size()),
         std::function<void(void)>([](void) { return; }),
-        1,
         "assets/fonts/menu.ttf",
-        "Load",
-        data_->winWidth / 2 + 100,
-        data_->winHeight / 4 + 150 * buttons_.size() + 45);
+        "Load");
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth / 2,
-        data_->winHeight / 4 + (150 * buttons_.size()),
+        width / 2,
+        height / 4 + (150 * buttons_.size()),
         std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),
-        1,
         "assets/fonts/menu.ttf",
-        "Exit",
-        data_->winWidth / 2 + 110,
-        data_->winHeight / 4 + 150 * buttons_.size() + 45);
+        "Exit");
 }
 
 void Home::resetCameraman(Cameraman& camera) noexcept

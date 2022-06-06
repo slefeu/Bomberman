@@ -37,3 +37,13 @@ bool WindowManager::isExit() noexcept
 {
     return (WindowShouldClose());
 }
+
+int WindowManager::getWidth() const noexcept
+{
+    return (GetScreenWidth());
+}
+
+int WindowManager::getHeight() const noexcept
+{
+    return (GetScreenHeight());
+}

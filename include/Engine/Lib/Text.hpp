@@ -25,6 +25,7 @@ class TextHandler
     void setTextColor(const std::array<unsigned char, 3>& color) noexcept;
     void setTextSize(int size) noexcept;
     void unload() noexcept;
+    void setPosition(int posX, int posY) noexcept;
 
   protected:
   private:

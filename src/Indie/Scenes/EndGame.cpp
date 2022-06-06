@@ -81,36 +81,32 @@ void EndGame::display2D() noexcept
 
 void EndGame::createButtons() noexcept
 {
-    buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth / 2,
-        data_->winHeight / 4,
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
-        1,
-        "assets/fonts/menu.ttf",
-        "Restart",
-        data_->winWidth / 2 + 100,
-        data_->winHeight / 4 + 45);
+    int width  = core_entry_.getWindow().getWidth();
+    int height = core_entry_.getWindow().getHeight();
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
-        data_->winWidth / 2,
-        data_->winHeight / 4 + (150 * buttons_.size()),
-        std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),
-        1,
+        50,
+        height - 200,
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
         "assets/fonts/menu.ttf",
-        "Exit",
-        data_->winWidth / 2 + 110,
-        data_->winHeight / 4 + 150 * buttons_.size() + 45);
+        "Restart");
+
+    buttons_.emplace_back("assets/textures/home/button.png",
+        width - 350,
+        height - 200,
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
+        "assets/fonts/menu.ttf",
+        "Menu");
 }
 
 void EndGame::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_pos) noexcept
 {
     if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_LEFT))
             button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_RIGHT))
             button_index_ = (button_index_ + 1) % buttons_.size();
         if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
         for (auto& it : buttons_) it.setState(0);

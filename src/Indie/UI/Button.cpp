@@ -7,8 +7,9 @@
 
 #include "Button.hpp"
 
+#include "raylib.h"
+
 Button::Button(const std::string& texture_path,
-    unsigned int                  frames,
     float                         pos_x,
     float                         pos_y,
     std::function<void(void)>     function,
@@ -20,17 +21,21 @@ Button::Button(const std::string& texture_path,
     : fx_clicked_(ON_CLICK)
     , fx_hover_(ON_HOVER)
     , texture_(texture_path)
-    , frames_(frames)
     , task_(function)
     , text_(font_path, message, textPosX, textPosY)
     , color_(Colors::C_WHITE)
-    , rectangle_(pos_x,
-          pos_y,
-          static_cast<float>(texture_.getWidth()),
-          static_cast<float>(texture_.getHeight()) / frames_)
+    , rectangle_(pos_x, pos_y, texture_.getWidth(), texture_.getHeight())
 {
     texture_.setPos(rectangle_.getX(), rectangle_.getY());
     texture_.setScale(scale);
+    rectangle_.setWidth(texture_.getWidth() * scale);
+    rectangle_.setHeight(texture_.getHeight() * scale);
+}
+
+void Button::setPosition(const Vector2& pos) noexcept
+{
+    texture_.setPos(pos.x, pos.y);
+    rectangle_.setPos(pos.x, pos.y);
 }
 
 void Button::unload() noexcept

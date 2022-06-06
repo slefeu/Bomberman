@@ -24,6 +24,10 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
     stats_.emplace_back("assets/textures/selection/attack.png");
     stats_.emplace_back("assets/textures/selection/tactical.png");
     stats_.emplace_back("assets/textures/selection/runner.png");
+    texts_.emplace_back("assets/fonts/menu.ttf", "Balanced", 0, 0);
+    texts_.emplace_back("assets/fonts/menu.ttf", "Attack", 0, 0);
+    texts_.emplace_back("assets/fonts/menu.ttf", "Tactical", 0, 0);
+    texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
 PlayerSelect::~PlayerSelect() noexcept
@@ -37,7 +41,7 @@ void PlayerSelect::display3D() noexcept
 {
     float nbPlayers = 0;
     for (auto& player : data_->players) {
-        Vector3 position = { 0, 0.5, 5.5f - nbPlayers * 2 };
+        Vector3 position = { 0.2f, 0.6f, 5 - nbPlayers * 2 };
         player->displayModel(position);
         nbPlayers++;
     }
@@ -51,12 +55,28 @@ void PlayerSelect::display2D() noexcept
     displayAllStats();
 }
 
+void PlayerSelect::drawSelection(
+    const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept
+{
+    select_left_[id].setPosition(pos_left);
+    select_left_[id].draw();
+    select_right_[id].setPosition(pos_right);
+    select_right_[id].draw();
+}
+
 void PlayerSelect::displayAllStats() noexcept
 {
     float nbPlayers = 0;
     for (auto& player : data_->players) {
-        Vector2 position = { 420 * nbPlayers, 600 };
-        displayPlayerStats(position, findStatsId(((std::unique_ptr<Player>&)player)->getType()));
+        Vector2 pos_l    = { 10 + 460 * nbPlayers,
+            static_cast<float>(data_->winHeight - data_->winHeight / 7) };
+        Vector2 pos_r    = { pos_l.x + 300,
+            static_cast<float>(data_->winHeight - data_->winHeight / 7) };
+        Vector2 position = { 50 + 460 * nbPlayers, 600 };
+        displayPlayerStats(position,
+            { pos_l.x + 70, pos_l.y + 25 },
+            findStatsId(((std::unique_ptr<Player>&)player)->getType()));
+        drawSelection(static_cast<int>(nbPlayers), pos_l, pos_r);
         nbPlayers++;
     }
 }
@@ -70,10 +90,13 @@ unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
     return (0);
 }
 
-void PlayerSelect::displayPlayerStats(const Vector2& position, int id) noexcept
+void PlayerSelect::displayPlayerStats(
+    const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept
 {
-    stats_[id].setPos(position.x, position.y);
+    stats_[id].setPos(stats_pos.x, stats_pos.y);
     stats_[id].draw();
+    texts_[id].setPos(texts_pos.x, texts_pos.y);
+    texts_[id].draw();
 }
 
 void PlayerSelect::switchAction() noexcept {}
@@ -81,13 +104,37 @@ void PlayerSelect::switchAction() noexcept {}
 void PlayerSelect::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 3 + 100,
         data_->winHeight / 5,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer < 4) {
                 data_->nbPlayer++;
                 data_->players.emplace_back(std::make_unique<Player>(data_->nbPlayer - 1, data_));
+                auto& new_player = *reinterpret_cast<Player*>(data_->players.back().get());
+                select_right_.emplace_back("assets/textures/selection/right.png",
+                    0,
+                    0,
+                    std::function<void(void)>([&new_player](void) {
+                        new_player.setPlayerType(
+                            static_cast<PlayerType>(new_player.findNextType()));
+                    }),
+                    0.2f,
+                    "assets/fonts/menu.ttf",
+                    "",
+                    0,
+                    0);
+                select_left_.emplace_back("assets/textures/selection/left.png",
+                    0,
+                    0,
+                    std::function<void(void)>([&new_player](void) {
+                        new_player.setPlayerType(
+                            static_cast<PlayerType>(new_player.findPrevType()));
+                    }),
+                    0.2f,
+                    "assets/fonts/menu.ttf",
+                    "",
+                    0,
+                    0);
             }
         }),
         1,
@@ -97,13 +144,15 @@ void PlayerSelect::createButtons() noexcept
         data_->winHeight / 5 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 3 + 450,
         data_->winHeight / 5,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer > 1) {
                 data_->nbPlayer--;
                 data_->players.pop_back();
+                select_right_.pop_back();
+                select_left_.pop_back();
+                texts_.pop_back();
             }
         }),
         1,
@@ -113,7 +162,6 @@ void PlayerSelect::createButtons() noexcept
         data_->winHeight / 5 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 3 + 800,
         data_->winHeight / 5,
         std::function<void(void)>(
@@ -127,7 +175,7 @@ void PlayerSelect::createButtons() noexcept
 
 void PlayerSelect::drawButtons() const noexcept
 {
-    for (auto it : buttons_) { it.draw(); }
+    for (auto& it : buttons_) { it.draw(); }
 }
 
 void PlayerSelect::resetCameraman(Cameraman& camera) noexcept
@@ -138,6 +186,12 @@ void PlayerSelect::resetCameraman(Cameraman& camera) noexcept
 void PlayerSelect::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_) noexcept
 {
     for (auto& it : buttons_) {
+        if (it.checkCollision(mouse_)) { it.action(); }
+    }
+    for (auto& it : select_left_) {
+        if (it.checkCollision(mouse_)) { it.action(); }
+    }
+    for (auto& it : select_right_) {
         if (it.checkCollision(mouse_)) { it.action(); }
     }
 }

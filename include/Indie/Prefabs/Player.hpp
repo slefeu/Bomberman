@@ -47,6 +47,8 @@ class Player : public Entity
     void       setNbBomb(const int& nbBomb) noexcept;
     void       setBombSize(const int& bombSize) noexcept;
     PlayerType getType() const noexcept;
+    int        findNextType() const noexcept;
+    int        findPrevType() const noexcept;
 
   private:
     void setKeyboard() noexcept;

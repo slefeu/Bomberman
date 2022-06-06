@@ -32,7 +32,6 @@ void Home::switchAction() noexcept {}
 void Home::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 2,
         data_->winHeight / 4,
         std::function<void(void)>(
@@ -44,7 +43,6 @@ void Home::createButtons() noexcept
         data_->winHeight / 4 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 2,
         (data_->winHeight / 4) + (150 * buttons_.size()),
         std::function<void(void)>([](void) { return; }),
@@ -55,7 +53,6 @@ void Home::createButtons() noexcept
         data_->winHeight / 4 + 150 * buttons_.size() + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        1,
         data_->winWidth / 2,
         data_->winHeight / 4 + (150 * buttons_.size()),
         std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),

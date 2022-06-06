@@ -22,6 +22,9 @@ class RectangleManager
     float getY() const noexcept;
     float getWidth() const noexcept;
     float getHeight() const noexcept;
+    void  setPos(float x, float y) noexcept;
+    void  setWidth(float width) noexcept;
+    void  setHeight(float height) noexcept;
 
   protected:
   private:

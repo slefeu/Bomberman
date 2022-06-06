@@ -20,7 +20,7 @@
 #include "Transform3D.hpp"
 
 enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
-enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER };
+enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
 
 class Entity
 {
@@ -56,6 +56,7 @@ class Entity
         }
         return {};
     };
+
     EntityType getEntityType() const noexcept;
     bool       getEnabledValue() const noexcept;
     void       setEnabledValue(const bool value) noexcept;

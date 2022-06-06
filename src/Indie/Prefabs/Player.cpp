@@ -63,6 +63,29 @@ void Player::displayModel(const Vector3& position)
     renderer->get().setAnimationId(1);
 }
 
+int Player::findPrevType() const noexcept
+{
+    auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);
+    if (new_type > 0) {
+        new_type--;
+    } else
+        new_type =
+            static_cast<typename std::underlying_type<PlayerType>::type>(PlayerType::__size__) - 1;
+    return (new_type);
+}
+
+int Player::findNextType() const noexcept
+{
+    auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);
+    if (new_type
+        < (static_cast<typename std::underlying_type<PlayerType>::type>(PlayerType::__size__)
+            - 1)) {
+        new_type++;
+    } else
+        new_type = 0;
+    return (new_type);
+}
+
 void Player::Update()
 {
     auto hitbox    = getComponent<BoxCollider>();

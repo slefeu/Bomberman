@@ -6,9 +6,10 @@
 */
 
 #pragma once
+#include <string_view>
+
 #include "Color.hpp"
 #include "Font.hpp"
-
 class TextHandler
 {
   public:
@@ -25,6 +26,7 @@ class TextHandler
     void setTextColor(const std::array<unsigned char, 3>& color) noexcept;
     void setTextSize(int size) noexcept;
     void unload() noexcept;
+    void setPos(int posX, int posY) noexcept;
 
   protected:
   private:

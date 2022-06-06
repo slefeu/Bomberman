@@ -111,10 +111,12 @@ void Game::display2D() noexcept
 
     if (!chrono_->timerDone()) {
         auto time = std::to_string(int(round(chrono_->getTime())));
-        DrawText(time.data(), GetScreenWidth() / 2 - time.size(), 10, 30, WHITE);
+        DrawText(time.data(), core_entry_.getWindow().getWidth() / 2 - time.size(), 10, 30, WHITE);
     }
 
-    if (isHurry) { DrawText("Hurry up !", HurryUpX, GetScreenHeight() / 2 - 60, 100, RED); }
+    if (isHurry) {
+        DrawText("Hurry up !", HurryUpX, core_entry_.getWindow().getHeight() / 2 - 60, 100, RED);
+    }
 
     for (size_t i = 0; i != data_->players.size(); i++) {
         data_->sprites[i]->draw();
@@ -125,8 +127,14 @@ void Game::display2D() noexcept
         std::string stats = std::to_string(player->getNbBomb()) + ", "
                             + std::to_string(player->getBombSize()) + ", " + speed;
         int size    = stats.size() / 1.4 * 20;
-        int xPos[4] = { 55, GetScreenWidth() - size, GetScreenWidth() - size, 55 };
-        int yPos[4] = { 28, GetScreenHeight() - 30, 28, GetScreenHeight() - 30 };
+        int xPos[4] = { 55,
+            core_entry_.getWindow().getWidth() - size,
+            core_entry_.getWindow().getWidth() - size,
+            55 };
+        int yPos[4] = { 28,
+            core_entry_.getWindow().getHeight() - 30,
+            28,
+            core_entry_.getWindow().getHeight() - 30 };
 
         DrawText(stats.c_str(), xPos[i], yPos[i], 20, WHITE);
     }
@@ -150,31 +158,23 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
 
     if (!camera.getIsMoving()) camera.lookBetweenEntity(data_->players);
 
-    // Modificatoin de nombre de joueur à l'écran
-    if (IsKeyPressed(KEY_C) && data_->nbPlayer < 4) {
-        data_->nbPlayer++;
-        auto tempPlayer = std::make_unique<Player>(data_->nbPlayer - 1, data_);
-        tempPlayer->setBombArray(&entities_);
-        data_->players.emplace_back(std::move(tempPlayer));
-    }
-    if (IsKeyPressed(KEY_V) && data_->nbPlayer > 1) {
-        data_->nbPlayer--;
-        data_->players.erase(data_->players.begin() + data_->nbPlayer);
-    }
-
     // Activation du Hurry Up !
     if (int(round(chrono_->getTime())) <= 55 && !isHurry) {
         isHurry            = true;
         lastTimeBlockPlace = chrono_->getTime();
-        HurryUpX           = GetScreenWidth() - 100;
+        HurryUpX           = core_entry_.getWindow().getWidth() - 100;
         hurryUpSound_.play();
         hurry_music_.play();
         loop_music_.stop();
     }
     hurryUp();
 
-    int xPos[4] = { 10, GetScreenWidth() - 50, GetScreenWidth() - 50, 10 };
-    int yPos[4] = { 10, GetScreenHeight() - 50, 10, GetScreenHeight() - 50 };
+    int xPos[4] = {
+        10, core_entry_.getWindow().getWidth() - 50, core_entry_.getWindow().getWidth() - 50, 10
+    };
+    int yPos[4] = {
+        10, core_entry_.getWindow().getHeight() - 50, 10, core_entry_.getWindow().getHeight() - 50
+    };
     for (size_t i = 0; i != data_->players.size(); i++) data_->sprites[i]->setPos(xPos[i], yPos[i]);
 }
 

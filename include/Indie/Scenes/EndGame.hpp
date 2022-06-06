@@ -40,24 +40,26 @@ class EndGame : public Scene
     Vector3      getCameraPosition() const noexcept final;
     Vector3      getCameraTarget() const noexcept final;
     Vector3      getCameraUp() const noexcept final;
-    void         drawBackground() const noexcept final{};
+    void         drawBackground() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept;
     ColorManager getBackgroundColor() const noexcept final;
     void         switchAction() noexcept final;
 
   private:
     // attributes
-    Vector3             camera_position_ = { 0.0f, 1.0f, 2.0f };
+    Vector3             camera_position_ = { 0.0f, 0.5f, 2.0f };
     Vector3             camera_target_   = { 0.0f, 1.0f, 0.0f };
     Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
     std::vector<Button> buttons_         = {};
     GameData*           data_;
     Core&               core_entry_;
     ColorManager        background_color_;
+    Sprite              background_;
     Controller          controller;
     MusicManager        victory_music_;
     bool                isEnd         = false;
     int                 button_index_ = 0;
 
     static const inline char* VICTORY_MUSIC = "assets/audios/Victory.mp3";
+    static const inline char* BG_PATH       = "assets/textures/home/background.png";
 };

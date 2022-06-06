@@ -15,7 +15,8 @@ EndGame::EndGame(GameData* data, Core& core_ref) noexcept
     : Scene()
     , core_entry_(core_ref)
     , data_(data)
-    , background_color_(Colors::C_BLACK)
+    , background_color_(Colors::C_WHITE)
+    , background_(BG_PATH, 0, 0, 1.1)
     , victory_music_(VICTORY_MUSIC)
 {
     createButtons();
@@ -159,4 +160,9 @@ void EndGame::drawButtons() const noexcept
 void EndGame::unloadButtons() noexcept
 {
     for (auto it : buttons_) { it.unload(); }
+}
+
+void EndGame::drawBackground() const noexcept
+{
+    background_.draw({ 255, 255, 255, 175 });
 }

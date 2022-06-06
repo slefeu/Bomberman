@@ -31,7 +31,7 @@ class Render : public Component
     Render(Render&& other) noexcept      = default;
 
     Render& operator=(const Render& rhs) noexcept = default;
-    Render& operator=(Render&& rhs) noexcept = default;
+    Render& operator=(Render&& rhs) noexcept      = default;
 
     void          display(const Transform3D& transform) noexcept;
     void          setRenderType(const RenderType& type) noexcept;
@@ -45,6 +45,10 @@ class Render : public Component
     void resetAnimation(int frame) noexcept;
     void setSkipFrame(int frame) noexcept;
     void setAnimationId(int id) noexcept;
+
+    void displayModel(const Transform3D& transform, Vector3 pos) noexcept;
+    void displayModelV(
+        const Transform3D& transform, Vector3 pos, Vector3 axis, float angle) noexcept;
 
     static constexpr ComponentType TYPE = ComponentType::RENDER;
 

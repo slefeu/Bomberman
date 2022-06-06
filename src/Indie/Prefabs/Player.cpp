@@ -56,22 +56,6 @@ void Player::Display()
     renderer->get().display(transform->get());
 }
 
-void Player::displayModel(const Vector3& position)
-{
-    auto renderer = getComponent<Render>();
-    if (!renderer.has_value()) throw(Error("Error in displaying the player element.\n"));
-
-    Transform3D transform;
-    transform.setSize({ 0.5f, 0.5f, 0.5f });
-    transform.setPosition(position);
-    transform.setRotationAxis({ 0.0f, 1.0f, 0.0f });
-    transform.setRotationAngle(180.0f);
-    transform.setScale(0.7f);
-
-    renderer->get().display(transform);
-    renderer->get().setAnimationId(1);
-}
-
 void Player::Update()
 {
     auto hitbox    = getComponent<BoxCollider>();

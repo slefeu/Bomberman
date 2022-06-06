@@ -104,5 +104,3 @@ void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
         default: break;
     }
 }
-
-void Item::displayModel(const Vector3& position) {}

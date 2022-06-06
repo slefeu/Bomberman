@@ -33,8 +33,16 @@ void PlayerSelect::display3D() noexcept
 {
     float nbPlayers = 0;
     for (auto& player : data_->players) {
-        Vector3 position = { 0, 0, 5 - data_->nbPlayer + nbPlayers };
-        player->displayModel(position);
+        auto render    = player->getComponent<Render>();
+        auto transform = player->getComponent<Transform3D>();
+
+        if (!render.has_value() || !transform.has_value()) continue;
+
+        Vector3 position = { 0, 0, 3 + (nbPlayers * -1) };
+        Vector3 rotation = { 0, 1, 0 };
+
+        render->get().setAnimationId(1);
+        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
         nbPlayers++;
     }
 }

@@ -57,8 +57,18 @@ void EndGame::display3D() noexcept
     float nbPlayers = 0;
     for (auto& player : data_->players) {
         if (!player->getEnabledValue()) continue;
+
+        auto render    = player->getComponent<Render>();
+        auto transform = player->getComponent<Transform3D>();
+
+        if (!render.has_value() || !transform.has_value()) continue;
+
         Vector3 position = { 0, 0, 0 };
-        player->displayModel(position);
+        Vector3 rotation = { 0, 1, 0 };
+
+        render->get().setSkipFrame(1);
+        render->get().setAnimationId(3);
+        render->get().displayModelV(transform->get(), position, rotation, 90.0f);
         nbPlayers++;
     }
 }

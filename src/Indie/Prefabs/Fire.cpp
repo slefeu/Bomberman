@@ -75,5 +75,3 @@ bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
     }
     return false;
 }
-
-void Fire::displayModel(const Vector3& position) {}

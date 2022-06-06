@@ -18,12 +18,11 @@ class Wall : public Entity
     ~Wall() noexcept                 = default;
 
     Wall& operator=(const Wall& rhs) noexcept = delete;
-    Wall& operator=(Wall&& rhs) noexcept = delete;
+    Wall& operator=(Wall&& rhs) noexcept      = delete;
 
     void Update() final;
     void Display() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
-    void displayModel(const Vector3& position) final;
 
   protected:
   private:

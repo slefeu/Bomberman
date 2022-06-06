@@ -32,7 +32,6 @@ class Player : public Entity
     Player& operator=(Player&& rhs) noexcept      = delete;
 
     void  Display() final;
-    void  displayModel(const Vector3& position) final;
     void  Update() final;
     void  OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     void  setStats(int bomb, int sp, int size) noexcept;

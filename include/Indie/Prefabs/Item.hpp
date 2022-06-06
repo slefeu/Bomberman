@@ -27,7 +27,6 @@ class Item : public Entity
     void Display() final;
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
-    void displayModel(const Vector3& position) final;
 
   private:
     void setPlayerStat(std::unique_ptr<Player>& p) noexcept;

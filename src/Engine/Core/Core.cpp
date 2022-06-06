@@ -87,6 +87,7 @@ void Core::run() noexcept
 {
     while (!exit_) {
         // Update -------------------------------------------------------------
+        SetMasterVolume(0);     // à enlever !!!
         checkExit();
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         audio_.update(findScene());

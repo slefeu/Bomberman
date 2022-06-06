@@ -15,9 +15,8 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
-    , choose_(SELECT, "Select players", data_->winWidth / 2, data_->winHeight / 7)
+    , choose_(SELECT, "Select players", data_->winWidth / 2, data_->winHeight / 9)
 {
-    choose_.setTextColor(Colors::C_BLACK);
     choose_.setTextSize(40);
     createButtons();
     stats_.emplace_back("assets/textures/selection/normal.png", data_->winWidth / 2, 50);
@@ -104,7 +103,7 @@ void PlayerSelect::switchAction() noexcept {}
 void PlayerSelect::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",
-        data_->winWidth / 3 + 100,
+        data_->winWidth / 4 + 200,
         data_->winHeight / 5,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer < 4) {
@@ -140,11 +139,11 @@ void PlayerSelect::createButtons() noexcept
         1,
         "assets/fonts/menu.ttf",
         " Add",
-        data_->winWidth / 3 + 200,
+        data_->winWidth / 4 + 300,
         data_->winHeight / 5 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        data_->winWidth / 3 + 450,
+        data_->winWidth / 4 + 550,
         data_->winHeight / 5,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer > 1) {
@@ -158,19 +157,30 @@ void PlayerSelect::createButtons() noexcept
         1,
         "assets/fonts/menu.ttf",
         " Remove",
-        data_->winWidth / 3 + 500,
+        data_->winWidth / 4 + 600,
         data_->winHeight / 5 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        data_->winWidth / 3 + 800,
+        data_->winWidth / 4 + 900,
         data_->winHeight / 5,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
         1,
         "assets/fonts/menu.ttf",
         "Play",
-        data_->winWidth / 3 + 900,
+        data_->winWidth / 4 + 1000,
         data_->winHeight / 5 + 45);
+
+    buttons_.emplace_back("assets/textures/selection/close.png",
+        data_->winWidth / 4 + 1250,
+        data_->winHeight / 5,
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
+        1,
+        "assets/fonts/menu.ttf",
+        "",
+        0,
+        0);
 }
 
 void PlayerSelect::drawButtons() const noexcept

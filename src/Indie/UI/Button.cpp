@@ -74,3 +74,16 @@ void Button::action() const noexcept
 {
     task_();
 }
+
+void Button::setState(int state) noexcept
+{
+    state_ = state;
+
+    if (state_ == 0) {
+        color_.setColor(Colors::C_WHITE);
+    } else if (state_ == 1) {
+        color_.setColor(Colors::C_PINK);
+    } else if (state_ == 2) {
+        color_.setColor(Colors::C_PINK);
+    }
+}

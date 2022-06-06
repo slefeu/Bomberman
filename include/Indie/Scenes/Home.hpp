@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "Button.hpp"
+#include "Controller.hpp"
 #include "Core.hpp"
 #include "Fps.hpp"
 #include "Scene.hpp"
@@ -52,11 +53,13 @@ class Home : public Scene
     Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
     Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
     std::vector<Button> buttons_         = {};
+    int                 button_index_    = 0;
     GameData*           data_;
     Core&               core_entry_;
     ColorManager        background_color_;
     Sprite              background_;
     Sprite              title_;
+    Controller          controller;
 
     static const inline char* MENU_MUSIC = "assets/audios/MainMenu.mp3";
     static const inline char* BG_PATH    = "assets/textures/home/background.png";

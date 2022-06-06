@@ -52,7 +52,16 @@ void EndGame::switchAction() noexcept
     }
 }
 
-void EndGame::display3D() noexcept {}
+void EndGame::display3D() noexcept
+{
+    float nbPlayers = 0;
+    for (auto& player : data_->players) {
+        if (!player->getEnabledValue()) continue;
+        Vector3 position = { 0, 0, 0 };
+        player->displayModel(position);
+        nbPlayers++;
+    }
+}
 
 void EndGame::display2D() noexcept
 {
@@ -88,18 +97,18 @@ void EndGame::createButtons() noexcept
 
 void EndGame::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_pos) noexcept
 {
-    // if (controller.isGamepadConnected(0)) {
-    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
-    //         button_index_ = (button_index_ - 1) % buttons_.size();
-    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
-    //         button_index_ = (button_index_ + 1) % buttons_.size();
-    //     if (controller.isGamepadButtonPressed(0, G_Button::G_B))
-    //     buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
-    //     buttons_[button_index_].setState(1);
-    // } else {
-    for (auto& it : buttons_)
-        if (it.checkCollision(mouse_pos)) { it.action(); }
-    // }
+    if (controller.isGamepadConnected(0)) {
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
+            button_index_ = (button_index_ - 1) % buttons_.size();
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
+            button_index_ = (button_index_ + 1) % buttons_.size();
+        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
+        for (auto& it : buttons_) it.setState(0);
+        buttons_[button_index_].setState(1);
+    } else {
+        for (auto& it : buttons_)
+            if (it.checkCollision(mouse_pos)) { it.action(); }
+    }
 }
 
 void EndGame::DestroyPool() noexcept {}

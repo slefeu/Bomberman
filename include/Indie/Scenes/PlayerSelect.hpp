@@ -10,6 +10,7 @@
 #include <string>
 
 #include "Button.hpp"
+#include "Controller.hpp"
 #include "Core.hpp"
 #include "Fps.hpp"
 #include "GameData.hpp"
@@ -67,7 +68,9 @@ class PlayerSelect : public Scene
     Sprite              background_;
     Sprite              title_;
     TextHandler         choose_;
-    std::vector<Button> buttons_ = {};
+    std::vector<Button> buttons_      = {};
+    int                 button_index_ = 0;
+    Controller          controller;
 
     static const inline char*       MUSIC      = "assets/audios/Select.mp3";
     static const inline char*       BG_PATH    = "assets/textures/home/background.png";

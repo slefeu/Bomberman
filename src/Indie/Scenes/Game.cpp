@@ -20,8 +20,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , chrono_(std::make_unique<Timer>(data_->timeParty))
     , isHurry(false)
     , nbBlockPlaced(0)
-    , game_music_(GAME_MUSIC)
-    , hurry_music_(GAME_HURRY_MUSIC)
+    , loop_music_(GAME_MUSIC)
     , core_entry_(core_ref)
     , background_color_(Colors::C_BLACK)
     , startSound_(START)
@@ -34,10 +33,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
 
 Game::~Game() noexcept
 {
-    game_music_.unload();
-    hurryUpSound_.unload();
-    startSound_.unload();
-    hurry_music_.unload();
+    loop_music_.unload();
 }
 
 void Game::switchAction() noexcept
@@ -48,17 +44,14 @@ void Game::switchAction() noexcept
     }
 }
 
-void Game::playMusic() noexcept
+void Game::playMusic() const noexcept
 {
-    if (game_music_.getIsPlaying()) game_music_.play();
-    else
-        hurry_music_.play();
+    loop_music_.play();
 }
 
 MusicManager Game::getMusicManager() const noexcept
 {
-    if (game_music_.getIsPlaying()) return (game_music_);
-    return (hurry_music_);
+    return (loop_music_);
 }
 
 void Game::resetCameraman(Cameraman& camera) noexcept
@@ -114,11 +107,6 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
     CollisionPool();
     chrono_->updateTimer();
 
-    int alive = 0;
-    for (auto& player : data_->players)
-        if (player->getEnabledValue()) alive++;
-    if (alive == 1 || alive == 0) { core_entry_.switchScene(SceneType::ENDGAME); }
-
     for (auto& player : data_->players) player->Update();
     for (auto& entity : entities_) entity->Update();
 
@@ -142,8 +130,6 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
         lastTimeBlockPlace = chrono_->getTime();
         HurryUpX           = GetScreenWidth() - 100;
         hurryUpSound_.play();
-        game_music_.stop();
-        hurry_music_.play();
     }
     hurryUp();
 

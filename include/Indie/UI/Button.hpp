@@ -42,7 +42,6 @@ class Button
     void unload() noexcept;
     void action() const noexcept;
     bool checkCollision(MouseHandler& mouse_) noexcept;
-    void setState(int state) noexcept;
 
   protected:
   private:

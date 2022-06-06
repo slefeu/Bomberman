@@ -22,13 +22,10 @@ class SoundManager
     SoundManager& operator=(SoundManager&& rhs) noexcept = default;
 
     void unload() noexcept;
-    void play() noexcept;
+    void play() const noexcept;
     void setVolume(float volume) noexcept;
-    void stop() noexcept;
-    bool getIsPlaying() const noexcept;
 
   protected:
   private:
     Sound sound_;
-    bool  isPlaying;
 };

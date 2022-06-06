@@ -61,12 +61,6 @@ Item::Item(Vector3 pos, GameData* data)
     newItemSound.play();
 }
 
-Item::~Item() noexcept
-{
-    getItemSound.unload();
-    newItemSound.unload();
-}
-
 void Item::Display()
 {
     auto renderer  = getComponent<Render>();

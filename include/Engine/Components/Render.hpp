@@ -40,9 +40,6 @@ class Render : public Component
     RenderType    getRenderType() const noexcept;
     ComponentType getComponentType() const noexcept;
 
-    void displayModel(const Vector3& pos, const Transform3D& transform) noexcept;
-    void displayModel(const Vector3& pos, const Vector3& rotation, const float& angle) noexcept;
-
     void addAnimation(std::string path) noexcept;
     void updateAnimation() noexcept;
     void resetAnimation(int frame) noexcept;

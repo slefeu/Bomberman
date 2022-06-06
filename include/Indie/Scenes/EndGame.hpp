@@ -27,7 +27,7 @@ class EndGame : public Scene
 
     void display3D() noexcept final;
     void display2D() noexcept final;
-    void action(Cameraman& camera, Vector2 mouse_pos) noexcept final;
+    void action(Cameraman& camera, MouseHandler mouse_pos) noexcept final;
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
 

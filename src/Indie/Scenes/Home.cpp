@@ -91,7 +91,7 @@ void Home::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_) noexc
         buttons_[button_index_].setState(1);
     } else {
         for (auto& it : buttons_)
-            if (it.checkCollision(mouse_pos)) { it.action(); }
+            if (it.checkCollision(mouse_)) { it.action(); }
     }
 }
 

@@ -84,7 +84,7 @@ void EndGame::createButtons() noexcept
         data_->winHeight / 4 + 150 * buttons_.size() + 45);
 }
 
-void EndGame::action([[maybe_unused]] Cameraman& camera, Vector2 mouse_pos) noexcept
+void EndGame::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_pos) noexcept
 {
     // if (!isEnd) {
     //     int alive = 0;

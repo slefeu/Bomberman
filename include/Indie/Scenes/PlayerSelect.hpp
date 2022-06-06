@@ -11,6 +11,7 @@
 
 #include "Button.hpp"
 #include "Core.hpp"
+#include "Entity.hpp"
 #include "Fps.hpp"
 #include "GameData.hpp"
 #include "Mouse.hpp"
@@ -53,8 +54,11 @@ class PlayerSelect : public Scene
   protected:
   private:
     // methods
-    void createButtons() noexcept;
-    void drawButtons() const noexcept;
+    void         createButtons() noexcept;
+    void         drawButtons() const noexcept;
+    void         displayPlayerStats(const Vector2& position, int id) noexcept;
+    void         displayAllStats() noexcept;
+    unsigned int findStatsId(const PlayerType& type) const noexcept;
 
     // attributes
     MusicManager        loop_music_;
@@ -68,6 +72,7 @@ class PlayerSelect : public Scene
     Sprite              title_;
     TextHandler         choose_;
     std::vector<Button> buttons_ = {};
+    std::vector<Sprite> stats_   = {};
 
     static const inline char*       MUSIC      = "assets/audios/Select.mp3";
     static const inline char*       BG_PATH    = "assets/textures/home/background.png";

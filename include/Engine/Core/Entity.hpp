@@ -20,6 +20,7 @@
 #include "Transform3D.hpp"
 
 enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
+enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER };
 
 class Entity
 {
@@ -35,6 +36,7 @@ class Entity
     virtual void displayModel(const Vector3& position)                     = 0;
     virtual void Update()                                                  = 0;
     virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;
+
     template <typename T>
     void addComponent(const T& component) noexcept
     {

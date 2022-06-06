@@ -15,11 +15,15 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
-    , choose_(SELECT, "Select players", data_->winWidth / 2, data_->winHeight / 6)
+    , choose_(SELECT, "Select players", data_->winWidth / 2, data_->winHeight / 7)
 {
     choose_.setTextColor(Colors::C_BLACK);
     choose_.setTextSize(40);
     createButtons();
+    stats_.emplace_back("assets/textures/selection/normal.png", data_->winWidth / 2, 50);
+    stats_.emplace_back("assets/textures/selection/attack.png");
+    stats_.emplace_back("assets/textures/selection/tactical.png");
+    stats_.emplace_back("assets/textures/selection/runner.png");
 }
 
 PlayerSelect::~PlayerSelect() noexcept
@@ -33,7 +37,7 @@ void PlayerSelect::display3D() noexcept
 {
     float nbPlayers = 0;
     for (auto& player : data_->players) {
-        Vector3 position = { 0, 0, 5 - data_->nbPlayer + nbPlayers };
+        Vector3 position = { 0, 0.5, 5.5f - nbPlayers * 2 };
         player->displayModel(position);
         nbPlayers++;
     }
@@ -44,6 +48,32 @@ void PlayerSelect::display2D() noexcept
     FpsHandler::draw(10, 10);
     choose_.draw();
     drawButtons();
+    displayAllStats();
+}
+
+void PlayerSelect::displayAllStats() noexcept
+{
+    float nbPlayers = 0;
+    for (auto& player : data_->players) {
+        Vector2 position = { 420 * nbPlayers, 600 };
+        displayPlayerStats(position, findStatsId(((std::unique_ptr<Player>&)player)->getType()));
+        nbPlayers++;
+    }
+}
+
+unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
+{
+    if (type == PlayerType::NORMAL) { return (0); };
+    if (type == PlayerType::ATTACK) { return (1); };
+    if (type == PlayerType::TACTICAL) { return (2); };
+    if (type == PlayerType::RUNNER) { return (3); };
+    return (0);
+}
+
+void PlayerSelect::displayPlayerStats(const Vector2& position, int id) noexcept
+{
+    stats_[id].setPos(position.x, position.y);
+    stats_[id].draw();
 }
 
 void PlayerSelect::switchAction() noexcept {}
@@ -52,8 +82,8 @@ void PlayerSelect::createButtons() noexcept
 {
     buttons_.emplace_back("assets/textures/home/button.png",
         1,
-        data_->winWidth / 2,
-        data_->winHeight / 4,
+        data_->winWidth / 3 + 100,
+        data_->winHeight / 5,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer < 4) {
                 data_->nbPlayer++;
@@ -63,20 +93,36 @@ void PlayerSelect::createButtons() noexcept
         1,
         "assets/fonts/menu.ttf",
         " Add",
-        data_->winWidth / 2 + 100,
-        data_->winHeight / 4 + 45);
+        data_->winWidth / 3 + 200,
+        data_->winHeight / 5 + 45);
 
     buttons_.emplace_back("assets/textures/home/button.png",
         1,
-        data_->winWidth - data_->winWidth / 5,
-        data_->winHeight - data_->winHeight / 4,
+        data_->winWidth / 3 + 450,
+        data_->winHeight / 5,
+        std::function<void(void)>([this](void) {
+            if (this->data_->nbPlayer > 1) {
+                data_->nbPlayer--;
+                data_->players.pop_back();
+            }
+        }),
+        1,
+        "assets/fonts/menu.ttf",
+        " Remove",
+        data_->winWidth / 3 + 500,
+        data_->winHeight / 5 + 45);
+
+    buttons_.emplace_back("assets/textures/home/button.png",
+        1,
+        data_->winWidth / 3 + 800,
+        data_->winHeight / 5,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
         1,
         "assets/fonts/menu.ttf",
-        " Play game",
-        data_->winWidth - (data_->winWidth / 5 + 50),
-        data_->winHeight - 50);
+        "Play",
+        data_->winWidth / 3 + 900,
+        data_->winHeight / 5 + 45);
 }
 
 void PlayerSelect::drawButtons() const noexcept

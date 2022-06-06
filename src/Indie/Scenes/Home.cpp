@@ -39,7 +39,7 @@ void Home::createButtons() noexcept
             [this](void) { return (core_entry_.switchScene(SceneType::SELECT)); }),
         1,
         "assets/fonts/menu.ttf",
-        "Play",
+        "Start",
         data_->winWidth / 2 + 100,
         data_->winHeight / 4 + 45);
 

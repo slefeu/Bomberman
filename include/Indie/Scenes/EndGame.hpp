@@ -31,6 +31,10 @@ class EndGame : public Scene
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
 
+    void createButtons() noexcept;
+    void drawButtons() const noexcept;
+    void unloadButtons() noexcept;
+
     void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
     Vector3      getCameraPosition() const noexcept final;
@@ -51,7 +55,8 @@ class EndGame : public Scene
     ColorManager        background_color_;
     Controller          controller;
     MusicManager        victory_music_;
-    bool                isEnd = false;
+    bool                isEnd         = false;
+    int                 button_index_ = 0;
 
     static const inline char* VICTORY_MUSIC = "assets/audios/Victory.mp3";
 };

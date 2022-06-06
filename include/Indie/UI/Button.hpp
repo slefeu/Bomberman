@@ -42,6 +42,7 @@ class Button
     bool checkCollision(const Vector2& mouse_pos) noexcept;
     void unload() noexcept;
     void action() const noexcept;
+    void setState(int state) noexcept;
 
   protected:
   private:

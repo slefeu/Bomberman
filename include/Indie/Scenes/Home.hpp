@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "Button.hpp"
+#include "Controller.hpp"
 #include "Core.hpp"
 #include "Fps.hpp"
 #include "Scene.hpp"
@@ -56,6 +57,8 @@ class Home : public Scene
     ColorManager        background_color_;
     Sprite              background_;
     Sprite              title_;
+    Controller          controller;
+    int                 button_index_ = 0;
 
     static const inline char* MENU_MUSIC = "assets/audios/MainMenu.mp3";
     static const inline char* BG_PATH    = "assets/textures/home/background.png";

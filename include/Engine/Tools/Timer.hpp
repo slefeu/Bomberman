@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "raylib.h"
-
 class Timer
 {
   private:

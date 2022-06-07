@@ -9,7 +9,7 @@
 
 #include "Error.hpp"
 
-Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
+Wall::Wall(Vector3D pos, std::unique_ptr<Model3D>* model)
     : Entity(EntityType::E_WALL)
 {
     auto transform = getComponent<Transform3D>();
@@ -22,7 +22,7 @@ Wall::Wall(Vector3 pos, std::unique_ptr<Model3D>* model)
     transform->get().setScale(0.017f);
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(model);
-    Vector3 size = { 0.9f, 1.0f, 0.9f };
+    Vector3D size = { 0.9f, 1.0f, 0.9f };
     addComponent(BoxCollider(transform->get().getPosition(), size, true));
 }
 

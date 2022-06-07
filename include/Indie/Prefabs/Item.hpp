@@ -19,7 +19,7 @@ static const inline char* NEW_ITEM = "assets/audios/NewItem.wav";
 class Item : public Entity
 {
   public:
-    Item(Vector3 pos, GameData* data);
+    Item(Vector3D pos, GameData* data);
     ~Item() noexcept;
     Item(GameData* data, ItemType type);
     Item(const Item& other) noexcept          = delete;
@@ -32,10 +32,10 @@ class Item : public Entity
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
 
   private:
-    void    setPlayerStat(std::unique_ptr<Player>& p) noexcept;
-    Vector3 findFreePosition(void) const noexcept;
-    bool    entitiesHere(Vector3& pos) const noexcept;
-    void    setModelByType(void) noexcept;
+    void     setPlayerStat(std::unique_ptr<Player>& p) noexcept;
+    Vector3D findFreePosition(void) const noexcept;
+    bool     entitiesHere(Vector3D& pos) const noexcept;
+    void     setModelByType(void) noexcept;
 
   private:
     GameData*    data;

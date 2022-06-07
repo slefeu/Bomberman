@@ -9,7 +9,7 @@
 
 #include "Error.hpp"
 
-Bomb::Bomb(Vector3                        pos,
+Bomb::Bomb(Vector3D                       pos,
     Player*                               p,
     std::unique_ptr<Model3D>*             newModel,
     int                                   bombSize,
@@ -111,11 +111,11 @@ void Bomb::explode() noexcept
     setEnabledValue(false);
 }
 
-void Bomb::createFire(Vector3 mul) noexcept
+void Bomb::createFire(Vector3D mul) noexcept
 {
-    Vector3 position = getComponent<Transform3D>()->get().getPosition();
-    Vector3 newPos;
-    bool    exit = false;
+    Vector3D position = getComponent<Transform3D>()->get().getPosition();
+    Vector3D newPos;
+    bool     exit = false;
 
     for (int i = 1; i < size && !exit; i++) {
         newPos.x = position.x + (float(i) * mul.x);

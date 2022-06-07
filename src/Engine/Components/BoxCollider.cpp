@@ -7,17 +7,19 @@
 
 #include "BoxCollider.hpp"
 
-BoxCollider::BoxCollider(Vector3 newPos, Vector3 newSize, bool solid) noexcept
+#include "raylib.h"
+
+BoxCollider::BoxCollider(Vector3D newPos, Vector3D newSize, bool solid) noexcept
     : position_(newPos)
     , size_(newSize)
     , is_solid_(solid)
 {
 }
 
-bool BoxCollider::checkCollision(const Vector3& pos,
-    const Vector3&                              size,
-    const Vector3&                              otherPos,
-    const Vector3&                              otherSize) noexcept
+bool BoxCollider::checkCollision(const Vector3D& pos,
+    const Vector3D&                              size,
+    const Vector3D&                              otherPos,
+    const Vector3D&                              otherSize) noexcept
 {
     Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
     Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };
@@ -34,12 +36,12 @@ bool BoxCollider::checkCollision(const Vector3& pos,
     return CheckCollisionBoxes(BoundingBox1, BoundingBox2);
 }
 
-Vector3 BoxCollider::getPosition() const noexcept
+Vector3D BoxCollider::getPosition() const noexcept
 {
     return (position_);
 }
 
-void BoxCollider::setPosition(const Vector3& pos) noexcept
+void BoxCollider::setPosition(const Vector3D& pos) noexcept
 {
     position_ = pos;
 }
@@ -56,10 +58,12 @@ void BoxCollider::setPositionY(const int& pos) noexcept
 
 void BoxCollider::display() const noexcept
 {
-    if (debug) DrawCubeWiresV(position_, size_, GREEN);
+    if (debug)
+        DrawCubeWiresV(
+            { position_.x, position_.y, position_.z }, { size_.x, size_.y, size_.z }, GREEN);
 }
 
-void BoxCollider::update(const Vector3 newPos) noexcept
+void BoxCollider::update(const Vector3D newPos) noexcept
 {
     position_ = newPos;
 }
@@ -69,7 +73,7 @@ bool BoxCollider::isColliding(const BoxCollider& other) noexcept
     return checkCollision(position_, size_, other.getPosition(), other.getSize());
 }
 
-bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept
+bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3D& otherPos) noexcept
 {
     return checkCollision(position_, size_, otherPos, otherHit.getSize());
 }
@@ -79,7 +83,7 @@ ComponentType BoxCollider::getComponentType() const noexcept
     return (TYPE);
 }
 
-Vector3 BoxCollider::getSize() const noexcept
+Vector3D BoxCollider::getSize() const noexcept
 {
     return (size_);
 }

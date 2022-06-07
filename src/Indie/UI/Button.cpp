@@ -7,8 +7,6 @@
 
 #include "Button.hpp"
 
-// #include "raylib.h"
-
 Button::Button(const std::string& texture_path,
     float                         pos_x,
     float                         pos_y,

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "Entity.hpp"
+#include "Vector.hpp"
 #include "raylib.h"
 
 class Cameraman
@@ -26,21 +27,21 @@ class Cameraman
     void moveX(const float& x) noexcept;
     void moveY(const float& y) noexcept;
     void moveZ(const float& z) noexcept;
-    void moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
-    void tpTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept;
+    void moveTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
+    void tpTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     bool smoothMove() noexcept;
     void lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity);
 
-    Vector3  getPosition() const noexcept;
-    Vector3  getTarget() const noexcept;
-    Vector3  getUp() const noexcept;
+    Vector3D getPosition() const noexcept;
+    Vector3D getTarget() const noexcept;
+    Vector3D getUp() const noexcept;
     bool     getIsMoving() const noexcept;
     float    getSpeed() const noexcept;
     Camera3D getCamera() const noexcept;
 
-    void setPosition(const Vector3& pos) noexcept;
-    void setTarget(const Vector3& tar) noexcept;
-    void setUp(const Vector3& up) noexcept;
+    void setPosition(const Vector3D& pos) noexcept;
+    void setTarget(const Vector3D& tar) noexcept;
+    void setUp(const Vector3D& up) noexcept;
     void setIsMoving(const bool& isMoving) noexcept;
     void setSpeed(const float& speed) noexcept;
 
@@ -48,7 +49,7 @@ class Cameraman
     Camera3D camera;
     bool     isMoving;
     float    speed;
-    Vector3  targetPosition;
-    Vector3  targetTarget;
-    Vector3  targetUp;
+    Vector3D targetPosition;
+    Vector3D targetTarget;
+    Vector3D targetUp;
 };

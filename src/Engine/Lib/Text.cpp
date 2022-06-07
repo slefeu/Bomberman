@@ -27,7 +27,7 @@ void TextHandler::draw() const noexcept
 
     DrawTextEx(font_.getFont(),
         message_.c_str(),
-        position_,
+        { position_.x, position_.y },
         font_.getFontSize(),
         0,
         (Color){ color[0], color[1], color[2], 255 });

@@ -20,7 +20,7 @@ static const inline char* EXPLODE   = "assets/audios/Explode.wav";
 class Bomb : public Entity
 {
   public:
-    Bomb(Vector3                              pos,
+    Bomb(Vector3D                             pos,
         Player*                               p,
         std::unique_ptr<Model3D>*             newModel,
         int                                   bombSize,
@@ -40,7 +40,7 @@ class Bomb : public Entity
 
   private:
     // methods
-    void createFire(Vector3 mul) noexcept;
+    void createFire(Vector3D mul) noexcept;
 
     // attributes
     float                                 lifeTime;

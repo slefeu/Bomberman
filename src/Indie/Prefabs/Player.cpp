@@ -242,8 +242,8 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, i
     if (!transform.has_value() || !renderer.has_value() || !hitbox.has_value())
         throw(Error("Error in updating the collision of the player.\n"));
 
-    Vector3 position = transform->get().getPosition();
-    Vector3 nextTurn = { position.x + (speed * xdir * GetFrameTime()),
+    Vector3D position = transform->get().getPosition();
+    Vector3D nextTurn = { position.x + (speed * xdir * GetFrameTime()),
         position.y,
         position.z + (speed * zdir * GetFrameTime()) };
 

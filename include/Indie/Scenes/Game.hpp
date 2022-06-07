@@ -41,9 +41,9 @@ class Game : public Scene
     void         CollisionPool() noexcept final;
     void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
-    Vector3      getCameraPosition() const noexcept final;
-    Vector3      getCameraTarget() const noexcept final;
-    Vector3      getCameraUp() const noexcept final;
+    Vector3D     getCameraPosition() const noexcept final;
+    Vector3D     getCameraTarget() const noexcept final;
+    Vector3D     getCameraUp() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept final;
     void         drawBackground() const noexcept final{};
     ColorManager getBackgroundColor() const noexcept final;
@@ -83,9 +83,9 @@ class Game : public Scene
     MusicManager             loop_music_;
     MusicManager             hurry_music_;
     MusicManager             victory_music_;
-    Vector3                  camera_position_ = { 0.0f, 13.0f, 2.0f };
-    Vector3                  camera_target_   = { 0.0f, 0.0f, 1.0f };
-    Vector3                  camera_up_       = { 0.0f, 2.0f, 0.0f };
+    Vector3D                 camera_position_ = { 0.0f, 13.0f, 2.0f };
+    Vector3D                 camera_target_   = { 0.0f, 0.0f, 1.0f };
+    Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
     Core&                    core_entry_;
     float                    HurryUpX;
     ColorManager             background_color_;

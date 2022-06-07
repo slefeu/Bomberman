@@ -7,7 +7,7 @@
 
 #pragma once
 #include "Rectangle.hpp"
-#include "raylib.h"
+#include "Vector.hpp"
 
 class MouseHandler
 {
@@ -27,5 +27,5 @@ class MouseHandler
 
   protected:
   private:
-    Vector2 mouse_ = { 0.0f, 0.0f };
+    Vector2D mouse_ = { 0.0f, 0.0f };
 };

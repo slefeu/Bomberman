@@ -7,6 +7,8 @@
 
 #include "Timer.hpp"
 
+#include "raylib.h"
+
 Timer::Timer(float newLifeTime) noexcept
     : lifeTime(newLifeTime)
     , defaultTime(newLifeTime)

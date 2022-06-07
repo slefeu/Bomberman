@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "raylib.h"
+#include "Vector.hpp"
 
 namespace Round
 {
-float   round(const float& x, const int& n = 0) noexcept;
-Vector3 roundVector(const Vector3& x, const int& n = 0) noexcept;
+float    round(const float& x, const int& n = 0) noexcept;
+Vector3D roundVector(const Vector3D& x, const int& n = 0) noexcept;
 };

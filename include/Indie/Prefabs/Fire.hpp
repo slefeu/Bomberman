@@ -18,7 +18,7 @@ class Fire : public Entity
     std::unique_ptr<Timer> explodeTimer;
 
   public:
-    Fire(Vector3 posi, std::unique_ptr<Model3D>* model);
+    Fire(Vector3D posi, std::unique_ptr<Model3D>* model);
     ~Fire() noexcept                          = default;
     Fire(const Fire& other) noexcept          = delete;
     Fire(Fire&& other) noexcept               = delete;

@@ -33,9 +33,9 @@ class Home : public Scene
 
     void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
-    Vector3      getCameraPosition() const noexcept final;
-    Vector3      getCameraTarget() const noexcept final;
-    Vector3      getCameraUp() const noexcept final;
+    Vector3D     getCameraPosition() const noexcept final;
+    Vector3D     getCameraTarget() const noexcept final;
+    Vector3D     getCameraUp() const noexcept final;
     void         drawBackground() const noexcept final;
     void         resetCameraman(Cameraman& camera) noexcept;
     ColorManager getBackgroundColor() const noexcept final;
@@ -49,9 +49,9 @@ class Home : public Scene
 
     // attributes
     MusicManager        loop_music_;
-    Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
-    Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
-    Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
+    Vector3D            camera_position_ = { 20.0f, 50.0f, 30.0f };
+    Vector3D            camera_target_   = { 0.0f, 0.0f, 1.0f };
+    Vector3D            camera_up_       = { 0.0f, 2.0f, 0.0f };
     std::vector<Button> buttons_         = {};
     int                 button_index_    = 0;
     GameData*           data_;

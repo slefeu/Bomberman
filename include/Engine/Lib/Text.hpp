@@ -10,6 +10,8 @@
 
 #include "Color.hpp"
 #include "Font.hpp"
+#include "Vector.hpp"
+
 class TextHandler
 {
   public:
@@ -34,6 +36,6 @@ class TextHandler
   private:
     FontHandler  font_;
     std::string  message_;
-    Vector2      position_;
+    Vector2D     position_;
     ColorManager color_;
 };

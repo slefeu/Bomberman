@@ -10,12 +10,12 @@
 #include <memory>
 
 #include "Component.hpp"
-#include "raylib.h"
+#include "Vector.hpp"
 
 class BoxCollider : public Component
 {
   public:
-    BoxCollider(Vector3 pos, Vector3 size, bool solid) noexcept;
+    BoxCollider(Vector3D pos, Vector3D size, bool solid) noexcept;
     BoxCollider(const BoxCollider& other) noexcept = default;
     BoxCollider(BoxCollider&& other) noexcept      = default;
     ~BoxCollider() noexcept                        = default;
@@ -24,16 +24,16 @@ class BoxCollider : public Component
     BoxCollider& operator=(BoxCollider&& rhs) noexcept      = default;
 
     void          display() const noexcept; // pour du débugage
-    void          update(Vector3 pos) noexcept;
+    void          update(Vector3D pos) noexcept;
     bool          isColliding(const BoxCollider& other) noexcept;
-    bool          isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept;
-    bool          checkCollision(const Vector3& pos,
-                 const Vector3&                 size,
-                 const Vector3&                 otherPos,
-                 const Vector3&                 otherSize) noexcept;
-    Vector3       getPosition() const noexcept;
-    void          setPosition(const Vector3& pos) noexcept;
-    Vector3       getSize() const noexcept;
+    bool          isColliding(const BoxCollider& otherHit, Vector3D& otherPos) noexcept;
+    bool          checkCollision(const Vector3D& pos,
+                 const Vector3D&                 size,
+                 const Vector3D&                 otherPos,
+                 const Vector3D&                 otherSize) noexcept;
+    Vector3D      getPosition() const noexcept;
+    void          setPosition(const Vector3D& pos) noexcept;
+    Vector3D      getSize() const noexcept;
     bool          getIsSolid() const noexcept;
     void          setIsSolid(const bool& newValue) noexcept;
     ComponentType getComponentType() const noexcept;
@@ -47,8 +47,8 @@ class BoxCollider : public Component
 
   protected:
   private:
-    Vector3 position_;
-    Vector3 size_;
-    bool    is_solid_;
-    bool    debug = true; // pour du débugage
+    Vector3D position_;
+    Vector3D size_;
+    bool     is_solid_;
+    bool     debug = true; // pour du débugage
 };

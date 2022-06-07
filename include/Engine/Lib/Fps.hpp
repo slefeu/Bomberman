@@ -6,7 +6,6 @@
 */
 
 #pragma once
-#include "raylib.h"
 
 class FpsHandler
 {

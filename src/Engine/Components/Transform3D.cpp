@@ -7,6 +7,8 @@
 
 #include "Transform3D.hpp"
 
+#include "raylib.h"
+
 Transform3D::Transform3D() noexcept
     : position({ 0.0f, 0.0f, 0.0f })
     , size({ 1.0f, 1.0f, 1.0f })
@@ -19,7 +21,7 @@ ComponentType Transform3D::getComponentType() const noexcept
     return (TYPE);
 }
 
-Vector3 Transform3D::getPosition() const noexcept
+Vector3D Transform3D::getPosition() const noexcept
 {
     return position;
 }
@@ -39,7 +41,7 @@ float Transform3D::getPositionZ() const noexcept
     return position.z;
 }
 
-Vector3 Transform3D::getSize() const noexcept
+Vector3D Transform3D::getSize() const noexcept
 {
     return size;
 }
@@ -49,7 +51,7 @@ float Transform3D::getScale() const noexcept
     return scale;
 }
 
-Vector3 Transform3D::getRotationAxis() const noexcept
+Vector3D Transform3D::getRotationAxis() const noexcept
 {
     return rotationAxis;
 }
@@ -59,12 +61,12 @@ float Transform3D::getRotationAngle() const noexcept
     return rotationAngle;
 }
 
-void Transform3D::setPosition(const Vector3& position) noexcept
+void Transform3D::setPosition(const Vector3D& position) noexcept
 {
     this->position = position;
 }
 
-void Transform3D::setSize(const Vector3& size) noexcept
+void Transform3D::setSize(const Vector3D& size) noexcept
 {
     this->size = size;
 }
@@ -74,7 +76,7 @@ void Transform3D::setScale(float scale) noexcept
     this->scale = scale;
 }
 
-void Transform3D::setRotationAxis(const Vector3& rotationAxis) noexcept
+void Transform3D::setRotationAxis(const Vector3D& rotationAxis) noexcept
 {
     this->rotationAxis = rotationAxis;
 }

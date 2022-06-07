@@ -7,16 +7,22 @@
 
 #include "Mouse.hpp"
 
+#include "raylib.h"
+
 void MouseHandler::update() noexcept
 {
-    mouse_ = GetMousePosition();
+    Vector2 mouse = GetMousePosition();
+    mouse_.x      = mouse.x;
+    mouse_.y      = mouse.y;
 }
 
 bool MouseHandler::isColliding(const RectangleManager& bounds) noexcept
 {
     Rectangle rectangle = { bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight() };
 
-    if (CheckCollisionPointRec(mouse_, rectangle)) {
+    Vector2 mouse = { mouse_.x, mouse_.y };
+
+    if (CheckCollisionPointRec(mouse, rectangle)) {
         return (true);
     } else
         return (false);

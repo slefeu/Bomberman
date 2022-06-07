@@ -37,7 +37,7 @@ void Cameraman::moveZ(const float& z) noexcept
     camera.position.z += z;
 }
 
-void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept
+void Cameraman::moveTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept
 {
     targetPosition = to;
     targetTarget   = target;
@@ -45,20 +45,31 @@ void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& 
     isMoving       = true;
 }
 
-void Cameraman::tpTo(const Vector3& to, const Vector3& tar, const Vector3& newUp) noexcept
+void Cameraman::tpTo(const Vector3D& to, const Vector3D& tar, const Vector3D& newUp) noexcept
 {
-    camera.position = to;
-    camera.target   = tar;
-    camera.up       = newUp;
-    isMoving        = false;
+    camera.position.x = to.x;
+    camera.position.y = to.y;
+    camera.position.z = to.z;
+
+    camera.target.x = tar.x;
+    camera.target.y = tar.y;
+    camera.target.z = tar.z;
+
+    camera.up.x = newUp.x;
+    camera.up.y = newUp.y;
+    camera.up.z = newUp.z;
+
+    isMoving = false;
 }
 
 bool Cameraman::smoothMove() noexcept
 {
-    bool    thereIsMovement = false;
-    Vector3 roundPos        = Round::roundVector(camera.position, 1);
-    Vector3 roundTarget     = Round::roundVector(targetPosition, 1);
-    Vector3 dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
+    bool     thereIsMovement = false;
+    Vector3D roundPos        = { Round::round(camera.position.x, 1),
+               Round::round(camera.position.y, 1),
+               Round::round(camera.position.z, 1) };
+    Vector3D roundTarget     = Round::roundVector(targetPosition, 1);
+    Vector3D dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
         (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
 
@@ -75,8 +86,13 @@ bool Cameraman::smoothMove() noexcept
         moveY(dir.y * speed);
     }
 
-    camera.target = targetTarget;
-    camera.up     = targetUp;
+    camera.target.x = targetTarget.x;
+    camera.target.y = targetTarget.y;
+    camera.target.z = targetTarget.z;
+
+    camera.up.x = targetUp.x;
+    camera.up.y = targetUp.y;
+    camera.up.z = targetUp.z;
 
     return thereIsMovement;
 }
@@ -93,7 +109,7 @@ void Cameraman::lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity)
         auto transform = entity->getComponent<Transform3D>();
         if (!transform.has_value()) throw(Error("Error in camera handling.\n"));
 
-        Vector3 pos = transform->get().getPosition();
+        Vector3D pos = transform->get().getPosition();
         if (pos.x < minX) minX = pos.x;
         if (pos.x > maxX) maxX = pos.x;
         if (pos.z < minZ) minZ = pos.z;
@@ -109,17 +125,17 @@ void Cameraman::lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity)
     camera.position.z = newZ + 2.0f;
 }
 
-Vector3 Cameraman::getPosition() const noexcept
+Vector3D Cameraman::getPosition() const noexcept
 {
     return targetPosition;
 }
 
-Vector3 Cameraman::getTarget() const noexcept
+Vector3D Cameraman::getTarget() const noexcept
 {
     return targetTarget;
 }
 
-Vector3 Cameraman::getUp() const noexcept
+Vector3D Cameraman::getUp() const noexcept
 {
     return targetUp;
 }
@@ -139,17 +155,17 @@ Camera3D Cameraman::getCamera() const noexcept
     return camera;
 }
 
-void Cameraman::setPosition(const Vector3& pos) noexcept
+void Cameraman::setPosition(const Vector3D& pos) noexcept
 {
     targetPosition = pos;
 }
 
-void Cameraman::setTarget(const Vector3& tar) noexcept
+void Cameraman::setTarget(const Vector3D& tar) noexcept
 {
     targetTarget = tar;
 }
 
-void Cameraman::setUp(const Vector3& up) noexcept
+void Cameraman::setUp(const Vector3D& up) noexcept
 {
     targetUp = up;
 }

@@ -12,7 +12,7 @@
 class Crate : public Entity
 {
   public:
-    Crate(Vector3                             pos,
+    Crate(Vector3D                            pos,
         std::unique_ptr<Model3D>*             model,
         GameData*                             data,
         std::vector<std::unique_ptr<Entity>>* Entity);

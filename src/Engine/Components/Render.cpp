@@ -24,45 +24,47 @@ void Render::display(const Transform3D& transform) noexcept
 {
     auto color = color_.getColor();
 
+    Vector3D pos  = transform.getPosition();
+    Vector3D rot  = transform.getRotationAxis();
+    Vector3D size = transform.getSize();
+
     if (type == RenderType::R_3DMODEL) {
         DrawModel(model_->get()->model,
-            transform.getPosition(),
+            { pos.x, pos.y, pos.z },
             transform.getScale(),
             (Color){ color[0], color[1], color[2], 255 });
         return;
     }
     if (type == RenderType::R_3DMODEL_ROTATE) {
-        Vector3 rotationAxis  = transform.getRotationAxis();
-        float   rotationAngle = transform.getRotationAngle();
-        float   scale         = transform.getScale();
+        float rotationAngle = transform.getRotationAngle();
+        float scale         = transform.getScale();
         DrawModelEx(model_->get()->model,
-            transform.getPosition(),
-            rotationAxis,
+            { pos.x, pos.y, pos.z },
+            { rot.x, rot.y, rot.z },
             rotationAngle,
             { scale, scale, scale },
             (Color){ color[0], color[1], color[2], 255 });
         return;
     }
     if (type == RenderType::R_CUBE) {
-        DrawCubeV(transform.getPosition(),
-            transform.getSize(),
+        DrawCubeV({ pos.x, pos.y, pos.z },
+            { size.x, size.y, size.z },
             (Color){ color[0], color[1], color[2], 255 });
         return;
     }
     if (type == RenderType::R_WIRED_CUBE) {
-        DrawCubeWiresV(transform.getPosition(),
-            transform.getSize(),
+        DrawCubeWiresV({ pos.x, pos.y, pos.z },
+            { size.x, size.y, size.z },
             (Color){ color[0], color[1], color[2], 255 });
         return;
     }
     if (type == RenderType::R_ANIMATE) {
         updateAnimation();
-        Vector3 rotationAxis  = transform.getRotationAxis();
-        float   rotationAngle = transform.getRotationAngle();
-        float   scale         = transform.getScale();
+        float rotationAngle = transform.getRotationAngle();
+        float scale         = transform.getScale();
         DrawModelEx(model_->get()->model,
-            transform.getPosition(),
-            rotationAxis,
+            { pos.x, pos.y, pos.z },
+            { rot.x, rot.y, rot.z },
             rotationAngle,
             { scale, scale, scale },
             (Color){ color[0], color[1], color[2], 255 });
@@ -127,7 +129,7 @@ void Render::setAnimationId(int id) noexcept
     animationId = id;
 }
 
-void Render::displayModel(const Transform3D& transform, Vector3 pos) noexcept
+void Render::displayModel(const Transform3D& transform, Vector3D pos) noexcept
 {
     auto axis  = transform.getRotationAxis();
     auto angle = transform.getRotationAngle();
@@ -136,7 +138,7 @@ void Render::displayModel(const Transform3D& transform, Vector3 pos) noexcept
 }
 
 void Render::displayModelV(
-    const Transform3D& transform, Vector3 pos, Vector3 axis, float angle) noexcept
+    const Transform3D& transform, Vector3D pos, Vector3D axis, float angle) noexcept
 {
     if (model_ == nullptr) return;
 
@@ -144,8 +146,8 @@ void Render::displayModelV(
         updateAnimation();
         float scale = transform.getScale();
         DrawModelEx(model_->get()->model,
-            pos,
-            axis,
+            { pos.x, pos.y, pos.z },
+            { axis.x, axis.y, axis.z },
             angle,
             { scale, scale, scale },
             (Color){ 255, 255, 255, 255 });

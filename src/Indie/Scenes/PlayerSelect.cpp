@@ -47,8 +47,8 @@ void PlayerSelect::display3D() noexcept
 
         if (!render.has_value() || !transform.has_value()) continue;
 
-        Vector3 position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
-        Vector3 rotation = { 0, 1, 0 };
+        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
+        Vector3D rotation = { 0, 1, 0 };
 
         render->get().setAnimationId(1);
         render->get().displayModelV(transform->get(), position, rotation, 180.0f);
@@ -226,17 +226,17 @@ MusicManager PlayerSelect::getMusicManager() const noexcept
     return (loop_music_);
 }
 
-Vector3 PlayerSelect::getCameraPosition() const noexcept
+Vector3D PlayerSelect::getCameraPosition() const noexcept
 {
     return (camera_position_);
 }
 
-Vector3 PlayerSelect::getCameraTarget() const noexcept
+Vector3D PlayerSelect::getCameraTarget() const noexcept
 {
     return (camera_target_);
 }
 
-Vector3 PlayerSelect::getCameraUp() const noexcept
+Vector3D PlayerSelect::getCameraUp() const noexcept
 {
     return (camera_up_);
 }

@@ -11,6 +11,7 @@
 #include "Color.hpp"
 #include "Mouse.hpp"
 #include "Music.hpp"
+#include "Vector.hpp"
 
 enum class SceneType : std::size_t { MENU, GAME, SELECT };
 
@@ -31,11 +32,11 @@ class Scene
     virtual ColorManager getBackgroundColor() const noexcept                     = 0;
 
     // methods for camera
-    virtual void    resetCameraman(Cameraman& camera) noexcept = 0;
-    virtual Vector3 getCameraPosition() const noexcept         = 0;
-    virtual Vector3 getCameraTarget() const noexcept           = 0;
-    virtual Vector3 getCameraUp() const noexcept               = 0;
-    virtual void    switchAction() noexcept                    = 0;
+    virtual void     resetCameraman(Cameraman& camera) noexcept = 0;
+    virtual Vector3D getCameraPosition() const noexcept         = 0;
+    virtual Vector3D getCameraTarget() const noexcept           = 0;
+    virtual Vector3D getCameraUp() const noexcept               = 0;
+    virtual void     switchAction() noexcept                    = 0;
 
     // methods for musics
     virtual void         playMusic() noexcept             = 0;

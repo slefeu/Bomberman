@@ -14,7 +14,6 @@
 #include "Player.hpp"
 #include "Round.hpp"
 #include "Wall.hpp"
-#include "raylib.h"
 
 Game::Game(GameData* data, Core& core_ref) noexcept
     : Scene()
@@ -274,7 +273,7 @@ void Game::CollisionPool() noexcept
 
 void Game::createMap() noexcept
 {
-    Vector3 vectorTemp;
+    Vector3D vectorTemp;
 
     // Ajout des murs autour de la carte
     for (int z = -5; z < 8; z++)
@@ -303,14 +302,14 @@ void Game::createMap() noexcept
                 || (x == 5 && z == -4) || (x == -5 && z == 6) || (x == 5 && z == 6))
                 continue;
 
-            Vector3 vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
+            Vector3D vectorTemp = { x * 1.0f, 0.01f, z * 1.0f };
 
             bool spawnCrate = true;
             for (auto& entity : entities_) {
                 auto transform = entity->getComponent<Transform3D>();
                 if (transform == std::nullopt) continue;
 
-                Vector3 pos = transform->get().getPosition();
+                Vector3D pos = transform->get().getPosition();
                 if (pos.x == vectorTemp.x && pos.z == vectorTemp.z) {
                     spawnCrate = false;
                     break;
@@ -331,7 +330,7 @@ void Game::hurryUp() noexcept
     float time = chrono_->getTime();
 
     if (lastTimeBlockPlace - time >= 0.37f) {
-        Vector3 vectorTemp;
+        Vector3D vectorTemp;
 
         if (direction == Direction::UP) {
             z--;
@@ -377,17 +376,17 @@ void Game::hurryUp() noexcept
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }
 
-Vector3 Game::getCameraPosition() const noexcept
+Vector3D Game::getCameraPosition() const noexcept
 {
     return (camera_position_);
 }
 
-Vector3 Game::getCameraTarget() const noexcept
+Vector3D Game::getCameraTarget() const noexcept
 {
     return (camera_target_);
 }
 
-Vector3 Game::getCameraUp() const noexcept
+Vector3D Game::getCameraUp() const noexcept
 {
     return (camera_up_);
 }

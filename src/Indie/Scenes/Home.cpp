@@ -100,17 +100,17 @@ MusicManager Home::getMusicManager() const noexcept
     return (loop_music_);
 }
 
-Vector3 Home::getCameraPosition() const noexcept
+Vector3D Home::getCameraPosition() const noexcept
 {
     return (camera_position_);
 }
 
-Vector3 Home::getCameraTarget() const noexcept
+Vector3D Home::getCameraTarget() const noexcept
 {
     return (camera_target_);
 }
 
-Vector3 Home::getCameraUp() const noexcept
+Vector3D Home::getCameraUp() const noexcept
 {
     return (camera_up_);
 }

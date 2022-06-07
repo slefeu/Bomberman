@@ -7,7 +7,7 @@
 
 #pragma once
 #include "Scene.hpp"
-#include "raylib.h"
+
 class WindowManager
 {
   public:

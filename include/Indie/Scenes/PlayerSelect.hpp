@@ -43,10 +43,10 @@ class PlayerSelect : public Scene
     MusicManager getMusicManager() const noexcept final;
 
     // camera methods
-    Vector3 getCameraPosition() const noexcept final;
-    Vector3 getCameraTarget() const noexcept final;
-    Vector3 getCameraUp() const noexcept final;
-    void    resetCameraman(Cameraman& camera) noexcept;
+    Vector3D getCameraPosition() const noexcept final;
+    Vector3D getCameraTarget() const noexcept final;
+    Vector3D getCameraUp() const noexcept final;
+    void     resetCameraman(Cameraman& camera) noexcept;
 
     // background methods
     void         drawBackground() const noexcept final;
@@ -64,9 +64,9 @@ class PlayerSelect : public Scene
 
     // attributes
     MusicManager             loop_music_;
-    Vector3                  camera_position_ = { 4.0f, 2.0f, 1.5f };
-    Vector3                  camera_target_   = { 0.0f, 1.0f, 1.5f };
-    Vector3                  camera_up_       = { 0.0f, 2.0f, 0.0f };
+    Vector3D                 camera_position_ = { 4.0f, 2.0f, 1.5f };
+    Vector3D                 camera_target_   = { 0.0f, 1.0f, 1.5f };
+    Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
     GameData*                data_;
     Core&                    core_entry_;
     ColorManager             background_color_;

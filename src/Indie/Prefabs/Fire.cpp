@@ -13,7 +13,7 @@
 #include "Entity.hpp"
 #include "Error.hpp"
 
-Fire::Fire(Vector3 posi, std::unique_ptr<Model3D>* model)
+Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
     : Entity(EntityType::E_FIRE)
     , explodeTime(0.5f)
     , explodeTimer(std::make_unique<Timer>(explodeTime))

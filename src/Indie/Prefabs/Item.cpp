@@ -16,7 +16,7 @@
 #include "Render.hpp"
 #include "Transform3D.hpp"
 
-Item::Item(Vector3 pos, GameData* data)
+Item::Item(Vector3D pos, GameData* data)
     : Entity(EntityType::E_ITEM)
     , getItemSound(GET_ITEM)
     , newItemSound(NEW_ITEM)
@@ -70,7 +70,7 @@ Item::Item(GameData* data, ItemType type)
     transform->get().setRotationAngle(90.0f);
     renderer->get().setRenderType(RenderType::R_3DMODEL_ROTATE);
 
-    Vector3 scale = { 1.0f, 1.0f, 0.5f };
+    Vector3D scale = { 1.0f, 1.0f, 0.5f };
     addComponent(BoxCollider(transform->get().getPosition(), scale, true));
     auto hitbox = getComponent<BoxCollider>();
 
@@ -134,11 +134,11 @@ void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
     }
 }
 
-Vector3 Item::findFreePosition(void) const noexcept
+Vector3D Item::findFreePosition(void) const noexcept
 {
-    Vector3 pos;
-    int     x;
-    int     z;
+    Vector3D pos;
+    int      x;
+    int      z;
 
     do {
         x   = rand() % 12 - 6;
@@ -150,13 +150,17 @@ Vector3 Item::findFreePosition(void) const noexcept
     return pos;
 }
 
-bool Item::entitiesHere(Vector3& pos) const noexcept
+bool Item::entitiesHere(Vector3D& pos) const noexcept
 {
     for (auto& entity : *data->_entities) {
-        auto              transform    = entity->getComponent<Transform3D>();
-        auto              other_hitbox = entity->getComponent<BoxCollider>();
-        const BoxCollider hitbox =
-            BoxCollider(transform->get().getPosition(), transform->get().getSize(), true);
+        auto transform    = entity->getComponent<Transform3D>();
+        auto other_hitbox = entity->getComponent<BoxCollider>();
+
+        auto posTemp  = transform->get().getPosition();
+        auto sizeTemp = transform->get().getSize();
+
+        const BoxCollider hitbox = BoxCollider(
+            { posTemp.x, posTemp.y, posTemp.z }, { sizeTemp.x, sizeTemp.y, sizeTemp.z }, true);
         if (!other_hitbox || !other_hitbox.has_value()) continue;
         if (!hitbox.getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
         if (other_hitbox->get().isColliding(hitbox, pos)) return true;

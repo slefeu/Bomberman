@@ -10,7 +10,7 @@
 #include "Error.hpp"
 #include "Item.hpp"
 
-Crate::Crate(Vector3                      pos,
+Crate::Crate(Vector3D                     pos,
     std::unique_ptr<Model3D>*             newModel,
     GameData*                             data,
     std::vector<std::unique_ptr<Entity>>* entities)
@@ -59,7 +59,7 @@ void Crate::dropItem()
 
     if (!transform.has_value()) throw(Error("Error in dropping item.\n"));
     if (rand() % 3 != 0) return;
-    entities->emplace_back(std::make_unique<Item>((Vector3)transform->get().getPosition(), data));
+    entities->emplace_back(std::make_unique<Item>((Vector3D)transform->get().getPosition(), data));
 }
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

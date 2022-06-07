@@ -12,6 +12,7 @@
 #include "Color.hpp"
 #include "Model3D.hpp"
 #include "Transform3D.hpp"
+#include "Vector.hpp"
 
 enum class RenderType {
     R_3DMODEL,
@@ -46,9 +47,9 @@ class Render : public Component
     void setSkipFrame(int frame) noexcept;
     void setAnimationId(int id) noexcept;
 
-    void displayModel(const Transform3D& transform, Vector3 pos) noexcept;
+    void displayModel(const Transform3D& transform, Vector3D pos) noexcept;
     void displayModelV(
-        const Transform3D& transform, Vector3 pos, Vector3 axis, float angle) noexcept;
+        const Transform3D& transform, Vector3D pos, Vector3D axis, float angle) noexcept;
 
     static constexpr ComponentType TYPE = ComponentType::RENDER;
 

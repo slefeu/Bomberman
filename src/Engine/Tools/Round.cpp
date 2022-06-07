@@ -14,7 +14,7 @@ float Round::round(const float& x, const int& n) noexcept
     return (float)(int)(x * pow(10, n)) / pow(10, n);
 }
 
-Vector3 Round::roundVector(const Vector3& x, const int& n) noexcept
+Vector3D Round::roundVector(const Vector3D& x, const int& n) noexcept
 {
     return { Round::round(x.x, n), Round::round(x.y, n), Round::round(x.z, n) };
 }

@@ -7,6 +7,8 @@
 
 #include "Window.hpp"
 
+#include "raylib.h"
+
 WindowManager::~WindowManager() noexcept
 {
     CloseWindow();

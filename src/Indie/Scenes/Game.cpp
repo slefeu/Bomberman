@@ -50,15 +50,6 @@ Game::Game(GameData* data, Core& core_ref) noexcept
 
     pauseText_.setTextSize(100);
     pauseText_.setTextColor(Colors::C_RED);
-
-    int width   = core_entry_.getWindow().getWidth();
-    int height  = core_entry_.getWindow().getHeight();
-    int xPos[4] = { 55, width - 150, width - 150, 55 };
-    int yPos[4] = { 28, height - 30, 28, height - 30 };
-    for (int i = 0; i < 4; i++) {
-        playerText_.push_back(TextHandler("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]));
-        playerText_[i].setTextSize(20);
-    }
 }
 
 Game::~Game() noexcept
@@ -106,6 +97,17 @@ void Game::switchAction() noexcept
 
     end_game = false;
     pause    = false;
+
+    for (auto& text : playerText_) { text.unload(); }
+    playerText_.clear();
+    int width   = core_entry_.getWindow().getWidth();
+    int height  = core_entry_.getWindow().getHeight();
+    int xPos[4] = { 55, width - 150, width - 150, 55 };
+    int yPos[4] = { 28, height - 30, 28, height - 30 };
+    for (int i = 0; i < 4; i++) {
+        playerText_.push_back(TextHandler("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]));
+        playerText_[i].setTextSize(20);
+    }
 }
 
 void Game::playMusic() noexcept

@@ -45,7 +45,7 @@ void PlayerSelect::display3D() noexcept
 
         if (!render.has_value() || !transform.has_value()) continue;
 
-        Vector3 position = { 0.2f, 0.6f, 5 - nbPlayers * 2 };
+        Vector3 position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
         Vector3 rotation = { 0, 1, 0 };
 
         render->get().setAnimationId(1);
@@ -73,15 +73,15 @@ void PlayerSelect::drawSelection(
 
 void PlayerSelect::displayAllStats() noexcept
 {
+    int   height    = core_entry_.getWindow().getHeight();
     float nbPlayers = 0;
+
     for (auto& player : data_->players) {
-        Vector2 pos_l    = { 10 + 460 * nbPlayers,
-               static_cast<float>(data_->winHeight - data_->winHeight / 7) };
-        Vector2 pos_r    = { pos_l.x + 300,
-               static_cast<float>(data_->winHeight - data_->winHeight / 7) };
-        Vector2 position = { 50 + 460 * nbPlayers, 600 };
+        Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
+        Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
+        Vector2 position = { 120 + 460 * nbPlayers, 600 };
         displayPlayerStats(position,
-            { pos_l.x + 70, pos_l.y + 25 },
+            { pos_l.x + 85, pos_l.y + 25 },
             findStatsId(((std::unique_ptr<Player>&)player)->getType()));
         drawSelection(static_cast<int>(nbPlayers), pos_l, pos_r);
         nbPlayers++;

@@ -15,9 +15,11 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
-    , choose_(SELECT, "Select players", data_->winWidth / 2, data_->winHeight / 9)
+    , choose_(SELECT, "Select players", 0, 0)
 {
     choose_.setTextSize(40);
+    choose_.setPosition(
+        core_entry_.getWindow().getWidth() / 2, core_entry_.getWindow().getHeight() / 9);
     createButtons();
     stats_.emplace_back("assets/textures/selection/normal.png", data_->winWidth / 2, 50);
     stats_.emplace_back("assets/textures/selection/attack.png");
@@ -114,8 +116,8 @@ void PlayerSelect::createButtons() noexcept
     int height = core_entry_.getWindow().getHeight();
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        width / 2,
-        height / 4,
+        width / 4 + 200,
+        height / 6,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer < 4) {
                 data_->nbPlayer++;
@@ -147,8 +149,8 @@ void PlayerSelect::createButtons() noexcept
         "Add");
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        width - 350,
-        height - 200,
+        width / 4 + 550,
+        height / 6,
         std::function<void(void)>([this](void) {
             if (this->data_->nbPlayer > 1) {
                 data_->nbPlayer--;
@@ -162,16 +164,16 @@ void PlayerSelect::createButtons() noexcept
         " Remove");
 
     buttons_.emplace_back("assets/textures/home/button.png",
-        data_->winWidth / 4 + 900,
-        data_->winHeight / 5,
+        width / 4 + 900,
+        height / 6,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
         "assets/fonts/menu.ttf",
         "Play");
 
     buttons_.emplace_back("assets/textures/selection/close.png",
-        data_->winWidth / 4 + 1250,
-        data_->winHeight / 5,
+        width / 4 + 1250,
+        height / 6,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
         "assets/fonts/menu.ttf",

@@ -74,6 +74,8 @@ void Game::switchAction() noexcept
         auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
         ((std::unique_ptr<Player>&)player)->setPlayerType(type);
         ((std::unique_ptr<Player>&)player)->setPosition();
+        ((std::unique_ptr<Player>&)player)->setWallPass(false);
+        ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
     }
 
     chrono_->resetTimer();

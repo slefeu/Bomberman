@@ -17,7 +17,7 @@ class WindowManager
     ~WindowManager() noexcept;
 
     WindowManager& operator=(const WindowManager& rhs) noexcept = default;
-    WindowManager& operator=(WindowManager&& rhs) noexcept = default;
+    WindowManager& operator=(WindowManager&& rhs) noexcept      = default;
 
     void launch(int width, int height, int fps) const noexcept;
     void display(Scene& scene, const Cameraman& camera) noexcept;

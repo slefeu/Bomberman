@@ -9,6 +9,8 @@
 
 #include "Bomb.hpp"
 #include "Error.hpp"
+#include "Item.hpp"
+#include "Transform3D.hpp"
 
 Player::Player(const int newId, GameData* data)
     : Entity(EntityType::E_PLAYER)
@@ -306,6 +308,18 @@ void Player::setWallPass(const bool& pass) noexcept
 {
     this->wallpassTimer->resetTimer();
     wallpass = pass;
+}
+
+void Player::addItem(ItemType itemType) noexcept
+{
+    items.emplace_back(itemType);
+}
+
+void Player::dispatchItem(void) noexcept
+{
+    if (items.empty()) return;
+    for (auto& item : items) { data->_entities->emplace_back(std::make_unique<Item>(data, item)); }
+    items.clear();
 }
 
 void Player::setPlayerType(PlayerType type) noexcept

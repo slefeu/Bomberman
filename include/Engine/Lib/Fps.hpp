@@ -17,7 +17,7 @@ class FpsHandler
     ~FpsHandler() noexcept                       = delete;
 
     FpsHandler& operator=(const FpsHandler& rhs) noexcept = delete;
-    FpsHandler& operator=(FpsHandler&& rhs) noexcept = delete;
+    FpsHandler& operator=(FpsHandler&& rhs) noexcept      = delete;
 
     static void draw(int x, int y);
 

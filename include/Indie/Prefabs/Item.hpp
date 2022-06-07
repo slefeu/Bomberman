@@ -18,11 +18,12 @@ class Item : public Entity
 {
   public:
     Item(Vector3 pos, GameData* data);
-    ~Item() noexcept                 = default;
-    Item(const Item& other) noexcept = delete;
-    Item(Item&& other) noexcept      = delete;
+    Item(GameData* data, ItemType type);
+    ~Item() noexcept                          = default;
+    Item(const Item& other) noexcept          = delete;
+    Item(Item&& other) noexcept               = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
-    Item& operator=(Item&& rhs) noexcept = delete;
+    Item& operator=(Item&& rhs) noexcept      = delete;
 
     void Display() final;
     void Update() final;
@@ -30,9 +31,13 @@ class Item : public Entity
     void displayModel(const Vector3& position) final;
 
   private:
-    void setPlayerStat(std::unique_ptr<Player>& p) noexcept;
+    void    setPlayerStat(std::unique_ptr<Player>& p) noexcept;
+    Vector3 findFreePosition(void) const noexcept;
+    bool    entitiesHere(Vector3& pos) const noexcept;
+    void    setModelByType(void) noexcept;
 
   private:
+    GameData*    data;
     ItemType     itemType;
     SoundManager getItemSound;
     SoundManager newItemSound;

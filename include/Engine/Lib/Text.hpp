@@ -20,7 +20,7 @@ class TextHandler
     ~TextHandler() noexcept                        = default;
 
     TextHandler& operator=(const TextHandler& rhs) noexcept = default;
-    TextHandler& operator=(TextHandler&& rhs) noexcept = default;
+    TextHandler& operator=(TextHandler&& rhs) noexcept      = default;
 
     void draw() const noexcept;
     void setTextColor(const std::array<unsigned char, 3>& color) noexcept;

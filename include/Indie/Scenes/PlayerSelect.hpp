@@ -27,7 +27,7 @@ class PlayerSelect : public Scene
     ~PlayerSelect() noexcept;
 
     PlayerSelect& operator=(const PlayerSelect& rhs) noexcept = delete;
-    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept = delete;
+    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept      = delete;
 
     // main methods
     void display3D() noexcept final;

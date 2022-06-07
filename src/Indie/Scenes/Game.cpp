@@ -26,6 +26,9 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     , startSound_(START)
     , hurryUpSound_(HURRY_UP)
 {
+    // Add entites to data
+    data->setEntities(&entities_);
+
     createMap();
     startSound_.play();
     hurryUpSound_.setVolume(0.7f);

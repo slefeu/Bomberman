@@ -19,16 +19,20 @@
 
 static const inline char* KILL = "assets/audios/Kill.wav";
 
+enum class ItemType;
+
 class Player : public Entity
 {
   public:
     Player(const int newId, GameData* data);
-    ~Player() noexcept                   = default;
-    Player(const Player& other) noexcept = delete;
-    Player(Player&& other) noexcept      = delete;
+    ~Player() noexcept                            = default;
+    Player(const Player& other) noexcept          = delete;
+    Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept = delete;
+    Player& operator=(Player&& rhs) noexcept      = delete;
 
+    void       dispatchItem(void) noexcept;
+    void       addItem(ItemType item) noexcept;
     void       Display() final;
     void       displayModel(const Vector3& position) final;
     void       Update() final;
@@ -64,6 +68,7 @@ class Player : public Entity
     Key                                       dropBomb;
     int                                       id;
     GameData*                                 data;
+    std::vector<ItemType>                     items;
     std::vector<std::unique_ptr<Entity>>*     bombs;
     bool                                      wallpass;
     std::unique_ptr<Timer>                    wallpassTimer;
@@ -76,25 +81,25 @@ class Player : public Entity
     int                                       bombSizeMax;
     PlayerType                                type;
     int                                       colorIndex = 0;
-    std::vector<std::array<unsigned char, 3>> colors     = { Colors::C_LIGHTGRAY,
-        Colors::C_GRAY,
-        Colors::C_YELLOW,
-        Colors::C_GOLD,
-        Colors::C_ORANGE,
-        Colors::C_PINK,
-        Colors::C_RED,
-        Colors::C_MAROON,
-        Colors::C_GREEN,
-        Colors::C_LIME,
-        Colors::C_DARKGREEN,
-        Colors::C_SKYBLUE,
-        Colors::C_BLUE,
-        Colors::C_DARKBLUE,
-        Colors::C_PURPLE,
-        Colors::C_VIOLET,
-        Colors::C_DARKPURPLE,
-        Colors::C_BEIGE,
-        Colors::C_BROWN,
-        Colors::C_DARKBROWN };
     std::array<float, 4>                      direction  = { 90, 270, 90, 270 };
+    std::vector<std::array<unsigned char, 3>> colors     = { Colors::C_LIGHTGRAY,
+            Colors::C_GRAY,
+            Colors::C_YELLOW,
+            Colors::C_GOLD,
+            Colors::C_ORANGE,
+            Colors::C_PINK,
+            Colors::C_RED,
+            Colors::C_MAROON,
+            Colors::C_GREEN,
+            Colors::C_LIME,
+            Colors::C_DARKGREEN,
+            Colors::C_SKYBLUE,
+            Colors::C_BLUE,
+            Colors::C_DARKBLUE,
+            Colors::C_PURPLE,
+            Colors::C_VIOLET,
+            Colors::C_DARKPURPLE,
+            Colors::C_BEIGE,
+            Colors::C_BROWN,
+            Colors::C_DARKBROWN };
 };

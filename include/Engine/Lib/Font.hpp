@@ -18,7 +18,7 @@ class FontHandler
     ~FontHandler() noexcept                        = default;
 
     FontHandler& operator=(const FontHandler& rhs) noexcept = default;
-    FontHandler& operator=(FontHandler&& rhs) noexcept = default;
+    FontHandler& operator=(FontHandler&& rhs) noexcept      = default;
 
     Font getFont() const noexcept;
     int  getFontSize() const noexcept;

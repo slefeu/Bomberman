@@ -68,9 +68,9 @@ void PlayerSelect::displayAllStats() noexcept
     float nbPlayers = 0;
     for (auto& player : data_->players) {
         Vector2 pos_l    = { 10 + 460 * nbPlayers,
-            static_cast<float>(data_->winHeight - data_->winHeight / 7) };
+               static_cast<float>(data_->winHeight - data_->winHeight / 7) };
         Vector2 pos_r    = { pos_l.x + 300,
-            static_cast<float>(data_->winHeight - data_->winHeight / 7) };
+               static_cast<float>(data_->winHeight - data_->winHeight / 7) };
         Vector2 position = { 50 + 460 * nbPlayers, 600 };
         displayPlayerStats(position,
             { pos_l.x + 70, pos_l.y + 25 },

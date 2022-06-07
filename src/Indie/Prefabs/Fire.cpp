@@ -54,7 +54,10 @@ void Fire::Update()
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER) other->setEnabledValue(false);
+    if (other->getEntityType() == EntityType::E_PLAYER) {
+        ((std::unique_ptr<Player>&)other)->dispatchItem();
+        other->setEnabledValue(false);
+    }
 }
 
 bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept

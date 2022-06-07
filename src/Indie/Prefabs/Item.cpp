@@ -8,7 +8,9 @@
 #include "Item.hpp"
 
 #include <iostream>
+#include <memory>
 
+#include "BoxCollider.hpp"
 #include "Error.hpp"
 #include "Player.hpp"
 #include "Render.hpp"
@@ -23,6 +25,7 @@ Item::Item(Vector3 pos, GameData* data)
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the item element.\n"));
 
+    this->data = data;
     transform->get().setPosition(pos);
     transform->get().setScale(1.0f);
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
@@ -52,7 +55,7 @@ Item::Item(Vector3 pos, GameData* data)
     }
 }
 
-Item::Item(Vector3 pos, GameData* data, ItemType type)
+Item::Item(GameData* data, ItemType type)
     : Entities(EntityType::E_ITEM)
 {
     auto transform = getComponent<Transform3D>();
@@ -61,7 +64,8 @@ Item::Item(Vector3 pos, GameData* data, ItemType type)
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the item element.\n"));
 
-    transform->get().setPosition(pos);
+    this->data = data;
+    transform->get().setPosition(findFreePosition());
     transform->get().setScale(1.0f);
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
     transform->get().setRotationAngle(90.0f);
@@ -122,4 +126,33 @@ void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
         case ItemType::I_WALL: p->setWallPass(true); break;
         default: break;
     }
+}
+
+Vector3 Item::findFreePosition(void) const noexcept
+{
+    Vector3 pos;
+    int     x;
+    int     z;
+
+    do {
+        x   = rand() % 12 - 6;
+        z   = rand() % 12 - 6;
+        pos = { x * 1.0f, 0.25f, z * 1.0f };
+        std::cout << "Item from Player drop at x:" << pos.x << " z:" << pos.z << std::endl;
+    } while (entitiesHere(pos));
+
+    return pos;
+}
+
+bool Item::entitiesHere(Vector3& pos) const noexcept
+{
+    for (auto& entity : *data->_entities) {
+        auto              transform    = entity->getComponent<Transform3D>();
+        auto              other_hitbox = entity->getComponent<BoxCollider>();
+        const BoxCollider hitbox       = BoxCollider(transform->get().getPosition(), transform->get().getSize(), true);
+        if (!other_hitbox || !other_hitbox.has_value()) continue;
+        if (!hitbox.getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
+        if (other_hitbox->get().isColliding(hitbox, pos)) return true;
+    }
+    return false;
 }

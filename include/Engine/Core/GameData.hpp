@@ -18,7 +18,7 @@ class GameData
     GameData(GameData&& other) noexcept               = delete;
     GameData& operator=(const GameData& rhs) noexcept = delete;
     GameData& operator=(GameData&& rhs) noexcept      = delete;
-    void      setEntities(std::vector<std::unique_ptr<Entities>>* entities);
+    void      setEntities(std::vector<std::unique_ptr<Entities>>* entities) noexcept;
 
   public:
     int   fps;

@@ -17,7 +17,7 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
 {
 }
 
-void GameData::setEntities(std::vector<std::unique_ptr<Entities>>* entities)
+void GameData::setEntities(std::vector<std::unique_ptr<Entities>>* entities) noexcept
 {
     _entities = entities;
 }

@@ -35,6 +35,13 @@ class Button
         std::function<void(void)> function,
         const std::string&        font_path,
         const std::string&        message) noexcept;
+    Button(const std::string&     texture_path,
+        float                     pos_x,
+        float                     pos_y,
+        std::function<void(void)> function,
+        const std::string&        font_path,
+        const std::string&        message,
+        float                     scale) noexcept;
     Button(const Button& other) noexcept = default;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;

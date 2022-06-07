@@ -45,7 +45,7 @@ void PlayerSelect::display3D() noexcept
 
         if (!render.has_value() || !transform.has_value()) continue;
 
-        Vector3 position = { 0, 0, 4.7f - (nbPlayers * 2) };
+        Vector3 position = { 0.2f, 0.6f, 5 - nbPlayers * 2 };
         Vector3 rotation = { 0, 1, 0 };
 
         render->get().setAnimationId(1);
@@ -128,11 +128,9 @@ void PlayerSelect::createButtons() noexcept
                         new_player.setPlayerType(
                             static_cast<PlayerType>(new_player.findNextType()));
                     }),
-                    0.2f,
                     "assets/fonts/menu.ttf",
                     "",
-                    0,
-                    0);
+                    0.2f);
                 select_left_.emplace_back("assets/textures/selection/left.png",
                     0,
                     0,
@@ -140,11 +138,9 @@ void PlayerSelect::createButtons() noexcept
                         new_player.setPlayerType(
                             static_cast<PlayerType>(new_player.findPrevType()));
                     }),
-                    0.2f,
                     "assets/fonts/menu.ttf",
                     "",
-                    0,
-                    0);
+                    0.2f);
             }
         }),
         "assets/fonts/menu.ttf",
@@ -162,7 +158,6 @@ void PlayerSelect::createButtons() noexcept
                 texts_.pop_back();
             }
         }),
-        1,
         "assets/fonts/menu.ttf",
         " Remove");
 
@@ -179,7 +174,6 @@ void PlayerSelect::createButtons() noexcept
         data_->winHeight / 5,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
-        1,
         "assets/fonts/menu.ttf",
         "");
 }

@@ -38,6 +38,8 @@ Game::Game(GameData* data, Core& core_ref) noexcept
           core_entry_.getWindow().getWidth() / 2 - 220,
           core_entry_.getWindow().getHeight() / 2 - 80)
 {
+    // Add entites to data
+    data->setEntities(&entities_);
     hurryUpSound_.setVolume(0.7f);
     createButtons();
     hurryUpText_.setTextSize(100);

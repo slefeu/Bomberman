@@ -6,9 +6,10 @@
 */
 
 #pragma once
+#include <string_view>
+
 #include "Color.hpp"
 #include "Font.hpp"
-
 class TextHandler
 {
   public:
@@ -27,6 +28,7 @@ class TextHandler
     void unload() noexcept;
     void setPosition(int posX, int posY) noexcept;
     void setText(const std::string& message) noexcept;
+    void setPos(int posX, int posY) noexcept;
 
   protected:
   private:

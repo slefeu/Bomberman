@@ -5,6 +5,8 @@
 ** Item
 */
 
+#pragma once
+
 #include "Entity.hpp"
 #include "Player.hpp"
 #include "Sound.hpp"
@@ -19,6 +21,7 @@ class Item : public Entity
   public:
     Item(Vector3 pos, GameData* data);
     ~Item() noexcept;
+    Item(GameData* data, ItemType type);
     Item(const Item& other) noexcept          = delete;
     Item(Item&& other) noexcept               = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
@@ -29,12 +32,14 @@ class Item : public Entity
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
 
   private:
-    void setPlayerStat(std::unique_ptr<Player>& p) noexcept;
+    void    setPlayerStat(std::unique_ptr<Player>& p) noexcept;
+    Vector3 findFreePosition(void) const noexcept;
+    bool    entitiesHere(Vector3& pos) const noexcept;
+    void    setModelByType(void) noexcept;
 
   private:
+    GameData*    data;
     ItemType     itemType;
     SoundManager getItemSound;
     SoundManager newItemSound;
 };
-
-#pragma once

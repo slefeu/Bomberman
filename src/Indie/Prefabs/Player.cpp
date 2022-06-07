@@ -9,6 +9,8 @@
 
 #include "Bomb.hpp"
 #include "Error.hpp"
+#include "Item.hpp"
+#include "Transform3D.hpp"
 
 Player::Player(const int newId, GameData* data)
     : Entity(EntityType::E_PLAYER)
@@ -24,16 +26,13 @@ Player::Player(const int newId, GameData* data)
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
-
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setScale(0.65f);
-
     renderer->get().setRenderType(RenderType::R_ANIMATE);
     renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
     renderer->get().addAnimation("assets/models/player.iqm");
-
     setKeyboard();
     setPosition();
     setPlayerType(PlayerType::NORMAL);
@@ -55,6 +54,44 @@ void Player::Display()
     renderer->get().display(transform->get());
 }
 
+void Player::displayModel(const Vector3& position)
+{
+    auto renderer = getComponent<Render>();
+    if (!renderer.has_value()) throw(Error("Error in displaying the player element.\n"));
+
+    Transform3D transform;
+    transform.setSize({ 0.5f, 0.5f, 0.5f });
+    transform.setPosition(position);
+    transform.setRotationAxis({ 0.0f, 1.0f, 0.0f });
+    transform.setRotationAngle(180.0f);
+    transform.setScale(0.5f);
+    renderer->get().display(transform);
+    renderer->get().setAnimationId(1);
+}
+
+int Player::findPrevType() const noexcept
+{
+    auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);
+    if (new_type > 0) {
+        new_type--;
+    } else
+        new_type =
+            static_cast<typename std::underlying_type<PlayerType>::type>(PlayerType::__size__) - 1;
+    return (new_type);
+}
+
+int Player::findNextType() const noexcept
+{
+    auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);
+    if (new_type
+        < (static_cast<typename std::underlying_type<PlayerType>::type>(PlayerType::__size__)
+            - 1)) {
+        new_type++;
+    } else
+        new_type = 0;
+    return (new_type);
+}
+
 void Player::Update()
 {
     auto hitbox    = getComponent<BoxCollider>();
@@ -65,9 +102,7 @@ void Player::Update()
     if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
     if (!getEnabledValue()) return;
-
     hitbox->get().update(transform->get().getPosition());
-
     if (wallpass) {
         wallpassTimer->updateTimer();
         if (wallpassTimer->timerDone()) {
@@ -76,12 +111,10 @@ void Player::Update()
             wallpassTimer->resetTimer();
         }
     }
-
     if (wallpass || wallpassEnd) {
         renderer->get().setColor(colors[colorIndex]);
         colorIndex = (colorIndex + 1) % colors.size();
     }
-
     if (controller.isGamepadConnected(id)) {
         // Mouvements au joystick
         float axisX = controller.getGamepadAxis(id, Axis::G_AXIS_LEFT_X);
@@ -128,7 +161,6 @@ void Player::Update()
         }
         if (controller.isKeyPressed(dropBomb)) placeBomb();
     }
-
     if (!animate) {
         renderer->get().setSkipFrame(1);
         renderer->get().setAnimationId(1);
@@ -136,6 +168,11 @@ void Player::Update()
         renderer->get().setSkipFrame(2);
         renderer->get().setAnimationId(0);
     }
+}
+
+PlayerType Player::getType() const noexcept
+{
+    return (type);
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
@@ -279,6 +316,18 @@ void Player::setWallPass(const bool& pass) noexcept
 {
     this->wallpassTimer->resetTimer();
     wallpass = pass;
+}
+
+void Player::addItem(ItemType itemType) noexcept
+{
+    items.emplace_back(itemType);
+}
+
+void Player::dispatchItem(void) noexcept
+{
+    if (items.empty()) return;
+    for (auto& item : items) { data->_entities->emplace_back(std::make_unique<Item>(data, item)); }
+    items.clear();
 }
 
 void Player::setPlayerType(PlayerType type) noexcept

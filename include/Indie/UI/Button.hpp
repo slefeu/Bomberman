@@ -43,10 +43,12 @@ class Button
     Button& operator=(Button&& rhs) noexcept      = default;
 
     void draw() const noexcept;
+    void draw(float scale) const noexcept;
     void unload() noexcept;
     void action() const noexcept;
     bool checkCollision(MouseHandler& mouse_) noexcept;
     void setState(int state) noexcept;
+    void setPosition(const Vector2& pos) noexcept;
 
   protected:
   private:

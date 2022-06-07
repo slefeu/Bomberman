@@ -12,6 +12,7 @@
 #include "Button.hpp"
 #include "Controller.hpp"
 #include "Core.hpp"
+#include "Entity.hpp"
 #include "Fps.hpp"
 #include "GameData.hpp"
 #include "Mouse.hpp"
@@ -56,21 +57,27 @@ class PlayerSelect : public Scene
     // methods
     void createButtons() noexcept;
     void drawButtons() const noexcept;
+    void displayPlayerStats(const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept;
+    void displayAllStats() noexcept;
+    unsigned int findStatsId(const PlayerType& type) const noexcept;
+    void drawSelection(const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept;
 
     // attributes
-    MusicManager        loop_music_;
-    Vector3             camera_position_ = { 4.0f, 2.0f, 1.5f };
-    Vector3             camera_target_   = { 0.0f, 1.0f, 1.5f };
-    Vector3             camera_up_       = { 0.0f, 2.0f, 0.0f };
-    GameData*           data_;
-    Core&               core_entry_;
-    ColorManager        background_color_;
-    Sprite              background_;
-    Sprite              title_;
-    TextHandler         choose_;
-    std::vector<Button> buttons_      = {};
-    int                 button_index_ = 0;
-    Controller          controller;
+    MusicManager             loop_music_;
+    Vector3                  camera_position_ = { 4.0f, 2.0f, 1.5f };
+    Vector3                  camera_target_   = { 0.0f, 1.0f, 1.5f };
+    Vector3                  camera_up_       = { 0.0f, 2.0f, 0.0f };
+    GameData*                data_;
+    Core&                    core_entry_;
+    ColorManager             background_color_;
+    Sprite                   background_;
+    Sprite                   title_;
+    TextHandler              choose_;
+    std::vector<Button>      buttons_      = {};
+    std::vector<Button>      select_left_  = {};
+    std::vector<Button>      select_right_ = {};
+    std::vector<Sprite>      stats_        = {};
+    std::vector<TextHandler> texts_        = {};
 
     static const inline char*       MUSIC      = "assets/audios/Select.mp3";
     static const inline char*       BG_PATH    = "assets/textures/home/background.png";

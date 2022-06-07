@@ -19,7 +19,7 @@
 
 static const inline char* KILL = "assets/audios/Kill.wav";
 
-enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER };
+enum class ItemType;
 
 class Player : public Entity
 {
@@ -31,7 +31,10 @@ class Player : public Entity
     Player& operator=(const Player& rhs) noexcept = delete;
     Player& operator=(Player&& rhs) noexcept      = delete;
 
+    void       dispatchItem(void) noexcept;
+    void       addItem(ItemType item) noexcept;
     void       Display() final;
+    void       displayModel(const Vector3& position) final;
     void       Update() final;
     void       OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     void       setStats(int bomb, int sp, int size) noexcept;
@@ -49,6 +52,9 @@ class Player : public Entity
     void       setBombSize(const int& bombSize) noexcept;
     PlayerType getPlayerType() const noexcept;
     void       setPosition();
+    PlayerType getType() const noexcept;
+    int        findNextType() const noexcept;
+    int        findPrevType() const noexcept;
 
   private:
     void setKeyboard() noexcept;
@@ -63,6 +69,7 @@ class Player : public Entity
     Key                                       dropBomb;
     int                                       id;
     GameData*                                 data;
+    std::vector<ItemType>                     items;
     std::vector<std::unique_ptr<Entity>>*     bombs;
     bool                                      wallpass;
     std::unique_ptr<Timer>                    wallpassTimer;
@@ -75,6 +82,7 @@ class Player : public Entity
     int                                       bombSizeMax;
     PlayerType                                type;
     int                                       colorIndex = 0;
+    std::array<float, 4>                      direction  = { 90, 270, 90, 270 };
     std::vector<std::array<unsigned char, 3>> colors     = { Colors::C_LIGHTGRAY,
             Colors::C_GRAY,
             Colors::C_YELLOW,
@@ -95,5 +103,4 @@ class Player : public Entity
             Colors::C_BEIGE,
             Colors::C_BROWN,
             Colors::C_DARKBROWN };
-    std::array<float, 4>                      direction  = { 90, 270, 90, 270 };
 };

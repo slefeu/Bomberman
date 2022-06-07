@@ -26,6 +26,7 @@ class GameData
     MouseHandler getMouseHandler() const noexcept;
     void         updateMouse() noexcept;
     void         setCurrentScene(const SceneType& scene) noexcept;
+    void         setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
     SceneType    getCurrentScene() const noexcept;
 
   public:
@@ -37,6 +38,7 @@ class GameData
 
   public:
     std::vector<std::unique_ptr<Model3D>> models;
+    std::vector<std::unique_ptr<Entity>>* _entities;
     std::vector<std::unique_ptr<Sprite>>  sprites;
     std::vector<std::unique_ptr<Entity>>  players;
 

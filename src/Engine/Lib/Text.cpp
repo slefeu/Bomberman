@@ -13,8 +13,7 @@ TextHandler::TextHandler(
     , message_(message)
     , color_(Colors::C_WHITE)
 {
-    position_.x = posX;
-    position_.y = posY;
+    setPos(posX, posY);
 }
 
 void TextHandler::unload() noexcept
@@ -45,6 +44,12 @@ void TextHandler::setTextSize(int size) noexcept
 }
 
 void TextHandler::setPosition(int posX, int posY) noexcept
+{
+    position_.x = posX;
+    position_.y = posY;
+}
+
+void TextHandler::setPos(int posX, int posY) noexcept
 {
     position_.x = posX;
     position_.y = posY;

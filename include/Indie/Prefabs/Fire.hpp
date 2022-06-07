@@ -29,5 +29,4 @@ class Fire : public Entity
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     bool ExplodeElements(std::unique_ptr<Entity>& other) noexcept;
-    void displayModel(const Vector3& position) final;
 };

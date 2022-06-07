@@ -18,8 +18,9 @@ void MusicManager::unload() noexcept
     UnloadMusicStream(music_);
 }
 
-void MusicManager::play() const noexcept
+void MusicManager::play() noexcept
 {
+    isPlaying_ = true;
     PlayMusicStream(music_);
 }
 
@@ -31,4 +32,15 @@ void MusicManager::update() noexcept
 void MusicManager::setVolume(float volume) noexcept
 {
     SetMusicVolume(music_, volume);
+}
+
+void MusicManager::stop() noexcept
+{
+    isPlaying_ = false;
+    StopMusicStream(music_);
+}
+
+bool MusicManager::isPlaying() const noexcept
+{
+    return isPlaying_;
 }

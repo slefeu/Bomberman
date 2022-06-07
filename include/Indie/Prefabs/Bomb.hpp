@@ -26,7 +26,7 @@ class Bomb : public Entity
         int                                   bombSize,
         GameData*                             data,
         std::vector<std::unique_ptr<Entity>>* Entity);
-    ~Bomb() noexcept                          = default;
+    ~Bomb() noexcept;
     Bomb(const Bomb& other) noexcept          = delete;
     Bomb(Bomb&& other) noexcept               = delete;
     Bomb& operator=(const Bomb& rhs) noexcept = delete;
@@ -37,7 +37,6 @@ class Bomb : public Entity
     void setPlayerArray(std::vector<std::unique_ptr<Player>>* players) noexcept;
     void explode() noexcept;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
-    void displayModel(const Vector3& position) final;
 
   private:
     // methods

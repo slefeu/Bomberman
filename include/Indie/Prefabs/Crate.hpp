@@ -26,7 +26,6 @@ class Crate : public Entity
     void Update() override;
     void dropItem();
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
-    void displayModel(const Vector3& position) final;
 
   public:
     GameData*                             data;

@@ -22,6 +22,8 @@ class WindowManager
     void launch(int width, int height, int fps) const noexcept;
     void display(Scene& scene, const Cameraman& camera) noexcept;
     bool isExit() noexcept;
+    int  getWidth() const noexcept;
+    int  getHeight() const noexcept;
 
   protected:
   private:

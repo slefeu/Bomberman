@@ -38,7 +38,7 @@ class Scene
     virtual void    switchAction() noexcept                    = 0;
 
     // methods for musics
-    virtual void         playMusic() const noexcept       = 0;
+    virtual void         playMusic() noexcept             = 0;
     virtual MusicManager getMusicManager() const noexcept = 0;
 
     // methods for display

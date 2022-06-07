@@ -25,11 +25,16 @@ class Button
         float                     pos_x,
         float                     pos_y,
         std::function<void(void)> function,
-        float                     scale,
         const std::string&        font_path,
         const std::string&        message,
         int                       textPosX,
         int                       textPosY) noexcept;
+    Button(const std::string&     texture_path,
+        float                     pos_x,
+        float                     pos_y,
+        std::function<void(void)> function,
+        const std::string&        font_path,
+        const std::string&        message) noexcept;
     Button(const Button& other) noexcept = default;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;
@@ -42,6 +47,7 @@ class Button
     void unload() noexcept;
     void action() const noexcept;
     bool checkCollision(MouseHandler& mouse_) noexcept;
+    void setState(int state) noexcept;
     void setPosition(const Vector2& pos) noexcept;
 
   protected:

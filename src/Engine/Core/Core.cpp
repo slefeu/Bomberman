@@ -12,7 +12,6 @@
 #include "Game.hpp"
 #include "Home.hpp"
 #include "PlayerSelect.hpp"
-#include "raylib.h"
 
 Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
@@ -106,4 +105,14 @@ void Core::checkExit() noexcept
 void Core::setExit(bool value) noexcept
 {
     exit_ = value;
+}
+
+WindowManager& Core::getWindow() noexcept
+{
+    return *window_;
+}
+
+Cameraman& Core::getCameraman() noexcept
+{
+    return camera;
 }

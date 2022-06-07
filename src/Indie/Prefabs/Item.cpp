@@ -89,6 +89,12 @@ Item::Item(GameData* data, ItemType type)
     newItemSound.play();
 }
 
+Item::~Item() noexcept
+{
+    getItemSound.unload();
+    newItemSound.unload();
+}
+
 void Item::Display()
 {
     auto renderer  = getComponent<Render>();
@@ -157,8 +163,6 @@ bool Item::entitiesHere(Vector3& pos) const noexcept
     }
     return false;
 }
-
-void Item::displayModel(const Vector3& position) {}
 
 void Item::setModelByType(void) noexcept
 {

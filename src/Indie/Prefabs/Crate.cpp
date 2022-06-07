@@ -66,5 +66,3 @@ void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
 }
-
-void Crate::displayModel(const Vector3& position) {}

@@ -5,6 +5,8 @@
 ** Item
 */
 
+#pragma once
+
 #include "Entity.hpp"
 #include "Player.hpp"
 #include "Sound.hpp"
@@ -18,8 +20,8 @@ class Item : public Entity
 {
   public:
     Item(Vector3 pos, GameData* data);
+    ~Item() noexcept;
     Item(GameData* data, ItemType type);
-    ~Item() noexcept                          = default;
     Item(const Item& other) noexcept          = delete;
     Item(Item&& other) noexcept               = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
@@ -28,7 +30,6 @@ class Item : public Entity
     void Display() final;
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
-    void displayModel(const Vector3& position) final;
 
   private:
     void    setPlayerStat(std::unique_ptr<Player>& p) noexcept;
@@ -42,5 +43,3 @@ class Item : public Entity
     SoundManager getItemSound;
     SoundManager newItemSound;
 };
-
-#pragma once

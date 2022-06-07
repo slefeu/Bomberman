@@ -42,8 +42,14 @@ Bomb::Bomb(Vector3                        pos,
 
     addComponent(BoxCollider(transform->get().getPosition(), { 0.8f, 1.2f, 0.8f }, false));
 
-    explodeSound.setVolume(0.5f);
+    explodeSound.setVolume(1.0f);
     dropSound_.play();
+}
+
+Bomb::~Bomb() noexcept
+{
+    dropSound_.unload();
+    explodeSound.unload();
 }
 
 void Bomb::Display()
@@ -131,5 +137,3 @@ void Bomb::OnCollisionEnter([[maybe_unused]] std::unique_ptr<Entity>& other) noe
 {
     if (other->getEntityType() == EntityType::E_WALL) explode();
 }
-
-void Bomb::displayModel(const Vector3& position) {}

@@ -10,6 +10,7 @@
 #include <string>
 
 #include "Button.hpp"
+#include "Controller.hpp"
 #include "Core.hpp"
 #include "Entity.hpp"
 #include "Fps.hpp"
@@ -38,7 +39,7 @@ class PlayerSelect : public Scene
     void switchAction() noexcept final;
 
     // music methods
-    void         playMusic() const noexcept final;
+    void         playMusic() noexcept final;
     MusicManager getMusicManager() const noexcept final;
 
     // camera methods

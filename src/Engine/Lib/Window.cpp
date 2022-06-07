@@ -17,6 +17,7 @@ void WindowManager::launch(int width, int height, int fps) const noexcept
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, "indie Studio - Bomberman");
     SetTargetFPS(fps);
+    // ToggleFullscreen();
 }
 
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
@@ -36,4 +37,14 @@ void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
 bool WindowManager::isExit() noexcept
 {
     return (WindowShouldClose());
+}
+
+int WindowManager::getWidth() const noexcept
+{
+    return (GetScreenWidth());
+}
+
+int WindowManager::getHeight() const noexcept
+{
+    return (GetScreenHeight());
 }

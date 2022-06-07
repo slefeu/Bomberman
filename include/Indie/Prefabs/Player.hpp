@@ -25,7 +25,7 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData* data);
-    ~Player() noexcept                            = default;
+    ~Player() noexcept;
     Player(const Player& other) noexcept          = delete;
     Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
@@ -50,13 +50,14 @@ class Player : public Entity
     void       setSpeed(const float& speed) noexcept;
     void       setNbBomb(const int& nbBomb) noexcept;
     void       setBombSize(const int& bombSize) noexcept;
+    PlayerType getPlayerType() const noexcept;
+    void       setPosition();
     PlayerType getType() const noexcept;
     int        findNextType() const noexcept;
     int        findPrevType() const noexcept;
 
   private:
     void setKeyboard() noexcept;
-    void setPosition();
     void placeBomb();
     bool isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir);
     SoundManager                              killSound_;

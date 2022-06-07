@@ -126,3 +126,29 @@ void Render::setAnimationId(int id) noexcept
 {
     animationId = id;
 }
+
+void Render::displayModel(const Transform3D& transform, Vector3 pos) noexcept
+{
+    auto axis  = transform.getRotationAxis();
+    auto angle = transform.getRotationAngle();
+
+    displayModelV(transform, pos, axis, angle);
+}
+
+void Render::displayModelV(
+    const Transform3D& transform, Vector3 pos, Vector3 axis, float angle) noexcept
+{
+    if (model_ == nullptr) return;
+
+    if (type == RenderType::R_ANIMATE) {
+        updateAnimation();
+        float scale = transform.getScale();
+        DrawModelEx(model_->get()->model,
+            pos,
+            axis,
+            angle,
+            { scale, scale, scale },
+            (Color){ 255, 255, 255, 255 });
+        return;
+    }
+}

@@ -11,17 +11,21 @@
 
 #include "Fire.hpp"
 #include "Player.hpp"
+#include "Sound.hpp"
 #include "Timer.hpp"
 
-class Bomb : public Entities
+static const inline char* DROP_BOMB = "assets/audios/DropBomb.wav";
+static const inline char* EXPLODE   = "assets/audios/Explode.wav";
+
+class Bomb : public Entity
 {
   public:
-    Bomb(Vector3                                pos,
-        Player*                                 p,
-        std::unique_ptr<Model3D>*               newModel,
-        int                                     bombSize,
-        GameData*                               data,
-        std::vector<std::unique_ptr<Entities>>* entities);
+    Bomb(Vector3                              pos,
+        Player*                               p,
+        std::unique_ptr<Model3D>*             newModel,
+        int                                   bombSize,
+        GameData*                             data,
+        std::vector<std::unique_ptr<Entity>>* Entity);
     ~Bomb() noexcept                          = default;
     Bomb(const Bomb& other) noexcept          = delete;
     Bomb(Bomb&& other) noexcept               = delete;
@@ -32,22 +36,25 @@ class Bomb : public Entities
     void Update() final;
     void setPlayerArray(std::vector<std::unique_ptr<Player>>* players) noexcept;
     void explode() noexcept;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept final;
+    void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
+    void displayModel(const Vector3& position) final;
 
   private:
     // methods
     void createFire(Vector3 mul) noexcept;
 
     // attributes
-    float                                   lifeTime;
-    std::unique_ptr<Timer>                  lifeTimer;
-    Player*                                 player;
-    int                                     size;
-    bool                                    hasHitbox;
-    GameData*                               data;
-    std::vector<std::unique_ptr<Entities>>* entities;
-    std::vector<std::unique_ptr<Fire>>      fires;
-    std::vector<std::unique_ptr<Player>>*   players;
-    bool                                    is_exploding_;
-    int                                     animeDir;
+    float                                 lifeTime;
+    std::unique_ptr<Timer>                lifeTimer;
+    Player*                               player;
+    int                                   size;
+    bool                                  hasHitbox;
+    GameData*                             data;
+    std::vector<std::unique_ptr<Entity>>* entities;
+    std::vector<std::unique_ptr<Fire>>    fires;
+    std::vector<std::unique_ptr<Player>>* players;
+    bool                                  is_exploding_;
+    int                                   animeDir;
+    SoundManager                          dropSound_;
+    SoundManager                          explodeSound;
 };

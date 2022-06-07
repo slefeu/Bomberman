@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-BDX-4-1-indiestudio-arthur.decaen
 ** File description:
-** Camera
+** Cameraman
 */
 
 #include "Cameraman.hpp"
@@ -10,32 +10,31 @@
 #include <math.h>
 
 #include <cmath>
-#include <iostream>
 
 #include "Error.hpp"
 #include "Round.hpp"
 
 Cameraman::Cameraman() noexcept
     : isMoving(false)
-    , speed(10.0f)
+    , speed(0.5f)
 {
-    fovy       = 60.0f;
-    projection = CAMERA_PERSPECTIVE;
+    camera.fovy       = 60.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
 }
 
 void Cameraman::moveX(const float& x) noexcept
 {
-    position.x += Round().myRound(x * GetFrameTime(), 1);
+    camera.position.x += x;
 }
 
 void Cameraman::moveY(const float& y) noexcept
 {
-    position.y += Round().myRound(y * GetFrameTime(), 1);
+    camera.position.y += y;
 }
 
 void Cameraman::moveZ(const float& z) noexcept
 {
-    position.z += Round().myRound(z * GetFrameTime(), 1);
+    camera.position.z += z;
 }
 
 void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& up) noexcept
@@ -48,17 +47,17 @@ void Cameraman::moveTo(const Vector3& to, const Vector3& target, const Vector3& 
 
 void Cameraman::tpTo(const Vector3& to, const Vector3& tar, const Vector3& newUp) noexcept
 {
-    position = to;
-    target   = tar;
-    up       = newUp;
-    isMoving = false;
+    camera.position = to;
+    camera.target   = tar;
+    camera.up       = newUp;
+    isMoving        = false;
 }
 
-bool Cameraman::smoothMove(void) noexcept
+bool Cameraman::smoothMove() noexcept
 {
     bool    thereIsMovement = false;
-    Vector3 roundPos        = Round().roundVector(position, 1);
-    Vector3 roundTarget     = Round().roundVector(targetPosition, 1);
+    Vector3 roundPos        = Round::roundVector(camera.position, 1);
+    Vector3 roundTarget     = Round::roundVector(targetPosition, 1);
     Vector3 dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
         (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
@@ -76,20 +75,20 @@ bool Cameraman::smoothMove(void) noexcept
         moveY(dir.y * speed);
     }
 
-    target = targetTarget;
-    up     = targetUp;
+    camera.target = targetTarget;
+    camera.up     = targetUp;
 
     return thereIsMovement;
 }
 
-void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& entities)
+void Cameraman::lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity)
 {
     float minX = INFINITY;
     float minZ = INFINITY;
     float maxX = -minX;
     float maxZ = -minZ;
 
-    for (auto& entity : entities) {
+    for (auto& entity : Entity) {
         if (!entity->getEnabledValue()) continue;
         auto transform = entity->getComponent<Transform3D>();
         if (!transform.has_value()) throw(Error("Error in camera handling.\n"));
@@ -104,8 +103,63 @@ void Cameraman::lookBetweenEntities(std::vector<std::unique_ptr<Entities>>& enti
     float newX = (minX + maxX) / 2;
     float newZ = (minZ + maxZ) / 2;
 
-    target.x   = newX;
-    target.z   = newZ;
-    position.x = newX;
-    position.z = newZ + 2.0f;
+    camera.target.x   = newX;
+    camera.target.z   = newZ;
+    camera.position.x = newX;
+    camera.position.z = newZ + 2.0f;
+}
+
+Vector3 Cameraman::getPosition() const noexcept
+{
+    return targetPosition;
+}
+
+Vector3 Cameraman::getTarget() const noexcept
+{
+    return targetTarget;
+}
+
+Vector3 Cameraman::getUp() const noexcept
+{
+    return targetUp;
+}
+
+bool Cameraman::getIsMoving() const noexcept
+{
+    return isMoving;
+}
+
+float Cameraman::getSpeed() const noexcept
+{
+    return speed;
+}
+
+Camera3D Cameraman::getCamera() const noexcept
+{
+    return camera;
+}
+
+void Cameraman::setPosition(const Vector3& pos) noexcept
+{
+    targetPosition = pos;
+}
+
+void Cameraman::setTarget(const Vector3& tar) noexcept
+{
+    targetTarget = tar;
+}
+
+void Cameraman::setUp(const Vector3& up) noexcept
+{
+    targetUp = up;
+}
+
+void Cameraman::setIsMoving(const bool& isMoving) noexcept
+{
+    this->isMoving = isMoving;
+}
+
+void Cameraman::setSpeed(const float& speed) noexcept
+{
+    this->speed = speed;
 }

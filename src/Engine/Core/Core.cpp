@@ -7,71 +7,103 @@
 
 #include "Core.hpp"
 
-#include <iostream>
+#include <type_traits>
 
 #include "Game.hpp"
 #include "Home.hpp"
+#include "PlayerSelect.hpp"
+#include "raylib.h"
 
-Core::Core(GameData* newData) noexcept
+Core::Core(GameData* newData, WindowManager* window) noexcept
     : data(newData)
+    , window_(window)
 {
-    // Create Window
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(data->winWidth, data->winHeight, "indie Studio - Bomberman");
-    SetTargetFPS(data->fps);
+    window_->launch(data->winWidth, data->winHeight, data->fps);
 
     // Chargement des models 3D
-    data->models.emplace_back(NEW_MODEL("assets/models/bomb.obj", "assets/textures/bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/wall.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/box.obj", "assets/textures/box.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_roller.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_bomb.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/i_fire.png"));
-    data->models.emplace_back(NEW_MODEL("assets/models/item.obj", "assets/textures/item.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/bomb.glb", "assets/textures/entities/bomb.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/box.glb", "assets/textures/entities/wall.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/box.glb", "assets/textures/entities/box.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/i_roller.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/i_bomb.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/i_fire.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/item.glb", "assets/textures/items/item.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/fire.iqm", "assets/textures/entities/fire.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/white.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/black.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/blue.png"));
+    data->models.emplace_back(
+        std::make_unique<Model3D>("assets/models/player.iqm", "assets/textures/player/red.png"));
 
-    // Génération des joueurs
-    for (int i = 0; i != data->nbPlayer; i++) data->players.emplace_back(NEW_PLAYER(i, data));
+    // Chargement des sprites
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/white.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/black.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/blue.png", 0, 0, 0.5f));
+    data->sprites.emplace_back(std::make_unique<Sprite>("assets/icones/red.png", 0, 0, 0.5f));
 
-    // Loading all scenes
-    scenes.emplace_back(std::make_unique<Home>(data));
-    scenes.emplace_back(std::make_unique<Game>(data));
-
-    // Setting the first camera
-    camera.position = SCENE->cameraPosition;
-    camera.target   = SCENE->cameraTarget;
-    camera.up       = SCENE->cameraUp;
+    resetData();
+    camera.tpTo(
+        findScene().getCameraPosition(), findScene().getCameraTarget(), findScene().getCameraUp());
 }
 
-void Core::switchScene(const int& scene) noexcept
+void Core::resetData() noexcept
 {
-    data->currentScene = scene;
-    SCENE->resetCamera(camera);
+    if (scenes.size() != 0) scenes.clear();
+    if (data->players.size() != 0) data->players.clear();
+
+    // Loading all scenes
+    scenes.emplace_back(std::make_unique<Home>(data, *this));
+    scenes.emplace_back(std::make_unique<Game>(data, *this));
+    scenes.emplace_back(std::make_unique<PlayerSelect>(data, *this));
+    findScene().playMusic();
+}
+
+Scene& Core::findScene() noexcept
+{
+    return (*scenes[static_cast<typename std::underlying_type<SceneType>::type>(
+        data->getCurrentScene())]);
+}
+
+void Core::switchScene(const SceneType& scene) noexcept
+{
+    data->setCurrentScene(scene);
+    findScene().resetCameraman(camera);
+    findScene().playMusic();
+    findScene().switchAction();
 }
 
 void Core::run() noexcept
 {
-    while (!WindowShouldClose()) {
-        // Events -------------------------------------------------------------
-        // Va partir, c'est que pour les tests
-        if (IsKeyPressed(KEY_LEFT)) switchScene((data->currentScene - 1) % scenes.size());
-        if (IsKeyPressed(KEY_UP)) SCENE->resetCamera(camera);
-        if (IsKeyPressed(KEY_DOWN)) camera.tpTo({ 0.0f, 0.0f, 30.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
-
-        if (IsGamepadAvailable(0))
-            if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN))
-                switchScene((data->currentScene - 1) % scenes.size());
-
+    while (!exit_) {
         // Update -------------------------------------------------------------
-        if (camera.isMoving) camera.isMoving = camera.smoothMove();
-        SCENE->action(camera);
+        checkExit();
+        if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
+        audio_.update(findScene());
+        data->updateMouse();
+        findScene().action(camera, data->getMouseHandler());
 
         // Display ------------------------------------------------------------
-        BeginDrawing();
-        ClearBackground(SCENE->backgroundColor);
-        BeginMode3D(camera);
-        SCENE->display3D();
-        EndMode3D();
-        SCENE->display2D();
-        EndDrawing();
+        window_->display(findScene(), camera);
     }
+}
+
+void Core::checkExit() noexcept
+{
+    if (window_->isExit()) { exit_ = true; }
+}
+
+void Core::setExit(bool value) noexcept
+{
+    exit_ = value;
 }

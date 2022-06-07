@@ -7,22 +7,58 @@
 
 #pragma once
 
+#include <vector>
+
+#include "Button.hpp"
+#include "Core.hpp"
+#include "Fps.hpp"
 #include "Scene.hpp"
 
 class Home : public Scene
 {
   public:
-    Home(GameData* data) noexcept;
-    ~Home() noexcept                          = default;
+    Home(GameData* data, Core& core_ref) noexcept;
     Home(const Home& other) noexcept          = delete;
     Home(Home&& other) noexcept               = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
     Home& operator=(Home&& rhs) noexcept      = delete;
+    ~Home() noexcept;
 
-    void resetCamera(Cameraman& camera) noexcept;
-    void display3D(void) noexcept;
-    void display2D(void) noexcept;
-    void action(Cameraman& camera) noexcept;
-    void DestroyPool() noexcept;
-    void CollisionPool() noexcept;
+    void display3D() noexcept final;
+    void display2D() noexcept final;
+    void action(Cameraman& camera, MouseHandler mouse_) noexcept final;
+    void DestroyPool() noexcept final;
+    void CollisionPool() noexcept final;
+
+    void         playMusic() const noexcept final;
+    MusicManager getMusicManager() const noexcept final;
+    Vector3      getCameraPosition() const noexcept final;
+    Vector3      getCameraTarget() const noexcept final;
+    Vector3      getCameraUp() const noexcept final;
+    void         drawBackground() const noexcept final;
+    void         resetCameraman(Cameraman& camera) noexcept;
+    ColorManager getBackgroundColor() const noexcept final;
+    void         switchAction() noexcept final;
+
+  private:
+    // methods
+    void unloadButtons() noexcept;
+    void drawButtons() const noexcept;
+    void createButtons() noexcept;
+
+    // attributes
+    MusicManager        loop_music_;
+    Vector3             camera_position_ = { 20.0f, 50.0f, 30.0f };
+    Vector3             camera_target_   = { 0.0f, 0.0f, 1.0f };
+    Vector3             camera_up_       = { 0.0f, 1.0f, 0.0f };
+    std::vector<Button> buttons_         = {};
+    GameData*           data_;
+    Core&               core_entry_;
+    ColorManager        background_color_;
+    Sprite              background_;
+    Sprite              title_;
+
+    static const inline char* MENU_MUSIC = "assets/audios/Menu.mp3";
+    static const inline char* BG_PATH    = "assets/textures/home/background.png";
+    static const inline char* TITLE_PATH = "assets/textures/home/title.png";
 };

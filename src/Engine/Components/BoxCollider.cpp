@@ -7,13 +7,31 @@
 
 #include "BoxCollider.hpp"
 
-#include "Collision.hpp"
-
 BoxCollider::BoxCollider(Vector3 newPos, Vector3 newSize, bool solid) noexcept
     : position_(newPos)
     , size_(newSize)
     , is_solid_(solid)
 {
+}
+
+bool BoxCollider::checkCollision(const Vector3& pos,
+    const Vector3&                              size,
+    const Vector3&                              otherPos,
+    const Vector3&                              otherSize) noexcept
+{
+    Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
+    Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };
+    Vector3 BoundingBox2_1 = {
+        otherPos.x - otherSize.x / 2, otherPos.y - otherSize.y / 2, otherPos.z - otherSize.z / 2
+    };
+    Vector3 BoundingBox2_2 = {
+        otherPos.x + otherSize.x / 2, otherPos.y + otherSize.y / 2, otherPos.z + otherSize.z / 2
+    };
+
+    BoundingBox BoundingBox1 = { BoundingBox1_1, BoundingBox1_2 };
+    BoundingBox BoundingBox2 = { BoundingBox2_1, BoundingBox2_2 };
+
+    return CheckCollisionBoxes(BoundingBox1, BoundingBox2);
 }
 
 Vector3 BoxCollider::getPosition() const noexcept
@@ -46,14 +64,14 @@ void BoxCollider::update(const Vector3 newPos) noexcept
     position_ = newPos;
 }
 
-bool BoxCollider::isColliding(const BoxCollider& other) const noexcept
+bool BoxCollider::isColliding(const BoxCollider& other) noexcept
 {
-    return Collision().isColliding(position_, size_, other.getPosition(), other.getSize());
+    return checkCollision(position_, size_, other.getPosition(), other.getSize());
 }
 
-bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3& otherPos) const noexcept
+bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3& otherPos) noexcept
 {
-    return Collision().isColliding(position_, size_, otherPos, otherHit.getSize());
+    return checkCollision(position_, size_, otherPos, otherHit.getSize());
 }
 
 ComponentType BoxCollider::getComponentType() const noexcept

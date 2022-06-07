@@ -10,9 +10,11 @@
 #include "Error.hpp"
 #include "Item.hpp"
 
-Crate::Crate(
-    Vector3 pos, std::unique_ptr<Model3D>* newModel, GameData* data, std::vector<std::unique_ptr<Entities>>* entities)
-    : Entities(EntityType::E_CRATE)
+Crate::Crate(Vector3                      pos,
+    std::unique_ptr<Model3D>*             newModel,
+    GameData*                             data,
+    std::vector<std::unique_ptr<Entity>>* entities)
+    : Entity(EntityType::E_CRATE)
     , data(data)
     , entities(entities)
 {
@@ -22,15 +24,17 @@ Crate::Crate(
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the crate element.\n"));
+
     transform->get().setPosition(pos);
     transform->get().setScale(0.015f);
     transform->get().setY(0 - transform->get().getScale());
     renderer->get().setRenderType(RenderType::R_3DMODEL);
     renderer->get().setModel(newModel);
 
-    Vector3 position = { transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() };
-    Vector3 size     = { 0.8f, 0.8f, 0.8f };
-    addComponent(BoxCollider(position, size, true));
+    addComponent(
+        BoxCollider({ transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() },
+            { 0.8f, 0.8f, 0.8f },
+            true));
 }
 
 void Crate::Display()
@@ -38,7 +42,8 @@ void Crate::Display()
     auto renderer  = getComponent<Render>();
     auto transform = getComponent<Transform3D>();
 
-    if (!renderer.has_value() || !transform.has_value()) throw(Error("Error in displaying a crate element.\n"));
+    if (!renderer.has_value() || !transform.has_value())
+        throw(Error("Error in displaying a crate element.\n"));
     if (!getEnabledValue()) return;
     renderer->get().display(transform->get());
 }
@@ -54,10 +59,12 @@ void Crate::dropItem()
 
     if (!transform.has_value()) throw(Error("Error in dropping item.\n"));
     if (rand() % 3 != 0) return;
-    entities->emplace_back(NEW_ITEM(transform->get().getPosition(), data));
+    entities->emplace_back(std::make_unique<Item>((Vector3)transform->get().getPosition(), data));
 }
 
-void Crate::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
+void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
 }
+
+void Crate::displayModel(const Vector3& position) {}

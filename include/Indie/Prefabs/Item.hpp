@@ -5,14 +5,16 @@
 ** Item
 */
 
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "Player.hpp"
-
-#define NEW_ITEM(pos, data) std::make_unique<Item>((Vector3)pos, data)
+#include "Sound.hpp"
 
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
 
-class Item : public Entities
+static const inline char* GET_ITEM = "assets/audios/GetItem.wav";
+static const inline char* NEW_ITEM = "assets/audios/NewItem.wav";
+
+class Item : public Entity
 {
   public:
     Item(Vector3 pos, GameData* data);
@@ -25,16 +27,20 @@ class Item : public Entities
 
     void Display() final;
     void Update() final;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
+    void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
+    void displayModel(const Vector3& position) final;
 
   private:
     void    setPlayerStat(std::unique_ptr<Player>& p) noexcept;
     Vector3 findFreePosition(void) const noexcept;
     bool    entitiesHere(Vector3& pos) const noexcept;
+    void    setModelByType(void) noexcept;
 
   private:
-    ItemType  itemType;
-    GameData* data;
+    GameData*    data;
+    ItemType     itemType;
+    SoundManager getItemSound;
+    SoundManager newItemSound;
 };
 
 #pragma once

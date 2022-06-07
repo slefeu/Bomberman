@@ -7,20 +7,18 @@
 
 #pragma once
 
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "GameData.hpp"
 #include "Timer.hpp"
 
-#define NEW_FIRE(pos, size) std::make_unique<Fire>(pos, size)
-
-class Fire : public Entities
+class Fire : public Entity
 {
   private:
     float                  explodeTime;
     std::unique_ptr<Timer> explodeTimer;
 
   public:
-    Fire(Vector3 posi, float newSize);
+    Fire(Vector3 posi, std::unique_ptr<Model3D>* model);
     ~Fire() noexcept                          = default;
     Fire(const Fire& other) noexcept          = delete;
     Fire(Fire&& other) noexcept               = delete;
@@ -29,6 +27,7 @@ class Fire : public Entities
 
     void Display() final;
     void Update() final;
-    void OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept;
-    bool ExplodeElements(std::unique_ptr<Entities>& other) noexcept;
+    void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
+    bool ExplodeElements(std::unique_ptr<Entity>& other) noexcept;
+    void displayModel(const Vector3& position) final;
 };

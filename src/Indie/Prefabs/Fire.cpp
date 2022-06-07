@@ -8,40 +8,42 @@
 
 #include "Fire.hpp"
 
-#include <iostream>
-
 #include "Bomb.hpp"
 #include "Crate.hpp"
-#include "Entities.hpp"
+#include "Entity.hpp"
 #include "Error.hpp"
 
-Fire::Fire(Vector3 posi, float newSize)
-    : Entities(EntityType::E_FIRE)
+Fire::Fire(Vector3 posi, std::unique_ptr<Model3D>* model)
+    : Entity(EntityType::E_FIRE)
     , explodeTime(0.5f)
-    , explodeTimer(NEW_TIMER(explodeTime))
+    , explodeTimer(std::make_unique<Timer>(explodeTime))
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
-    transform->get().setPosition(posi);
-    transform->get().setSize({ newSize, newSize, newSize });
-    renderer->get().setRenderType(RenderType::R_CUBE);
-    renderer->get().setColor(RED);
-    addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
+
+    transform->get().setPosition({ posi.x, posi.y - 0.3f, posi.z });
+    transform->get().setScale(1.2f);
+    transform->get().setSize({ 0.5f, 0.5f, 0.5f });
+    transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
+    transform->get().setRotationAngle(-90.0f);
+    renderer->get().setRenderType(RenderType::R_ANIMATE);
+    renderer->get().setModel(model);
+    renderer->get().addAnimation("assets/models/fire.iqm");
+
+    addComponent(BoxCollider({ posi.x, posi.y, posi.z }, transform->get().getSize(), true));
 }
 
 void Fire::Display()
 {
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
-    auto hitbox    = getComponent<BoxCollider>();
 
-    if (!transform.has_value() || !renderer.has_value() || !hitbox.has_value())
+    if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error in displaying the player element.\n"));
     renderer->get().display(transform->get());
-    hitbox->get().display();
 }
 
 void Fire::Update()
@@ -50,7 +52,7 @@ void Fire::Update()
     if (explodeTimer->timerDone()) setEnabledValue(false);
 }
 
-void Fire::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
+void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_PLAYER) {
         ((std::unique_ptr<Player>&)other)->dispatchItem();
@@ -58,12 +60,11 @@ void Fire::OnCollisionEnter(std::unique_ptr<Entities>& other) noexcept
     }
 }
 
-bool Fire::ExplodeElements(std::unique_ptr<Entities>& other) noexcept
+bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
 {
     if (other->getEntityType() == EntityType::E_CRATE) {
         ((std::unique_ptr<Crate>&)other)->dropItem();
         other->setEnabledValue(false);
-        setEnabledValue(false);
         return true;
     }
     if (other->getEntityType() == EntityType::E_ITEM) {
@@ -77,3 +78,5 @@ bool Fire::ExplodeElements(std::unique_ptr<Entities>& other) noexcept
     }
     return false;
 }
+
+void Fire::displayModel(const Vector3& position) {}

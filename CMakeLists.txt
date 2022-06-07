@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(bomberman)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(raylib 4.0.0 REQUIRED)
-
+set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
 
 if(UNIX)
@@ -13,13 +12,13 @@ if(UNIX)
     endif()
 endif()
 
+find_package(raylib 4.0.0 REQUIRED)
+
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_VERBOSE_MAKEFILE ON)
 endif()
 
-if (WIN32)
-  file(COPY assets/ DESTINATION assets/)
-endif()
+file(COPY assets/ DESTINATION assets/)
 
 # Ajouter ici les .cpp
 set(
@@ -32,10 +31,8 @@ set(
 
   src/Engine/Core/Cameraman.cpp
   src/Engine/Core/Core.cpp
-  src/Engine/Core/Collision.cpp
   src/Engine/Core/GameData.cpp
-  src/Engine/Core/Model3D.cpp
-  src/Engine/Core/Entities.cpp
+  src/Engine/Core/Entity.cpp
 
   src/Engine/Components/BoxCollider.cpp
   src/Engine/Components/Transform3D.cpp
@@ -50,18 +47,35 @@ set(
 
   src/Indie/Scenes/Game.cpp
   src/Indie/Scenes/Home.cpp
+  src/Indie/Scenes/PlayerSelect.cpp
+
+  src/Indie/UI/Button.cpp
+
+  src/Engine/Lib/Mouse.cpp
+  src/Engine/Lib/Font.cpp
+  src/Engine/Lib/Text.cpp
+  src/Engine/Lib/Music.cpp
+  src/Engine/Lib/Sound.cpp
+  src/Engine/Lib/AudioDevice.cpp
+  src/Engine/Lib/Sprite.cpp
+  src/Engine/Lib/Color.cpp
+  src/Engine/Lib/Window.cpp
+  src/Engine/Lib/Fps.cpp
+  src/Engine/Lib/Rectangle.cpp
+  src/Engine/Lib/Controller.cpp
+  src/Engine/Lib/Model3D.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
-if(UNIX)
-  target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror)
-endif()
+
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Ajouter ici les dossiers contenants les .hpp
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Components)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Core)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Lib)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Prefabs)
-target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/UI)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie)

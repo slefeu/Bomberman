@@ -12,12 +12,36 @@ GameData::GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept
     , winWidth(winWidth)
     , winHeight(winHeight)
     , nbPlayer(nbPlayer)
-    , currentScene(1)
     , timeParty(120.0f)
 {
 }
 
-void GameData::setEntities(std::vector<std::unique_ptr<Entities>>* entities) noexcept
+void GameData::setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept
 {
     _entities = entities;
+}
+
+GameData::~GameData() noexcept
+{
+    for (auto& it : sprites) { it->unload(); }
+}
+
+void GameData::updateMouse() noexcept
+{
+    mouse_.update();
+}
+
+MouseHandler GameData::getMouseHandler() const noexcept
+{
+    return (mouse_);
+}
+
+void GameData::setCurrentScene(const SceneType& scene) noexcept
+{
+    current_scene_ = scene;
+}
+
+SceneType GameData::getCurrentScene() const noexcept
+{
+    return (current_scene_);
 }

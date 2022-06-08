@@ -61,6 +61,7 @@ class PlayerSelect : public Scene
     void displayAllStats() noexcept;
     unsigned int findStatsId(const PlayerType& type) const noexcept;
     void drawSelection(const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept;
+    void unloadButtons() noexcept;
 
     // attributes
     MusicManager             loop_music_;

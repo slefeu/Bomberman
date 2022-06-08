@@ -36,6 +36,14 @@ PlayerSelect::~PlayerSelect() noexcept
     loop_music_.unload();
     background_.unload();
     title_.unload();
+    unloadButtons();
+}
+
+void PlayerSelect::unloadButtons() noexcept
+{
+    for (auto &it : buttons_) { it.unload(); }
+    for (auto &it : select_left_) { it.unload(); }
+    for (auto &it : select_right_) { it.unload(); }
 }
 
 void PlayerSelect::display3D() noexcept
@@ -122,13 +130,13 @@ void PlayerSelect::createButtons() noexcept
             if (this->data_->nbPlayer < 4) {
                 data_->nbPlayer++;
                 data_->players.emplace_back(std::make_unique<Player>(data_->nbPlayer - 1, data_));
-                auto& new_player = *reinterpret_cast<Player*>(data_->players.back().get());
+                Player* new_player = reinterpret_cast<Player*>(data_->players.back().get());
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
-                        new_player.setPlayerType(
-                            static_cast<PlayerType>(new_player.findNextType()));
+                    std::function<void(void)>([new_player](void) {
+                        new_player->setPlayerType(
+                            static_cast<PlayerType>(new_player->findNextType()));
                     }),
                     "assets/fonts/menu.ttf",
                     "",
@@ -136,9 +144,9 @@ void PlayerSelect::createButtons() noexcept
                 select_left_.emplace_back("assets/textures/selection/left.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
-                        new_player.setPlayerType(
-                            static_cast<PlayerType>(new_player.findPrevType()));
+                    std::function<void(void)>([new_player](void) {
+                        new_player->setPlayerType(
+                            static_cast<PlayerType>(new_player->findPrevType()));
                     }),
                     "assets/fonts/menu.ttf",
                     "",
@@ -157,7 +165,6 @@ void PlayerSelect::createButtons() noexcept
                 data_->players.pop_back();
                 select_right_.pop_back();
                 select_left_.pop_back();
-                texts_.pop_back();
             }
         }),
         "assets/fonts/menu.ttf",

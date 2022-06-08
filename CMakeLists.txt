@@ -4,13 +4,17 @@ project(bomberman)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
+# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+set(CMAKE_CXX_FLAGS_DEBUG_INIT "-g")
 
+# set(CMAKE_MODULE_LINKER_FLAGS "fsanitize=address")
 if(UNIX)
   find_program(TIDY "clang-tidy")
     if(TIDY)
       set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
     endif()
 endif()
+
 
 find_package(raylib 4.0.0 REQUIRED)
 

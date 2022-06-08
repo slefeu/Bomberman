@@ -38,15 +38,15 @@ class Core
     // methods
     void   checkExit() noexcept;
     Scene& findScene() noexcept;
+    void                                switchScene(const int& scene) noexcept;
+    void                                createWindow() noexcept;
+    void                                resetData() noexcept;
 
     // attributes
     AudioDevice                         audio_;
     Cameraman                           camera;
-    std::vector<std::unique_ptr<Scene>> scenes;
+    std::vector<std::unique_ptr<Scene>> scenes = {};
     GameData*                           data;
-    bool                                exit_;
-    void                                switchScene(const int& scene) noexcept;
-    void                                createWindow() noexcept;
-    void                                resetData() noexcept;
+    bool                                exit_ = false;
     WindowManager*                      window_;
 };

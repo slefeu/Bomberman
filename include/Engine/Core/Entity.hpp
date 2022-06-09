@@ -19,13 +19,12 @@
 #include "Render.hpp"
 #include "Transform3D.hpp"
 
-enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
 enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
 
 class Entity
 {
   public:
-    Entity(const EntityType& type) noexcept;
+    Entity()                                      = default;
     virtual ~Entity() noexcept                    = default;
     Entity(const Entity& other) noexcept          = delete;
     Entity(Entity&& other) noexcept               = delete;
@@ -56,12 +55,10 @@ class Entity
         return {};
     };
 
-    EntityType getEntityType() const noexcept;
-    bool       getEnabledValue() const noexcept;
-    void       setEnabledValue(const bool value) noexcept;
+    bool getEnabledValue() const noexcept;
+    void setEnabledValue(const bool value) noexcept;
 
   private:
-    const EntityType                        type_;
     bool                                    is_enabled_ = true;
     std::vector<std::unique_ptr<Component>> components_ = {};
 };

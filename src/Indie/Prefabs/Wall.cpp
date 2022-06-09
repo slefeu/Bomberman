@@ -8,10 +8,13 @@
 #include "Wall.hpp"
 
 #include "Error.hpp"
+#include "InstanceOf.hpp"
 
 Wall::Wall(Vector3D pos, std::unique_ptr<Model3D>* model)
-    : Entity(EntityType::E_WALL)
+    : Entity()
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -50,6 +53,6 @@ void Wall::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     auto transform = getComponent<Transform3D>();
 
-    if (other->getEntityType() == EntityType::E_WALL && transform->get().getPosition().y > 0)
+    if (Type:: instanceof <Wall>(other.get()) && transform->get().getPosition().y > 0)
         other->setEnabledValue(false);
 }

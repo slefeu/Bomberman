@@ -66,8 +66,8 @@ bool Cameraman::smoothMove() noexcept
 {
     bool     thereIsMovement = false;
     Vector3D roundPos        = { Round::round(camera.position.x, 1),
-               Round::round(camera.position.y, 1),
-               Round::round(camera.position.z, 1) };
+        Round::round(camera.position.y, 1),
+        Round::round(camera.position.z, 1) };
     Vector3D roundTarget     = Round::roundVector(targetPosition, 1);
     Vector3D dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
@@ -145,14 +145,9 @@ bool Cameraman::getIsMoving() const noexcept
     return isMoving;
 }
 
-float Cameraman::getSpeed() const noexcept
+void Cameraman::begin3D() const noexcept
 {
-    return speed;
-}
-
-Camera3D Cameraman::getCamera() const noexcept
-{
-    return camera;
+    BeginMode3D(camera);
 }
 
 void Cameraman::setPosition(const Vector3D& pos) noexcept
@@ -160,22 +155,7 @@ void Cameraman::setPosition(const Vector3D& pos) noexcept
     targetPosition = pos;
 }
 
-void Cameraman::setTarget(const Vector3D& tar) noexcept
-{
-    targetTarget = tar;
-}
-
-void Cameraman::setUp(const Vector3D& up) noexcept
-{
-    targetUp = up;
-}
-
 void Cameraman::setIsMoving(const bool& isMoving) noexcept
 {
     this->isMoving = isMoving;
-}
-
-void Cameraman::setSpeed(const float& speed) noexcept
-{
-    this->speed = speed;
 }

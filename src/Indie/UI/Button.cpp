@@ -77,21 +77,13 @@ Button::Button(const std::string& texture_path,
     rectangle_.setHeight(texture_.getHeight() * scale);
 }
 
-void Button::unload() noexcept
-{
-    fx_clicked_.unload();
-    fx_hover_.unload();
-    text_.unload();
-    texture_.unload();
-}
-
 void Button::draw() const noexcept
 {
     texture_.draw(color_.getColor());
     text_.draw();
 }
 
-bool Button::checkCollision(MouseHandler& mouse_) noexcept
+bool Button::checkCollision(const MouseHandler& mouse_) noexcept
 {
     if (mouse_.isColliding(rectangle_)) {
         if (mouse_.isClicking()) { state_ = 2; };

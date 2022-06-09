@@ -25,28 +25,22 @@ class PlayerSelect : public Scene
     PlayerSelect(GameData* data, Core& core_ref) noexcept;
     PlayerSelect(const PlayerSelect& other) noexcept = delete;
     PlayerSelect(PlayerSelect&& other) noexcept      = delete;
-    ~PlayerSelect() noexcept;
+    ~PlayerSelect() noexcept                         = default;
 
     PlayerSelect& operator=(const PlayerSelect& rhs) noexcept = delete;
-    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept      = delete;
+    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept = delete;
 
     // main methods
     void display3D() noexcept final;
     void display2D() noexcept final;
-    void action(Cameraman& camera, MouseHandler mouse_) noexcept final;
+    void action() noexcept final;
     void DestroyPool() noexcept final;
     void CollisionPool() noexcept final;
     void switchAction() noexcept final;
 
     // music methods
-    void         playMusic() noexcept final;
-    MusicManager getMusicManager() const noexcept final;
-
-    // camera methods
-    Vector3D getCameraPosition() const noexcept final;
-    Vector3D getCameraTarget() const noexcept final;
-    Vector3D getCameraUp() const noexcept final;
-    void     resetCameraman(Cameraman& camera) noexcept;
+    void playMusic() noexcept final;
+    void updateMusic() const noexcept final;
 
     // background methods
     void         drawBackground() const noexcept final;
@@ -61,19 +55,15 @@ class PlayerSelect : public Scene
     void displayAllStats() noexcept;
     unsigned int findStatsId(const PlayerType& type) const noexcept;
     void drawSelection(const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept;
-    void unloadButtons() noexcept;
 
     // attributes
     MusicManager             loop_music_;
-    Vector3D                 camera_position_ = { 4.0f, 2.0f, 1.5f };
-    Vector3D                 camera_target_   = { 0.0f, 1.0f, 1.5f };
-    Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
     GameData*                data_;
     Core&                    core_entry_;
     ColorManager             background_color_;
     Sprite                   background_;
     Sprite                   title_;
-    TextHandler              choose_;
+    TextHandler              choose_text_;
     std::vector<Button>      buttons_      = {};
     std::vector<Button>      select_left_  = {};
     std::vector<Button>      select_right_ = {};

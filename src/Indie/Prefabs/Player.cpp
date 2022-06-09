@@ -31,17 +31,15 @@ Player::Player(const int newId, GameData* data)
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setScale(0.65f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
-    renderer->get().setModel(&data->models[((int)ModelType::M_PLAYER_1) + id]);
+    renderer->get().setModel(
+        &data->models[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
+                          bomberman::ModelType::M_PLAYER_1)
+                      + id]);
     renderer->get().addAnimation("assets/models/player.iqm");
     setKeyboard();
     setPosition();
     setPlayerType(PlayerType::NORMAL);
     addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
-}
-
-Player::~Player() noexcept
-{
-    killSound_.unload();
 }
 
 void Player::Display()
@@ -286,7 +284,7 @@ void Player::placeBomb()
     nbBomb--;
     bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),
         this,
-        &data->models[static_cast<int>(ModelType::M_BOMB)],
+        &data->models[static_cast<int>(bomberman::ModelType::M_BOMB)],
         bombSize,
         data,
         bombs));

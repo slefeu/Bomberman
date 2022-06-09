@@ -10,6 +10,7 @@
 #include <iostream>
 #include <memory>
 
+#include "Bomberman.hpp"
 #include "BoxCollider.hpp"
 #include "Error.hpp"
 #include "Player.hpp"
@@ -87,12 +88,6 @@ Item::Item(GameData* data, ItemType type)
     setModelByType();
 
     newItemSound.play();
-}
-
-Item::~Item() noexcept
-{
-    getItemSound.unload();
-    newItemSound.unload();
 }
 
 void Item::Display()
@@ -174,16 +169,20 @@ void Item::setModelByType(void) noexcept
 
     switch (itemType) {
         case ItemType::I_SPEEDUP:
-            renderer->get().setModel(&data->models[static_cast<int>(ModelType::M_IROLLER)]);
+            renderer->get().setModel(
+                &data->models[static_cast<int>(bomberman::ModelType::M_IROLLER)]);
             break;
         case ItemType::I_BOMBUP:
-            renderer->get().setModel(&data->models[static_cast<int>(ModelType::M_IBOMB)]);
+            renderer->get().setModel(
+                &data->models[static_cast<int>(bomberman::ModelType::M_IBOMB)]);
             break;
         case ItemType::I_FIREUP:
-            renderer->get().setModel(&data->models[static_cast<int>(ModelType::M_IFIRE)]);
+            renderer->get().setModel(
+                &data->models[static_cast<int>(bomberman::ModelType::M_IFIRE)]);
             break;
         case ItemType::I_WALL:
-            renderer->get().setModel(&data->models[static_cast<int>(ModelType::M_IWALL)]);
+            renderer->get().setModel(
+                &data->models[static_cast<int>(bomberman::ModelType::M_IWALL)]);
             break;
         default: break;
     }

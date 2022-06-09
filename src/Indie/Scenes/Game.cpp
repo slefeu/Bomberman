@@ -51,22 +51,12 @@ Game::Game(GameData* data, Core& core_ref) noexcept
     pauseText_.setTextColor(Colors::C_RED);
 }
 
-Game::~Game() noexcept
-{
-    loop_music_.unload();
-    hurry_music_.unload();
-    victory_music_.unload();
-    startSound_.unload();
-    hurryUpSound_.unload();
-    for (auto it : buttons_) { it.unload(); }
-    hurryUpText_.unload();
-    timeText_.unload();
-    victoryText_.unload();
-    for (auto it : playerText_) { it.unload(); }
-}
-
 void Game::switchAction() noexcept
 {
+    core_entry_.getCameraman().tpTo(
+        { 0.0f, 1.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 2.0f, 0.0f });
+    core_entry_.getCameraman().moveTo(camera_position_, camera_target_, camera_up_);
+
     for (auto& player : data_->players) {
         if (player->getEntityType() != EntityType::E_PLAYER) continue;
         player->setEnabledValue(true);
@@ -106,7 +96,7 @@ void Game::switchAction() noexcept
     int xPos[4] = { 55, width - 150, width - 150, 55 };
     int yPos[4] = { 28, height - 30, 28, height - 30 };
     for (int i = 0; i < 4; i++) {
-        playerText_.push_back(TextHandler("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]));
+        playerText_.emplace_back("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]);
         playerText_[i].setTextSize(20);
     }
 }
@@ -116,19 +106,13 @@ void Game::playMusic() noexcept
     loop_music_.play();
 }
 
-MusicManager Game::getMusicManager() const noexcept
+void Game::updateMusic() const noexcept
 {
-    if (loop_music_.isPlaying()) return loop_music_;
+    if (loop_music_.isPlaying()) loop_music_.update();
     else if (hurry_music_.isPlaying())
-        return hurry_music_;
+        hurry_music_.update();
     else
-        return victory_music_;
-}
-
-void Game::resetCameraman(Cameraman& camera) noexcept
-{
-    camera.tpTo({ 0.0f, 1.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 2.0f, 0.0f });
-    camera.moveTo(camera_position_, camera_target_, camera_up_);
+        victory_music_.update();
 }
 
 void Game::display3D() noexcept
@@ -180,13 +164,13 @@ void Game::display2D() noexcept
     }
 }
 
-void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
+void Game::action() noexcept
 {
     DestroyPool();
     CollisionPool();
 
     if (pause) {
-        pauseAction(mouse_);
+        pauseAction();
         return;
     }
 
@@ -198,14 +182,15 @@ void Game::action(Cameraman& camera, MouseHandler mouse_) noexcept
             if (player->getEnabledValue()) alive++;
         if (alive == 1 || alive == 0 || chrono_->timerDone()) endGame();
     } else {
-        endGameAction(mouse_);
+        endGameAction();
         return;
     }
 
     chrono_->updateTimer();
     for (auto& entity : entities_) entity->Update();
 
-    if (!camera.getIsMoving()) camera.lookBetweenEntity(data_->players);
+    if (!core_entry_.getCameraman().getIsMoving())
+        core_entry_.getCameraman().lookBetweenEntity(data_->players);
 
     // Activation du Hurry Up !
     if (int(round(chrono_->getTime())) <= 55 && !isHurry) {
@@ -282,8 +267,9 @@ void Game::createMap() noexcept
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                entities_.emplace_back(
-                    std::make_unique<Wall>(vectorTemp, &data_->models[(int)ModelType::M_WALL]));
+                entities_.emplace_back(std::make_unique<Wall>(vectorTemp,
+                    &data_->models[static_cast<typename std::underlying_type<
+                        bomberman::ModelType>::type>(bomberman::ModelType::M_WALL)]));
             }
 
     // Ajout des murs une case sur deux
@@ -292,7 +278,7 @@ void Game::createMap() noexcept
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 entities_.emplace_back(std::make_unique<Wall>(
-                    vectorTemp, &data_->models[static_cast<int>(ModelType::M_WALL)]));
+                    vectorTemp, &data_->models[static_cast<int>(bomberman::ModelType::M_WALL)]));
             }
 
     // Génération des boites
@@ -319,7 +305,7 @@ void Game::createMap() noexcept
             }
             if (rand() % 100 < 80 && spawnCrate)
                 entities_.emplace_back(std::make_unique<Crate>(vectorTemp,
-                    &data_->models[static_cast<int>(ModelType::M_CRATE)],
+                    &data_->models[static_cast<int>(bomberman::ModelType::M_CRATE)],
                     data_,
                     &entities_));
         }
@@ -368,7 +354,7 @@ void Game::hurryUp() noexcept
 
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
         entities_.emplace_back(std::make_unique<Wall>(
-            vectorTemp, &data_->models[static_cast<int>(ModelType::M_WALL)]));
+            vectorTemp, &data_->models[static_cast<int>(bomberman::ModelType::M_WALL)]));
         lastTimeBlockPlace = chrono_->getTime();
         nbBlockPlaced++;
     }
@@ -376,21 +362,6 @@ void Game::hurryUp() noexcept
     HurryUpX -= 500.0f * GetFrameTime();
 
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
-}
-
-Vector3D Game::getCameraPosition() const noexcept
-{
-    return (camera_position_);
-}
-
-Vector3D Game::getCameraTarget() const noexcept
-{
-    return (camera_target_);
-}
-
-Vector3D Game::getCameraUp() const noexcept
-{
-    return (camera_up_);
 }
 
 ColorManager Game::getBackgroundColor() const noexcept
@@ -449,7 +420,7 @@ void Game::endGame() noexcept
     }
 }
 
-void Game::endGameAction(MouseHandler mouse_) noexcept
+void Game::endGameAction() noexcept
 {
     if (controller.isGamepadConnected(0)) {
         if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_LEFT))
@@ -461,13 +432,13 @@ void Game::endGameAction(MouseHandler mouse_) noexcept
         buttons_[button_index_].setState(1);
     } else {
         for (auto& it : buttons_)
-            if (it.checkCollision(mouse_)) { it.action(); }
+            if (it.checkCollision(core_entry_.getData()->getMouseHandler())) { it.action(); }
     }
 }
 
 void Game::endGameDisplay() noexcept
 {
-    for (auto it : buttons_) { it.draw(); }
+    for (auto& it : buttons_) { it.draw(); }
     victoryText_.draw();
 }
 
@@ -493,9 +464,8 @@ void Game::createButtons() noexcept
         "Menu");
 }
 
-void Game::pauseAction(MouseHandler mouse_) noexcept
+void Game::pauseAction() noexcept
 {
-    (void)mouse_;
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
         pause = false;

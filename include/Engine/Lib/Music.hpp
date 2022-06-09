@@ -14,15 +14,15 @@ class MusicManager
 {
   public:
     MusicManager(const std::string& path) noexcept;
-    MusicManager(const MusicManager& other) noexcept = default;
-    MusicManager(MusicManager&& other) noexcept      = default;
-    ~MusicManager() noexcept                         = default;
+    MusicManager(const MusicManager& other) noexcept = delete;
+    MusicManager(MusicManager&& other) noexcept;
+    ~MusicManager() noexcept;
 
-    MusicManager& operator=(const MusicManager& rhs) noexcept = default;
-    MusicManager& operator=(MusicManager&& rhs) noexcept      = default;
+    MusicManager& operator=(const MusicManager& rhs) noexcept = delete;
+    MusicManager& operator                                    =(MusicManager&& rhs) noexcept;
 
     void play() noexcept;
-    void update() noexcept;
+    void update() const noexcept;
     void setVolume(float volume) noexcept;
     void stop() noexcept;
     bool isPlaying() const noexcept;
@@ -31,5 +31,6 @@ class MusicManager
   protected:
   private:
     Music music_;
-    bool  isPlaying_;
+    bool  isPlaying_ = false;
+    bool  unloaded_  = false;
 };

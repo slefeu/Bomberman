@@ -21,32 +21,32 @@ class Core
 {
   public:
     Core(GameData* data, WindowManager* window) noexcept;
-    ~Core() noexcept                          = default;
-    Core(const Core& other) noexcept          = delete;
-    Core(Core&& other) noexcept               = delete;
+    ~Core() noexcept                 = default;
+    Core(const Core& other) noexcept = delete;
+    Core(Core&& other) noexcept      = delete;
     Core& operator=(const Core& rhs) noexcept = delete;
-    Core& operator=(Core&& rhs) noexcept      = delete;
+    Core& operator=(Core&& rhs) noexcept = delete;
 
     void           run() noexcept;
     void           switchScene(const SceneType& scene) noexcept;
     void           setExit(bool value) noexcept;
     WindowManager& getWindow() noexcept;
     Cameraman&     getCameraman() noexcept;
+    GameData*      getData() const noexcept;
 
   protected:
   private:
     // methods
     void   checkExit() noexcept;
     Scene& findScene() noexcept;
-    void                                switchScene(const int& scene) noexcept;
-    void                                createWindow() noexcept;
-    void                                resetData() noexcept;
+    void   switchScene(const int& scene) noexcept;
+    void   createWindow() noexcept;
 
     // attributes
     AudioDevice                         audio_;
     Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes = {};
-    GameData*                           data;
+    GameData*                           data_;
     bool                                exit_ = false;
     WindowManager*                      window_;
 };

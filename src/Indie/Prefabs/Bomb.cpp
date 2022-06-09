@@ -46,12 +46,6 @@ Bomb::Bomb(Vector3D                       pos,
     dropSound_.play();
 }
 
-Bomb::~Bomb() noexcept
-{
-    dropSound_.unload();
-    explodeSound.unload();
-}
-
 void Bomb::Display()
 {
     auto transform = getComponent<Transform3D>();
@@ -101,7 +95,7 @@ void Bomb::explode() noexcept
     hitbox->get().setIsSolid(false);
     if (player->getNbBombMax() > player->getNbBomb()) player->setNbBomb(player->getNbBomb() + 1);
     fires.emplace_back(std::make_unique<Fire>(getComponent<Transform3D>()->get().getPosition(),
-        &data->models[static_cast<int>(ModelType::M_FIRE)]));
+        &data->models[static_cast<int>(bomberman::ModelType::M_FIRE)]));
     createFire({ 1.0f, 0.0f, 0.0f });
     createFire({ -1.0f, 0.0f, 0.0f });
     createFire({ 0.0f, 0.0f, 1.0f });
@@ -121,8 +115,8 @@ void Bomb::createFire(Vector3D mul) noexcept
         newPos.x = position.x + (float(i) * mul.x);
         newPos.y = position.y + (float(i) * mul.y);
         newPos.z = position.z + (float(i) * mul.z);
-        fires.emplace_back(
-            std::make_unique<Fire>(newPos, &data->models[static_cast<int>(ModelType::M_FIRE)]));
+        fires.emplace_back(std::make_unique<Fire>(
+            newPos, &data->models[static_cast<int>(bomberman::ModelType::M_FIRE)]));
         auto& fire = fires.back();
         for (auto& other : *entities) {
             auto collider      = fire->getComponent<BoxCollider>();

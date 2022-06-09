@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 
+#include "Bomberman.hpp"
 #include "Button.hpp"
 #include "Controller.hpp"
 #include "Core.hpp"
@@ -28,23 +29,20 @@ class Game : public Scene
 {
   public:
     Game(GameData* data, Core& core_ref) noexcept;
-    ~Game() noexcept;
-    Game(const Game& other) noexcept          = delete;
-    Game(Game&& other) noexcept               = delete;
+    Game(const Game& other) noexcept = delete;
+    Game(Game&& other) noexcept      = delete;
+    ~Game() noexcept                 = default;
+
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
+    Game& operator=(Game&& rhs) noexcept = delete;
 
     void         display3D() noexcept final;
     void         display2D() noexcept final;
-    void         action(Cameraman& camera, MouseHandler mouse_) noexcept final;
+    void         action() noexcept final;
     void         DestroyPool() noexcept final;
     void         CollisionPool() noexcept final;
     void         playMusic() noexcept final;
-    MusicManager getMusicManager() const noexcept final;
-    Vector3D     getCameraPosition() const noexcept final;
-    Vector3D     getCameraTarget() const noexcept final;
-    Vector3D     getCameraUp() const noexcept final;
-    void         resetCameraman(Cameraman& camera) noexcept final;
+    void         updateMusic() const noexcept final;
     void         drawBackground() const noexcept final{};
     ColorManager getBackgroundColor() const noexcept final;
     void         switchAction() noexcept final;
@@ -55,12 +53,12 @@ class Game : public Scene
     void hurryUp() noexcept;
     // EndGame
     void endGame() noexcept;
-    void endGameAction(MouseHandler mouse_) noexcept;
+    void endGameAction() noexcept;
     void endGameDisplay() noexcept;
     // Buttons
     void createButtons() noexcept;
     // Pause
-    void pauseAction(MouseHandler mouse_) noexcept;
+    void pauseAction() noexcept;
 
     // attributes
     GameData*                            data_;

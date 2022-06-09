@@ -19,5 +19,5 @@ AudioDevice::~AudioDevice() noexcept
 
 void AudioDevice::update(const Scene& scene) noexcept
 {
-    scene.getMusicManager().update();
+    scene.updateMusic();
 }

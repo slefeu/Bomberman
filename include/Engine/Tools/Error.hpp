@@ -10,6 +10,8 @@
 #include <exception>
 #include <string>
 
+enum class ReturnCode { ERROR_CODE = 0, SUCCESS_CODE = 64 };
+
 class Error : public std::exception
 {
   public:
@@ -19,7 +21,7 @@ class Error : public std::exception
     ~Error() noexcept override         = default;
 
     Error&      operator=(const Error&) noexcept = default;
-    Error&      operator=(Error&&) noexcept      = default;
+    Error&      operator=(Error&&) noexcept = default;
     const char* what() const noexcept override;
 
   protected:

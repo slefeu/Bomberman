@@ -24,51 +24,28 @@ void Render::display(const Transform3D& transform) noexcept
 {
     auto color = color_.getColor();
 
-    Vector3D pos  = transform.getPosition();
-    Vector3D rot  = transform.getRotationAxis();
-    Vector3D size = transform.getSize();
+    Vector3D pos   = transform.getPosition();
+    Vector3D rot   = transform.getRotationAxis();
+    Vector3D size  = transform.getSize();
+    float    scale = transform.getScale();
 
     if (type == RenderType::R_3DMODEL) {
-        DrawModel(model_->get()->model,
-            { pos.x, pos.y, pos.z },
-            transform.getScale(),
-            (Color){ color[0], color[1], color[2], 255 });
-        return;
-    }
-    if (type == RenderType::R_3DMODEL_ROTATE) {
+        if (model_ != nullptr) { model_->get()->draw(pos, scale, color); }
+    } else if (type == RenderType::R_3DMODEL_ROTATE) {
         float rotationAngle = transform.getRotationAngle();
-        float scale         = transform.getScale();
-        DrawModelEx(model_->get()->model,
-            { pos.x, pos.y, pos.z },
-            { rot.x, rot.y, rot.z },
-            rotationAngle,
-            { scale, scale, scale },
-            (Color){ color[0], color[1], color[2], 255 });
-        return;
-    }
-    if (type == RenderType::R_CUBE) {
+        if (model_ != nullptr) { model_->get()->draw(pos, rot, rotationAngle, scale, color); }
+    } else if (type == RenderType::R_CUBE) {
         DrawCubeV({ pos.x, pos.y, pos.z },
             { size.x, size.y, size.z },
             (Color){ color[0], color[1], color[2], 255 });
-        return;
-    }
-    if (type == RenderType::R_WIRED_CUBE) {
+    } else if (type == RenderType::R_WIRED_CUBE) {
         DrawCubeWiresV({ pos.x, pos.y, pos.z },
             { size.x, size.y, size.z },
             (Color){ color[0], color[1], color[2], 255 });
-        return;
-    }
-    if (type == RenderType::R_ANIMATE) {
+    } else if (type == RenderType::R_ANIMATE) {
         updateAnimation();
         float rotationAngle = transform.getRotationAngle();
-        float scale         = transform.getScale();
-        DrawModelEx(model_->get()->model,
-            { pos.x, pos.y, pos.z },
-            { rot.x, rot.y, rot.z },
-            rotationAngle,
-            { scale, scale, scale },
-            (Color){ color[0], color[1], color[2], 255 });
-        return;
+        if (model_ != nullptr) { model_->get()->draw(pos, rot, rotationAngle, scale, color); }
     }
 }
 
@@ -107,7 +84,7 @@ void Render::updateAnimation() noexcept
     if (anims == nullptr) return;
     if (isAnimated) {
         animFrameCounter += 1.0f * skipFrame;
-        UpdateModelAnimation(model_->get()->model, anims[animationId], animFrameCounter);
+        model_->get()->update(anims[animationId], animFrameCounter);
         if (animFrameCounter >= anims[animationId].frameCount) animFrameCounter = 0;
     }
 }
@@ -116,7 +93,7 @@ void Render::resetAnimation(int frame) noexcept
 {
     if (anims == nullptr) return;
     animFrameCounter = frame;
-    UpdateModelAnimation(model_->get()->model, anims[animationId], animFrameCounter);
+    model_->get()->update(anims[animationId], animFrameCounter);
 }
 
 void Render::setSkipFrame(int frame) noexcept
@@ -144,13 +121,9 @@ void Render::displayModelV(
 
     if (type == RenderType::R_ANIMATE) {
         updateAnimation();
-        float scale = transform.getScale();
-        DrawModelEx(model_->get()->model,
-            { pos.x, pos.y, pos.z },
-            { axis.x, axis.y, axis.z },
-            angle,
-            { scale, scale, scale },
-            (Color){ 255, 255, 255, 255 });
-        return;
+        std::array<unsigned char, 3> color = { 255, 255, 255 };
+        if (model_ != nullptr) {
+            model_->get()->draw(pos, axis, angle, transform.getScale(), color);
+        }
     }
 }

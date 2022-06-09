@@ -7,37 +7,37 @@
 
 #pragma once
 
-#include <string>
+#include <array>
+#include <string_view>
 
+#include "Vector.hpp"
 #include "raylib.h"
-
-enum class ModelType {
-    M_BOMB,
-    M_WALL,
-    M_CRATE,
-    M_IROLLER,
-    M_IBOMB,
-    M_IFIRE,
-    M_IWALL,
-    M_FIRE,
-    M_PLAYER_1,
-    M_PLAYER_2,
-    M_PLAYER_3,
-    M_PLAYER_4,
-    M_NONE
-};
 
 class Model3D
 {
   public:
-    Model     model;
-    Texture2D texture;
-
-  public:
-    Model3D(std::string path, std::string texturePath) noexcept;
-    ~Model3D() noexcept;
-    Model3D(const Model3D& other) noexcept          = delete;
-    Model3D(Model3D&& other) noexcept               = delete;
+    Model3D(const std::string_view& path, const std::string_view& texturePath) noexcept;
+    Model3D(const Model3D& other) noexcept = delete;
+    Model3D(Model3D&& other) noexcept      = delete;
     Model3D& operator=(const Model3D& rhs) noexcept = delete;
-    Model3D& operator=(Model3D&& rhs) noexcept      = delete;
+    Model3D& operator=(Model3D&& rhs) noexcept = delete;
+    ~Model3D() noexcept;
+
+    void draw(const Vector3D&               position,
+        float                               scale,
+        const std::array<unsigned char, 3>& color) const noexcept;
+    void draw(const Vector3D&               position,
+        const Vector3D&                     rotation,
+        float                               rotation_angle,
+        float                               scale,
+        const std::array<unsigned char, 3>& color) const noexcept;
+    void update(ModelAnimation animation, int frame_counter);
+
+  private:
+    Model     model_;
+    Texture2D texture_;
+    bool      unloaded_ = false;
+
+    // methods
+    void unload() noexcept;
 };

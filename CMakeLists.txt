@@ -4,10 +4,10 @@ project(bomberman)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
-# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-g")
 
-# set(CMAKE_MODULE_LINKER_FLAGS "fsanitize=address")
+set(CMAKE_MODULE_LINKER_FLAGS "fsanitize=address")
 if(UNIX)
   find_program(TIDY "clang-tidy")
     if(TIDY)
@@ -33,7 +33,6 @@ set(
   src/Engine/Tools/Round.cpp
   src/Engine/Tools/Error.cpp
 
-  src/Engine/Core/Cameraman.cpp
   src/Engine/Core/Core.cpp
   src/Engine/Core/GameData.cpp
   src/Engine/Core/Entity.cpp
@@ -56,7 +55,6 @@ set(
   src/Indie/UI/Button.cpp
 
   src/Engine/Lib/Mouse.cpp
-  src/Engine/Lib/Font.cpp
   src/Engine/Lib/Text.cpp
   src/Engine/Lib/Music.cpp
   src/Engine/Lib/Sound.cpp
@@ -68,6 +66,7 @@ set(
   src/Engine/Lib/Rectangle.cpp
   src/Engine/Lib/Controller.cpp
   src/Engine/Lib/Model3D.cpp
+  src/Engine/Lib/Cameraman.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

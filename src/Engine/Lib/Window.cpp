@@ -17,9 +17,8 @@ WindowManager::~WindowManager() noexcept
 void WindowManager::launch(int width, int height, int fps) const noexcept
 {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(width, height, "indie Studio - Bomberman");
+    InitWindow(width, height, "Indie Studio - Bomberman");
     SetTargetFPS(fps);
-    // ToggleFullscreen();
 }
 
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
@@ -29,7 +28,7 @@ void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
     BeginDrawing();
     ClearBackground((Color){ color[0], color[1], color[2], 255 });
     scene.drawBackground();
-    BeginMode3D(camera.getCamera());
+    camera.begin3D();
     scene.display3D();
     EndMode3D();
     scene.display2D();

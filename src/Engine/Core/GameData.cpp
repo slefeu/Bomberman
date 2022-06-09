@@ -21,9 +21,9 @@ void GameData::setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexc
     _entities = entities;
 }
 
-GameData::~GameData() noexcept
+Vector2D GameData::getMousePos() const noexcept
 {
-    for (auto& it : sprites) { it->unload(); }
+    return (mouse_.getMousePosition());
 }
 
 void GameData::updateMouse() noexcept

@@ -12,12 +12,12 @@ class WindowManager
 {
   public:
     WindowManager() noexcept                           = default;
-    WindowManager(const WindowManager& other) noexcept = default;
-    WindowManager(WindowManager&& other) noexcept      = default;
+    WindowManager(const WindowManager& other) noexcept = delete;
+    WindowManager(WindowManager&& other) noexcept      = delete;
     ~WindowManager() noexcept;
 
-    WindowManager& operator=(const WindowManager& rhs) noexcept = default;
-    WindowManager& operator=(WindowManager&& rhs) noexcept      = default;
+    WindowManager& operator=(const WindowManager& rhs) noexcept = delete;
+    WindowManager& operator=(WindowManager&& rhs) noexcept = delete;
 
     void launch(int width, int height, int fps) const noexcept;
     void display(Scene& scene, const Cameraman& camera) noexcept;

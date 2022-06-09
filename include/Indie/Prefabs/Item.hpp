@@ -20,12 +20,12 @@ class Item : public Entity
 {
   public:
     Item(Vector3D pos, GameData* data);
-    ~Item() noexcept;
     Item(GameData* data, ItemType type);
-    Item(const Item& other) noexcept          = delete;
-    Item(Item&& other) noexcept               = delete;
+    Item(const Item& other) noexcept = delete;
+    Item(Item&& other) noexcept      = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
-    Item& operator=(Item&& rhs) noexcept      = delete;
+    Item& operator=(Item&& rhs) noexcept = delete;
+    ~Item() noexcept                     = default;
 
     void Display() final;
     void Update() final;

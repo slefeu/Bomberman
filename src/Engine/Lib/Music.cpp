@@ -13,9 +13,34 @@ MusicManager::MusicManager(const std::string& path) noexcept
     setVolume(0.5f);
 }
 
+MusicManager::MusicManager(MusicManager&& other) noexcept
+    : music_(std::move(other.music_))
+    , isPlaying_(other.isPlaying_)
+{
+    setVolume(0.5f);
+    other.unloaded_ = true;
+}
+
+MusicManager& MusicManager::operator=(MusicManager&& rhs) noexcept
+{
+    music_         = std::move(rhs.music_);
+    isPlaying_     = rhs.isPlaying_;
+    rhs.isPlaying_ = false;
+    rhs.unloaded_  = true;
+    return *(this);
+}
+
+MusicManager::~MusicManager() noexcept
+{
+    this->unload();
+}
+
 void MusicManager::unload() noexcept
 {
-    UnloadMusicStream(music_);
+    if (!unloaded_) {
+        UnloadMusicStream(music_);
+        unloaded_ = true;
+    }
 }
 
 void MusicManager::play() noexcept
@@ -24,7 +49,7 @@ void MusicManager::play() noexcept
     PlayMusicStream(music_);
 }
 
-void MusicManager::update() noexcept
+void MusicManager::update() const noexcept
 {
     UpdateMusicStream(music_);
 }
@@ -42,5 +67,5 @@ void MusicManager::stop() noexcept
 
 bool MusicManager::isPlaying() const noexcept
 {
-    return isPlaying_;
+    return (isPlaying_);
 }

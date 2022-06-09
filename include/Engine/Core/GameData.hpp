@@ -17,17 +17,19 @@ class GameData
 {
   public:
     GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept;
-    GameData(const GameData& other) noexcept          = delete;
-    GameData(GameData&& other) noexcept               = delete;
-    GameData& operator=(const GameData& rhs) noexcept = delete;
-    GameData& operator=(GameData&& rhs) noexcept      = delete;
-    ~GameData() noexcept;
+    GameData(const GameData& other) noexcept = delete;
+    GameData(GameData&& other) noexcept      = delete;
+    ~GameData() noexcept                     = default;
 
-    MouseHandler getMouseHandler() const noexcept;
+    GameData& operator=(const GameData& rhs) noexcept = delete;
+    GameData& operator=(GameData&& rhs) noexcept = delete;
+
+    Vector2D     getMousePos() const noexcept;
     void         updateMouse() noexcept;
     void         setCurrentScene(const SceneType& scene) noexcept;
     void         setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
     SceneType    getCurrentScene() const noexcept;
+    MouseHandler getMouseHandler() const noexcept;
 
   public:
     int   fps;

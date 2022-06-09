@@ -42,18 +42,17 @@ class Button
         const std::string&        font_path,
         const std::string&        message,
         float                     scale) noexcept;
-    Button(const Button& other) noexcept = default;
+    Button(const Button& other) noexcept = delete;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;
 
-    Button& operator=(const Button& rhs) noexcept = default;
-    Button& operator=(Button&& rhs) noexcept      = default;
+    Button& operator=(const Button& rhs) noexcept = delete;
+    Button& operator=(Button&& rhs) noexcept = default;
 
     void draw() const noexcept;
     void draw(float scale) const noexcept;
-    void unload() noexcept;
     void action() const noexcept;
-    bool checkCollision(MouseHandler& mouse_) noexcept;
+    bool checkCollision(const MouseHandler& mouse_) noexcept;
     void setState(int state) noexcept;
     void setPosition(const Vector2& pos) noexcept;
 

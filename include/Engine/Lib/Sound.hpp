@@ -14,12 +14,12 @@ class SoundManager
 {
   public:
     explicit SoundManager(const std::string& path) noexcept;
-    SoundManager(const SoundManager& other) noexcept = default;
-    SoundManager(SoundManager&& other) noexcept      = default;
-    ~SoundManager() noexcept                         = default;
+    SoundManager(const SoundManager& other) noexcept = delete;
+    SoundManager(SoundManager&& other) noexcept;
+    ~SoundManager() noexcept;
 
-    SoundManager& operator=(const SoundManager& rhs) noexcept = default;
-    SoundManager& operator=(SoundManager&& rhs) noexcept      = default;
+    SoundManager& operator=(const SoundManager& rhs) noexcept = delete;
+    SoundManager& operator                                    =(SoundManager&& rhs) noexcept;
 
     void unload() noexcept;
     void play() const noexcept;
@@ -28,4 +28,5 @@ class SoundManager
   protected:
   private:
     Sound sound_;
+    bool  unloaded_ = false;
 };

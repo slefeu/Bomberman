@@ -21,7 +21,7 @@ class BoxCollider : public Component
     ~BoxCollider() noexcept                        = default;
 
     BoxCollider& operator=(const BoxCollider& rhs) noexcept = default;
-    BoxCollider& operator=(BoxCollider&& rhs) noexcept      = default;
+    BoxCollider& operator=(BoxCollider&& rhs) noexcept = default;
 
     void          display() const noexcept; // pour du débugage
     void          update(Vector3D pos) noexcept;

@@ -8,27 +8,53 @@
 #include "Text.hpp"
 
 TextHandler::TextHandler(
-    const std::string& font_path, const std::string& message, int posX, int posY) noexcept
-    : font_(font_path)
-    , message_(message)
+    const std::string_view& font_path, const std::string_view& message, int posX, int posY) noexcept
+    : font_(LoadFontEx(font_path.data(), font_size_, 0, 250))
+    , message_(message.data())
     , color_(Colors::C_WHITE)
 {
-    setPos(posX, posY);
+    setPosition(posX, posY);
+}
+
+TextHandler::TextHandler(TextHandler&& other) noexcept
+    : font_(std::move(other.font_))
+    , message_(other.message_)
+    , position_(other.position_)
+    , color_(other.color_)
+{
+    other.unloaded_ = true;
+}
+
+TextHandler& TextHandler::operator=(TextHandler&& rhs) noexcept
+{
+    font_         = std::move(rhs.font_);
+    message_      = rhs.message_;
+    position_     = rhs.position_;
+    color_        = rhs.color_;
+    rhs.unloaded_ = true;
+    return *(this);
+}
+
+TextHandler::~TextHandler() noexcept
+{
+    this->unload();
 }
 
 void TextHandler::unload() noexcept
 {
-    font_.unload();
+    if (!unloaded_) {
+        UnloadFont(font_);
+        unloaded_ = true;
+    }
 }
-
 void TextHandler::draw() const noexcept
 {
     auto color = color_.getColor();
 
-    DrawTextEx(font_.getFont(),
+    DrawTextEx(font_,
         message_.c_str(),
         { position_.x, position_.y },
-        font_.getFontSize(),
+        font_size_,
         0,
         (Color){ color[0], color[1], color[2], 255 });
 }
@@ -40,7 +66,7 @@ void TextHandler::setTextColor(const std::array<unsigned char, 3>& color) noexce
 
 void TextHandler::setTextSize(int size) noexcept
 {
-    font_.setFontSize(size);
+    font_size_ = size;
 }
 
 void TextHandler::setPosition(int posX, int posY) noexcept
@@ -49,13 +75,7 @@ void TextHandler::setPosition(int posX, int posY) noexcept
     position_.y = posY;
 }
 
-void TextHandler::setPos(int posX, int posY) noexcept
-{
-    position_.x = posX;
-    position_.y = posY;
-}
-
-void TextHandler::setText(const std::string& message) noexcept
+void TextHandler::setText(const std::string_view& message) noexcept
 {
     message_ = message;
 }

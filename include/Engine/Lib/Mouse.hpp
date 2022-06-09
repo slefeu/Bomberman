@@ -18,12 +18,13 @@ class MouseHandler
     ~MouseHandler() noexcept                         = default;
 
     MouseHandler& operator=(const MouseHandler& rhs) noexcept = default;
-    MouseHandler& operator=(MouseHandler&& rhs) noexcept      = default;
+    MouseHandler& operator=(MouseHandler&& rhs) noexcept = default;
 
-    void update() noexcept;
-    bool isColliding(const RectangleManager& bounds) noexcept;
-    bool isClicking() const noexcept;
-    bool isClicked() const noexcept;
+    void     update() noexcept;
+    bool     isColliding(const RectangleManager& bounds) const noexcept;
+    bool     isClicking() const noexcept;
+    bool     isClicked() const noexcept;
+    Vector2D getMousePosition() const noexcept;
 
   protected:
   private:

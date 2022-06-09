@@ -7,8 +7,6 @@
 
 #include "Controller.hpp"
 
-#include "raylib.h"
-
 bool Controller::isKeyDown(const Key& key) const noexcept
 {
     return IsKeyDown(static_cast<KeyboardKey>(key));

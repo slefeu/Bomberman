@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include "raylib.h"
 
 enum class Key {
     K_NULL          = 0,

@@ -6,7 +6,9 @@
 */
 
 #pragma once
+#include "AudioDevice.hpp"
 #include "Scene.hpp"
+#include "raylib.h"
 
 class WindowManager
 {

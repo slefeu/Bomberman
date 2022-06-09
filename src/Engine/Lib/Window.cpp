@@ -7,10 +7,9 @@
 
 #include "Window.hpp"
 
-#include "raylib.h"
-
 WindowManager::~WindowManager() noexcept
 {
+    AudioDevice::close();
     CloseWindow();
 }
 
@@ -19,6 +18,7 @@ void WindowManager::launch(int width, int height, int fps) const noexcept
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, "Indie Studio - Bomberman");
     SetTargetFPS(fps);
+    AudioDevice::initialize();
 }
 
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept

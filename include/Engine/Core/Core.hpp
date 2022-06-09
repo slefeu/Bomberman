@@ -43,7 +43,6 @@ class Core
     void   createWindow() noexcept;
 
     // attributes
-    AudioDevice                         audio_;
     Cameraman                           camera;
     std::vector<std::unique_ptr<Scene>> scenes = {};
     GameData*                           data_;

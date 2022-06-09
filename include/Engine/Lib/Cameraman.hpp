@@ -29,24 +29,24 @@ class Cameraman
     Vector3D getUp() const noexcept;
     bool     getIsMoving() const noexcept;
     void     setPosition(const Vector3D& pos) noexcept;
-    void     setIsMoving(const bool& isMoving) noexcept;
+    void     setIsMoving(bool isMoving) noexcept;
 
     void begin3D() const noexcept;
     void moveTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     void tpTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     bool smoothMove() noexcept;
-    void lookBetweenEntity(std::vector<std::unique_ptr<Entity>>& Entity);
+    void lookBetweenEntity(const std::vector<std::unique_ptr<Entity>>& entities);
 
   private:
-    Camera3D camera;
-    bool     isMoving;
-    float    speed;
-    Vector3D targetPosition;
-    Vector3D targetTarget;
-    Vector3D targetUp;
+    Camera3D camera_;
+    bool     is_moving_ = false;
+    float    speed_     = 0.5f;
+    Vector3D position_;
+    Vector3D target_;
+    Vector3D up_;
 
     // methods
-    void moveX(const float& x) noexcept;
-    void moveY(const float& y) noexcept;
-    void moveZ(const float& z) noexcept;
+    void moveX(float x) noexcept;
+    void moveY(float y) noexcept;
+    void moveZ(float z) noexcept;
 };

@@ -11,15 +11,17 @@
 class AudioDevice
 {
   public:
-    AudioDevice() noexcept;
-    AudioDevice(const AudioDevice& other) noexcept = default;
-    AudioDevice(AudioDevice&& other) noexcept      = default;
-    ~AudioDevice() noexcept;
+    AudioDevice() noexcept                         = delete;
+    AudioDevice(const AudioDevice& other) noexcept = delete;
+    AudioDevice(AudioDevice&& other) noexcept      = delete;
+    ~AudioDevice() noexcept                        = delete;
 
-    AudioDevice& operator=(const AudioDevice& rhs) noexcept = default;
-    AudioDevice& operator=(AudioDevice&& rhs) noexcept = default;
+    AudioDevice& operator=(const AudioDevice& rhs) noexcept = delete;
+    AudioDevice& operator=(AudioDevice&& rhs) noexcept = delete;
 
-    void update(const Scene& scene) noexcept;
+    static void initialize() noexcept;
+    static void update(const Scene& scene) noexcept;
+    static void close() noexcept;
 
   protected:
   private:

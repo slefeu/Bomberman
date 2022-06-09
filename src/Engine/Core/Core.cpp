@@ -80,7 +80,7 @@ void Core::run() noexcept
     while (!exit_) {
         checkExit();
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
-        audio_.update(findScene());
+        AudioDevice::update(findScene());
         data_->updateMouse();
         findScene().action();
 

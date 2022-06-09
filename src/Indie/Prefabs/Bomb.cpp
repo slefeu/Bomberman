@@ -17,7 +17,7 @@ Bomb::Bomb(Vector3D                       pos,
     int                                   bombSize,
     GameData*                             data,
     std::vector<std::unique_ptr<Entity>>* entities)
-    : Entity(EntityType::E_BOMB)
+    : Entity()
     , lifeTime(3.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , player(p)
@@ -30,6 +30,8 @@ Bomb::Bomb(Vector3D                       pos,
     , dropSound_(DROP_BOMB)
     , explodeSound(EXPLODE)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 

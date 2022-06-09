@@ -18,10 +18,12 @@
 #include "Transform3D.hpp"
 
 Item::Item(Vector3D pos, GameData* data)
-    : Entity(EntityType::E_ITEM)
+    : Entity()
     , getItemSound(GET_ITEM)
     , newItemSound(NEW_ITEM)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -54,10 +56,12 @@ Item::Item(Vector3D pos, GameData* data)
 }
 
 Item::Item(GameData* data, ItemType type)
-    : Entity(EntityType::E_ITEM)
+    : Entity()
     , getItemSound(GET_ITEM)
     , newItemSound(NEW_ITEM)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 

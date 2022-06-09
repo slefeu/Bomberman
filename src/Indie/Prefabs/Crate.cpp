@@ -16,10 +16,12 @@ Crate::Crate(Vector3D                     pos,
     std::unique_ptr<Model3D>*             newModel,
     GameData*                             data,
     std::vector<std::unique_ptr<Entity>>* entities)
-    : Entity(EntityType::E_CRATE)
+    : Entity()
     , data(data)
     , entities(entities)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     setEnabledValue(true);
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();

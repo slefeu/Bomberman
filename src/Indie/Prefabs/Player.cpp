@@ -16,7 +16,7 @@
 #include "Wall.hpp"
 
 Player::Player(const int newId, GameData* data)
-    : Entity(EntityType::E_PLAYER)
+    : Entity()
     , id(newId)
     , data(data)
     , wallpass(false)
@@ -24,6 +24,8 @@ Player::Player(const int newId, GameData* data)
     , wallpassEnd(false)
     , killSound_(KILL)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -256,9 +258,9 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, i
         if (other_hitbox.has_value()) {
             if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
             if (other_hitbox->get().isColliding(hitbox->get(), nextTurn)) {
-                if (other->getEntityType() == EntityType::E_BOMB) return true;
-                if (other->getEntityType() == EntityType::E_WALL) return true;
-                if (other->getEntityType() == EntityType::E_CRATE) {
+                if (Type:: instanceof <Bomb>(other.get())) return true;
+                if (Type:: instanceof <Wall>(other.get())) return true;
+                if (Type:: instanceof <Crate>(other.get())) {
                     if (wallpass) return false;
                     if (!wallpass && wallpassEnd) return false;
                     return true;

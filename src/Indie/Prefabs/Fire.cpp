@@ -17,10 +17,12 @@
 #include "Wall.hpp"
 
 Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
-    : Entity(EntityType::E_FIRE)
+    : Entity()
     , explodeTime(0.5f)
     , explodeTimer(std::make_unique<Timer>(explodeTime))
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -57,7 +59,7 @@ void Fire::Update()
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER) {
+    if (Type:: instanceof <Player>(other.get())) {
         ((std::unique_ptr<Player>&)other)->dispatchItem();
         other->setEnabledValue(false);
     }

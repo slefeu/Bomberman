@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "Crate.hpp"
+#include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
@@ -68,7 +69,7 @@ Game::~Game() noexcept
 void Game::switchAction() noexcept
 {
     for (auto& player : data_->players) {
-        if (player->getEntityType() != EntityType::E_PLAYER) continue;
+        if (!Type:: instanceof <Player>(player.get())) continue;
         player->setEnabledValue(true);
         ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
         auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();

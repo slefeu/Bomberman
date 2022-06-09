@@ -11,8 +11,10 @@
 #include "InstanceOf.hpp"
 
 Wall::Wall(Vector3D pos, std::unique_ptr<Model3D>* model)
-    : Entity(EntityType::E_WALL)
+    : Entity()
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 

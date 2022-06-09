@@ -8,6 +8,8 @@
 #include "Bomb.hpp"
 
 #include "Error.hpp"
+#include "InstanceOf.hpp"
+#include "Wall.hpp"
 
 Bomb::Bomb(Vector3D                       pos,
     Player*                               p,
@@ -135,5 +137,5 @@ void Bomb::createFire(Vector3D mul) noexcept
 
 void Bomb::OnCollisionEnter([[maybe_unused]] std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL) explode();
+    if (Type:: instanceof <Wall>(other.get())) explode();
 }

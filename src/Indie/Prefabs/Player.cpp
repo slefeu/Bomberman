@@ -9,8 +9,11 @@
 
 #include "Bomb.hpp"
 #include "Error.hpp"
+#include "Fire.hpp"
+#include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Transform3D.hpp"
+#include "Wall.hpp"
 
 Player::Player(const int newId, GameData* data)
     : Entity(EntityType::E_PLAYER)
@@ -162,8 +165,7 @@ PlayerType Player::getType() const noexcept
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL
-        || other->getEntityType() == EntityType::E_FIRE) {
+    if (Type:: instanceof <Wall>(other.get()) || Type:: instanceof <Fire>(other.get())) {
         if (other->getEnabledValue()) {
             killSound_.play();
             setEnabledValue(false);

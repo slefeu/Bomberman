@@ -10,9 +10,9 @@ set(CMAKE_CXX_FLAGS_DEBUG_INIT "-g")
 # set(CMAKE_MODULE_LINKER_FLAGS "fsanitize=address")
 if(UNIX)
   find_program(TIDY "clang-tidy")
-    if(TIDY)
-      set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
-    endif()
+  if(TIDY)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+  endif()
 endif()
 
 

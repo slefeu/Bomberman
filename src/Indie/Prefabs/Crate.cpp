@@ -8,7 +8,9 @@
 #include "Crate.hpp"
 
 #include "Error.hpp"
+#include "InstanceOf.hpp"
 #include "Item.hpp"
+#include "Wall.hpp"
 
 Crate::Crate(Vector3D                     pos,
     std::unique_ptr<Model3D>*             newModel,
@@ -64,5 +66,5 @@ void Crate::dropItem()
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
+    if (Type:: instanceof <Wall>(other.get())) setEnabledValue(false);
 }

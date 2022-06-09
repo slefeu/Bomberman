@@ -28,7 +28,7 @@ enum class Direction { UP, RIGHT, DOWN, LEFT };
 class Game : public Scene
 {
   public:
-    Game(GameData* data, Core& core_ref) noexcept;
+    Game(Core& core_ref) noexcept;
     Game(const Game& other) noexcept = delete;
     Game(Game&& other) noexcept      = delete;
     ~Game() noexcept                 = default;
@@ -61,8 +61,8 @@ class Game : public Scene
     void pauseAction() noexcept;
 
     // attributes
-    GameData*                            data_;
     std::vector<std::unique_ptr<Entity>> entities_;
+    Core&                                core_entry_;
     std::unique_ptr<Timer>               chrono_;
 
     float lastTimeBlockPlace;
@@ -84,7 +84,6 @@ class Game : public Scene
     Vector3D                 camera_position_ = { 0.0f, 13.0f, 2.0f };
     Vector3D                 camera_target_   = { 0.0f, 0.0f, 1.0f };
     Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
-    Core&                    core_entry_;
     float                    HurryUpX;
     ColorManager             background_color_;
     std::vector<Button>      buttons_      = {};

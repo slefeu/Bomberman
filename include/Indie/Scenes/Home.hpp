@@ -18,7 +18,7 @@
 class Home : public Scene
 {
   public:
-    Home(GameData* data, Core& core_ref) noexcept;
+    Home(Core& core_ref) noexcept;
     Home(const Home& other) noexcept = delete;
     Home(Home&& other) noexcept      = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
@@ -46,7 +46,6 @@ class Home : public Scene
     MusicManager        loop_music_;
     std::vector<Button> buttons_      = {};
     int                 button_index_ = 0;
-    GameData*           data_;
     Core&               core_entry_;
     ColorManager        background_color_;
     Sprite              background_;

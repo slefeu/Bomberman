@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "Bomberman.hpp"
 #include "Entity.hpp"
 #include "Model3D.hpp"
 #include "Mouse.hpp"
@@ -24,12 +25,12 @@ class GameData
     GameData& operator=(const GameData& rhs) noexcept = delete;
     GameData& operator=(GameData&& rhs) noexcept = delete;
 
-    Vector2D     getMousePos() const noexcept;
-    void         updateMouse() noexcept;
-    void         setCurrentScene(const SceneType& scene) noexcept;
-    void         setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
-    SceneType    getCurrentScene() const noexcept;
-    MouseHandler getMouseHandler() const noexcept;
+    Vector2D             getMousePos() const noexcept;
+    void                 updateMouse() noexcept;
+    void                 setCurrentScene(const bomberman::SceneType& scene) noexcept;
+    void                 setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
+    bomberman::SceneType getCurrentScene() const noexcept;
+    MouseHandler         getMouseHandler() const noexcept;
 
   public:
     int   fps;
@@ -46,6 +47,6 @@ class GameData
 
   protected:
   private:
-    MouseHandler mouse_;
-    SceneType    current_scene_ = SceneType::MENU;
+    MouseHandler         mouse_;
+    bomberman::SceneType current_scene_ = bomberman::SceneType::MENU;
 };

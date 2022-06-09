@@ -7,11 +7,10 @@
 
 #include "PlayerSelect.hpp"
 
-PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
+PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     : Scene()
     , loop_music_(MUSIC)
     , core_entry_(core_ref)
-    , data_(data)
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
@@ -21,7 +20,8 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
     choose_text_.setPosition(
         core_entry_.getWindow().getWidth() / 2, core_entry_.getWindow().getHeight() / 9);
     createButtons();
-    stats_.emplace_back("assets/textures/selection/normal.png", data_->winWidth / 2, 50);
+    stats_.emplace_back(
+        "assets/textures/selection/normal.png", core_entry_.getData()->winWidth / 2, 50);
     stats_.emplace_back("assets/textures/selection/attack.png");
     stats_.emplace_back("assets/textures/selection/tactical.png");
     stats_.emplace_back("assets/textures/selection/runner.png");
@@ -34,7 +34,7 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
 void PlayerSelect::display3D() noexcept
 {
     float nbPlayers = 0;
-    for (auto& player : data_->players) {
+    for (auto& player : core_entry_.getData()->players) {
         auto render    = player->getComponent<Render>();
         auto transform = player->getComponent<Transform3D>();
 
@@ -71,7 +71,7 @@ void PlayerSelect::displayAllStats() noexcept
     int   height    = core_entry_.getWindow().getHeight();
     float nbPlayers = 0;
 
-    for (auto& player : data_->players) {
+    for (auto& player : core_entry_.getData()->players) {
         Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
         Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
         Vector2 position = { 120 + 460 * nbPlayers, 600 };
@@ -116,10 +116,12 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 200,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->data_->nbPlayer < 4) {
-                data_->nbPlayer++;
-                data_->players.emplace_back(std::make_unique<Player>(data_->nbPlayer - 1, data_));
-                Player* new_player = reinterpret_cast<Player*>(data_->players.back().get());
+            if (this->core_entry_.getData()->nbPlayer < 4) {
+                core_entry_.getData()->nbPlayer++;
+                core_entry_.getData()->players.emplace_back(std::make_unique<Player>(
+                    core_entry_.getData()->nbPlayer - 1, core_entry_.getData()));
+                Player* new_player =
+                    reinterpret_cast<Player*>(core_entry_.getData()->players.back().get());
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
@@ -149,9 +151,9 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 550,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->data_->nbPlayer > 2) {
-                data_->nbPlayer--;
-                data_->players.pop_back();
+            if (this->core_entry_.getData()->nbPlayer > 2) {
+                core_entry_.getData()->nbPlayer--;
+                core_entry_.getData()->players.pop_back();
                 select_right_.pop_back();
                 select_left_.pop_back();
             }
@@ -163,8 +165,8 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 900,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->data_->nbPlayer > 2)
-                core_entry_.switchScene(SceneType::GAME);
+            if (this->core_entry_.getData()->nbPlayer > 2)
+                core_entry_.switchScene(bomberman::SceneType::GAME);
         }),
         "assets/fonts/menu.ttf",
         "Play");
@@ -172,7 +174,8 @@ void PlayerSelect::createButtons() noexcept
     buttons_.emplace_back("assets/textures/selection/close.png",
         width / 4 + 1250,
         height / 6,
-        std::function<void(void)>([this](void) { core_entry_.switchScene(SceneType::MENU); }),
+        std::function<void(void)>(
+            [this](void) { core_entry_.switchScene(bomberman::SceneType::MENU); }),
         "assets/fonts/menu.ttf",
         "");
 }

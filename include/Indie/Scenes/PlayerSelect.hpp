@@ -22,7 +22,7 @@
 class PlayerSelect : public Scene
 {
   public:
-    PlayerSelect(GameData* data, Core& core_ref) noexcept;
+    PlayerSelect(Core& core_ref) noexcept;
     PlayerSelect(const PlayerSelect& other) noexcept = delete;
     PlayerSelect(PlayerSelect&& other) noexcept      = delete;
     ~PlayerSelect() noexcept                         = default;
@@ -58,7 +58,6 @@ class PlayerSelect : public Scene
 
     // attributes
     MusicManager             loop_music_;
-    GameData*                data_;
     Core&                    core_entry_;
     ColorManager             background_color_;
     Sprite                   background_;

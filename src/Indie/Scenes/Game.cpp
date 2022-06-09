@@ -7,8 +7,6 @@
 
 #include "Game.hpp"
 
-#include <iostream>
-
 #include "Crate.hpp"
 #include "InstanceOf.hpp"
 #include "Item.hpp"
@@ -16,16 +14,15 @@
 #include "Round.hpp"
 #include "Wall.hpp"
 
-Game::Game(GameData* data, Core& core_ref) noexcept
+Game::Game(Core& core_ref) noexcept
     : Scene()
-    , data_(data)
-    , chrono_(std::make_unique<Timer>(data_->timeParty))
+    , core_entry_(core_ref)
+    , chrono_(std::make_unique<Timer>(core_entry_.getData()->timeParty))
     , isHurry(false)
     , nbBlockPlaced(0)
     , loop_music_(GAME_MUSIC)
     , hurry_music_(HURRY_MUSIC)
     , victory_music_(VICTORY_MUSIC)
-    , core_entry_(core_ref)
     , background_color_(Colors::C_BLACK)
     , startSound_(START)
     , hurryUpSound_(HURRY_UP)
@@ -38,8 +35,7 @@ Game::Game(GameData* data, Core& core_ref) noexcept
           core_entry_.getWindow().getWidth() / 2 - 220,
           core_entry_.getWindow().getHeight() / 2 - 80)
 {
-    // Add entites to data
-    data->setEntities(&entities_);
+    core_entry_.getData()->setEntities(&entities_);
     hurryUpSound_.setVolume(0.7f);
     createButtons();
     hurryUpText_.setTextSize(100);
@@ -58,7 +54,7 @@ void Game::switchAction() noexcept
         { 0.0f, 1.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 2.0f, 0.0f });
     core_entry_.getCameraman().moveTo(camera_position_, camera_target_, camera_up_);
 
-    for (auto& player : data_->players) {
+    for (auto& player : core_entry_.getData()->players) {
         if (!Type:: instanceof <Player>(player.get())) continue;
         player->setEnabledValue(true);
         ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
@@ -127,7 +123,7 @@ void Game::display3D() noexcept
                 DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
-    for (auto& player : data_->players) {
+    for (auto& player : core_entry_.getData()->players) {
         auto transform = player->getComponent<Transform3D>();
         auto renderer  = player->getComponent<Render>();
         if (!transform.has_value() || !renderer.has_value()) continue;
@@ -165,9 +161,9 @@ void Game::display2D() noexcept
         hurryUpText_.draw();
     }
 
-    for (size_t i = 0; i != data_->players.size(); i++) {
-        data_->sprites[i]->draw();
-        auto player = (&(std::unique_ptr<Player>&)(data_->players[i]))->get();
+    for (size_t i = 0; i != core_entry_.getData()->players.size(); i++) {
+        core_entry_.getData()->sprites[i]->draw();
+        auto player = (&(std::unique_ptr<Player>&)(core_entry_.getData()->players[i]))->get();
 
         std::string speed = std::to_string(player->getSpeed());
         speed             = speed.substr(0, speed.find(".") + 2);
@@ -187,11 +183,11 @@ void Game::action() noexcept
         return;
     }
 
-    for (auto& player : data_->players) player->Update();
+    for (auto& player : core_entry_.getData()->players) player->Update();
 
     if (!end_game) {
         int alive = 0;
-        for (auto& player : data_->players)
+        for (auto& player : core_entry_.getData()->players)
             if (player->getEnabledValue()) alive++;
         if (alive == 1 || alive == 0 || chrono_->timerDone()) endGame();
     } else {
@@ -203,7 +199,7 @@ void Game::action() noexcept
     for (auto& entity : entities_) entity->Update();
 
     if (!core_entry_.getCameraman().getIsMoving())
-        core_entry_.getCameraman().lookBetweenEntity(data_->players);
+        core_entry_.getCameraman().lookBetweenEntity(core_entry_.getData()->players);
 
     // Activation du Hurry Up !
     if (int(round(chrono_->getTime())) <= 55 && !isHurry) {
@@ -222,7 +218,8 @@ void Game::action() noexcept
     int yPos[4] = {
         10, core_entry_.getWindow().getHeight() - 50, 10, core_entry_.getWindow().getHeight() - 50
     };
-    for (size_t i = 0; i != data_->players.size(); i++) data_->sprites[i]->setPos(xPos[i], yPos[i]);
+    for (size_t i = 0; i != core_entry_.getData()->players.size(); i++)
+        core_entry_.getData()->sprites[i]->setPos(xPos[i], yPos[i]);
 
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
@@ -245,7 +242,7 @@ void Game::DestroyPool() noexcept
 void Game::CollisionPool() noexcept
 {
     // Collisions jouers/entités
-    for (auto& player : data_->players) {
+    for (auto& player : core_entry_.getData()->players) {
         for (auto& entity : entities_) {
             auto hitbox       = player->getComponent<BoxCollider>();
             auto other_hitbox = entity->getComponent<BoxCollider>();
@@ -281,7 +278,7 @@ void Game::createMap() noexcept
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
                 entities_.emplace_back(std::make_unique<Wall>(vectorTemp,
-                    &data_->models[static_cast<typename std::underlying_type<
+                    &core_entry_.getData()->models[static_cast<typename std::underlying_type<
                         bomberman::ModelType>::type>(bomberman::ModelType::M_WALL)]));
             }
 
@@ -290,8 +287,9 @@ void Game::createMap() noexcept
         for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                entities_.emplace_back(std::make_unique<Wall>(
-                    vectorTemp, &data_->models[static_cast<int>(bomberman::ModelType::M_WALL)]));
+                entities_.emplace_back(std::make_unique<Wall>(vectorTemp,
+                    &core_entry_.getData()
+                         ->models[static_cast<int>(bomberman::ModelType::M_WALL)]));
             }
 
     // Génération des boites
@@ -318,8 +316,8 @@ void Game::createMap() noexcept
             }
             if (rand() % 100 < 80 && spawnCrate)
                 entities_.emplace_back(std::make_unique<Crate>(vectorTemp,
-                    &data_->models[static_cast<int>(bomberman::ModelType::M_CRATE)],
-                    data_,
+                    &core_entry_.getData()->models[static_cast<int>(bomberman::ModelType::M_CRATE)],
+                    core_entry_.getData(),
                     &entities_));
         }
 }
@@ -327,12 +325,9 @@ void Game::createMap() noexcept
 void Game::hurryUp() noexcept
 {
     if (!isHurry) return;
-
     float time = chrono_->getTime();
-
     if (lastTimeBlockPlace - time >= 0.37f) {
         Vector3D vectorTemp;
-
         if (direction == Direction::UP) {
             z--;
             if (z == minZ) {
@@ -364,16 +359,13 @@ void Game::hurryUp() noexcept
                 minX++;
             }
         }
-
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
-        entities_.emplace_back(std::make_unique<Wall>(
-            vectorTemp, &data_->models[static_cast<int>(bomberman::ModelType::M_WALL)]));
+        entities_.emplace_back(std::make_unique<Wall>(vectorTemp,
+            &core_entry_.getData()->models[static_cast<int>(bomberman::ModelType::M_WALL)]));
         lastTimeBlockPlace = chrono_->getTime();
         nbBlockPlaced++;
     }
-
     HurryUpX -= 500.0f * GetFrameTime();
-
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }
 
@@ -390,7 +382,7 @@ void Game::endGame() noexcept
     hurry_music_.stop();
     victory_music_.play();
 
-    core_entry_.getCameraman().lookBetweenEntity(data_->players);
+    core_entry_.getCameraman().lookBetweenEntity(core_entry_.getData()->players);
 
     auto pos    = core_entry_.getCameraman().getPosition();
     auto target = core_entry_.getCameraman().getTarget();
@@ -398,16 +390,16 @@ void Game::endGame() noexcept
 
     int nbAlive = 0;
     int index   = 0;
-    for (size_t i = 0; i < data_->players.size(); i++) {
-        auto trans  = data_->players[i]->getComponent<Transform3D>();
-        auto render = data_->players[i]->getComponent<Render>();
+    for (size_t i = 0; i < core_entry_.getData()->players.size(); i++) {
+        auto trans  = core_entry_.getData()->players[i]->getComponent<Transform3D>();
+        auto render = core_entry_.getData()->players[i]->getComponent<Render>();
 
         if (!trans.has_value() || !render.has_value()) continue;
 
         render->get().setAnimationId(3);
         trans->get().setRotationAngle(90.0f);
 
-        if (data_->players[i]->getEnabledValue()) {
+        if (core_entry_.getData()->players[i]->getEnabledValue()) {
             nbAlive++;
             index = i;
         }
@@ -416,7 +408,7 @@ void Game::endGame() noexcept
     if (nbAlive == 1) {
         victoryText_.setText("Player " + std::to_string(index + 1) + " win !");
         victoryText_.setPosition(core_entry_.getWindow().getWidth() / 2 - 480, 30);
-        auto transform = data_->players[index]->getComponent<Transform3D>();
+        auto transform = core_entry_.getData()->players[index]->getComponent<Transform3D>();
 
         if (transform.has_value()) {
             pos    = transform->get().getPosition();
@@ -464,7 +456,7 @@ void Game::createButtons() noexcept
         50,
         height - 200,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
+            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::GAME)); }),
         "assets/fonts/menu.ttf",
         "Restart");
 
@@ -472,7 +464,7 @@ void Game::createButtons() noexcept
         width - 350,
         height - 200,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
+            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::MENU)); }),
         "assets/fonts/menu.ttf",
         "Menu");
 }

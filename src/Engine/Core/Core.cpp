@@ -55,20 +55,20 @@ Core::Core(GameData* newData, WindowManager* window) noexcept
     if (data_->players.size() != 0) data_->players.clear();
 
     // Loading all scenes
-    scenes.emplace_back(std::make_unique<Home>(data_, *this));
-    scenes.emplace_back(std::make_unique<Game>(data_, *this));
-    scenes.emplace_back(std::make_unique<PlayerSelect>(data_, *this));
+    scenes.emplace_back(std::make_unique<Home>(*this));
+    scenes.emplace_back(std::make_unique<Game>(*this));
+    scenes.emplace_back(std::make_unique<PlayerSelect>(*this));
     findScene().playMusic();
-    switchScene(SceneType::MENU);
+    switchScene(bomberman::SceneType::MENU);
 }
 
 Scene& Core::findScene() noexcept
 {
-    return (*scenes[static_cast<typename std::underlying_type<SceneType>::type>(
+    return (*scenes[static_cast<typename std::underlying_type<bomberman::SceneType>::type>(
         data_->getCurrentScene())]);
 }
 
-void Core::switchScene(const SceneType& scene) noexcept
+void Core::switchScene(const bomberman::SceneType& scene) noexcept
 {
     data_->setCurrentScene(scene);
     findScene().playMusic();

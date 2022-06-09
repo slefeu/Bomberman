@@ -13,8 +13,6 @@
 #include "Music.hpp"
 #include "Vector.hpp"
 
-enum class SceneType : std::size_t { MENU, GAME, SELECT };
-
 class Scene
 {
   public:

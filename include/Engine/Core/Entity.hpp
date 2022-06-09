@@ -22,10 +22,10 @@
 class Entity
 {
   public:
-    Entity()                                      = default;
-    virtual ~Entity() noexcept                    = default;
-    Entity(const Entity& other) noexcept          = delete;
-    Entity(Entity&& other) noexcept               = delete;
+    Entity()                             = default;
+    virtual ~Entity() noexcept           = default;
+    Entity(const Entity& other) noexcept = delete;
+    Entity(Entity&& other) noexcept      = delete;
     Entity& operator=(const Entity& rhs) noexcept = delete;
     Entity& operator=(Entity&& rhs) noexcept = delete;
 

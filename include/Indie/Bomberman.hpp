@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include <cstddef>
 
 namespace bomberman
 {
@@ -24,4 +25,7 @@ enum class ModelType {
     M_PLAYER_4,
     M_NONE
 };
+
+enum class SceneType : std::size_t { MENU, GAME, SELECT };
+
 }

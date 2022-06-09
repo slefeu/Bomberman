@@ -36,12 +36,12 @@ MouseHandler GameData::getMouseHandler() const noexcept
     return (mouse_);
 }
 
-void GameData::setCurrentScene(const SceneType& scene) noexcept
+void GameData::setCurrentScene(const bomberman::SceneType& scene) noexcept
 {
     current_scene_ = scene;
 }
 
-SceneType GameData::getCurrentScene() const noexcept
+bomberman::SceneType GameData::getCurrentScene() const noexcept
 {
     return (current_scene_);
 }

@@ -28,7 +28,7 @@ class Core
     Core& operator=(Core&& rhs) noexcept = delete;
 
     void           run() noexcept;
-    void           switchScene(const SceneType& scene) noexcept;
+    void           switchScene(const bomberman::SceneType& scene) noexcept;
     void           setExit(bool value) noexcept;
     WindowManager& getWindow() noexcept;
     Cameraman&     getCameraman() noexcept;

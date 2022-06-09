@@ -5,18 +5,12 @@
 ** Round
 */
 
-#ifndef ROUND_HPP_
-#define ROUND_HPP_
+#pragma once
 
-#include "raylib.h"
+#include "Vector.hpp"
 
-class Round
+namespace Round
 {
-  public:
-    Round() noexcept  = default;
-    ~Round() noexcept = default;
-    float   myRound(float x, int n = 0) noexcept;
-    Vector3 roundVector(Vector3 x, int n = 0) noexcept;
+float    round(const float& x, const int& n = 0) noexcept;
+Vector3D roundVector(const Vector3D& x, const int& n = 0) noexcept;
 };
-
-#endif /* !ROUND_HPP_ */

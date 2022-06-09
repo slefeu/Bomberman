@@ -5,29 +5,48 @@
 ** Core
 */
 
-#ifndef CORE_HPP_
-#define CORE_HPP_
+#pragma once
 
 #include <memory>
 #include <vector>
 
+#include "AudioDevice.hpp"
 #include "Cameraman.hpp"
+#include "GameData.hpp"
+#include "Player.hpp"
 #include "Scene.hpp"
+#include "Window.hpp"
 
 class Core
 {
-  private:
-    Cameraman                           camera;
-    std::vector<std::unique_ptr<Scene>> scenes;
-    int                                 currentScene;
-
   public:
-    Core(int height, int width, int fps) noexcept;
-    ~Core() noexcept = default;
-    void run() noexcept;
+    Core(GameData* data, WindowManager* window) noexcept;
+    ~Core() noexcept                          = default;
+    Core(const Core& other) noexcept          = delete;
+    Core(Core&& other) noexcept               = delete;
+    Core& operator=(const Core& rhs) noexcept = delete;
+    Core& operator=(Core&& rhs) noexcept      = delete;
 
+    void           run() noexcept;
+    void           switchScene(const SceneType& scene) noexcept;
+    void           setExit(bool value) noexcept;
+    WindowManager& getWindow() noexcept;
+    Cameraman&     getCameraman() noexcept;
+
+  protected:
   private:
-    void switchScene(int scene) noexcept;
-};
+    // methods
+    void   checkExit() noexcept;
+    Scene& findScene() noexcept;
+    void   switchScene(const int& scene) noexcept;
+    void   createWindow() noexcept;
+    void   resetData() noexcept;
 
-#endif /* !CORE_HPP_ */
+    // attributes
+    AudioDevice                         audio_;
+    Cameraman                           camera;
+    std::vector<std::unique_ptr<Scene>> scenes = {};
+    GameData*                           data;
+    bool                                exit_ = false;
+    WindowManager*                      window_;
+};

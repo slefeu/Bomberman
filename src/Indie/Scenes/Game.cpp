@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "Crate.hpp"
+#include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
@@ -58,7 +59,7 @@ void Game::switchAction() noexcept
     core_entry_.getCameraman().moveTo(camera_position_, camera_target_, camera_up_);
 
     for (auto& player : data_->players) {
-        if (player->getEntityType() != EntityType::E_PLAYER) continue;
+        if (!Type:: instanceof <Player>(player.get())) continue;
         player->setEnabledValue(true);
         ((std::unique_ptr<Player>&)player)->setBombArray(&entities_);
         auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
@@ -126,8 +127,20 @@ void Game::display3D() noexcept
                 DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
         }
 
-    for (auto& player : data_->players) player->Display();
-    for (auto& entity : entities_) entity->Display();
+    for (auto& player : data_->players) {
+        auto transform = player->getComponent<Transform3D>();
+        auto renderer  = player->getComponent<Render>();
+        if (!transform.has_value() || !renderer.has_value()) continue;
+        if (!player->getEnabledValue()) continue;
+        renderer->get().display(transform->get());
+    }
+    for (auto& entity : entities_) {
+        auto transform = entity->getComponent<Transform3D>();
+        auto renderer  = entity->getComponent<Render>();
+        if (!transform.has_value() || !renderer.has_value()) continue;
+        if (!entity->getEnabledValue()) continue;
+        renderer->get().display(transform->get());
+    }
 }
 
 void Game::display2D() noexcept

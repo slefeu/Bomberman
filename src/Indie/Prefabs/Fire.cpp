@@ -12,12 +12,17 @@
 #include "Crate.hpp"
 #include "Entity.hpp"
 #include "Error.hpp"
+#include "InstanceOf.hpp"
+#include "Item.hpp"
+#include "Wall.hpp"
 
 Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
-    : Entity(EntityType::E_FIRE)
+    : Entity()
     , explodeTime(0.5f)
     , explodeTimer(std::make_unique<Timer>(explodeTime))
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -36,16 +41,6 @@ Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
     addComponent(BoxCollider({ posi.x, posi.y, posi.z }, transform->get().getSize(), true));
 }
 
-void Fire::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-
-    if (!transform.has_value() || !renderer.has_value())
-        throw(Error("Error in displaying the player element.\n"));
-    renderer->get().display(transform->get());
-}
-
 void Fire::Update()
 {
     explodeTimer->updateTimer();
@@ -54,7 +49,7 @@ void Fire::Update()
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_PLAYER) {
+    if (Type:: instanceof <Player>(other.get())) {
         ((std::unique_ptr<Player>&)other)->dispatchItem();
         other->setEnabledValue(false);
     }
@@ -62,17 +57,17 @@ void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 
 bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_CRATE) {
+    if (Type:: instanceof <Crate>(other.get())) {
         ((std::unique_ptr<Crate>&)other)->dropItem();
         other->setEnabledValue(false);
         return true;
     }
-    if (other->getEntityType() == EntityType::E_ITEM) {
+    if (Type:: instanceof <Item>(other.get())) {
         other->setEnabledValue(false);
         return false;
     }
-    if (other->getEntityType() == EntityType::E_WALL) return true;
-    if (other->getEntityType() == EntityType::E_BOMB) {
+    if (Type:: instanceof <Wall>(other.get())) return true;
+    if (Type:: instanceof <Bomb>(other.get())) {
         ((std::unique_ptr<Bomb>&)other)->explode();
         return true;
     }

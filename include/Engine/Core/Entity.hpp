@@ -19,22 +19,16 @@
 #include "Render.hpp"
 #include "Transform3D.hpp"
 
-// on ne doit pas avoir d'enum class pour instancier une entité
-enum class EntityType { E_PLAYER, E_BOX, E_BOMB, E_CRATE, E_WALL, E_FIRE, E_ITEM };
-enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
-
 class Entity
 {
   public:
-    Entity(const EntityType& type) noexcept;
-    virtual ~Entity() noexcept           = default;
-    Entity(const Entity& other) noexcept = delete;
-    Entity(Entity&& other) noexcept      = delete;
+    Entity()                                      = default;
+    virtual ~Entity() noexcept                    = default;
+    Entity(const Entity& other) noexcept          = delete;
+    Entity(Entity&& other) noexcept               = delete;
     Entity& operator=(const Entity& rhs) noexcept = delete;
     Entity& operator=(Entity&& rhs) noexcept = delete;
 
-    // enlever les méthodes !!
-    virtual void Display()                                                 = 0;
     virtual void Update()                                                  = 0;
     virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;
 
@@ -58,12 +52,10 @@ class Entity
         return {};
     };
 
-    EntityType getEntityType() const noexcept;
-    bool       getEnabledValue() const noexcept;
-    void       setEnabledValue(const bool value) noexcept;
+    bool getEnabledValue() const noexcept;
+    void setEnabledValue(const bool value) noexcept;
 
   private:
-    const EntityType                        type_;
     bool                                    is_enabled_ = true;
     std::vector<std::unique_ptr<Component>> components_ = {};
 };

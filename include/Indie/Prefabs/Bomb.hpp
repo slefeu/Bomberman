@@ -15,9 +15,6 @@
 #include "Sound.hpp"
 #include "Timer.hpp"
 
-static const inline char* DROP_BOMB = "assets/audios/DropBomb.wav";
-static const inline char* EXPLODE   = "assets/audios/Explode.wav";
-
 class Bomb : public Entity
 {
   public:
@@ -33,7 +30,6 @@ class Bomb : public Entity
     Bomb& operator=(const Bomb& rhs) noexcept = delete;
     Bomb& operator=(Bomb&& rhs) noexcept = delete;
 
-    void Display() final;
     void Update() final;
     void setPlayerArray(std::vector<std::unique_ptr<Player>>* players) noexcept;
     void explode() noexcept;
@@ -57,4 +53,7 @@ class Bomb : public Entity
     int                                   animeDir;
     SoundManager                          dropSound_;
     SoundManager                          explodeSound;
+
+    static const inline char* DROP_BOMB = "assets/audios/DropBomb.wav";
+    static const inline char* EXPLODE   = "assets/audios/Explode.wav";
 };

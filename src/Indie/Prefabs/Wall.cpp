@@ -8,10 +8,13 @@
 #include "Wall.hpp"
 
 #include "Error.hpp"
+#include "InstanceOf.hpp"
 
 Wall::Wall(Vector3D pos, std::unique_ptr<Model3D>* model)
-    : Entity(EntityType::E_WALL)
+    : Entity()
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -24,15 +27,6 @@ Wall::Wall(Vector3D pos, std::unique_ptr<Model3D>* model)
     renderer->get().setModel(model);
     Vector3D size = { 0.9f, 1.0f, 0.9f };
     addComponent(BoxCollider(transform->get().getPosition(), size, true));
-}
-
-void Wall::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-    if (!transform.has_value() || !renderer.has_value())
-        throw(Error("Error in updating the game.\n"));
-    renderer->get().display(transform->get());
 }
 
 void Wall::Update()
@@ -50,6 +44,6 @@ void Wall::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     auto transform = getComponent<Transform3D>();
 
-    if (other->getEntityType() == EntityType::E_WALL && transform->get().getPosition().y > 0)
+    if (Type:: instanceof <Wall>(other.get()) && transform->get().getPosition().y > 0)
         other->setEnabledValue(false);
 }

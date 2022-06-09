@@ -78,7 +78,6 @@ void Core::switchScene(const SceneType& scene) noexcept
 void Core::run() noexcept
 {
     while (!exit_) {
-        // Update -------------------------------------------------------------
         checkExit();
         if (camera.getIsMoving()) camera.setIsMoving(camera.smoothMove());
         audio_.update(findScene());

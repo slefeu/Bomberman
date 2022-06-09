@@ -18,7 +18,7 @@
 #include "Sound.hpp"
 #include "Timer.hpp"
 
-static const inline char* KILL = "assets/audios/Kill.wav";
+enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
 
 enum class ItemType;
 
@@ -34,7 +34,6 @@ class Player : public Entity
 
     void       dispatchItem(void) noexcept;
     void       addItem(ItemType item) noexcept;
-    void       Display() final;
     void       Update() final;
     void       OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     void       setStats(int bomb, int sp, int size) noexcept;
@@ -84,23 +83,25 @@ class Player : public Entity
     int                                       colorIndex = 0;
     std::array<float, 4>                      direction  = { 90, 270, 90, 270 };
     std::vector<std::array<unsigned char, 3>> colors     = { Colors::C_LIGHTGRAY,
-        Colors::C_GRAY,
-        Colors::C_YELLOW,
-        Colors::C_GOLD,
-        Colors::C_ORANGE,
-        Colors::C_PINK,
-        Colors::C_RED,
-        Colors::C_MAROON,
-        Colors::C_GREEN,
-        Colors::C_LIME,
-        Colors::C_DARKGREEN,
-        Colors::C_SKYBLUE,
-        Colors::C_BLUE,
-        Colors::C_DARKBLUE,
-        Colors::C_PURPLE,
-        Colors::C_VIOLET,
-        Colors::C_DARKPURPLE,
-        Colors::C_BEIGE,
-        Colors::C_BROWN,
-        Colors::C_DARKBROWN };
+            Colors::C_GRAY,
+            Colors::C_YELLOW,
+            Colors::C_GOLD,
+            Colors::C_ORANGE,
+            Colors::C_PINK,
+            Colors::C_RED,
+            Colors::C_MAROON,
+            Colors::C_GREEN,
+            Colors::C_LIME,
+            Colors::C_DARKGREEN,
+            Colors::C_SKYBLUE,
+            Colors::C_BLUE,
+            Colors::C_DARKBLUE,
+            Colors::C_PURPLE,
+            Colors::C_VIOLET,
+            Colors::C_DARKPURPLE,
+            Colors::C_BEIGE,
+            Colors::C_BROWN,
+            Colors::C_DARKBROWN };
+
+    static const inline char* KILL = "assets/audios/Kill.wav";
 };

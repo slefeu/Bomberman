@@ -8,6 +8,8 @@
 #include "Bomb.hpp"
 
 #include "Error.hpp"
+#include "InstanceOf.hpp"
+#include "Wall.hpp"
 
 Bomb::Bomb(Vector3D                       pos,
     Player*                               p,
@@ -15,7 +17,7 @@ Bomb::Bomb(Vector3D                       pos,
     int                                   bombSize,
     GameData*                             data,
     std::vector<std::unique_ptr<Entity>>* entities)
-    : Entity(EntityType::E_BOMB)
+    : Entity()
     , lifeTime(3.0f)
     , lifeTimer(std::make_unique<Timer>(lifeTime))
     , player(p)
@@ -28,6 +30,8 @@ Bomb::Bomb(Vector3D                       pos,
     , dropSound_(DROP_BOMB)
     , explodeSound(EXPLODE)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -44,16 +48,6 @@ Bomb::Bomb(Vector3D                       pos,
 
     explodeSound.setVolume(1.0f);
     dropSound_.play();
-}
-
-void Bomb::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying a bomb element.\n"));
-    renderer->get().display(transform->get());
 }
 
 void Bomb::Update()
@@ -129,5 +123,5 @@ void Bomb::createFire(Vector3D mul) noexcept
 
 void Bomb::OnCollisionEnter([[maybe_unused]] std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL) explode();
+    if (Type:: instanceof <Wall>(other.get())) explode();
 }

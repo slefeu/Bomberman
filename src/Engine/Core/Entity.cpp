@@ -7,21 +7,9 @@
 
 #include "Entity.hpp"
 
-Entity::Entity(const EntityType& type) noexcept
-    : type_(type)
-{
-    addComponent(Transform3D());
-    addComponent(Render());
-}
-
 std::vector<std::unique_ptr<Component>>& Entity::getComponents() noexcept
 {
     return (components_);
-}
-
-EntityType Entity::getEntityType() const noexcept
-{
-    return (type_);
 }
 
 bool Entity::getEnabledValue() const noexcept

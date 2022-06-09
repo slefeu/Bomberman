@@ -8,16 +8,20 @@
 #include "Crate.hpp"
 
 #include "Error.hpp"
+#include "InstanceOf.hpp"
 #include "Item.hpp"
+#include "Wall.hpp"
 
 Crate::Crate(Vector3D                     pos,
     std::unique_ptr<Model3D>*             newModel,
     GameData*                             data,
     std::vector<std::unique_ptr<Entity>>* entities)
-    : Entity(EntityType::E_CRATE)
+    : Entity()
     , data(data)
     , entities(entities)
 {
+    addComponent(Transform3D());
+    addComponent(Render());
     setEnabledValue(true);
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -64,5 +68,5 @@ void Crate::dropItem()
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (other->getEntityType() == EntityType::E_WALL) setEnabledValue(false);
+    if (Type:: instanceof <Wall>(other.get())) setEnabledValue(false);
 }

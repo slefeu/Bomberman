@@ -41,9 +41,9 @@ PlayerSelect::~PlayerSelect() noexcept
 
 void PlayerSelect::unloadButtons() noexcept
 {
-    for (auto &it : buttons_) { it.unload(); }
-    for (auto &it : select_left_) { it.unload(); }
-    for (auto &it : select_right_) { it.unload(); }
+    for (auto& it : buttons_) { it.unload(); }
+    for (auto& it : select_left_) { it.unload(); }
+    for (auto& it : select_right_) { it.unload(); }
 }
 
 void PlayerSelect::display3D() noexcept

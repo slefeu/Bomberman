@@ -7,8 +7,11 @@
 
 #include "Crate.hpp"
 
+#include <type_traits>
+
 #include "Error.hpp"
 #include "Item.hpp"
+#include "Wall.hpp"
 
 Crate::Crate(Vector3D                     pos,
     std::unique_ptr<Model3D>*             newModel,

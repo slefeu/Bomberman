@@ -145,6 +145,8 @@ void Player::Update()
             transform->get().moveX(speed);
         }
         if (controller.isKeyPressed(dropBomb)) placeBomb();
+
+        if (controller.isKeyPressed(save)) data->saveGame();
     }
     if (!animate) {
         renderer->get().setSkipFrame(1);
@@ -208,6 +210,7 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_A;
             moveRight = Key::K_D;
             dropBomb  = Key::K_Q;
+            save      = Key::K_RIGHT_SHIFT;
             break;
         case 1:
             moveUp    = Key::K_KP_8;

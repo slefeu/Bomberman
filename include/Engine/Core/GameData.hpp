@@ -17,17 +17,23 @@ class GameData
 {
   public:
     GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept;
-    GameData(const GameData& other) noexcept          = delete;
-    GameData(GameData&& other) noexcept               = delete;
+    GameData(const GameData& other) noexcept = delete;
+    GameData(GameData&& other) noexcept      = delete;
     GameData& operator=(const GameData& rhs) noexcept = delete;
-    GameData& operator=(GameData&& rhs) noexcept      = delete;
+    GameData& operator=(GameData&& rhs) noexcept = delete;
     ~GameData() noexcept;
 
     MouseHandler getMouseHandler() const noexcept;
     void         updateMouse() noexcept;
     void         setCurrentScene(const SceneType& scene) noexcept;
     void         setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
+    void         saveGame(void) const;
+    void         loadGame(void) noexcept;
     SceneType    getCurrentScene() const noexcept;
+
+  private:
+    std::string getCurrentDateTime(void) const noexcept;
+    void        writeDataGame(std::ofstream& file) const;
 
   public:
     int   fps;
@@ -42,7 +48,6 @@ class GameData
     std::vector<std::unique_ptr<Sprite>>  sprites;
     std::vector<std::unique_ptr<Entity>>  players;
 
-  protected:
   private:
     MouseHandler mouse_;
     SceneType    current_scene_ = SceneType::MENU;

@@ -8,14 +8,18 @@
 #pragma once
 
 #include <exception>
+#include <string_view>
 #include <string>
 
-enum class ReturnCode { ERROR_CODE = 0, SUCCESS_CODE = 64 };
+enum class ReturnCode : std::size_t {
+    SUCCESS_CODE = 0,
+    ERROR_CODE   = 84,
+};
 
 class Error : public std::exception
 {
   public:
-    explicit Error(std::string) noexcept;
+    explicit Error(const std::string_view& message) noexcept;
     Error(const Error& other) noexcept = default;
     Error(Error&& other) noexcept      = default;
     ~Error() noexcept override         = default;

@@ -161,9 +161,9 @@ class Controller
     Controller& operator=(const Controller& rhs) noexcept = default;
     Controller& operator=(Controller&& rhs) noexcept = default;
 
-    bool  isKeyDown(Key key) const noexcept;
-    bool  isKeyPressed(Key key) const noexcept;
+    bool  isKeyDown(const Key& key) const noexcept;
+    bool  isKeyPressed(const Key& key) const noexcept;
     bool  isGamepadConnected(int id) const noexcept;
-    bool  isGamepadButtonPressed(int id, G_Button button) const noexcept;
-    float getGamepadAxis(int id, Axis axis) const noexcept;
+    bool  isGamepadButtonPressed(int id, const G_Button& button) const noexcept;
+    float getGamepadAxis(int id, const Axis& axis) const noexcept;
 };

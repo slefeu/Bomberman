@@ -56,16 +56,6 @@ Bomb::~Bomb() noexcept
     explodeSound.unload();
 }
 
-void Bomb::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying a bomb element.\n"));
-    renderer->get().display(transform->get());
-}
-
 void Bomb::Update()
 {
     int  i         = 0;

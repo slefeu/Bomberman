@@ -25,7 +25,6 @@ class Fire : public Entity
     Fire& operator=(const Fire& rhs) noexcept = delete;
     Fire& operator=(Fire&& rhs) noexcept      = delete;
 
-    void Display() final;
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     bool ExplodeElements(std::unique_ptr<Entity>& other) noexcept;

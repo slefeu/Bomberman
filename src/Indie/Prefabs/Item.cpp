@@ -100,16 +100,6 @@ Item::~Item() noexcept
     newItemSound.unload();
 }
 
-void Item::Display()
-{
-    auto renderer  = getComponent<Render>();
-    auto transform = getComponent<Transform3D>();
-
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying an item element.\n"));
-    renderer->get().display(transform->get());
-}
-
 void Item::Update() {}
 
 void Item::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

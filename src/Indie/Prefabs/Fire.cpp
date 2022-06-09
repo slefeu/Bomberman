@@ -41,16 +41,6 @@ Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
     addComponent(BoxCollider({ posi.x, posi.y, posi.z }, transform->get().getSize(), true));
 }
 
-void Fire::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-
-    if (!transform.has_value() || !renderer.has_value())
-        throw(Error("Error in displaying the player element.\n"));
-    renderer->get().display(transform->get());
-}
-
 void Fire::Update()
 {
     explodeTimer->updateTimer();

@@ -29,15 +29,6 @@ Wall::Wall(Vector3D pos, std::unique_ptr<Model3D>* model)
     addComponent(BoxCollider(transform->get().getPosition(), size, true));
 }
 
-void Wall::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-    if (!transform.has_value() || !renderer.has_value())
-        throw(Error("Error in updating the game.\n"));
-    renderer->get().display(transform->get());
-}
-
 void Wall::Update()
 {
     if (!getEnabledValue()) return;

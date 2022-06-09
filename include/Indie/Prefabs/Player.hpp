@@ -17,7 +17,7 @@
 #include "Sound.hpp"
 #include "Timer.hpp"
 
-static const inline char* KILL = "assets/audios/Kill.wav";
+enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
 
 enum class ItemType;
 
@@ -33,7 +33,6 @@ class Player : public Entity
 
     void       dispatchItem(void) noexcept;
     void       addItem(ItemType item) noexcept;
-    void       Display() final;
     void       Update() final;
     void       OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     void       setStats(int bomb, int sp, int size) noexcept;
@@ -102,4 +101,6 @@ class Player : public Entity
             Colors::C_BEIGE,
             Colors::C_BROWN,
             Colors::C_DARKBROWN };
+
+    static const inline char* KILL = "assets/audios/Kill.wav";
 };

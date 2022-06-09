@@ -21,7 +21,6 @@ class Wall : public Entity
     Wall& operator=(Wall&& rhs) noexcept      = delete;
 
     void Update() final;
-    void Display() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
 
   protected:

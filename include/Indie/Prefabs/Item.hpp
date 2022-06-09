@@ -13,9 +13,6 @@
 
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
 
-static const inline char* GET_ITEM = "assets/audios/GetItem.wav";
-static const inline char* NEW_ITEM = "assets/audios/NewItem.wav";
-
 class Item : public Entity
 {
   public:
@@ -27,7 +24,6 @@ class Item : public Entity
     Item& operator=(const Item& rhs) noexcept = delete;
     Item& operator=(Item&& rhs) noexcept      = delete;
 
-    void Display() final;
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
 
@@ -42,4 +38,7 @@ class Item : public Entity
     ItemType     itemType;
     SoundManager getItemSound;
     SoundManager newItemSound;
+
+    static const inline char* GET_ITEM = "assets/audios/GetItem.wav";
+    static const inline char* NEW_ITEM = "assets/audios/NewItem.wav";
 };

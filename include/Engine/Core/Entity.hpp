@@ -19,8 +19,6 @@
 #include "Render.hpp"
 #include "Transform3D.hpp"
 
-enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
-
 class Entity
 {
   public:
@@ -31,7 +29,6 @@ class Entity
     Entity& operator=(const Entity& rhs) noexcept = delete;
     Entity& operator=(Entity&& rhs) noexcept      = delete;
 
-    virtual void Display()                                                 = 0;
     virtual void Update()                                                  = 0;
     virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;
 

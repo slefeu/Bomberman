@@ -41,17 +41,6 @@ Crate::Crate(Vector3D                     pos,
             true));
 }
 
-void Crate::Display()
-{
-    auto renderer  = getComponent<Render>();
-    auto transform = getComponent<Transform3D>();
-
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying a crate element.\n"));
-    if (!getEnabledValue()) return;
-    renderer->get().display(transform->get());
-}
-
 void Crate::Update()
 {
     if (!getEnabledValue()) return;

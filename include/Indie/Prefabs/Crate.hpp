@@ -22,8 +22,7 @@ class Crate : public Entity
     Crate& operator=(const Crate& rhs) noexcept = delete;
     Crate& operator=(Crate&& rhs) noexcept      = delete;
 
-    void Display() override;
-    void Update() override;
+    void Update() final;
     void dropItem();
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
 

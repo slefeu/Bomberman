@@ -49,16 +49,6 @@ Player::~Player() noexcept
     killSound_.unload();
 }
 
-void Player::Display()
-{
-    auto renderer  = getComponent<Render>();
-    auto transform = getComponent<Transform3D>();
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying the player element.\n"));
-    if (!getEnabledValue()) return;
-    renderer->get().display(transform->get());
-}
-
 int Player::findPrevType() const noexcept
 {
     auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);

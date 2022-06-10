@@ -44,7 +44,7 @@ Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
 void Fire::Update()
 {
     explodeTimer->updateTimer();
-    if (explodeTimer->timerDone()) setEnabledValue(false);
+    if (explodeTimer->isTimerDone()) setEnabledValue(false);
 }
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

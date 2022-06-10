@@ -10,7 +10,7 @@
 
 namespace bomberman
 {
-enum class ModelType {
+enum class ModelType : std::size_t {
     M_BOMB,
     M_WALL,
     M_CRATE,

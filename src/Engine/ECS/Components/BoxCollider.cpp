@@ -9,7 +9,7 @@
 
 #include "raylib.h"
 
-BoxCollider::BoxCollider(Vector3D newPos, Vector3D newSize, bool solid) noexcept
+BoxCollider::BoxCollider(const Vector3D& newPos, const Vector3D& newSize, bool solid) noexcept
     : position_(newPos)
     , size_(newSize)
     , is_solid_(solid)
@@ -19,7 +19,7 @@ BoxCollider::BoxCollider(Vector3D newPos, Vector3D newSize, bool solid) noexcept
 bool BoxCollider::checkCollision(const Vector3D& pos,
     const Vector3D&                              size,
     const Vector3D&                              otherPos,
-    const Vector3D&                              otherSize) noexcept
+    const Vector3D&                              otherSize) const noexcept
 {
     Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
     Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };
@@ -33,7 +33,7 @@ bool BoxCollider::checkCollision(const Vector3D& pos,
     BoundingBox BoundingBox1 = { BoundingBox1_1, BoundingBox1_2 };
     BoundingBox BoundingBox2 = { BoundingBox2_1, BoundingBox2_2 };
 
-    return CheckCollisionBoxes(BoundingBox1, BoundingBox2);
+    return (CheckCollisionBoxes(BoundingBox1, BoundingBox2));
 }
 
 Vector3D BoxCollider::getPosition() const noexcept
@@ -46,12 +46,12 @@ void BoxCollider::setPosition(const Vector3D& pos) noexcept
     position_ = pos;
 }
 
-void BoxCollider::setPositionZ(const int& pos) noexcept
+void BoxCollider::setPositionZ(int pos) noexcept
 {
     position_.z = pos;
 }
 
-void BoxCollider::setPositionY(const int& pos) noexcept
+void BoxCollider::setPositionY(int pos) noexcept
 {
     position_.y = pos;
 }
@@ -63,19 +63,19 @@ void BoxCollider::display() const noexcept
             { position_.x, position_.y, position_.z }, { size_.x, size_.y, size_.z }, GREEN);
 }
 
-void BoxCollider::update(const Vector3D newPos) noexcept
+void BoxCollider::update(const Vector3D& newPos) noexcept
 {
     position_ = newPos;
 }
 
-bool BoxCollider::isColliding(const BoxCollider& other) noexcept
+bool BoxCollider::isColliding(const BoxCollider& other) const noexcept
 {
-    return checkCollision(position_, size_, other.getPosition(), other.getSize());
+    return (checkCollision(position_, size_, other.getPosition(), other.getSize()));
 }
 
-bool BoxCollider::isColliding(const BoxCollider& otherHit, Vector3D& otherPos) noexcept
+bool BoxCollider::isColliding(const BoxCollider& otherHit, const Vector3D& otherPos) const noexcept
 {
-    return checkCollision(position_, size_, otherPos, otherHit.getSize());
+    return (checkCollision(position_, size_, otherPos, otherHit.getSize()));
 }
 
 ComponentType BoxCollider::getComponentType() const noexcept
@@ -88,7 +88,7 @@ Vector3D BoxCollider::getSize() const noexcept
     return (size_);
 }
 
-void BoxCollider::setIsSolid(const bool& value) noexcept
+void BoxCollider::setIsSolid(bool value) noexcept
 {
     is_solid_ = value;
 }
@@ -98,17 +98,17 @@ bool BoxCollider::getIsSolid() const noexcept
     return (is_solid_);
 }
 
-void BoxCollider::addX(const float& x) noexcept
+void BoxCollider::addX(float value) noexcept
 {
-    position_.x += x;
+    position_.x += value;
 }
 
-void BoxCollider::addY(const float& y) noexcept
+void BoxCollider::addY(float value) noexcept
 {
-    position_.y += y;
+    position_.y += value;
 }
 
-void BoxCollider::addZ(const float& z) noexcept
+void BoxCollider::addZ(float value) noexcept
 {
-    position_.z += z;
+    position_.z += value;
 }

@@ -17,7 +17,7 @@ bool Entity::getEnabledValue() const noexcept
     return (is_enabled_);
 }
 
-void Entity::setEnabledValue(const bool value) noexcept
+void Entity::setEnabledValue(bool value) noexcept
 {
     is_enabled_ = value;
 }

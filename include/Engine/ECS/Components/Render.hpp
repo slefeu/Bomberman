@@ -8,6 +8,7 @@
 #pragma once
 
 #include <memory>
+#include <string_view>
 
 #include "Color.hpp"
 #include "Model3D.hpp"
@@ -27,9 +28,9 @@ class Render : public Component
 {
   public:
     Render() noexcept;
-    ~Render() noexcept;
     Render(const Render& other) noexcept = default;
     Render(Render&& other) noexcept      = default;
+    ~Render() noexcept;
 
     Render& operator=(const Render& rhs) noexcept = default;
     Render& operator=(Render&& rhs) noexcept = default;
@@ -41,26 +42,28 @@ class Render : public Component
     RenderType    getRenderType() const noexcept;
     ComponentType getComponentType() const noexcept;
 
-    void addAnimation(std::string path) noexcept;
+    void addAnimation(const std::string_view& path) noexcept;
     void updateAnimation() noexcept;
     void resetAnimation(int frame) noexcept;
     void setSkipFrame(int frame) noexcept;
     void setAnimationId(int id) noexcept;
 
-    void displayModel(const Transform3D& transform, Vector3D pos) noexcept;
-    void displayModelV(
-        const Transform3D& transform, Vector3D pos, Vector3D axis, float angle) noexcept;
+    void displayModel(const Transform3D& transform, const Vector3D& pos) noexcept;
+    void displayModelV(const Transform3D& transform,
+        const Vector3D&                   pos,
+        const Vector3D&                   axis,
+        float                             angle) noexcept;
 
     static constexpr ComponentType TYPE = ComponentType::RENDER;
 
   private:
-    RenderType                type             = RenderType::R_NONE;
-    std::unique_ptr<Model3D>* model_           = nullptr;
-    ColorManager              color_           = Colors::C_WHITE;
-    ModelAnimation*           anims            = nullptr;
-    int                       animFrameCounter = 0;
-    unsigned int              animsCount       = 0;
-    bool                      isAnimated       = true;
-    int                       skipFrame        = 1;
-    int                       animationId      = 0;
+    RenderType                type              = RenderType::R_NONE;
+    std::unique_ptr<Model3D>* model_            = nullptr;
+    ColorManager              color_            = Colors::C_WHITE;
+    ModelAnimation*           animations_            = nullptr;
+    unsigned int              frame_counter_    = 0;
+    unsigned int              animations_count_ = 0;
+    unsigned int              skip_frame_       = 1;
+    unsigned int              animation_id_     = 0;
+    bool                      is_animated_      = true;
 };

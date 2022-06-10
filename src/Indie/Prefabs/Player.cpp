@@ -83,7 +83,7 @@ void Player::Update()
     hitbox->get().update(transform->get().getPosition());
     if (wallpass) {
         wallpassTimer->updateTimer();
-        if (wallpassTimer->timerDone()) {
+        if (wallpassTimer->isTimerDone()) {
             wallpass    = false;
             wallpassEnd = true;
             wallpassTimer->resetTimer();

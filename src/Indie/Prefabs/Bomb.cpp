@@ -59,7 +59,7 @@ void Bomb::Update()
         throw(Error("Error in updating a bomb element.\n"));
 
     lifeTimer->updateTimer();
-    if (lifeTimer->timerDone()) {
+    if (lifeTimer->isTimerDone()) {
         explode();
         return;
     }

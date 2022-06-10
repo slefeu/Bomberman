@@ -53,11 +53,9 @@ class Entity
     };
 
     bool getEnabledValue() const noexcept;
-    void setEnabledValue(const bool value) noexcept;
+    void setEnabledValue(bool value) noexcept;
 
   private:
     bool                                    is_enabled_ = true;
     std::vector<std::unique_ptr<Component>> components_ = {};
 };
-
-// TODO: faire plutot des méthodes destroy() plutpot que juste check un booleen

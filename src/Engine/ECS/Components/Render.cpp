@@ -14,16 +14,15 @@ Render::Render() noexcept
 
 Render::~Render() noexcept
 {
-    if (!anims) return;
+    if (!animations_) return;
 
-    for (unsigned int i = 0; i < animsCount; i++) UnloadModelAnimation(anims[i]);
-    RL_FREE(anims);
+    for (unsigned int i = 0; i < animations_count_; i++) UnloadModelAnimation(animations_[i]);
+    RL_FREE(animations_);
 }
 
 void Render::display(const Transform3D& transform) noexcept
 {
-    auto color = color_.getColor();
-
+    auto     color = color_.getColor();
     Vector3D pos   = transform.getPosition();
     Vector3D rot   = transform.getRotationAxis();
     Vector3D size  = transform.getSize();
@@ -74,39 +73,39 @@ ComponentType Render::getComponentType() const noexcept
     return (TYPE);
 }
 
-void Render::addAnimation(std::string path) noexcept
+void Render::addAnimation(const std::string_view& path) noexcept
 {
-    anims = LoadModelAnimations(path.c_str(), &animsCount);
+    animations_ = LoadModelAnimations(path.data(), &animations_count_);
 }
 
 void Render::updateAnimation() noexcept
 {
-    if (anims == nullptr) return;
-    if (isAnimated) {
-        animFrameCounter += 1.0f * skipFrame;
-        model_->get()->update(anims[animationId], animFrameCounter);
-        if (animFrameCounter >= anims[animationId].frameCount) animFrameCounter = 0;
+    if (animations_ == nullptr) return;
+    if (is_animated_) {
+        frame_counter_ += 1.0f * skip_frame_;
+        model_->get()->update(animations_[animation_id_], frame_counter_);
+        if (frame_counter_ >= animations_[animation_id_].frameCount) frame_counter_ = 0;
     }
 }
 
 void Render::resetAnimation(int frame) noexcept
 {
-    if (anims == nullptr) return;
-    animFrameCounter = frame;
-    model_->get()->update(anims[animationId], animFrameCounter);
+    if (animations_ == nullptr) return;
+    frame_counter_ = frame;
+    model_->get()->update(animations_[animation_id_], frame_counter_);
 }
 
 void Render::setSkipFrame(int frame) noexcept
 {
-    skipFrame = frame;
+    skip_frame_ = frame;
 }
 
 void Render::setAnimationId(int id) noexcept
 {
-    animationId = id;
+    animation_id_ = id;
 }
 
-void Render::displayModel(const Transform3D& transform, Vector3D pos) noexcept
+void Render::displayModel(const Transform3D& transform, const Vector3D& pos) noexcept
 {
     auto axis  = transform.getRotationAxis();
     auto angle = transform.getRotationAngle();
@@ -115,7 +114,7 @@ void Render::displayModel(const Transform3D& transform, Vector3D pos) noexcept
 }
 
 void Render::displayModelV(
-    const Transform3D& transform, Vector3D pos, Vector3D axis, float angle) noexcept
+    const Transform3D& transform, const Vector3D& pos, const Vector3D& axis, float angle) noexcept
 {
     if (model_ == nullptr) return;
 

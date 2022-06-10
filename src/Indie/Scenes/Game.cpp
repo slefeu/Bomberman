@@ -149,7 +149,7 @@ void Game::display2D() noexcept
     }
     if (pause) { pauseText_.draw(); }
 
-    if (!chrono_->timerDone()) {
+    if (!chrono_->isTimerDone()) {
         auto time = std::to_string(int(round(chrono_->getTime())));
         timeText_.setText(time);
         timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - (time.size() * 2), 10);
@@ -189,7 +189,7 @@ void Game::action() noexcept
         int alive = 0;
         for (auto& player : core_entry_.getData()->players)
             if (player->getEnabledValue()) alive++;
-        if (alive == 1 || alive == 0 || chrono_->timerDone()) endGame();
+        if (alive == 1 || alive == 0 || chrono_->isTimerDone()) endGame();
     } else {
         endGameAction();
         return;

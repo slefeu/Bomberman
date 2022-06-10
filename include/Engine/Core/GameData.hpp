@@ -34,6 +34,10 @@ class GameData
   private:
     std::string getCurrentDateTime(void) const noexcept;
     void        writeDataGame(std::ofstream& file) const;
+    void        writeDataPlayer(std::ofstream& file) const;
+    void        writeDataCrate(std::ofstream& file) const;
+    void        writeDataWall(std::ofstream& file) const;
+    void        writeDataBombPlayer(std::ofstream& file, const std::unique_ptr<Entity>& bomb) const;
 
   public:
     int   fps;

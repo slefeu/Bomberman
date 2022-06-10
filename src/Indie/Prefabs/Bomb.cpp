@@ -141,3 +141,8 @@ void Bomb::OnCollisionEnter([[maybe_unused]] std::unique_ptr<Entity>& other) noe
 {
     if (Type:: instanceof <Wall>(other.get())) explode();
 }
+
+int Bomb::getLifeTime() const noexcept
+{
+    return lifeTime;
+}

@@ -310,6 +310,16 @@ void Player::setWallPass(const bool& pass) noexcept
     wallpass = pass;
 }
 
+bool Player::getWallPass() const noexcept
+{
+    return wallpass;
+}
+
+bool Player::getWallPassEnd() const noexcept
+{
+    return wallpassEnd;
+}
+
 void Player::addItem(ItemType itemType) noexcept
 {
     items.emplace_back(itemType);
@@ -320,6 +330,11 @@ void Player::dispatchItem(void) noexcept
     if (items.empty()) return;
     for (auto& item : items) { data->_entities->emplace_back(std::make_unique<Item>(data, item)); }
     items.clear();
+}
+
+std::vector<std::unique_ptr<Entity>>* Player::getBombs() const noexcept
+{
+    return bombs;
 }
 
 void Player::setPlayerType(PlayerType type) noexcept
@@ -410,4 +425,9 @@ void Player::setBombSize(const int& bombSize) noexcept
 PlayerType Player::getPlayerType() const noexcept
 {
     return type;
+}
+
+int Player::getId() const noexcept
+{
+    return id;
 }

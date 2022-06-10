@@ -40,6 +40,8 @@ class Player : public Entity
     void       setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept;
     void       setPlayerType(PlayerType type) noexcept;
     void       setWallPass(const bool& pass) noexcept;
+    bool       getWallPass() const noexcept;
+    bool       getWallPassEnd() const noexcept;
     int        getNbBombMax() const noexcept;
     float      getSpeedMax() const noexcept;
     int        getBombSizeMax() const noexcept;
@@ -52,8 +54,10 @@ class Player : public Entity
     PlayerType getPlayerType() const noexcept;
     void       setPosition();
     PlayerType getType() const noexcept;
+    int        getId() const noexcept;
     int        findNextType() const noexcept;
     int        findPrevType() const noexcept;
+    std::vector<std::unique_ptr<Entity>>* getBombs() const noexcept;
 
   private:
     void setKeyboard() noexcept;

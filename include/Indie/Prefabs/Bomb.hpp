@@ -37,6 +37,7 @@ class Bomb : public Entity
     void setPlayerArray(std::vector<std::unique_ptr<Player>>* players) noexcept;
     void explode() noexcept;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
+    int  getLifeTime() const noexcept;
 
   private:
     // methods

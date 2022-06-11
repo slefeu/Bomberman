@@ -25,8 +25,10 @@ Player::Player(int newId, GameData& data)
     , killSound_(KILL)
 {
     addComponent(Transform3D());
-    addComponent(Render(*data.getModels()[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
-                             bomberman::ModelType::M_PLAYER_1) + id]));
+    addComponent(Render(
+        *data.getModels()[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
+                              bomberman::ModelType::M_PLAYER_1)
+                          + id]));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 

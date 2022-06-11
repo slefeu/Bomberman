@@ -7,10 +7,10 @@
 
 #pragma once
 
+#include "Bomberman.hpp"
 #include "Entity.hpp"
 #include "Player.hpp"
 #include "Sound.hpp"
-#include "Bomberman.hpp"
 class Item : public Entity
 {
   public:
@@ -32,10 +32,10 @@ class Item : public Entity
     Model3D& findItemModel() const noexcept;
 
   private:
-    GameData&    data;
-    bomberman::ItemType     itemType;
-    SoundManager getItemSound;
-    SoundManager newItemSound;
+    GameData&           data;
+    bomberman::ItemType itemType;
+    SoundManager        getItemSound;
+    SoundManager        newItemSound;
 
     static const inline char* GET_ITEM = "assets/audios/GetItem.wav";
     static const inline char* NEW_ITEM = "assets/audios/NewItem.wav";

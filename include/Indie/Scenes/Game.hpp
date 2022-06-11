@@ -58,9 +58,9 @@ class Game : public Scene
     void pauseAction() noexcept;
 
     // attributes
-    float                                time_party_ = 120;
-    Core&                                core_entry_;
-    std::unique_ptr<Timer>               chrono_;
+    float                  time_party_ = 120;
+    Core&                  core_entry_;
+    std::unique_ptr<Timer> chrono_;
 
     float lastTimeBlockPlace;
     bool  isHurry;

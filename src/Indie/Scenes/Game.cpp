@@ -94,9 +94,7 @@ void Game::switchAction() noexcept
     for (int i = 0; i < 4; i++) {
         playerText_.emplace_back("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]);
     }
-    for (auto &text : playerText_) {
-        text.setTextSize(20);
-    }
+    for (auto& text : playerText_) { text.setTextSize(20); }
 }
 
 void Game::playMusic() noexcept

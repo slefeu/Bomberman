@@ -7,7 +7,6 @@
 
 #include "Item.hpp"
 
-#include <iostream>
 #include <memory>
 
 #include "Bomberman.hpp"
@@ -98,8 +97,10 @@ Model3D& Item::findItemModel() const noexcept
     switch (itemType) {
         case bomberman::ItemType::I_SPEEDUP:
             return (*model.at(static_cast<int>(bomberman::ModelType::M_IROLLER)));
-        case bomberman::ItemType::I_BOMBUP: return (*model.at(static_cast<int>(bomberman::ModelType::M_IBOMB)));
-        case bomberman::ItemType::I_FIREUP: return (*model.at(static_cast<int>(bomberman::ModelType::M_IFIRE)));
+        case bomberman::ItemType::I_BOMBUP:
+            return (*model.at(static_cast<int>(bomberman::ModelType::M_IBOMB)));
+        case bomberman::ItemType::I_FIREUP:
+            return (*model.at(static_cast<int>(bomberman::ModelType::M_IFIRE)));
         case bomberman::ItemType::I_WALL:
         default: return (*model.at(static_cast<int>(bomberman::ModelType::M_IWALL)));
     }

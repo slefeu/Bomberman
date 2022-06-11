@@ -20,7 +20,7 @@ class Bomb : public Entity
   public:
     Bomb(Vector3D                             pos,
         Player*                               p,
-        Model3D&                        newModel,
+        Model3D&                              newModel,
         int                                   bombSize,
         GameData&                             data,
         std::vector<std::unique_ptr<Entity>>* Entity);

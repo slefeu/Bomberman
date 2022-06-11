@@ -27,7 +27,7 @@ enum class RenderType {
 class Render : public Component
 {
   public:
-    Render(Model3D &model) noexcept;
+    Render(Model3D& model) noexcept;
     Render(const Render& other) noexcept = default;
     Render(Render&& other) noexcept      = default;
     ~Render() noexcept;

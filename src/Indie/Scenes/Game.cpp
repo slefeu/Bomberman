@@ -8,6 +8,7 @@
 #include "Game.hpp"
 
 #include "Crate.hpp"
+#include "DeltaTime.hpp"
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
@@ -355,7 +356,7 @@ void Game::hurryUp() noexcept
         lastTimeBlockPlace = chrono_.getTime();
         nbBlockPlaced++;
     }
-    HurryUpX -= 500.0f * GetFrameTime();
+    HurryUpX -= 500.0f * DeltaTime::getDeltaTime();
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }
 

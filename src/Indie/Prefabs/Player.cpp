@@ -8,6 +8,7 @@
 #include "Player.hpp"
 
 #include "Bomb.hpp"
+#include "DeltaTime.hpp"
 #include "Error.hpp"
 #include "Fire.hpp"
 #include "InstanceOf.hpp"
@@ -233,9 +234,9 @@ bool Player::isCollidingNextTurn(int xdir, int zdir)
         throw(Error("Error in updating the collision of the player.\n"));
 
     Vector3D position = transform->get().getPosition();
-    Vector3D nextTurn = { position.x + (speed * xdir * GetFrameTime()),
+    Vector3D nextTurn = { position.x + (speed * xdir * DeltaTime::getDeltaTime()),
         position.y,
-        position.z + (speed * zdir * GetFrameTime()) };
+        position.z + (speed * zdir * DeltaTime::getDeltaTime()) };
 
     if (!getEnabledValue()) return false;
     for (auto& other : data.getEntities()) {

@@ -7,7 +7,7 @@
 
 #include "Transform3D.hpp"
 
-#include "raylib.h"
+#include "DeltaTime.hpp"
 
 ComponentType Transform3D::getComponentType() const noexcept
 {
@@ -71,17 +71,17 @@ void Transform3D::setRotationAngle(float angle) noexcept
 
 void Transform3D::moveX(float x) noexcept
 {
-    position_.x += x * GetFrameTime();
+    position_.x += x * DeltaTime::getDeltaTime();
 }
 
 void Transform3D::moveY(float y) noexcept
 {
-    position_.y += y * GetFrameTime();
+    position_.y += y * DeltaTime::getDeltaTime();
 }
 
 void Transform3D::moveZ(float z) noexcept
 {
-    position_.z += z * GetFrameTime();
+    position_.z += z * DeltaTime::getDeltaTime();
 }
 
 void Transform3D::setX(float x) noexcept

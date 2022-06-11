@@ -8,7 +8,6 @@
 #include "BoxCollider.hpp"
 
 #include "CollisionChecker.hpp"
-#include "raylib.h"
 
 BoxCollider::BoxCollider(const Vector3D& newPos, const Vector3D& newSize, bool solid) noexcept
     : position_(newPos)

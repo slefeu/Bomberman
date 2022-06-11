@@ -51,17 +51,14 @@ class Game : public Scene
     // methods
     void createMap() noexcept;
     void hurryUp() noexcept;
-    // EndGame
     void endGame() noexcept;
     void endGameAction() noexcept;
     void endGameDisplay() noexcept;
-    // Buttons
     void createButtons() noexcept;
-    // Pause
     void pauseAction() noexcept;
 
     // attributes
-    std::vector<std::unique_ptr<Entity>> entities_;
+    float                                time_party_ = 120;
     Core&                                core_entry_;
     std::unique_ptr<Timer>               chrono_;
 

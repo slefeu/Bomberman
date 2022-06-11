@@ -19,7 +19,7 @@ class Scene
     Scene() noexcept                   = default;
     Scene(const Scene& other) noexcept = delete;
     Scene(Scene&& other) noexcept      = delete;
-    virtual ~Scene() noexcept = default;
+    virtual ~Scene() noexcept          = default;
 
     Scene& operator=(const Scene& rhs) noexcept = delete;
     Scene& operator=(Scene&& rhs) noexcept = delete;

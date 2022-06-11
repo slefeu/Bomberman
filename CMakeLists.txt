@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(bomberman)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
@@ -16,7 +15,6 @@ if(UNIX)
 endif()
 
 
-find_package(raylib 4.0.0 REQUIRED)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -71,6 +69,7 @@ set(
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
 
+# À ENLEVER quand on aura compilé avec l'encapsulation
 target_link_libraries(${PROJECT_NAME} raylib)
 # target_link_libraries(${PROJECT_NAME} raylib_encapsulation)
 
@@ -85,7 +84,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/UI)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/GameCore)
 
 # à enlever quand ça sera compilé en lib statique
-target_include_directories(${PROJECT_NAME} PRIVATE include/Lib)
+
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/Lib/cmake)
+find_package(raylib 4.0.0 REQUIRED)
+
+target_include_directories(${PROJECT_NAME} PRIVATE src/Lib/include)
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${CXX_FLAGS})
 

@@ -7,13 +7,13 @@
 
 #pragma once
 #include "AudioDevice.hpp"
+#include "Fps.hpp"
 #include "Scene.hpp"
-#include "raylib.h"
 
 class WindowManager
 {
   public:
-    WindowManager() noexcept                           = default;
+    WindowManager(int width, int height, int fps) noexcept;
     WindowManager(const WindowManager& other) noexcept = delete;
     WindowManager(WindowManager&& other) noexcept      = delete;
     ~WindowManager() noexcept;
@@ -21,12 +21,19 @@ class WindowManager
     WindowManager& operator=(const WindowManager& rhs) noexcept = delete;
     WindowManager& operator=(WindowManager&& rhs) noexcept = delete;
 
-    void launch(int width, int height, int fps) const noexcept;
     void display(Scene& scene, const Cameraman& camera) noexcept;
     bool isExit() noexcept;
-    int  getWidth() const noexcept;
-    int  getHeight() const noexcept;
+
+    int   getWidth() const noexcept;
+    int   getHeight() const noexcept;
+    float getFps() const noexcept;
+    void  setFps(float value) noexcept;
+    void  resetHeight() noexcept;
+    void  resetWidth() noexcept;
 
   protected:
   private:
+    int   width_;
+    int   height_;
+    float fps_;
 };

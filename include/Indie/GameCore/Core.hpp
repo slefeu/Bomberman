@@ -8,6 +8,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 #include <vector>
 
 #include "AudioDevice.hpp"
@@ -20,32 +21,37 @@
 class Core
 {
   public:
-    Core(GameData* data, WindowManager* window) noexcept;
+    Core() noexcept;
     ~Core() noexcept                 = default;
     Core(const Core& other) noexcept = delete;
     Core(Core&& other) noexcept      = delete;
     Core& operator=(const Core& rhs) noexcept = delete;
     Core& operator=(Core&& rhs) noexcept = delete;
 
-    void           run() noexcept;
-    void           switchScene(const bomberman::SceneType& scene) noexcept;
-    void           setExit(bool value) noexcept;
-    WindowManager& getWindow() noexcept;
-    Cameraman&     getCameraman() noexcept;
-    GameData*      getData() const noexcept;
+    void            run() noexcept;
+    void            switchScene(const bomberman::SceneType& scene) noexcept;
+    void            setExit(bool value) noexcept;
+    WindowManager&  getWindow() noexcept;
+    Cameraman&      getCameraman() noexcept;
+    GameData&       getData() noexcept;
+    const GameData& getData() const noexcept;
 
   protected:
   private:
     // methods
     void   checkExit() noexcept;
+    void   checkCamera() noexcept;
     Scene& findScene() noexcept;
     void   switchScene(const int& scene) noexcept;
-    void   createWindow() noexcept;
+    void   initGameModels() noexcept;
+    void   initScenes() noexcept;
+    void   initSprites() noexcept;
 
     // attributes
-    Cameraman                           camera;
+    bool      exit_ = false;
+    Cameraman camera_;
+
+    GameData                            data_;
+    std::unique_ptr<WindowManager>      window_;
     std::vector<std::unique_ptr<Scene>> scenes = {};
-    GameData*                           data_;
-    bool                                exit_ = false;
-    WindowManager*                      window_;
 };

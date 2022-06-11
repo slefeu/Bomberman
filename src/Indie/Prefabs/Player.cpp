@@ -15,7 +15,7 @@
 #include "Transform3D.hpp"
 #include "Wall.hpp"
 
-Player::Player(const int newId, GameData* data)
+Player::Player(int newId, GameData& data)
     : Entity()
     , id(newId)
     , data(data)
@@ -25,7 +25,8 @@ Player::Player(const int newId, GameData* data)
     , killSound_(KILL)
 {
     addComponent(Transform3D());
-    addComponent(Render());
+    addComponent(Render(*data.getModels()[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
+                             bomberman::ModelType::M_PLAYER_1) + id]));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -36,10 +37,6 @@ Player::Player(const int newId, GameData* data)
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setScale(0.65f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
-    renderer->get().setModel(
-        &data->models[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
-                          bomberman::ModelType::M_PLAYER_1)
-                      + id]);
     renderer->get().addAnimation("assets/models/player.iqm");
     setKeyboard();
     setPosition();
@@ -278,15 +275,15 @@ void Player::placeBomb()
     nbBomb--;
     bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),
         this,
-        &data->models[static_cast<int>(bomberman::ModelType::M_BOMB)],
+        *(data.getModels()[static_cast<int>(bomberman::ModelType::M_BOMB)]),
         bombSize,
         data,
         bombs));
 }
 
-void Player::setBombArray(std::vector<std::unique_ptr<Entity>>* bombsArray) noexcept
+void Player::setBombArray(std::vector<std::unique_ptr<Entity>>& bombsArray) noexcept
 {
-    bombs = bombsArray;
+    bombs = &bombsArray;
 }
 
 void Player::setWallPass(const bool& pass) noexcept
@@ -295,7 +292,7 @@ void Player::setWallPass(const bool& pass) noexcept
     wallpass = pass;
 }
 
-void Player::addItem(ItemType itemType) noexcept
+void Player::addItem(bomberman::ItemType itemType) noexcept
 {
     items.emplace_back(itemType);
 }
@@ -303,7 +300,7 @@ void Player::addItem(ItemType itemType) noexcept
 void Player::dispatchItem(void) noexcept
 {
     if (items.empty()) return;
-    for (auto& item : items) { data->_entities->emplace_back(std::make_unique<Item>(data, item)); }
+    for (auto& item : items) { data.addItem(item); }
     items.clear();
 }
 

@@ -8,6 +8,7 @@
 #include "Timer.hpp"
 
 #include "raylib.h"
+#include <iostream>
 
 Timer::Timer(float time) noexcept
     : life_time_(time)

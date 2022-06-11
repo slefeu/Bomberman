@@ -1,3 +1,6 @@
+# set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# find_package(raylib 4.0.0 REQUIRED)
+
 # add_library(
 #     raylib_encapsulation
 #     STATIC
@@ -20,4 +23,7 @@
 
 # target_include_directories(raylib_encapsulation PUBLIC
 # ${CMAKE_CURRENT_SOURCE_DIR})
+# target_include_directories(raylib_encapsulation PUBLIC
+# ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 # target_link_libraries(raylib_encapsulation raylib)

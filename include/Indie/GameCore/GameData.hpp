@@ -17,7 +17,7 @@
 class GameData
 {
   public:
-    GameData(int fps, int winWidth, int winHeight, int nbPlayer) noexcept;
+    GameData() noexcept                      = default;
     GameData(const GameData& other) noexcept = delete;
     GameData(GameData&& other) noexcept      = delete;
     ~GameData() noexcept                     = default;
@@ -25,28 +25,36 @@ class GameData
     GameData& operator=(const GameData& rhs) noexcept = delete;
     GameData& operator=(GameData&& rhs) noexcept = delete;
 
-    Vector2D             getMousePos() const noexcept;
-    void                 updateMouse() noexcept;
-    void                 setCurrentScene(const bomberman::SceneType& scene) noexcept;
-    void                 setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
+    Vector2D getMousePos() const noexcept;
+    void     updateMouse() noexcept;
+    void     setCurrentScene(const bomberman::SceneType& scene) noexcept;
+    // void     setEntities(
+    //         std::reference_wrapper<std::vector<std::unique_ptr<Entity>>> entities) noexcept;
     bomberman::SceneType getCurrentScene() const noexcept;
     MouseHandler         getMouseHandler() const noexcept;
+    int                  getNbPlayers() const noexcept;
+    void                 setNbPlayers(int value) noexcept;
+    void                 addModel(
+                        const std::string_view& model_path, const std::string_view& texture_path) noexcept;
+    void addSprite(const std::string_view& texture_path) noexcept;
+    void addPlayer(int index) noexcept;
+    void addItem(bomberman::ItemType item) noexcept;
+    void clearEntities() noexcept;
+    void addBomb() noexcept;
 
-  public:
-    int   fps;
-    int   winWidth;
-    int   winHeight;
-    int   nbPlayer;
-    float timeParty;
-
-  public:
-    std::vector<std::unique_ptr<Model3D>> models;
-    std::vector<std::unique_ptr<Entity>>* _entities;
-    std::vector<std::unique_ptr<Sprite>>  sprites;
-    std::vector<std::unique_ptr<Entity>>  players;
+    std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;
+    std::vector<std::unique_ptr<Entity>>&  getEntities() noexcept;
+    std::vector<std::unique_ptr<Model3D>>& getModels() noexcept;
+    std::vector<std::unique_ptr<Sprite>>&  getSprites() noexcept;
 
   protected:
   private:
     MouseHandler         mouse_;
     bomberman::SceneType current_scene_ = bomberman::SceneType::MENU;
+    int                  nb_players_    = 0;
+
+    std::vector<std::unique_ptr<Model3D>> models_;
+    std::vector<std::unique_ptr<Entity>>  entities_;
+    std::vector<std::unique_ptr<Sprite>>  sprites_;
+    std::vector<std::unique_ptr<Entity>>  players_;
 };

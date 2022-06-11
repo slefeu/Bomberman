@@ -10,14 +10,12 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 #include "Sound.hpp"
-
-enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
-
+#include "Bomberman.hpp"
 class Item : public Entity
 {
   public:
-    Item(Vector3D pos, GameData* data);
-    Item(GameData* data, ItemType type);
+    Item(Vector3D pos, GameData& data);
+    Item(GameData& data, bomberman::ItemType type);
     Item(const Item& other) noexcept = delete;
     Item(Item&& other) noexcept      = delete;
     Item& operator=(const Item& rhs) noexcept = delete;
@@ -31,11 +29,11 @@ class Item : public Entity
     void     setPlayerStat(std::unique_ptr<Player>& p) noexcept;
     Vector3D findFreePosition(void) const noexcept;
     bool     entitiesHere(Vector3D& pos) const noexcept;
-    void     setModelByType(void) noexcept;
+    Model3D& findItemModel() const noexcept;
 
   private:
-    GameData*    data;
-    ItemType     itemType;
+    GameData&    data;
+    bomberman::ItemType     itemType;
     SoundManager getItemSound;
     SoundManager newItemSound;
 

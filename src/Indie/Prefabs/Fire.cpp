@@ -16,29 +16,29 @@
 #include "Item.hpp"
 #include "Wall.hpp"
 
-Fire::Fire(Vector3D posi, std::unique_ptr<Model3D>* model)
+Fire::Fire(Vector3D position, Model3D& model)
     : Entity()
     , explodeTime(0.5f)
     , explodeTimer(std::make_unique<Timer>(explodeTime))
 {
     addComponent(Transform3D());
-    addComponent(Render());
+    addComponent(Render(model));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
 
-    transform->get().setPosition({ posi.x, posi.y - 0.3f, posi.z });
+    transform->get().setPosition({ position.x, position.y - 0.3f, position.z });
     transform->get().setScale(1.2f);
     transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
     transform->get().setRotationAngle(-90.0f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
-    renderer->get().setModel(model);
     renderer->get().addAnimation("assets/models/fire.iqm");
 
-    addComponent(BoxCollider({ posi.x, posi.y, posi.z }, transform->get().getSize(), true));
+    addComponent(
+        BoxCollider({ position.x, position.y, position.z }, transform->get().getSize(), true));
 }
 
 void Fire::Update()

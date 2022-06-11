@@ -18,20 +18,21 @@
 #include "Render.hpp"
 #include "Transform3D.hpp"
 
-Item::Item(Vector3D pos, GameData* data)
+Item::Item(Vector3D pos, GameData& data)
     : Entity()
+    , data(data)
+    , itemType(static_cast<bomberman::ItemType>(static_cast<int>(rand() % 4)))
     , getItemSound(GET_ITEM)
     , newItemSound(NEW_ITEM)
 {
     addComponent(Transform3D());
-    addComponent(Render());
+    addComponent(Render(findItemModel()));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the item element.\n"));
 
-    this->data = data;
     transform->get().setPosition(pos);
     transform->get().setScale(1.0f);
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
@@ -50,26 +51,25 @@ Item::Item(Vector3D pos, GameData* data)
     hitbox->get().addY(transform->get().getScale() / 10);
     hitbox->get().update(hitbox->get().getPosition());
 
-    itemType = (ItemType)(static_cast<int>(rand() % 4));
-    setModelByType();
-
     newItemSound.play();
 }
 
-Item::Item(GameData* data, ItemType type)
+Item::Item(GameData& data, bomberman::ItemType type)
     : Entity()
+    , data(data)
+    , itemType(type)
     , getItemSound(GET_ITEM)
     , newItemSound(NEW_ITEM)
+
 {
     addComponent(Transform3D());
-    addComponent(Render());
+    addComponent(Render(findItemModel()));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the item element.\n"));
 
-    this->data = data;
     transform->get().setPosition(findFreePosition());
     transform->get().setScale(1.0f);
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
@@ -88,11 +88,21 @@ Item::Item(GameData* data, ItemType type)
     hitbox->get().addZ(transform->get().getScale() / 10);
     hitbox->get().addY(transform->get().getScale() / 10);
     hitbox->get().update(hitbox->get().getPosition());
-
-    itemType = type;
-    setModelByType();
-
     newItemSound.play();
+}
+
+Model3D& Item::findItemModel() const noexcept
+{
+    const auto& model = data.getModels();
+
+    switch (itemType) {
+        case bomberman::ItemType::I_SPEEDUP:
+            return (*model.at(static_cast<int>(bomberman::ModelType::M_IROLLER)));
+        case bomberman::ItemType::I_BOMBUP: return (*model.at(static_cast<int>(bomberman::ModelType::M_IBOMB)));
+        case bomberman::ItemType::I_FIREUP: return (*model.at(static_cast<int>(bomberman::ModelType::M_IFIRE)));
+        case bomberman::ItemType::I_WALL:
+        default: return (*model.at(static_cast<int>(bomberman::ModelType::M_IWALL)));
+    }
 }
 
 void Item::Update() {}
@@ -110,16 +120,16 @@ void Item::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 void Item::setPlayerStat(std::unique_ptr<Player>& p) noexcept
 {
     switch (itemType) {
-        case ItemType::I_SPEEDUP:
+        case bomberman::ItemType::I_SPEEDUP:
             if (p->getSpeed() < p->getSpeedMax()) p->setSpeed(p->getSpeed() + 0.2f);
             break;
-        case ItemType::I_BOMBUP:
+        case bomberman::ItemType::I_BOMBUP:
             if (p->getNbBomb() < p->getNbBombMax()) p->setNbBomb(p->getNbBomb() + 1);
             break;
-        case ItemType::I_FIREUP:
+        case bomberman::ItemType::I_FIREUP:
             if (p->getBombSize() < p->getBombSizeMax()) p->setBombSize(p->getBombSize() + 1);
             break;
-        case ItemType::I_WALL: p->setWallPass(true); break;
+        case bomberman::ItemType::I_WALL: p->setWallPass(true); break;
         default: break;
     }
 }
@@ -137,12 +147,12 @@ Vector3D Item::findFreePosition(void) const noexcept
         std::cout << "INFO: Item from Player drop at x:" << pos.x << " z:" << pos.z << std::endl;
     } while (entitiesHere(pos));
 
-    return pos;
+    return (pos);
 }
 
 bool Item::entitiesHere(Vector3D& pos) const noexcept
 {
-    for (auto& entity : *data->_entities) {
+    for (auto& entity : data.getEntities()) {
         auto transform    = entity->getComponent<Transform3D>();
         auto other_hitbox = entity->getComponent<BoxCollider>();
 
@@ -156,29 +166,4 @@ bool Item::entitiesHere(Vector3D& pos) const noexcept
         if (other_hitbox->get().isColliding(hitbox, pos)) return true;
     }
     return false;
-}
-
-void Item::setModelByType(void) noexcept
-{
-    auto renderer = getComponent<Render>();
-
-    switch (itemType) {
-        case ItemType::I_SPEEDUP:
-            renderer->get().setModel(
-                &data->models[static_cast<int>(bomberman::ModelType::M_IROLLER)]);
-            break;
-        case ItemType::I_BOMBUP:
-            renderer->get().setModel(
-                &data->models[static_cast<int>(bomberman::ModelType::M_IBOMB)]);
-            break;
-        case ItemType::I_FIREUP:
-            renderer->get().setModel(
-                &data->models[static_cast<int>(bomberman::ModelType::M_IFIRE)]);
-            break;
-        case ItemType::I_WALL:
-            renderer->get().setModel(
-                &data->models[static_cast<int>(bomberman::ModelType::M_IWALL)]);
-            break;
-        default: break;
-    }
 }

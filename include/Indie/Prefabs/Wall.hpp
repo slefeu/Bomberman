@@ -12,7 +12,7 @@
 class Wall : public Entity
 {
   public:
-    Wall(Vector3D pos, std::unique_ptr<Model3D>* model);
+    Wall(Vector3D pos, Model3D& model);
     Wall(const Wall& other) noexcept = delete;
     Wall(Wall&& other) noexcept      = delete;
     ~Wall() noexcept                 = default;

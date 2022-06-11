@@ -12,16 +12,14 @@
 #include "Item.hpp"
 #include "Wall.hpp"
 
-Crate::Crate(Vector3D                     pos,
-    std::unique_ptr<Model3D>*             newModel,
-    GameData*                             data,
-    std::vector<std::unique_ptr<Entity>>* entities)
+Crate::Crate(
+    Vector3D pos, Model3D& newModel, GameData& data, std::vector<std::unique_ptr<Entity>>* entities)
     : Entity()
     , data(data)
     , entities(entities)
 {
     addComponent(Transform3D());
-    addComponent(Render());
+    addComponent(Render(newModel));
     setEnabledValue(true);
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
@@ -33,7 +31,6 @@ Crate::Crate(Vector3D                     pos,
     transform->get().setScale(0.015f);
     transform->get().setY(0 - transform->get().getScale());
     renderer->get().setRenderType(RenderType::R_3DMODEL);
-    renderer->get().setModel(newModel);
 
     addComponent(
         BoxCollider({ transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() },

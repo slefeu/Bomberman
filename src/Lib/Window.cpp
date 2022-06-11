@@ -7,18 +7,21 @@
 
 #include "Window.hpp"
 
+WindowManager::WindowManager(int width, int height, int fps) noexcept
+    : width_(width)
+    , height_(height)
+    , fps_(fps)
+{
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(width_, height_, "Indie Studio - Bomberman");
+    AudioDevice::initialize();
+    FpsHandler::setFps(fps_);
+}
+
 WindowManager::~WindowManager() noexcept
 {
     AudioDevice::close();
     CloseWindow();
-}
-
-void WindowManager::launch(int width, int height, int fps) const noexcept
-{
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(width, height, "Indie Studio - Bomberman");
-    SetTargetFPS(fps);
-    AudioDevice::initialize();
 }
 
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
@@ -42,10 +45,31 @@ bool WindowManager::isExit() noexcept
 
 int WindowManager::getWidth() const noexcept
 {
-    return (GetScreenWidth());
+    return (width_);
+}
+
+void WindowManager::resetHeight() noexcept
+{
+    height_ = GetScreenHeight();
+}
+
+void WindowManager::resetWidth() noexcept
+{
+    width_ = GetScreenWidth();
 }
 
 int WindowManager::getHeight() const noexcept
 {
-    return (GetScreenHeight());
+    return (height_);
+}
+
+float WindowManager::getFps() const noexcept
+{
+    return (fps_);
+}
+
+void WindowManager::setFps(float value) noexcept
+{
+    fps_ = value;
+    FpsHandler::setFps(fps_);
 }

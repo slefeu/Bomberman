@@ -20,9 +20,9 @@ class Bomb : public Entity
   public:
     Bomb(Vector3D                             pos,
         Player*                               p,
-        std::unique_ptr<Model3D>*             newModel,
+        Model3D&                        newModel,
         int                                   bombSize,
-        GameData*                             data,
+        GameData&                             data,
         std::vector<std::unique_ptr<Entity>>* Entity);
     ~Bomb() noexcept                 = default;
     Bomb(const Bomb& other) noexcept = delete;
@@ -45,7 +45,7 @@ class Bomb : public Entity
     Player*                               player;
     int                                   size;
     bool                                  hasHitbox;
-    GameData*                             data;
+    GameData&                             data;
     std::vector<std::unique_ptr<Entity>>* entities;
     std::vector<std::unique_ptr<Fire>>    fires;
     std::vector<std::unique_ptr<Player>>* players;

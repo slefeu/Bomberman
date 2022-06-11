@@ -16,10 +16,10 @@ Home::Home(Core& core_ref) noexcept
     , title_(TITLE_PATH, 30, 30)
 {
     createButtons();
-    settings_.emplace_back("assets/textures/home/buttons.png",
+    settings_.emplace_back("assets/textures/home/button.png",
         core_entry_.getWindow().getWidth() / 2,
         core_entry_.getWindow().getWidth() / 4 + (150 * (buttons_.size() + 1)));
-    settings_.emplace_back("assets/textures/home/buttons.png",
+    settings_.emplace_back("assets/textures/home/button.png",
         core_entry_.getWindow().getWidth() / 2,
         core_entry_.getWindow().getWidth() / 4 + (150 * (buttons_.size() + 2)));
 }
@@ -88,7 +88,7 @@ void Home::action() noexcept
         buttons_[button_index_].setState(1);
     } else {
         for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData()->getMouseHandler())) { it.action(); }
+            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
 }
 

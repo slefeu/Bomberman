@@ -27,17 +27,16 @@ enum class RenderType {
 class Render : public Component
 {
   public:
-    Render() noexcept;
+    Render(Model3D &model) noexcept;
     Render(const Render& other) noexcept = default;
     Render(Render&& other) noexcept      = default;
     ~Render() noexcept;
 
-    Render& operator=(const Render& rhs) noexcept = default;
-    Render& operator=(Render&& rhs) noexcept = default;
+    Render& operator=(const Render& rhs) noexcept = delete;
+    Render& operator=(Render&& rhs) noexcept = delete;
 
     void          display(const Transform3D& transform) noexcept;
     void          setRenderType(const RenderType& type) noexcept;
-    void          setModel(std::unique_ptr<Model3D>* model) noexcept;
     void          setColor(const std::array<unsigned char, 3>& color) noexcept;
     RenderType    getRenderType() const noexcept;
     ComponentType getComponentType() const noexcept;
@@ -57,13 +56,13 @@ class Render : public Component
     static constexpr ComponentType TYPE = ComponentType::RENDER;
 
   private:
-    RenderType                type              = RenderType::R_NONE;
-    std::unique_ptr<Model3D>* model_            = nullptr;
-    ColorManager              color_            = Colors::C_WHITE;
-    ModelAnimation*           animations_            = nullptr;
-    unsigned int              frame_counter_    = 0;
-    unsigned int              animations_count_ = 0;
-    unsigned int              skip_frame_       = 1;
-    unsigned int              animation_id_     = 0;
-    bool                      is_animated_      = true;
+    RenderType      type = RenderType::R_NONE;
+    Model3D&        model_;
+    ColorManager    color_            = Colors::C_WHITE;
+    ModelAnimation* animations_       = nullptr;
+    unsigned int    frame_counter_    = 0;
+    unsigned int    animations_count_ = 0;
+    unsigned int    skip_frame_       = 1;
+    unsigned int    animation_id_     = 0;
+    bool            is_animated_      = true;
 };

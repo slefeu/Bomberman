@@ -21,7 +21,7 @@ PlayerSelect::PlayerSelect(Core& core_ref) noexcept
         core_entry_.getWindow().getWidth() / 2, core_entry_.getWindow().getHeight() / 9);
     createButtons();
     stats_.emplace_back(
-        "assets/textures/selection/normal.png", core_entry_.getData()->winWidth / 2, 50);
+        "assets/textures/selection/normal.png", core_entry_.getWindow().getWidth() / 2, 50);
     stats_.emplace_back("assets/textures/selection/attack.png");
     stats_.emplace_back("assets/textures/selection/tactical.png");
     stats_.emplace_back("assets/textures/selection/runner.png");
@@ -34,7 +34,7 @@ PlayerSelect::PlayerSelect(Core& core_ref) noexcept
 void PlayerSelect::display3D() noexcept
 {
     float nbPlayers = 0;
-    for (auto& player : core_entry_.getData()->players) {
+    for (auto& player : core_entry_.getData().getPlayers()) {
         auto render    = player->getComponent<Render>();
         auto transform = player->getComponent<Transform3D>();
 
@@ -71,7 +71,7 @@ void PlayerSelect::displayAllStats() noexcept
     int   height    = core_entry_.getWindow().getHeight();
     float nbPlayers = 0;
 
-    for (auto& player : core_entry_.getData()->players) {
+    for (auto& player : core_entry_.getData().getPlayers()) {
         Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
         Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
         Vector2 position = { 120 + 460 * nbPlayers, 600 };
@@ -116,18 +116,17 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 200,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->core_entry_.getData()->nbPlayer < 4) {
-                core_entry_.getData()->nbPlayer++;
-                core_entry_.getData()->players.emplace_back(std::make_unique<Player>(
-                    core_entry_.getData()->nbPlayer - 1, core_entry_.getData()));
-                Player* new_player =
-                    reinterpret_cast<Player*>(core_entry_.getData()->players.back().get());
+            if (core_entry_.getData().getNbPlayers() < 4) {
+                core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() + 1);
+                core_entry_.getData().addPlayer(core_entry_.getData().getNbPlayers() - 1);
+                auto& new_player =
+                    *reinterpret_cast<Player*>(core_entry_.getData().getPlayers().back().get());
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
-                    std::function<void(void)>([new_player](void) {
-                        new_player->setPlayerType(
-                            static_cast<PlayerType>(new_player->findNextType()));
+                    std::function<void(void)>([&new_player](void) {
+                        new_player.setPlayerType(
+                            static_cast<PlayerType>(new_player.findNextType()));
                     }),
                     "assets/fonts/menu.ttf",
                     "",
@@ -135,9 +134,9 @@ void PlayerSelect::createButtons() noexcept
                 select_left_.emplace_back("assets/textures/selection/left.png",
                     0,
                     0,
-                    std::function<void(void)>([new_player](void) {
-                        new_player->setPlayerType(
-                            static_cast<PlayerType>(new_player->findPrevType()));
+                    std::function<void(void)>([&new_player](void) {
+                        new_player.setPlayerType(
+                            static_cast<PlayerType>(new_player.findPrevType()));
                     }),
                     "assets/fonts/menu.ttf",
                     "",
@@ -151,9 +150,9 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 550,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->core_entry_.getData()->nbPlayer > 2) {
-                core_entry_.getData()->nbPlayer--;
-                core_entry_.getData()->players.pop_back();
+            if (core_entry_.getData().getNbPlayers() > 2) {
+                core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() - 1);
+                core_entry_.getData().getPlayers().pop_back();
                 select_right_.pop_back();
                 select_left_.pop_back();
             }
@@ -165,7 +164,7 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 900,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->core_entry_.getData()->nbPlayer > 2)
+            if (this->core_entry_.getData().getNbPlayers() > 1)
                 core_entry_.switchScene(bomberman::SceneType::GAME);
         }),
         "assets/fonts/menu.ttf",
@@ -192,18 +191,18 @@ void PlayerSelect::action() noexcept
             button_index_ = (button_index_ - 1) % buttons_.size();
         if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
             button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
+        if (controller.isGamepadButtonPressed(0, G_Button::G_B))
+        buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
         buttons_[button_index_].setState(1);
     } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData()->getMouseHandler())) { it.action(); }
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
     for (auto& it : select_left_) {
-        if (it.checkCollision(core_entry_.getData()->getMouseHandler())) { it.action(); }
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
     for (auto& it : select_right_) {
-        if (it.checkCollision(core_entry_.getData()->getMouseHandler())) { it.action(); }
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
 }
 

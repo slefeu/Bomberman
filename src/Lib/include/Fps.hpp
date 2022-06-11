@@ -19,6 +19,7 @@ class FpsHandler
     FpsHandler& operator=(FpsHandler&& rhs) noexcept = delete;
 
     static void draw(int x, int y);
+    static void setFps(float fps) noexcept;
 
   protected:
   private:

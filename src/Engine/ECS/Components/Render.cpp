@@ -7,15 +7,15 @@
 
 #include "Render.hpp"
 
-Render::Render() noexcept
+Render::Render(Model3D& model) noexcept
     : color_(Colors::C_WHITE)
+    , model_(model)
 {
 }
 
 Render::~Render() noexcept
 {
     if (!animations_) return;
-
     for (unsigned int i = 0; i < animations_count_; i++) UnloadModelAnimation(animations_[i]);
     RL_FREE(animations_);
 }
@@ -29,10 +29,10 @@ void Render::display(const Transform3D& transform) noexcept
     float    scale = transform.getScale();
 
     if (type == RenderType::R_3DMODEL) {
-        if (model_ != nullptr) { model_->get()->draw(pos, scale, color); }
+        model_.draw(pos, scale, color);
     } else if (type == RenderType::R_3DMODEL_ROTATE) {
         float rotationAngle = transform.getRotationAngle();
-        if (model_ != nullptr) { model_->get()->draw(pos, rot, rotationAngle, scale, color); }
+        model_.draw(pos, rot, rotationAngle, scale, color);
     } else if (type == RenderType::R_CUBE) {
         DrawCubeV({ pos.x, pos.y, pos.z },
             { size.x, size.y, size.z },
@@ -44,18 +44,13 @@ void Render::display(const Transform3D& transform) noexcept
     } else if (type == RenderType::R_ANIMATE) {
         updateAnimation();
         float rotationAngle = transform.getRotationAngle();
-        if (model_ != nullptr) { model_->get()->draw(pos, rot, rotationAngle, scale, color); }
+        model_.draw(pos, rot, rotationAngle, scale, color);
     }
 }
 
 void Render::setRenderType(const RenderType& type) noexcept
 {
     this->type = type;
-}
-
-void Render::setModel(std::unique_ptr<Model3D>* model) noexcept
-{
-    model_ = model;
 }
 
 void Render::setColor(const std::array<unsigned char, 3>& color) noexcept
@@ -83,7 +78,7 @@ void Render::updateAnimation() noexcept
     if (animations_ == nullptr) return;
     if (is_animated_) {
         frame_counter_ += 1.0f * skip_frame_;
-        model_->get()->update(animations_[animation_id_], frame_counter_);
+        model_.update(animations_[animation_id_], frame_counter_);
         if (frame_counter_ >= animations_[animation_id_].frameCount) frame_counter_ = 0;
     }
 }
@@ -92,7 +87,7 @@ void Render::resetAnimation(int frame) noexcept
 {
     if (animations_ == nullptr) return;
     frame_counter_ = frame;
-    model_->get()->update(animations_[animation_id_], frame_counter_);
+    model_.update(animations_[animation_id_], frame_counter_);
 }
 
 void Render::setSkipFrame(int frame) noexcept
@@ -116,13 +111,9 @@ void Render::displayModel(const Transform3D& transform, const Vector3D& pos) noe
 void Render::displayModelV(
     const Transform3D& transform, const Vector3D& pos, const Vector3D& axis, float angle) noexcept
 {
-    if (model_ == nullptr) return;
-
     if (type == RenderType::R_ANIMATE) {
         updateAnimation();
         std::array<unsigned char, 3> color = { 255, 255, 255 };
-        if (model_ != nullptr) {
-            model_->get()->draw(pos, axis, angle, transform.getScale(), color);
-        }
+        model_.draw(pos, axis, angle, transform.getScale(), color);
     }
 }

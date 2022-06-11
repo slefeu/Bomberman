@@ -76,8 +76,7 @@ void WindowManager::setFps(float value) noexcept
 
 void WindowManager::decreaseFps() noexcept
 {
-    if (fps_ == 30)
-        return;
+    if (fps_ == 30) return;
     index_--;
     fps_ = possible_fps_[index_];
     FpsHandler::setFps(fps_);
@@ -85,9 +84,27 @@ void WindowManager::decreaseFps() noexcept
 
 void WindowManager::increaseFps() noexcept
 {
-    if (fps_ == 120)
-        return;
+    if (fps_ == 120) return;
     index_++;
     fps_ = possible_fps_[index_];
     FpsHandler::setFps(fps_);
+}
+
+void WindowManager::increaseMusic() noexcept
+{
+    if (music_percent_ == 100) return;
+    music_percent_ = music_percent_ + 10;
+    AudioDevice::setMusic(music_percent_);
+}
+
+void WindowManager::decreaseMusic() noexcept
+{
+    if (music_percent_ == 0) return;
+    music_percent_ = music_percent_ - 10;
+    AudioDevice::setMusic(music_percent_);
+}
+
+int WindowManager::getMusicPercentage() const noexcept
+{
+    return (music_percent_);
 }

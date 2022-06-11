@@ -30,13 +30,18 @@ void Home::createTexts() noexcept
     int width = core_entry_.getWindow().getWidth();
 
     settings_texts_.emplace_back(
-        FONT_PATH, "Music :", width / 2 + 70, width / 8 + (150 * buttons_.size() - 10));
+        FONT_PATH, "Music :", width / 2 + 40, width / 8 + (150 * buttons_.size() - 10));
     settings_texts_.emplace_back(
-        FONT_PATH, "Fps : ", width / 2 + 70, width / 8 + (150 * buttons_.size() + 70));
+        FONT_PATH, "Fps : ", width / 2 + 40, width / 8 + (150 * buttons_.size() + 70));
+    settings_texts_.emplace_back(FONT_PATH,
+        std::to_string(core_entry_.getWindow().getMusicPercentage()),
+        width / 2 + 200,
+        width / 8 + (150 * buttons_.size() - 10));
     settings_texts_.emplace_back(FONT_PATH,
         std::to_string(static_cast<int>(core_entry_.getWindow().getFps())),
         width / 2 + 200,
         width / 8 + (150 * buttons_.size() + 70));
+
     for (auto& it : settings_texts_) { it.invertDisplay(); }
 }
 
@@ -81,9 +86,13 @@ void Home::createButtons() noexcept
         0);
 
     settings_.emplace_back("assets/textures/selection/left.png",
-        width / 2,
+        width / 2 - 40,
         width / 8 + (150 * (buttons_.size()) - 30),
-        std::function<void(void)>([](void) { return; }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getWindow().decreaseMusic();
+            settings_texts_[2].setText(
+                std::to_string(core_entry_.getWindow().getMusicPercentage()));
+        }),
         FONT_PATH,
         "",
         0.2f);
@@ -91,17 +100,21 @@ void Home::createButtons() noexcept
     settings_.emplace_back("assets/textures/selection/right.png",
         width / 2 + 300,
         width / 8 + (150 * (buttons_.size()) - 30),
-        std::function<void(void)>([](void) { return; }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getWindow().increaseMusic();
+            settings_texts_[2].setText(
+                std::to_string(core_entry_.getWindow().getMusicPercentage()));
+        }),
         FONT_PATH,
         "",
         0.2f);
 
     settings_.emplace_back("assets/textures/selection/left.png",
-        width / 2,
+        width / 2 - 40,
         width / 8 + (150 * (buttons_.size()) + 50),
         std::function<void(void)>([this](void) {
             core_entry_.getWindow().decreaseFps();
-            settings_texts_[2].setText(
+            settings_texts_[3].setText(
                 std::to_string(static_cast<int>(core_entry_.getWindow().getFps())));
         }),
         FONT_PATH,
@@ -113,7 +126,8 @@ void Home::createButtons() noexcept
         width / 8 + (150 * (buttons_.size()) + 50),
         std::function<void(void)>([this](void) {
             core_entry_.getWindow().increaseFps();
-            settings_texts_[2].setText(std::to_string(static_cast<int>(core_entry_.getWindow().getFps())));
+            settings_texts_[3].setText(
+                std::to_string(static_cast<int>(core_entry_.getWindow().getFps())));
         }),
         FONT_PATH,
         "",

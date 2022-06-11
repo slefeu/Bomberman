@@ -21,22 +21,28 @@ class WindowManager
     WindowManager& operator=(const WindowManager& rhs) noexcept = delete;
     WindowManager& operator=(WindowManager&& rhs) noexcept = delete;
 
-    void display(Scene& scene, const Cameraman& camera) noexcept;
-    bool isExit() noexcept;
-
+    // getters and setters
     int   getWidth() const noexcept;
     int   getHeight() const noexcept;
     float getFps() const noexcept;
+    int   getMusicPercentage() const noexcept;
     void  setFps(float value) noexcept;
     void  resetHeight() noexcept;
     void  resetWidth() noexcept;
-    void  increaseFps() noexcept;
-    void  decreaseFps() noexcept;
+
+    // methods
+    void display(Scene& scene, const Cameraman& camera) noexcept;
+    bool isExit() noexcept;
+    void increaseFps() noexcept;
+    void decreaseFps() noexcept;
+    void increaseMusic() noexcept;
+    void decreaseMusic() noexcept;
 
   protected:
   private:
     int                  width_;
     int                  height_;
+    int                  music_percent_ = 100;
     float                fps_;
     int                  index_        = 1;
     std::array<float, 4> possible_fps_ = { 30, 60, 90, 120 };

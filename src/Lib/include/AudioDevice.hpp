@@ -22,6 +22,7 @@ class AudioDevice
     static void initialize() noexcept;
     static void update(const Scene& scene) noexcept;
     static void close() noexcept;
+    static void setMusic(float value) noexcept;
 
   protected:
   private:

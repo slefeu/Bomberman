@@ -21,3 +21,8 @@ void AudioDevice::close() noexcept
 {
     CloseAudioDevice();
 }
+
+void AudioDevice::setMusic(float value) noexcept
+{
+    SetMasterVolume(value / 100);
+}

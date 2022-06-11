@@ -7,14 +7,10 @@
 
 #include "GameData.hpp"
 
+#include "Crate.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
-
-// void GameData::setEntities(
-//     std::vector<std::unique_ptr<Entity>>* entities) noexcept
-// {
-//     entities_ = entities;
-// }
+#include "Wall.hpp"
 
 Vector2D GameData::getMousePos() const noexcept
 {
@@ -70,6 +66,26 @@ void GameData::addPlayer(int index) noexcept
 void GameData::addItem(bomberman::ItemType item) noexcept
 {
     entities_.emplace_back(std::make_unique<Item>(*this, item));
+}
+
+void GameData::addItem(const Vector3D& position) noexcept
+{
+    entities_.emplace_back(std::make_unique<Item>(position, *this));
+}
+
+void GameData::addCrate(Vector3D position, bomberman::ModelType model_type) noexcept
+{
+    entities_.emplace_back(std::make_unique<Crate>(position,
+        *models_[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
+            model_type)],
+        *this));
+}
+
+void GameData::addWall(Vector3D position, bomberman::ModelType model_type) noexcept
+{
+    entities_.emplace_back(std::make_unique<Wall>(position,
+        *models_[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
+            model_type)]));
 }
 
 std::vector<std::unique_ptr<Entity>>& GameData::getPlayers() noexcept

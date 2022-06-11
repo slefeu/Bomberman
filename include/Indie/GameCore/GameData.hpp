@@ -25,11 +25,9 @@ class GameData
     GameData& operator=(const GameData& rhs) noexcept = delete;
     GameData& operator=(GameData&& rhs) noexcept = delete;
 
-    Vector2D getMousePos() const noexcept;
-    void     updateMouse() noexcept;
-    void     setCurrentScene(const bomberman::SceneType& scene) noexcept;
-    // void     setEntities(
-    //         std::reference_wrapper<std::vector<std::unique_ptr<Entity>>> entities) noexcept;
+    Vector2D             getMousePos() const noexcept;
+    void                 updateMouse() noexcept;
+    void                 setCurrentScene(const bomberman::SceneType& scene) noexcept;
     bomberman::SceneType getCurrentScene() const noexcept;
     MouseHandler         getMouseHandler() const noexcept;
     int                  getNbPlayers() const noexcept;
@@ -39,6 +37,10 @@ class GameData
     void addSprite(const std::string_view& texture_path) noexcept;
     void addPlayer(int index) noexcept;
     void addItem(bomberman::ItemType item) noexcept;
+    void addItem(const Vector3D& position) noexcept;
+    void addCrate(Vector3D position, bomberman::ModelType model_type) noexcept;
+    void addWall(Vector3D position, bomberman::ModelType model_type) noexcept;
+
     void clearEntities() noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;

@@ -13,10 +13,9 @@
 #include "Wall.hpp"
 
 Crate::Crate(
-    Vector3D pos, Model3D& newModel, GameData& data, std::vector<std::unique_ptr<Entity>>* entities)
+    Vector3D pos, Model3D& newModel, GameData& data)
     : Entity()
-    , data(data)
-    , entities(entities)
+    , data_(data)
 {
     addComponent(Transform3D());
     addComponent(Render(newModel));
@@ -49,7 +48,8 @@ void Crate::dropItem()
 
     if (!transform.has_value()) throw(Error("Error in dropping item.\n"));
     if (rand() % 3 != 0) return;
-    entities->emplace_back(std::make_unique<Item>((Vector3D)transform->get().getPosition(), data));
+
+    data_.addItem(transform->get().getPosition());
 }
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

@@ -277,9 +277,7 @@ void Game::createMap() noexcept
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                core_entry_.getData().getEntities().emplace_back(std::make_unique<Wall>(vectorTemp,
-                    *(core_entry_.getData().getModels()[static_cast<typename std::underlying_type<
-                        bomberman::ModelType>::type>(bomberman::ModelType::M_WALL)])));
+                core_entry_.getData().addWall(vectorTemp, bomberman::ModelType::M_WALL);
             }
 
     // Ajout des murs une case sur deux
@@ -287,9 +285,7 @@ void Game::createMap() noexcept
         for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                core_entry_.getData().getEntities().emplace_back(std::make_unique<Wall>(vectorTemp,
-                    *(core_entry_.getData()
-                            .getModels()[static_cast<int>(bomberman::ModelType::M_WALL)])));
+                core_entry_.getData().addWall(vectorTemp, bomberman::ModelType::M_WALL);
             }
 
     // Génération des boites
@@ -315,11 +311,7 @@ void Game::createMap() noexcept
                 }
             }
             if (rand() % 100 < 80 && spawnCrate)
-                core_entry_.getData().getEntities().emplace_back(std::make_unique<Crate>(vectorTemp,
-                    *(core_entry_.getData()
-                            .getModels()[static_cast<int>(bomberman::ModelType::M_CRATE)]),
-                    core_entry_.getData(),
-                    &core_entry_.getData().getEntities()));
+                core_entry_.getData().addCrate(vectorTemp, bomberman::ModelType::M_CRATE);
         }
 }
 
@@ -361,8 +353,7 @@ void Game::hurryUp() noexcept
             }
         }
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
-        core_entry_.getData().getEntities().emplace_back(std::make_unique<Wall>(vectorTemp,
-            *(core_entry_.getData().getModels()[static_cast<int>(bomberman::ModelType::M_WALL)])));
+        core_entry_.getData().addWall(vectorTemp, bomberman::ModelType::M_WALL);
         lastTimeBlockPlace = chrono_->getTime();
         nbBlockPlaced++;
     }

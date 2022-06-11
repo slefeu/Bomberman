@@ -30,10 +30,14 @@ class WindowManager
     void  setFps(float value) noexcept;
     void  resetHeight() noexcept;
     void  resetWidth() noexcept;
+    void  increaseFps() noexcept;
+    void  decreaseFps() noexcept;
 
   protected:
   private:
-    int   width_;
-    int   height_;
-    float fps_;
+    int                  width_;
+    int                  height_;
+    float                fps_;
+    int                  index_        = 1;
+    std::array<float, 4> possible_fps_ = { 30, 60, 90, 120 };
 };

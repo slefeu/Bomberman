@@ -73,3 +73,21 @@ void WindowManager::setFps(float value) noexcept
     fps_ = value;
     FpsHandler::setFps(fps_);
 }
+
+void WindowManager::decreaseFps() noexcept
+{
+    if (fps_ == 30)
+        return;
+    index_--;
+    fps_ = possible_fps_[index_];
+    FpsHandler::setFps(fps_);
+}
+
+void WindowManager::increaseFps() noexcept
+{
+    if (fps_ == 120)
+        return;
+    index_++;
+    fps_ = possible_fps_[index_];
+    FpsHandler::setFps(fps_);
+}

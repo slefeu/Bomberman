@@ -33,8 +33,11 @@ void Home::createTexts() noexcept
         FONT_PATH, "Music :", width / 2 + 70, width / 8 + (150 * buttons_.size() - 10));
     settings_texts_.emplace_back(
         FONT_PATH, "Fps : ", width / 2 + 70, width / 8 + (150 * buttons_.size() + 70));
-    settings_texts_[0].invertDisplay();
-    settings_texts_[1].invertDisplay();
+    settings_texts_.emplace_back(FONT_PATH,
+        std::to_string(static_cast<int>(core_entry_.getWindow().getFps())),
+        width / 2 + 200,
+        width / 8 + (150 * buttons_.size() + 70));
+    for (auto& it : settings_texts_) { it.invertDisplay(); }
 }
 
 void Home::createButtons() noexcept
@@ -59,7 +62,7 @@ void Home::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
         width / 8 + (150 * buttons_.size()),
-        std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),
+        std::function<void(void)>([this](void) { core_entry_.setExit(true); }),
         FONT_PATH,
         "Exit",
         30,
@@ -96,7 +99,11 @@ void Home::createButtons() noexcept
     settings_.emplace_back("assets/textures/selection/left.png",
         width / 2,
         width / 8 + (150 * (buttons_.size()) + 50),
-        std::function<void(void)>([](void) { return; }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getWindow().decreaseFps();
+            settings_texts_[2].setText(
+                std::to_string(static_cast<int>(core_entry_.getWindow().getFps())));
+        }),
         FONT_PATH,
         "",
         0.2f);
@@ -104,7 +111,10 @@ void Home::createButtons() noexcept
     settings_.emplace_back("assets/textures/selection/right.png",
         width / 2 + 300,
         width / 8 + (150 * (buttons_.size()) + 50),
-        std::function<void(void)>([](void) { return; }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getWindow().increaseFps();
+            settings_texts_[2].setText(std::to_string(static_cast<int>(core_entry_.getWindow().getFps())));
+        }),
         FONT_PATH,
         "",
         0.2f);
@@ -122,18 +132,20 @@ void Home::display2D() noexcept
 
 void Home::action() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
+    // if (controller.isGamepadConnected(0)) {
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
+    //         button_index_ = (button_index_ - 1) % buttons_.size();
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
+    //         button_index_ = (button_index_ + 1) % buttons_.size();
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_B))
+    //     buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
+    //     buttons_[button_index_].setState(1);
+    // } else {
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    for (auto& it : settings_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    // }
 }
 
 void Home::DestroyPool() noexcept {}

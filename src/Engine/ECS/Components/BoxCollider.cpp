@@ -7,6 +7,7 @@
 
 #include "BoxCollider.hpp"
 
+#include "CollisionChecker.hpp"
 #include "raylib.h"
 
 BoxCollider::BoxCollider(const Vector3D& newPos, const Vector3D& newSize, bool solid) noexcept
@@ -21,19 +22,7 @@ bool BoxCollider::checkCollision(const Vector3D& pos,
     const Vector3D&                              otherPos,
     const Vector3D&                              otherSize) const noexcept
 {
-    Vector3 BoundingBox1_1 = { pos.x - size.x / 2, pos.y - size.y / 2, pos.z - size.z / 2 };
-    Vector3 BoundingBox1_2 = { pos.x + size.x / 2, pos.y + size.y / 2, pos.z + size.z / 2 };
-    Vector3 BoundingBox2_1 = {
-        otherPos.x - otherSize.x / 2, otherPos.y - otherSize.y / 2, otherPos.z - otherSize.z / 2
-    };
-    Vector3 BoundingBox2_2 = {
-        otherPos.x + otherSize.x / 2, otherPos.y + otherSize.y / 2, otherPos.z + otherSize.z / 2
-    };
-
-    BoundingBox BoundingBox1 = { BoundingBox1_1, BoundingBox1_2 };
-    BoundingBox BoundingBox2 = { BoundingBox2_1, BoundingBox2_2 };
-
-    return (CheckCollisionBoxes(BoundingBox1, BoundingBox2));
+    return CollisionChecker::check(pos, size, otherPos, otherSize);
 }
 
 Vector3D BoxCollider::getPosition() const noexcept
@@ -54,13 +43,6 @@ void BoxCollider::setPositionZ(int pos) noexcept
 void BoxCollider::setPositionY(int pos) noexcept
 {
     position_.y = pos;
-}
-
-void BoxCollider::display() const noexcept
-{
-    if (debug)
-        DrawCubeWiresV(
-            { position_.x, position_.y, position_.z }, { size_.x, size_.y, size_.z }, GREEN);
 }
 
 void BoxCollider::update(const Vector3D& newPos) noexcept

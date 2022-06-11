@@ -20,6 +20,13 @@ Core::Core() noexcept
     initScenes();
 }
 
+Core::~Core() noexcept
+{
+    data_.unloadAll();
+    for (auto& scene : scenes) { scene.reset(); }
+    window_.reset();
+}
+
 Scene& Core::findScene() noexcept
 {
     return (*scenes[static_cast<typename std::underlying_type<bomberman::SceneType>::type>(

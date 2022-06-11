@@ -3,7 +3,7 @@ project(bomberman)
 
 set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-g")
 
 set(CMAKE_MODULE_LINKER_FLAGS "fsanitize=address")
@@ -64,7 +64,7 @@ set(
   src/Lib/Controller.cpp
   src/Lib/Model3D.cpp
   src/Lib/Cameraman.cpp
-
+  src/Lib/CollisionChecker.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

@@ -26,7 +26,7 @@ class GameData
     ~GameData() noexcept                     = default;
 
     GameData& operator=(const GameData& rhs) noexcept = delete;
-    GameData& operator=(GameData&& rhs) noexcept = delete;
+    GameData& operator=(GameData&& rhs) noexcept      = delete;
 
     Vector2D             getMousePos() const noexcept;
     void                 updateMouse() noexcept;
@@ -46,6 +46,7 @@ class GameData
     void addFire(std::unique_ptr<Fire> fire) noexcept;
     void addBomb(Vector3D position, Player& ref, int size) noexcept;
     void clearEntities() noexcept;
+    void unloadAll() noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;
     std::vector<std::unique_ptr<Entity>>&  getEntities() noexcept;

@@ -129,3 +129,11 @@ void GameData::clearEntities() noexcept
 {
     entities_.clear();
 }
+
+void GameData::unloadAll() noexcept
+{
+    entities_.clear();
+    players_.clear();
+    models_.clear();
+    sprites_.clear();
+}

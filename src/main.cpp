@@ -11,7 +11,6 @@ int main()
         srand(time(NULL));
         auto core = std::make_unique<Core>();
         core->run();
-        core.reset();
     } catch (const Error& error) {
         std::cerr << error.what() << std::endl;
         return (

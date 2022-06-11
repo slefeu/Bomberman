@@ -34,7 +34,7 @@ Fire::Fire(Vector3D position, Model3D& model)
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
     transform->get().setRotationAngle(-90.0f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
-    renderer->get().addAnimation("assets/models/fire.iqm");
+    renderer->get().getAnimation().addAnimation("assets/models/fire.iqm");
 
     addComponent(BoxCollider({ position.x, position.y, position.z }, { 0.5f, 0.5f, 0.5f }, true));
 }

@@ -43,7 +43,8 @@ void PlayerSelect::display3D() noexcept
         Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
         Vector3D rotation = { 0, 1, 0 };
 
-        render->get().setAnimationId(1);
+        render->get().getAnimation().setAnimationId(1);
+        render->get().getAnimation().updateAnimation(render->get().getModel());
         render->get().displayModelV(transform->get(), position, rotation, 180.0f);
         nbPlayers++;
     }

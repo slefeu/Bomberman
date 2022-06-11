@@ -39,7 +39,7 @@ Player::Player(int newId, GameData& data)
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setScale(0.65f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
-    renderer->get().addAnimation("assets/models/player.iqm");
+    renderer->get().getAnimation().addAnimation("assets/models/player.iqm");
     setKeyboard();
     setPosition();
     setPlayerType(PlayerType::NORMAL);
@@ -139,11 +139,11 @@ void Player::Update()
         if (controller.isKeyPressed(dropBomb)) placeBomb();
     }
     if (!animate) {
-        renderer->get().setSkipFrame(1);
-        renderer->get().setAnimationId(1);
+        renderer->get().getAnimation().setSkipFrame(1);
+        renderer->get().getAnimation().setAnimationId(1);
     } else {
-        renderer->get().setSkipFrame(2);
-        renderer->get().setAnimationId(0);
+        renderer->get().getAnimation().setSkipFrame(2);
+        renderer->get().getAnimation().setAnimationId(0);
     }
 }
 

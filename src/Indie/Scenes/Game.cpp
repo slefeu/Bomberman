@@ -387,7 +387,7 @@ void Game::endGame() noexcept
 
         if (!trans.has_value() || !render.has_value()) continue;
 
-        render->get().setAnimationId(3);
+        render->get().getAnimation().setAnimationId(3);
         trans->get().setRotationAngle(90.0f);
 
         if (core_entry_.getData().getPlayers()[i]->getEnabledValue()) {

@@ -19,11 +19,11 @@ class Home : public Scene
 {
   public:
     Home(Core& core_ref) noexcept;
-    Home(const Home& other) noexcept = delete;
-    Home(Home&& other) noexcept      = delete;
+    Home(const Home& other) noexcept          = delete;
+    Home(Home&& other) noexcept               = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept = delete;
-    ~Home() noexcept                     = default;
+    Home& operator=(Home&& rhs) noexcept      = delete;
+    ~Home() noexcept                          = default;
 
     void display3D() noexcept final;
     void display2D() noexcept final;

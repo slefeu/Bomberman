@@ -66,6 +66,7 @@ set(
   src/Lib/Cameraman.cpp
   src/Lib/CollisionChecker.cpp
   src/Lib/DeltaTime.cpp
+  src/Lib/Animation.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})

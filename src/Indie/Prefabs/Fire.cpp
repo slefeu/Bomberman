@@ -19,7 +19,7 @@
 Fire::Fire(Vector3D position, Model3D& model)
     : Entity()
     , explodeTime(0.5f)
-    , explodeTimer(std::make_unique<Timer>(explodeTime))
+    , explodeTimer(explodeTime)
 {
     addComponent(Transform3D());
     addComponent(Render(model));
@@ -43,8 +43,8 @@ Fire::Fire(Vector3D position, Model3D& model)
 
 void Fire::Update()
 {
-    explodeTimer->updateTimer();
-    if (explodeTimer->isTimerDone()) setEnabledValue(false);
+    explodeTimer.updateTimer();
+    if (explodeTimer.isTimerDone()) setEnabledValue(false);
 }
 
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept

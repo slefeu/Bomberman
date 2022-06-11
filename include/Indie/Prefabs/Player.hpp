@@ -30,12 +30,11 @@ class Player : public Entity
     Player& operator=(const Player& rhs) noexcept = delete;
     Player& operator=(Player&& rhs) noexcept = delete;
 
-    void       dispatchItem(void) noexcept;
-    void       addItem(bomberman::ItemType item) noexcept;
     void       Update() final;
+    void       addItem(bomberman::ItemType item) noexcept;
+    void       dispatchItem() noexcept;
     void       OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     void       setStats(int bomb, int sp, int size) noexcept;
-    void       setBombArray(std::vector<std::unique_ptr<Entity>>& bombsArray) noexcept;
     void       setPlayerType(PlayerType type) noexcept;
     void       setWallPass(const bool& pass) noexcept;
     int        getNbBombMax() const noexcept;
@@ -54,33 +53,34 @@ class Player : public Entity
     int        findPrevType() const noexcept;
 
   private:
+    // methods
     void setKeyboard() noexcept;
     void placeBomb();
-    bool isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir);
+    bool isCollidingNextTurn(int xdir, int zdir);
 
-    SoundManager                          killSound_;
-    Controller                            controller;
-    Key                                   moveUp;
-    Key                                   moveDown;
-    Key                                   moveLeft;
-    Key                                   moveRight;
-    Key                                   dropBomb;
-    int                                   id;
-    GameData&                             data;
-    std::vector<bomberman::ItemType>      items;
-    std::vector<std::unique_ptr<Entity>>* bombs;
-    bool                                  wallpass;
-    std::unique_ptr<Timer>                wallpassTimer;
-    bool                                  wallpassEnd;
-    int                                   nbBomb;
-    float                                 speed;
-    int                                   bombSize;
-    int                                   nbBombMax;
-    float                                 speedMax;
-    int                                   bombSizeMax;
-    PlayerType                            type;
-    int                                   colorIndex = 0;
-    std::array<float, 4>                  direction  = { 90, 270, 90, 270 };
+    // attributes
+    SoundManager                     killSound_;
+    Controller                       controller;
+    Key                              moveUp;
+    Key                              moveDown;
+    Key                              moveLeft;
+    Key                              moveRight;
+    Key                              dropBomb;
+    int                              id;
+    GameData&                        data;
+    std::vector<bomberman::ItemType> items;
+    bool                             wallpass;
+    Timer                            wallpassTimer;
+    bool                             wallpassEnd;
+    int                              nbBomb;
+    float                            speed;
+    int                              bombSize;
+    int                              nbBombMax;
+    float                            speedMax;
+    int                              bombSizeMax;
+    PlayerType                       type;
+    int                              colorIndex = 0;
+    std::array<float, 4>             direction  = { 90, 270, 90, 270 };
 
     std::vector<std::array<unsigned char, 3>> colors = { Colors::C_LIGHTGRAY,
         Colors::C_GRAY,

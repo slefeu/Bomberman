@@ -11,20 +11,14 @@
 #include "InstanceOf.hpp"
 #include "Wall.hpp"
 
-Bomb::Bomb(Vector3D                       pos,
-    Player*                               p,
-    Model3D&                              newModel,
-    int                                   bombSize,
-    GameData&                             data,
-    std::vector<std::unique_ptr<Entity>>* entities)
+Bomb::Bomb(Vector3D pos, Player& p, Model3D& newModel, int bombSize, GameData& data)
     : Entity()
     , lifeTime(3.0f)
-    , lifeTimer(std::make_unique<Timer>(lifeTime))
+    , lifeTimer(lifeTime)
     , player(p)
     , size(bombSize)
     , hasHitbox(false)
     , data(data)
-    , entities(entities)
     , is_exploding_(false)
     , animeDir(1)
     , dropSound_(DROP_BOMB)
@@ -57,8 +51,8 @@ void Bomb::Update()
     if (!hitbox.has_value() || !transform.has_value())
         throw(Error("Error in updating a bomb element.\n"));
 
-    lifeTimer->updateTimer();
-    if (lifeTimer->isTimerDone()) {
+    lifeTimer.updateTimer();
+    if (lifeTimer.isTimerDone()) {
         explode();
         return;
     }
@@ -86,7 +80,7 @@ void Bomb::explode() noexcept
     if (is_exploding_) return;
     is_exploding_ = true;
     hitbox->get().setIsSolid(false);
-    if (player->getNbBombMax() > player->getNbBomb()) player->setNbBomb(player->getNbBomb() + 1);
+    if (player.getNbBombMax() > player.getNbBomb()) player.setNbBomb(player.getNbBomb() + 1);
     fires.emplace_back(std::make_unique<Fire>(getComponent<Transform3D>()->get().getPosition(),
         *(data.getModels()[static_cast<int>(bomberman::ModelType::M_FIRE)])));
     createFire({ 1.0f, 0.0f, 0.0f });
@@ -94,7 +88,7 @@ void Bomb::explode() noexcept
     createFire({ 0.0f, 0.0f, 1.0f });
     createFire({ 0.0f, 0.0f, -1.0f });
 
-    for (auto& fire : fires) { entities->emplace_back(std::move(fire)); }
+    for (auto& fire : fires) { data.addFire(std::move(fire)); }
     setEnabledValue(false);
 }
 
@@ -111,7 +105,7 @@ void Bomb::createFire(Vector3D mul) noexcept
         fires.emplace_back(std::make_unique<Fire>(
             newPos, *(data.getModels()[static_cast<int>(bomberman::ModelType::M_FIRE)])));
         auto& fire = fires.back();
-        for (auto& other : *entities) {
+        for (auto& other : data.getEntities()) {
             auto collider      = fire->getComponent<BoxCollider>();
             auto other_collide = other->getComponent<BoxCollider>();
             if (collider->get().isColliding(other_collide->get()))

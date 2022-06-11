@@ -20,7 +20,7 @@ Player::Player(int newId, GameData& data)
     , id(newId)
     , data(data)
     , wallpass(false)
-    , wallpassTimer(std::make_unique<Timer>(5.0f))
+    , wallpassTimer(5.0f)
     , wallpassEnd(false)
     , killSound_(KILL)
 {
@@ -81,11 +81,11 @@ void Player::Update()
     if (!getEnabledValue()) return;
     hitbox->get().update(transform->get().getPosition());
     if (wallpass) {
-        wallpassTimer->updateTimer();
-        if (wallpassTimer->isTimerDone()) {
+        wallpassTimer.updateTimer();
+        if (wallpassTimer.isTimerDone()) {
             wallpass    = false;
             wallpassEnd = true;
-            wallpassTimer->resetTimer();
+            wallpassTimer.resetTimer();
         }
     }
     if (wallpass || wallpassEnd) {
@@ -98,19 +98,19 @@ void Player::Update()
         float axisY = controller.getGamepadAxis(id, Axis::G_AXIS_LEFT_Y);
 
         if (axisX != 0 || axisY != 0) animate = true;
-        if (axisY < -0.5f && !isCollidingNextTurn(*bombs, 0, -1)) {
+        if (axisY < -0.5f && !isCollidingNextTurn(0, -1)) {
             transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
         }
-        if (axisY > 0.5f && !isCollidingNextTurn(*bombs, 0, 1)) {
+        if (axisY > 0.5f && !isCollidingNextTurn(0, 1)) {
             transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
         }
-        if (axisX < -0.5f && !isCollidingNextTurn(*bombs, -1, 0)) {
+        if (axisX < -0.5f && !isCollidingNextTurn(-1, 0)) {
             transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
         }
-        if (axisX > 0.5f && !isCollidingNextTurn(*bombs, 1, 0)) {
+        if (axisX > 0.5f && !isCollidingNextTurn(1, 0)) {
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
@@ -120,19 +120,19 @@ void Player::Update()
         if (controller.isKeyDown(moveUp) || controller.isKeyDown(moveDown)
             || controller.isKeyDown(moveLeft) || controller.isKeyDown(moveRight))
             animate = true;
-        if (controller.isKeyDown(moveUp) && !isCollidingNextTurn(*bombs, 0, -1)) {
+        if (controller.isKeyDown(moveUp) && !isCollidingNextTurn(0, -1)) {
             transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
         }
-        if (controller.isKeyDown(moveDown) && !isCollidingNextTurn(*bombs, 0, 1)) {
+        if (controller.isKeyDown(moveDown) && !isCollidingNextTurn(0, 1)) {
             transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
         }
-        if (controller.isKeyDown(moveLeft) && !isCollidingNextTurn(*bombs, -1, 0)) {
+        if (controller.isKeyDown(moveLeft) && !isCollidingNextTurn(-1, 0)) {
             transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
         }
-        if (controller.isKeyDown(moveRight) && !isCollidingNextTurn(*bombs, 1, 0)) {
+        if (controller.isKeyDown(moveRight) && !isCollidingNextTurn(1, 0)) {
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
@@ -225,7 +225,7 @@ void Player::setKeyboard() noexcept
     }
 }
 
-bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, int xdir, int zdir)
+bool Player::isCollidingNextTurn(int xdir, int zdir)
 {
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
@@ -239,7 +239,7 @@ bool Player::isCollidingNextTurn(std::vector<std::unique_ptr<Entity>>& others, i
         position.z + (speed * zdir * GetFrameTime()) };
 
     if (!getEnabledValue()) return false;
-    for (auto& other : others) {
+    for (auto& other : data.getEntities()) {
         if (hitbox == std::nullopt || other->getComponent<BoxCollider>() == std::nullopt) continue;
         auto other_hitbox = other->getComponent<BoxCollider>();
         if (other_hitbox.has_value()) {
@@ -266,7 +266,7 @@ void Player::placeBomb()
 {
     auto transform = getComponent<Transform3D>();
     if (!transform.has_value()) throw(Error("Error in updating the placement of bombs.\n"));
-    for (auto& i : *bombs) {
+    for (auto& i : data.getEntities()) {
         auto bomb = i->getComponent<Transform3D>();
         if (bomb.has_value()
             && bomb->get().getPosition().x == round(transform->get().getPosition().x)
@@ -275,22 +275,12 @@ void Player::placeBomb()
     }
     if (nbBomb <= 0) return;
     nbBomb--;
-     bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),
-        this,
-        *(data.getModels()[static_cast<int>(bomberman::ModelType::M_BOMB)]),
-        bombSize,
-        data,
-        bombs));
-}
-
-void Player::setBombArray(std::vector<std::unique_ptr<Entity>>& bombsArray) noexcept
-{
-    bombs = &bombsArray;
+    data.addBomb(transform->get().getPosition(), *this, bombSize);
 }
 
 void Player::setWallPass(const bool& pass) noexcept
 {
-    this->wallpassTimer->resetTimer();
+    this->wallpassTimer.resetTimer();
     wallpass = pass;
 }
 

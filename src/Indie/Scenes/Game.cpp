@@ -17,7 +17,7 @@
 Game::Game(Core& core_ref) noexcept
     : Scene()
     , core_entry_(core_ref)
-    , chrono_(std::make_unique<Timer>(time_party_))
+    , chrono_(time_party_)
     , isHurry(false)
     , nbBlockPlaced(0)
     , loop_music_(GAME_MUSIC)
@@ -56,7 +56,6 @@ void Game::switchAction() noexcept
     for (auto& player : core_entry_.getData().getPlayers()) {
         if (!Type:: instanceof <Player>(player.get())) continue;
         player->setEnabledValue(true);
-        ((std::unique_ptr<Player>&)player)->setBombArray(core_entry_.getData().getEntities());
         auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
         ((std::unique_ptr<Player>&)player)->setPlayerType(type);
         ((std::unique_ptr<Player>&)player)->setPosition();
@@ -64,7 +63,7 @@ void Game::switchAction() noexcept
         ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
     }
 
-    chrono_->resetTimer();
+    chrono_.resetTimer();
     loop_music_.play();
     hurry_music_.stop();
     startSound_.play();
@@ -148,8 +147,8 @@ void Game::display2D() noexcept
     }
     if (pause) { pauseText_.draw(); }
 
-    if (!chrono_->isTimerDone()) {
-        auto time = std::to_string(int(round(chrono_->getTime())));
+    if (!chrono_.isTimerDone()) {
+        auto time = std::to_string(int(round(chrono_.getTime())));
         timeText_.setText(time);
         timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - (time.size() * 2), 10);
         timeText_.draw();
@@ -187,22 +186,22 @@ void Game::action() noexcept
         int alive = 0;
         for (auto& player : core_entry_.getData().getPlayers())
             if (player->getEnabledValue()) { alive++; }
-        if (alive == 1 || alive == 0 || chrono_->isTimerDone()) { endGame(); }
+        if (alive == 1 || alive == 0 || chrono_.isTimerDone()) { endGame(); }
     } else {
         endGameAction();
         return;
     }
 
-    chrono_->updateTimer();
+    chrono_.updateTimer();
     for (auto& entity : core_entry_.getData().getEntities()) entity->Update();
 
     if (!core_entry_.getCameraman().getIsMoving())
         core_entry_.getCameraman().lookBetweenEntity(core_entry_.getData().getPlayers());
 
     // Activation du Hurry Up !
-    if (int(round(chrono_->getTime())) <= 55 && !isHurry) {
+    if (int(round(chrono_.getTime())) <= 55 && !isHurry) {
         isHurry            = true;
-        lastTimeBlockPlace = chrono_->getTime();
+        lastTimeBlockPlace = chrono_.getTime();
         HurryUpX           = core_entry_.getWindow().getWidth() - 100;
         hurryUpSound_.play();
         hurry_music_.play();
@@ -277,7 +276,7 @@ void Game::createMap() noexcept
         for (int x = -7; x < 8; x++)
             if (x == -7 || x == 7 || z == -5 || z == 7) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                core_entry_.getData().addWall(vectorTemp, bomberman::ModelType::M_WALL);
+                core_entry_.getData().addWall(vectorTemp);
             }
 
     // Ajout des murs une case sur deux
@@ -285,7 +284,7 @@ void Game::createMap() noexcept
         for (int x = -5; x < 6; x++)
             if (x % 2 != 0 && z % 2 != 0) {
                 vectorTemp = { x * 1.0f, 0.0f, z * 1.0f };
-                core_entry_.getData().addWall(vectorTemp, bomberman::ModelType::M_WALL);
+                core_entry_.getData().addWall(vectorTemp);
             }
 
     // Génération des boites
@@ -310,15 +309,14 @@ void Game::createMap() noexcept
                     break;
                 }
             }
-            if (rand() % 100 < 80 && spawnCrate)
-                core_entry_.getData().addCrate(vectorTemp, bomberman::ModelType::M_CRATE);
+            if (rand() % 100 < 80 && spawnCrate) core_entry_.getData().addCrate(vectorTemp);
         }
 }
 
 void Game::hurryUp() noexcept
 {
     if (!isHurry) return;
-    float time = chrono_->getTime();
+    float time = chrono_.getTime();
     if (lastTimeBlockPlace - time >= 0.37f) {
         Vector3D vectorTemp;
         if (direction == Direction::UP) {
@@ -353,8 +351,8 @@ void Game::hurryUp() noexcept
             }
         }
         vectorTemp = { x * 1.0f, 5.0f, z * 1.0f };
-        core_entry_.getData().addWall(vectorTemp, bomberman::ModelType::M_WALL);
-        lastTimeBlockPlace = chrono_->getTime();
+        core_entry_.getData().addWall(vectorTemp);
+        lastTimeBlockPlace = chrono_.getTime();
         nbBlockPlaced++;
     }
     HurryUpX -= 500.0f * GetFrameTime();

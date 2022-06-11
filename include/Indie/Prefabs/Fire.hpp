@@ -13,10 +13,6 @@
 
 class Fire : public Entity
 {
-  private:
-    float                  explodeTime;
-    std::unique_ptr<Timer> explodeTimer;
-
   public:
     Fire(Vector3D posi, Model3D& model);
     ~Fire() noexcept                 = default;
@@ -28,4 +24,8 @@ class Fire : public Entity
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;
     bool ExplodeElements(std::unique_ptr<Entity>& other) noexcept;
+
+  private:
+    float explodeTime;
+    Timer explodeTimer;
 };

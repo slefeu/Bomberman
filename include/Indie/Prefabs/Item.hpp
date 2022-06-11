@@ -19,9 +19,10 @@ class Item : public Entity
     Item(GameData& data, bomberman::ItemType type);
     Item(const Item& other) noexcept = delete;
     Item(Item&& other) noexcept      = delete;
+    ~Item() noexcept                 = default;
+
     Item& operator=(const Item& rhs) noexcept = delete;
     Item& operator=(Item&& rhs) noexcept = delete;
-    ~Item() noexcept                     = default;
 
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;

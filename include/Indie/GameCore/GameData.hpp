@@ -14,6 +14,9 @@
 #include "Scene.hpp"
 #include "Sprite.hpp"
 
+class Fire;
+class Player;
+
 class GameData
 {
   public:
@@ -38,8 +41,10 @@ class GameData
     void addPlayer(int index) noexcept;
     void addItem(bomberman::ItemType item) noexcept;
     void addItem(const Vector3D& position) noexcept;
-    void addCrate(Vector3D position, bomberman::ModelType model_type) noexcept;
-    void addWall(Vector3D position, bomberman::ModelType model_type) noexcept;
+    void addCrate(Vector3D position) noexcept;
+    void addWall(Vector3D position) noexcept;
+    void addFire(std::unique_ptr<Fire> fire) noexcept;
+    void addBomb(Vector3D position, Player& ref, int size) noexcept;
     void clearEntities() noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;

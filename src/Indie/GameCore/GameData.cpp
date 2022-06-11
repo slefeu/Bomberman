@@ -7,7 +7,9 @@
 
 #include "GameData.hpp"
 
+#include "Bomb.hpp"
 #include "Crate.hpp"
+#include "Fire.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
 #include "Wall.hpp"
@@ -73,19 +75,34 @@ void GameData::addItem(const Vector3D& position) noexcept
     entities_.emplace_back(std::make_unique<Item>(position, *this));
 }
 
-void GameData::addCrate(Vector3D position, bomberman::ModelType model_type) noexcept
+void GameData::addCrate(Vector3D position) noexcept
 {
     entities_.emplace_back(std::make_unique<Crate>(position,
         *models_[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
-            model_type)],
+            bomberman::ModelType::M_CRATE)],
         *this));
 }
 
-void GameData::addWall(Vector3D position, bomberman::ModelType model_type) noexcept
+void GameData::addWall(Vector3D position) noexcept
 {
     entities_.emplace_back(std::make_unique<Wall>(position,
         *models_[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
-            model_type)]));
+            bomberman::ModelType::M_WALL)]));
+}
+
+void GameData::addFire(std::unique_ptr<Fire> fire) noexcept
+{
+    entities_.push_back(std::move(fire));
+}
+
+void GameData::addBomb(Vector3D position, Player& player_ref, int size) noexcept
+{
+    entities_.emplace_back(std::make_unique<Bomb>(position,
+        player_ref,
+        *models_[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
+            bomberman::ModelType::M_BOMB)],
+        size,
+        *this));
 }
 
 std::vector<std::unique_ptr<Entity>>& GameData::getPlayers() noexcept

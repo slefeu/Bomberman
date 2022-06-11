@@ -12,8 +12,7 @@
 #include "Item.hpp"
 #include "Wall.hpp"
 
-Crate::Crate(
-    Vector3D pos, Model3D& newModel, GameData& data)
+Crate::Crate(Vector3D pos, Model3D& newModel, GameData& data)
     : Entity()
     , data_(data)
 {

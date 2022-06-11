@@ -40,7 +40,6 @@ class GameData
     void addPlayer(int index) noexcept;
     void addItem(bomberman::ItemType item) noexcept;
     void clearEntities() noexcept;
-    void addBomb() noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;
     std::vector<std::unique_ptr<Entity>>&  getEntities() noexcept;

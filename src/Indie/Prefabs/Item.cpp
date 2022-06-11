@@ -145,7 +145,6 @@ Vector3D Item::findFreePosition(void) const noexcept
         x   = rand() % 12 - 6;
         z   = rand() % 12 - 5;
         pos = { x * 1.0f, 0.25f, z * 1.0f };
-        std::cout << "INFO: Item from Player drop at x:" << pos.x << " z:" << pos.z << std::endl;
     } while (entitiesHere(pos));
 
     return (pos);

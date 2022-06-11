@@ -275,7 +275,7 @@ void Player::placeBomb()
     }
     if (nbBomb <= 0) return;
     nbBomb--;
-    bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),
+     bombs->emplace_back(std::make_unique<Bomb>(transform->get().getPosition(),
         this,
         *(data.getModels()[static_cast<int>(bomberman::ModelType::M_BOMB)]),
         bombSize,

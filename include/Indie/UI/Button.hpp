@@ -55,6 +55,7 @@ class Button
     bool checkCollision(const MouseHandler& mouse_) noexcept;
     void setState(int state) noexcept;
     void setPosition(const Vector2& pos) noexcept;
+    void invertDisplay() noexcept;
 
   protected:
   private:

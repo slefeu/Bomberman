@@ -129,3 +129,8 @@ void Button::setPosition(const Vector2& pos) noexcept
     texture_.setPos(pos.x, pos.y);
     rectangle_.setPos(pos.x, pos.y);
 }
+
+void Button::invertDisplay() noexcept
+{
+    texture_.invertDisplay();
+}

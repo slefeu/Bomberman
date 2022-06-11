@@ -33,6 +33,7 @@ class TextHandler
     void setPosition(int posX, int posY) noexcept;
     void setText(const std::string_view& message) noexcept;
     void unload() noexcept;
+    void invertDisplay() noexcept;
 
   protected:
   private:
@@ -41,5 +42,6 @@ class TextHandler
     std::string  message_;
     Vector2D     position_;
     ColorManager color_;
-    bool         unloaded_ = false;
+    bool         unloaded_  = false;
+    bool         displayed_ = true;
 };

@@ -51,12 +51,18 @@ void TextHandler::draw() const noexcept
 {
     auto color = color_.getColor();
 
+    if (!displayed_) { return; }
     DrawTextEx(font_,
         message_.c_str(),
         { position_.x, position_.y },
         font_size_,
         0,
         (Color){ color[0], color[1], color[2], 255 });
+}
+
+void TextHandler::invertDisplay() noexcept
+{
+    displayed_ = !displayed_;
 }
 
 void TextHandler::setTextColor(const std::array<unsigned char, 3>& color) noexcept

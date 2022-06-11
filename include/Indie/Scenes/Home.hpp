@@ -41,19 +41,22 @@ class Home : public Scene
     // methods
     void drawButtons() const noexcept;
     void createButtons() noexcept;
+    void createTexts() noexcept;
 
     // attributes
-    MusicManager        loop_music_;
-    std::vector<Button> buttons_      = {};
-    int                 button_index_ = 0;
-    Core&               core_entry_;
-    ColorManager        background_color_;
-    Sprite              background_;
-    Sprite              title_;
-    Controller          controller;
-    std::vector<Sprite> settings_;
+    MusicManager             loop_music_;
+    std::vector<Button>      buttons_      = {};
+    int                      button_index_ = 0;
+    Core&                    core_entry_;
+    ColorManager             background_color_;
+    Sprite                   background_;
+    Sprite                   title_;
+    Controller               controller;
+    std::vector<Button>      settings_;
+    std::vector<TextHandler> settings_texts_;
 
     static const inline char* MENU_MUSIC = "assets/audios/MainMenu.mp3";
     static const inline char* BG_PATH    = "assets/textures/home/background.png";
     static const inline char* TITLE_PATH = "assets/textures/home/title.png";
+    static const inline char* FONT_PATH  = "assets/fonts/menu.ttf";
 };

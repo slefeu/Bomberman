@@ -40,7 +40,6 @@ class GameData
     void addItem(const Vector3D& position) noexcept;
     void addCrate(Vector3D position, bomberman::ModelType model_type) noexcept;
     void addWall(Vector3D position, bomberman::ModelType model_type) noexcept;
-
     void clearEntities() noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;

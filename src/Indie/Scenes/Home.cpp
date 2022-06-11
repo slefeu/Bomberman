@@ -16,12 +16,7 @@ Home::Home(Core& core_ref) noexcept
     , title_(TITLE_PATH, 30, 30)
 {
     createButtons();
-    settings_.emplace_back("assets/textures/home/button.png",
-        core_entry_.getWindow().getWidth() / 2,
-        core_entry_.getWindow().getWidth() / 4 + (150 * (buttons_.size() + 1)));
-    settings_.emplace_back("assets/textures/home/button.png",
-        core_entry_.getWindow().getWidth() / 2,
-        core_entry_.getWindow().getWidth() / 4 + (150 * (buttons_.size() + 2)));
+    createTexts();
 }
 
 void Home::switchAction() noexcept
@@ -30,42 +25,90 @@ void Home::switchAction() noexcept
         { 20.0f, 50.0f, 30.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 2.0f, 0.0f });
 }
 
+void Home::createTexts() noexcept
+{
+    int width = core_entry_.getWindow().getWidth();
+
+    settings_texts_.emplace_back(
+        FONT_PATH, "Music :", width / 2 + 70, width / 8 + (150 * buttons_.size() - 10));
+    settings_texts_.emplace_back(
+        FONT_PATH, "Fps : ", width / 2 + 70, width / 8 + (150 * buttons_.size() + 70));
+    settings_texts_[0].invertDisplay();
+    settings_texts_[1].invertDisplay();
+}
+
 void Home::createButtons() noexcept
 {
-    int width  = core_entry_.getWindow().getWidth();
-    int height = core_entry_.getWindow().getWidth();
+    int width = core_entry_.getWindow().getWidth();
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
-        height / 8,
+        width / 8,
         std::function<void(void)>(
             [this](void) { return (core_entry_.switchScene(bomberman::SceneType::SELECT)); }),
-        "assets/fonts/menu.ttf",
+        FONT_PATH,
         "Play");
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
-        (height / 8) + (150 * buttons_.size()),
+        (width / 8) + (150 * buttons_.size()),
         std::function<void(void)>([](void) { return; }),
-        "assets/fonts/menu.ttf",
+        FONT_PATH,
         "Load");
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
-        height / 8 + (150 * buttons_.size()),
+        width / 8 + (150 * buttons_.size()),
         std::function<void(void)>([this](void) { return (core_entry_.setExit(true)); }),
-        "assets/fonts/menu.ttf",
-        "Exit");
+        FONT_PATH,
+        "Exit",
+        30,
+        0);
+
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
-        height / 8 + (150 * buttons_.size()),
+        width / 8 + (150 * buttons_.size()),
         std::function<void(void)>([this](void) {
             for (auto& it : settings_) { it.invertDisplay(); }
+            for (auto& it : settings_texts_) { it.invertDisplay(); }
         }),
-        "assets/fonts/menu.ttf",
+        FONT_PATH,
         "Settings",
-        100,
+        50,
         0);
+
+    settings_.emplace_back("assets/textures/selection/left.png",
+        width / 2,
+        width / 8 + (150 * (buttons_.size()) - 30),
+        std::function<void(void)>([](void) { return; }),
+        FONT_PATH,
+        "",
+        0.2f);
+
+    settings_.emplace_back("assets/textures/selection/right.png",
+        width / 2 + 300,
+        width / 8 + (150 * (buttons_.size()) - 30),
+        std::function<void(void)>([](void) { return; }),
+        FONT_PATH,
+        "",
+        0.2f);
+
+    settings_.emplace_back("assets/textures/selection/left.png",
+        width / 2,
+        width / 8 + (150 * (buttons_.size()) + 50),
+        std::function<void(void)>([](void) { return; }),
+        FONT_PATH,
+        "",
+        0.2f);
+
+    settings_.emplace_back("assets/textures/selection/right.png",
+        width / 2 + 300,
+        width / 8 + (150 * (buttons_.size()) + 50),
+        std::function<void(void)>([](void) { return; }),
+        FONT_PATH,
+        "",
+        0.2f);
+    for (auto& it : settings_) { it.invertDisplay(); }
 }
 
 void Home::display3D() noexcept {}
@@ -74,22 +117,23 @@ void Home::display2D() noexcept
 {
     FpsHandler::draw(10, 10);
     drawButtons();
+    for (auto& it : settings_texts_) { it.draw(); }
 }
 
 void Home::action() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
+    // if (controller.isGamepadConnected(0)) {
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
+    //         button_index_ = (button_index_ - 1) % buttons_.size();
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
+    //         button_index_ = (button_index_ + 1) % buttons_.size();
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_B))
+    //     buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
+    //     buttons_[button_index_].setState(1);
+    // } else {
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    // }
 }
 
 void Home::DestroyPool() noexcept {}
@@ -115,6 +159,7 @@ void Home::drawBackground() const noexcept
 void Home::drawButtons() const noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
+    for (auto& it : settings_) { it.draw(); }
 }
 
 ColorManager Home::getBackgroundColor() const noexcept

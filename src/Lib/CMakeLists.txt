@@ -19,7 +19,7 @@
 #     Cameraman.cpp
 # )
 # set_property(TARGET raylib_encapsulation PROPERTY CXX_STANDARD 20)
-# set_property(TARGET raylib_encapsulation PROPERTY POSITION_INDEPENDENT_CODE ON)
+# # set_property(TARGET raylib_encapsulation PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # target_include_directories(raylib_encapsulation PUBLIC
 # ${CMAKE_CURRENT_SOURCE_DIR})

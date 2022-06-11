@@ -25,7 +25,6 @@ void Render::display(const Transform3D& transform) noexcept
     auto     color = color_.getColor();
     Vector3D pos   = transform.getPosition();
     Vector3D rot   = transform.getRotationAxis();
-    Vector3D size  = transform.getSize();
     float    scale = transform.getScale();
 
     if (type == RenderType::R_3DMODEL) {
@@ -33,14 +32,6 @@ void Render::display(const Transform3D& transform) noexcept
     } else if (type == RenderType::R_3DMODEL_ROTATE) {
         float rotationAngle = transform.getRotationAngle();
         model_.draw(pos, rot, rotationAngle, scale, color);
-    } else if (type == RenderType::R_CUBE) {
-        DrawCubeV({ pos.x, pos.y, pos.z },
-            { size.x, size.y, size.z },
-            (Color){ color[0], color[1], color[2], 255 });
-    } else if (type == RenderType::R_WIRED_CUBE) {
-        DrawCubeWiresV({ pos.x, pos.y, pos.z },
-            { size.x, size.y, size.z },
-            (Color){ color[0], color[1], color[2], 255 });
     } else if (type == RenderType::R_ANIMATE) {
         updateAnimation();
         float rotationAngle = transform.getRotationAngle();

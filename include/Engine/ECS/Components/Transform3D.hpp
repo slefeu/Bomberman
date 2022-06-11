@@ -27,16 +27,13 @@ class Transform3D : public Component
     float         getPositionY() const noexcept;
     float         getPositionZ() const noexcept;
     float         getScale() const noexcept;
-    Vector3D      getSize() const noexcept;
     Vector3D      getRotationAxis() const noexcept;
     float         getRotationAngle() const noexcept;
     ComponentType getComponentType() const noexcept;
-
-    void setSize(const Vector3D& size) noexcept;
-    void setScale(float scale) noexcept;
-    void setRotationAxis(const Vector3D& rotationAxis) noexcept;
-    void setRotationAngle(float rotationAngle) noexcept;
-    void setPosition(const Vector3D& position) noexcept;
+    void          setScale(float scale) noexcept;
+    void          setRotationAxis(const Vector3D& rotationAxis) noexcept;
+    void          setRotationAngle(float rotationAngle) noexcept;
+    void          setPosition(const Vector3D& position) noexcept;
 
     // methods
     void moveX(float x) noexcept;

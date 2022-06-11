@@ -155,12 +155,11 @@ bool Item::entitiesHere(Vector3D& pos) const noexcept
     for (auto& entity : data.getEntities()) {
         auto transform    = entity->getComponent<Transform3D>();
         auto other_hitbox = entity->getComponent<BoxCollider>();
+        if (!transform.has_value()) continue;
+        auto posTemp = transform->get().getPosition();
 
-        auto posTemp  = transform->get().getPosition();
-        auto sizeTemp = transform->get().getSize();
-
-        const BoxCollider hitbox = BoxCollider(
-            { posTemp.x, posTemp.y, posTemp.z }, { sizeTemp.x, sizeTemp.y, sizeTemp.z }, true);
+        const BoxCollider hitbox =
+            BoxCollider({ posTemp.x, posTemp.y, posTemp.z }, { 0.5f, 0.5f, 0.5f }, true);
         if (!other_hitbox || !other_hitbox.has_value()) continue;
         if (!hitbox.getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
         if (other_hitbox->get().isColliding(hitbox, pos)) return true;

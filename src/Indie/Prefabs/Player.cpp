@@ -34,8 +34,7 @@ Player::Player(int newId, GameData& data)
 
     if (!transform.has_value() || !renderer.has_value())
         throw(Error("Error, could not instanciate the player element.\n"));
-    transform->get().setSize({ 0.5f, 0.5f, 0.5f });
-    transform->get().setPosition({ 0.0f, 0.0f + (transform->get().getSize().y / 2), 2.0f });
+    transform->get().setPosition({ 0.0f, 0.25f, 2.0f });
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setScale(0.65f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
@@ -43,7 +42,7 @@ Player::Player(int newId, GameData& data)
     setKeyboard();
     setPosition();
     setPlayerType(PlayerType::NORMAL);
-    addComponent(BoxCollider(transform->get().getPosition(), transform->get().getSize(), true));
+    addComponent(BoxCollider(transform->get().getPosition(), { 0.5f, 0.5f, 0.5f }, true));
 }
 
 int Player::findPrevType() const noexcept

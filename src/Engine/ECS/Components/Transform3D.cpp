@@ -34,11 +34,6 @@ float Transform3D::getPositionZ() const noexcept
     return (position_.z);
 }
 
-Vector3D Transform3D::getSize() const noexcept
-{
-    return (size_);
-}
-
 float Transform3D::getScale() const noexcept
 {
     return (scale_);
@@ -57,11 +52,6 @@ float Transform3D::getRotationAngle() const noexcept
 void Transform3D::setPosition(const Vector3D& position) noexcept
 {
     position_ = position;
-}
-
-void Transform3D::setSize(const Vector3D& size) noexcept
-{
-    size_ = size;
 }
 
 void Transform3D::setScale(float scale) noexcept

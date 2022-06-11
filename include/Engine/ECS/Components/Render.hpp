@@ -18,8 +18,6 @@
 enum class RenderType {
     R_3DMODEL,
     R_3DMODEL_ROTATE,
-    R_CUBE,
-    R_WIRED_CUBE,
     R_ANIMATE,
     R_NONE,
 };

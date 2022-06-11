@@ -31,14 +31,12 @@ Fire::Fire(Vector3D position, Model3D& model)
 
     transform->get().setPosition({ position.x, position.y - 0.3f, position.z });
     transform->get().setScale(1.2f);
-    transform->get().setSize({ 0.5f, 0.5f, 0.5f });
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
     transform->get().setRotationAngle(-90.0f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
     renderer->get().addAnimation("assets/models/fire.iqm");
 
-    addComponent(
-        BoxCollider({ position.x, position.y, position.z }, transform->get().getSize(), true));
+    addComponent(BoxCollider({ position.x, position.y, position.z }, { 0.5f, 0.5f, 0.5f }, true));
 }
 
 void Fire::Update()

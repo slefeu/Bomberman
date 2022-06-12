@@ -7,10 +7,6 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
-
-#include "Entity.hpp"
 #include "Vector.hpp"
 #include "raylib.h"
 
@@ -35,9 +31,8 @@ class Cameraman
     void moveTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     void tpTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     bool smoothMove() noexcept;
-    void lookBetweenEntity(const std::vector<std::unique_ptr<Entity>>& entities);
 
-  private:
+  protected:
     Camera3D camera_;
     bool     is_moving_ = false;
     float    speed_     = 0.5f;

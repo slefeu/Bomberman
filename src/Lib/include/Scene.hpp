@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "Cameraman.hpp"
 #include "Color.hpp"
 #include "Mouse.hpp"
 #include "Music.hpp"

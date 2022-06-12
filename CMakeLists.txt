@@ -28,14 +28,15 @@ set(
   src/main.cpp
 
   src/Engine/Tools/Timer.cpp
-  src/Engine/Tools/Round.cpp
   src/Engine/Tools/Error.cpp
+
   src/Engine/ECS/Components/BoxCollider.cpp
   src/Engine/ECS/Components/Transform3D.cpp
   src/Engine/ECS/Components/Render.cpp
 
   src/Indie/GameCore/Core.cpp
   src/Indie/GameCore/GameData.cpp
+  src/Indie/GameCore/MyCameraman.cpp
 
   src/Indie/Prefabs/Player.cpp
   src/Indie/Prefabs/Bomb.cpp
@@ -50,30 +51,12 @@ set(
   src/Indie/Scenes/Splash.cpp
 
   src/Indie/UI/Button.cpp
-
-  src/Lib/Mouse.cpp
-  src/Lib/Text.cpp
-  src/Lib/Music.cpp
-  src/Lib/Sound.cpp
-  src/Lib/AudioDevice.cpp
-  src/Lib/Sprite.cpp
-  src/Lib/Color.cpp
-  src/Lib/Window.cpp
-  src/Lib/Fps.cpp
-  src/Lib/Rectangle.cpp
-  src/Lib/Controller.cpp
-  src/Lib/Model3D.cpp
-  src/Lib/Cameraman.cpp
-  src/Lib/CollisionChecker.cpp
-  src/Lib/DeltaTime.cpp
-  src/Lib/Animation.cpp
 )
 
 add_executable(${PROJECT_NAME} ${INDIE_SRC})
 
-# À ENLEVER quand on aura compilé avec l'encapsulation
-target_link_libraries(${PROJECT_NAME} raylib)
-# target_link_libraries(${PROJECT_NAME} raylib_encapsulation)
+add_subdirectory(src/Lib)
+target_link_libraries(${PROJECT_NAME} raylib_encapsulation)
 
 # Ajouter ici les dossiers contenants les .hpp
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/ECS/Components)
@@ -84,14 +67,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Prefabs)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/UI)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/GameCore)
-
-# à enlever quand ça sera compilé en lib statique
-
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/Lib/cmake)
-find_package(raylib 4.0.0 REQUIRED)
-
 target_include_directories(${PROJECT_NAME} PRIVATE src/Lib/include)
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${CXX_FLAGS})
-
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)

@@ -73,7 +73,7 @@ WindowManager& Core::getWindow() noexcept
     return (*window_);
 }
 
-Cameraman& Core::getCameraman() noexcept
+MyCameraman& Core::getCameraman() noexcept
 {
     return (camera_);
 }

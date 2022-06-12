@@ -7,6 +7,7 @@
 
 #pragma once
 #include "AudioDevice.hpp"
+#include "Cameraman.hpp"
 #include "Fps.hpp"
 #include "Scene.hpp"
 

@@ -13,6 +13,7 @@
 #include "DeltaTime.hpp"
 #include "InstanceOf.hpp"
 #include "Item.hpp"
+#include "MyCameraman.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
 #include "Wall.hpp"

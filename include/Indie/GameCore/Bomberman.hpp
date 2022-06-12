@@ -26,7 +26,7 @@ enum class ModelType : std::size_t {
     M_NONE
 };
 
-enum class SceneType : std::size_t { MENU, GAME, SELECT };
+enum class SceneType : std::size_t { MENU, GAME, SELECT, SPLASH };
 
 enum class ItemType { I_SPEEDUP, I_BOMBUP, I_FIREUP, I_WALL };
 

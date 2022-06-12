@@ -56,7 +56,7 @@ class GameData
   protected:
   private:
     MouseHandler         mouse_;
-    bomberman::SceneType current_scene_ = bomberman::SceneType::MENU;
+    bomberman::SceneType current_scene_ = bomberman::SceneType::SPLASH;
     int                  nb_players_    = 0;
 
     std::vector<std::unique_ptr<Model3D>> models_;

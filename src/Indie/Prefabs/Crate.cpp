@@ -18,7 +18,6 @@ Crate::Crate(Vector3D pos, Model3D& newModel, GameData& data)
 {
     addComponent(Transform3D());
     addComponent(Render(newModel));
-    setEnabledValue(true);
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -53,5 +52,5 @@ void Crate::dropItem()
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (Type:: instanceof <Wall>(other.get())) setEnabledValue(false);
+    if (Type:: instanceof <Wall>(other.get())) destroy();
 }

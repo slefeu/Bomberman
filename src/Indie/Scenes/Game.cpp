@@ -7,6 +7,8 @@
 
 #include "Game.hpp"
 
+#include <iostream>
+
 #include "Crate.hpp"
 #include "DeltaTime.hpp"
 #include "InstanceOf.hpp"
@@ -56,12 +58,14 @@ void Game::switchAction() noexcept
 
     for (auto& player : core_entry_.getData().getPlayers()) {
         if (!Type:: instanceof <Player>(player.get())) continue;
-        player->setEnabledValue(true);
         auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
         ((std::unique_ptr<Player>&)player)->setPlayerType(type);
         ((std::unique_ptr<Player>&)player)->setPosition();
         ((std::unique_ptr<Player>&)player)->setWallPass(false);
         ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
+
+        auto render = player->getComponent<Render>();
+        if (render.has_value()) { render->get().show(true); }
     }
 
     chrono_.resetTimer();
@@ -185,8 +189,12 @@ void Game::action() noexcept
     for (auto& player : core_entry_.getData().getPlayers()) player->Update();
     if (!end_game) {
         int alive = 0;
-        for (auto& player : core_entry_.getData().getPlayers())
-            if (player->getEnabledValue()) { alive++; }
+        for (auto& player : core_entry_.getData().getPlayers()) {
+            if (!Type:: instanceof <Player>(player.get())) continue;
+
+            auto render = player->getComponent<Render>();
+            if (render.has_value() && render->get().isShow()) alive++;
+        }
         if (alive == 1 || alive == 0 || chrono_.isTimerDone()) { endGame(); }
     } else {
         endGameAction();
@@ -390,7 +398,7 @@ void Game::endGame() noexcept
         render->get().getAnimation().setAnimationId(3);
         trans->get().setRotationAngle(90.0f);
 
-        if (core_entry_.getData().getPlayers()[i]->getEnabledValue()) {
+        if (render->get().isShow()) {
             nbAlive++;
             index = i;
         }
@@ -405,14 +413,13 @@ void Game::endGame() noexcept
             pos    = transform->get().getPosition();
             target = pos;
             target.z -= 1.0f;
-            core_entry_.getCameraman().moveTo({ pos.x, 5.0f, pos.z + 0.5f }, target, up);
-        } else
-            core_entry_.getCameraman().moveTo(pos, target, up);
-
+            core_entry_.getCameraman().tpTo({ pos.x, 20.0f, pos.z + 3.0f }, target, up);
+            core_entry_.getCameraman().moveTo({ pos.x, 5.0f, pos.z + 3.0f }, target, up);
+        }
     } else {
         victoryText_.setText("Draw !");
         victoryText_.setPosition(core_entry_.getWindow().getWidth() / 2 - 200, 30);
-        core_entry_.getCameraman().moveTo(pos, target, up);
+        core_entry_.getCameraman().tpTo(pos, target, up);
     }
 }
 

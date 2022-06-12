@@ -91,7 +91,7 @@ void Bomb::explode() noexcept
     createFire({ 0.0f, 0.0f, -1.0f });
 
     for (auto& fire : fires) { data.addFire(std::move(fire)); }
-    setEnabledValue(false);
+    destroy();
 }
 
 void Bomb::createFire(Vector3D mul) noexcept

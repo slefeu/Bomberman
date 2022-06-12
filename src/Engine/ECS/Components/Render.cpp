@@ -18,6 +18,8 @@ Render::~Render() noexcept {}
 
 void Render::display(const Transform3D& transform) noexcept
 {
+    if (!show_) return;
+
     auto     color = color_.getColor();
     Vector3D pos   = transform.getPosition();
     Vector3D rot   = transform.getRotationAxis();
@@ -80,4 +82,14 @@ Animation& Render::getAnimation() noexcept
 Model3D& Render::getModel() noexcept
 {
     return model_;
+}
+
+void Render::show(bool show) noexcept
+{
+    show_ = show;
+}
+
+bool Render::isShow() const noexcept
+{
+    return show_;
 }

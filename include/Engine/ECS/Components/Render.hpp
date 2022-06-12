@@ -41,6 +41,8 @@ class Render : public Component
     ComponentType getComponentType() const noexcept;
     Animation&    getAnimation() noexcept;
     Model3D&      getModel() noexcept;
+    void          show(bool show) noexcept;
+    bool          isShow() const noexcept;
 
     void displayModel(const Transform3D& transform, const Vector3D& pos) noexcept;
     void displayModelV(const Transform3D& transform,
@@ -55,4 +57,5 @@ class Render : public Component
     Model3D&     model_;
     ColorManager color_ = Colors::C_WHITE;
     Animation    animation_;
+    bool         show_ = true;
 };

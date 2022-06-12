@@ -42,26 +42,20 @@ Fire::Fire(Vector3D position, Model3D& model)
 void Fire::Update()
 {
     explodeTimer.updateTimer();
-    if (explodeTimer.isTimerDone()) setEnabledValue(false);
+    if (explodeTimer.isTimerDone()) destroy();
 }
 
-void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
-{
-    if (Type:: instanceof <Player>(other.get())) {
-        ((std::unique_ptr<Player>&)other)->dispatchItem();
-        other->setEnabledValue(false);
-    }
-}
+void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept {}
 
 bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Crate>(other.get())) {
         ((std::unique_ptr<Crate>&)other)->dropItem();
-        other->setEnabledValue(false);
+        other->destroy();
         return true;
     }
     if (Type:: instanceof <Item>(other.get())) {
-        other->setEnabledValue(false);
+        other->destroy();
         return false;
     }
     if (Type:: instanceof <Wall>(other.get())) return true;

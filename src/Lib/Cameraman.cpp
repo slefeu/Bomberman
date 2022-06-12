@@ -103,7 +103,9 @@ void Cameraman::lookBetweenEntity(const std::vector<std::unique_ptr<Entity>>& en
     float maxZ = -minZ;
 
     for (auto& entity : entities) {
-        if (!entity->getEnabledValue()) continue;
+        auto render = entity->getComponent<Render>();
+        if (!render.has_value()) continue;
+
         auto transform = entity->getComponent<Transform3D>();
         if (!transform.has_value()) throw(Error("Error in camera_ handling.\n"));
 

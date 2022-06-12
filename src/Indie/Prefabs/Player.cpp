@@ -78,8 +78,11 @@ void Player::Update()
 
     if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
-    if (!getEnabledValue()) return;
+
+    if (!renderer->get().isShow()) return;
+
     hitbox->get().update(transform->get().getPosition());
+
     if (wallpass) {
         wallpassTimer.updateTimer();
         if (wallpassTimer.isTimerDone()) {
@@ -155,10 +158,10 @@ PlayerType Player::getType() const noexcept
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Wall>(other.get()) || Type:: instanceof <Fire>(other.get())) {
-        if (other->getEnabledValue()) {
-            killSound_.play();
-            setEnabledValue(false);
-        }
+        killSound_.play();
+        dispatchItem();
+        auto render = getComponent<Render>();
+        if (render.has_value()) { render->get().show(false); }
     }
 }
 

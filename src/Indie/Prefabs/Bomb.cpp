@@ -146,3 +146,13 @@ int Bomb::getLifeTime() const noexcept
 {
     return lifeTime;
 }
+
+void Bomb::setLifeTime(const int& newLifeTime) noexcept
+{
+    lifeTime = newLifeTime;
+}
+
+int Bomb::getOwnerId() const noexcept
+{
+    return player->getId();
+}

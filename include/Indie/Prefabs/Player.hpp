@@ -16,6 +16,7 @@
 #include "GameData.hpp"
 #include "Sound.hpp"
 #include "Timer.hpp"
+#include "Vector.hpp"
 
 static const inline char* KILL = "assets/audios/Kill.wav";
 
@@ -53,6 +54,7 @@ class Player : public Entity
     void       setBombSize(const int& bombSize) noexcept;
     PlayerType getPlayerType() const noexcept;
     void       setPosition();
+    void       setPosition(Vector3D pos);
     PlayerType getType() const noexcept;
     int        getId() const noexcept;
     int        findNextType() const noexcept;

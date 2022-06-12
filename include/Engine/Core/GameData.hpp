@@ -28,11 +28,16 @@ class GameData
     void         setCurrentScene(const SceneType& scene) noexcept;
     void         setEntities(std::vector<std::unique_ptr<Entity>>* entities) noexcept;
     void         saveGame(void) const;
-    void         loadGame(void) noexcept;
+    void         loadGame(std::string fileName);
     SceneType    getCurrentScene() const noexcept;
 
   private:
     std::string getCurrentDateTime(void) const noexcept;
+    void        loadGameData(std::vector<std::string> data);
+    void        loadGamePlayerData(std::vector<std::string> data, int* index);
+    void        loadGameBombData(std::vector<std::string> data, int* index);
+    void        loadGameCrateData(std::vector<std::string> data, int* index);
+    void        loadGameWallData(std::vector<std::string> data, int* index);
     void        writeDataGame(std::ofstream& file) const;
     void        writeDataPlayer(std::ofstream& file) const;
     void        writeDataCrate(std::ofstream& file) const;

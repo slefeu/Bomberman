@@ -13,6 +13,7 @@
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Transform3D.hpp"
+#include "Vector.hpp"
 #include "Wall.hpp"
 
 Player::Player(const int newId, GameData* data)
@@ -203,6 +204,17 @@ void Player::setPosition()
             break;
         default: break;
     }
+}
+
+void Player::setPosition(Vector3D pos)
+{
+    auto transform = getComponent<Transform3D>();
+    if (!transform.has_value()) throw(Error("Error in setting player position.\n"));
+
+    transform->get().setRotationAngle(direction[id]);
+    transform->get().setX(pos.x);
+    transform->get().setY(pos.y);
+    transform->get().setZ(pos.z);
 }
 
 void Player::setKeyboard() noexcept

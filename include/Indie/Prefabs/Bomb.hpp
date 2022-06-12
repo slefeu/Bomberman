@@ -38,6 +38,8 @@ class Bomb : public Entity
     void explode() noexcept;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
     int  getLifeTime() const noexcept;
+    void setLifeTime(const int& newLifeTime) noexcept;
+    int  getOwnerId() const noexcept;
 
   private:
     // methods

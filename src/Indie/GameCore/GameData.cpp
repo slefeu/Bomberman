@@ -200,8 +200,8 @@ void GameData::writeDataPlayer(std::ofstream& file)
         /// Write Player Stat///////////////////////////////////////////////////
         file << tmp->getSpeed() << ";" << tmp->getNbBomb() << ";" << tmp->getBombSize()
              << std::endl;
-        if (nbBomb == 0) continue;
         file << nbBomb << std::endl;
+        if (nbBomb == 0) continue;
         file << "Bombs" << std::endl;
         for (auto& bomb : entities_) {
             auto bombN = dynamic_cast<Bomb*>(bomb.get());
@@ -231,7 +231,7 @@ void GameData::writeDataCrate(std::ofstream& file)
         auto transform = crate->getComponent<Transform3D>();
         if (!transform.has_value() || !Type:: instanceof <Crate>(crate.get())) continue;
         /// Write Crate Position///////////////////////////////////////////////
-        file << transform->get().getPositionX() << ";" << transform->get().getPositionY()
+        file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
              << transform->get().getPositionZ() << std::endl;
     }
 }
@@ -242,7 +242,7 @@ void GameData::writeDataWall(std::ofstream& file)
         auto transform = wall->getComponent<Transform3D>();
         if (!transform.has_value() || !Type:: instanceof <Wall>(wall.get())) continue;
         /// Write Crate Position///////////////////////////////////////////////
-        file << transform->get().getPositionX() << ";" << transform->get().getPositionY()
+        file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
              << transform->get().getPositionZ() << std::endl;
     }
 }

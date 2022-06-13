@@ -26,7 +26,7 @@ class GameData
     ~GameData() noexcept                     = default;
 
     GameData& operator=(const GameData& rhs) noexcept = delete;
-    GameData& operator=(GameData&& rhs) noexcept = delete;
+    GameData& operator=(GameData&& rhs) noexcept      = delete;
 
     Vector2D             getMousePos() const noexcept;
     void                 updateMouse() noexcept;

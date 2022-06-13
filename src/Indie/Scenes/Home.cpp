@@ -60,7 +60,8 @@ void Home::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
         (width / 8) + (150 * buttons_.size()),
-        std::function<void(void)>([](void) { return; }),
+        std::function<void(void)>(
+            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::LOAD)); }),
         FONT_PATH,
         "Load");
 

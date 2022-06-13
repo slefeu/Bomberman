@@ -46,7 +46,6 @@ class PlayerSelect : public Scene
     void         drawBackground() const noexcept final;
     ColorManager getBackgroundColor() const noexcept final;
 
-  protected:
   private:
     // methods
     void createButtons() noexcept;

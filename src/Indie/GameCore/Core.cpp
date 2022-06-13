@@ -90,10 +90,11 @@ void Core::initGameModels() noexcept
 
 void Core::initSprites() noexcept
 {
-    data_.addSprite("assets/icones/white.png");
-    data_.addSprite("assets/icones/black.png");
-    data_.addSprite("assets/icones/blue.png");
-    data_.addSprite("assets/icones/red.png");
+    data_.addSprite("assets/textures/home/splash.png", 1);
+    data_.addSprite("assets/icones/white.png", 0.5f);
+    data_.addSprite("assets/icones/black.png", 0.5f);
+    data_.addSprite("assets/icones/blue.png", 0.5f);
+    data_.addSprite("assets/icones/red.png", 0.5f);
 }
 
 void Core::initScenes() noexcept

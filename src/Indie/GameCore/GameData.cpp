@@ -40,9 +40,9 @@ void GameData::addModel(
     models_.emplace_back(std::make_unique<Model3D>(model_path, texture_path));
 }
 
-void GameData::addSprite(const std::string_view& texture_path) noexcept
+void GameData::addSprite(const std::string_view& texture_path, float scale) noexcept
 {
-    sprites_.emplace_back(std::make_unique<Sprite>(texture_path, 0, 0, 0.5f));
+    sprites_.emplace_back(std::make_unique<Sprite>(texture_path, 0, 0, scale));
 }
 
 void GameData::addPlayer(int index) noexcept

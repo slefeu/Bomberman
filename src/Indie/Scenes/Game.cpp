@@ -370,10 +370,6 @@ void Game::pauseAction() noexcept
         pause = false;
 }
 
-// ****************************************************************************
-// *                               SYSTEMS                                    *
-// ****************************************************************************
-
 void Game::SystemDestroy() noexcept
 {
     size_t len = core_entry_.getData().getEntities().size();
@@ -417,8 +413,6 @@ void Game::SystemCollision() noexcept
 
 void Game::SystemDisplay() noexcept
 {
-    // **************************** 3D **********************************
-
     core_entry_.getCameraman().begin3D();
 
     DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
@@ -446,24 +440,18 @@ void Game::SystemDisplay() noexcept
     }
 
     core_entry_.getCameraman().end3D();
-
-    // **************************** 2D **********************************
-
     FpsHandler::draw(35, 70);
-
     if (end_game) {
         endGameDisplay();
         return;
     }
     if (pause) { pauseText_.draw(); }
-
     if (!chrono_.isTimerDone()) {
         auto time = std::to_string(int(round(chrono_.getTime())));
         timeText_.setText(time);
         timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - (time.size() * 2), 10);
         timeText_.draw();
     }
-
     if (isHurry) {
         hurryUpText_.setPosition(HurryUpX, core_entry_.getWindow().getHeight() / 2 - 60);
         hurryUpText_.draw();

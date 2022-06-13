@@ -53,14 +53,15 @@ void Home::createButtons() noexcept
         width / 2,
         width / 8,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::SELECT)); }),
+            [this](void) { core_entry_.switchScene(bomberman::SceneType::SELECT); }),
         FONT_PATH,
         "Play");
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
         (width / 8) + (150 * buttons_.size()),
-        std::function<void(void)>([](void) { return; }),
+        std::function<void(void)>(
+            [this](void) { core_entry_.switchScene(bomberman::SceneType::LOAD); }),
         FONT_PATH,
         "Load");
 
@@ -137,20 +138,10 @@ void Home::createButtons() noexcept
 
 void Home::action() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B))
-        buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
     for (auto& it : buttons_)
         if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     for (auto& it : settings_)
         if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
 }
 
 void Home::playMusic() noexcept
@@ -174,22 +165,10 @@ ColorManager Home::getBackgroundColor() const noexcept
     return (background_color_);
 }
 
-// ****************************************************************************
-// *                               SYSTEMS                                    *
-// ****************************************************************************
-
 void Home::SystemDisplay() noexcept
 {
     background_.draw({ 255, 255, 255, 175 });
     title_.draw();
-
-    // **************************** 3D **********************************
-
-    // core_entry_.getCameraman().begin3D();
-    // core_entry_.getCameraman().end3D();
-
-    // **************************** 2D **********************************
-
     FpsHandler::draw(10, 10);
     drawButtons();
     for (auto& it : settings_texts_) { it.draw(); }

@@ -12,15 +12,12 @@ if(UNIX)
   endif()
 endif()
 
-
-
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_VERBOSE_MAKEFILE ON)
 endif()
 
 file(COPY assets/ DESTINATION assets/)
 
-# Ajouter ici les .cpp
 set(
   INDIE_SRC
   src/main.cpp
@@ -49,7 +46,7 @@ set(
   src/Indie/Scenes/Home.cpp
   src/Indie/Scenes/PlayerSelect.cpp
   src/Indie/Scenes/Splash.cpp
-
+  src/Indie/Scenes/Load.cpp
   src/Indie/UI/Button.cpp
 )
 

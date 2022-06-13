@@ -9,6 +9,7 @@
 
 #include "Game.hpp"
 #include "Home.hpp"
+#include "Load.hpp"
 #include "PlayerSelect.hpp"
 #include "Splash.hpp"
 
@@ -101,6 +102,7 @@ void Core::initScenes() noexcept
     scenes.emplace_back(std::make_unique<Game>(*this));
     scenes.emplace_back(std::make_unique<PlayerSelect>(*this));
     scenes.emplace_back(std::make_unique<Splash>(*this));
+    scenes.emplace_back(std::make_unique<Load>(*this));
     findScene().playMusic();
     switchScene(bomberman::SceneType::SPLASH);
 }

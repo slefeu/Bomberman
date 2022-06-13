@@ -42,6 +42,6 @@ void Splash::SystemDisplay() noexcept
 
     auto& sprites = core_entry_.getData().getSprites();
     if (sprites.size() == 0) return;
-    sprites[0]->draw({ 255, 255, 255, opacity_ });
+    sprites[4]->draw({ 255, 255, 255, opacity_ });
     if (opacity_ > 0) opacity_ -= 15 * DeltaTime::getDeltaTime();
 }

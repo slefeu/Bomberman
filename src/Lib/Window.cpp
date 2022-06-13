@@ -25,9 +25,10 @@ WindowManager::~WindowManager() noexcept
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
 {
     auto color = scene.getBackgroundColor().getColor();
+    Color col   = { color[0], color[1], color[2], 255 };
 
     BeginDrawing();
-    ClearBackground((Color){ color[0], color[1], color[2], 255 });
+    ClearBackground(col);
     scene.SystemDisplay();
     EndDrawing();
 }

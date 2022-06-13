@@ -50,6 +50,7 @@ void TextHandler::unload() noexcept
 void TextHandler::draw() const noexcept
 {
     auto color = color_.getColor();
+    Color col   = { color[0], color[1], color[2], 255 };
 
     if (!displayed_) { return; }
     DrawTextEx(font_,
@@ -57,7 +58,7 @@ void TextHandler::draw() const noexcept
         { position_.x, position_.y },
         font_size_,
         0,
-        (Color){ color[0], color[1], color[2], 255 });
+        col);
 }
 
 void TextHandler::invertDisplay() noexcept

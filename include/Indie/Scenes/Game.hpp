@@ -34,18 +34,16 @@ class Game : public Scene
     ~Game() noexcept                 = default;
 
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
+    Game& operator=(Game&& rhs) noexcept = delete;
 
-    void         display3D() noexcept final;
-    void         display2D() noexcept final;
     void         action() noexcept final;
-    void         DestroyPool() noexcept final;
-    void         CollisionPool() noexcept final;
     void         playMusic() noexcept final;
     void         updateMusic() const noexcept final;
-    void         drawBackground() const noexcept final{};
     ColorManager getBackgroundColor() const noexcept final;
     void         switchAction() noexcept final;
+    void         SystemDestroy() noexcept final;
+    void         SystemCollision() noexcept final;
+    void         SystemDisplay() noexcept final;
 
   private:
     // methods

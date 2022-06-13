@@ -20,21 +20,6 @@ Splash::Splash(Core& core_ref) noexcept
 
 void Splash::switchAction() noexcept {}
 
-void Splash::display3D() noexcept {}
-
-void Splash::display2D() noexcept
-{
-    FpsHandler::draw(10, 10);
-
-    auto& sprites = core_entry_.getData().getSprites();
-
-    if (sprites.size() == 0) return;
-
-    sprites[0]->draw({ 255, 255, 255, opacity_ });
-
-    if (opacity_ > 0) opacity_ -= 70 * DeltaTime::getDeltaTime();
-}
-
 void Splash::action() noexcept
 {
     timer.updateTimer();
@@ -42,17 +27,32 @@ void Splash::action() noexcept
     if (timer.isTimerDone()) core_entry_.switchScene(bomberman::SceneType::MENU);
 }
 
-void Splash::DestroyPool() noexcept {}
-
-void Splash::CollisionPool() noexcept {}
-
 void Splash::playMusic() noexcept {}
 
 void Splash::updateMusic() const noexcept {}
 
-void Splash::drawBackground() const noexcept {}
-
 ColorManager Splash::getBackgroundColor() const noexcept
 {
     return (background_color_);
+}
+
+// ****************************************************************************
+// *                               SYSTEMS                                    *
+// ****************************************************************************
+
+void Splash::SystemDisplay() noexcept
+{
+    // **************************** 3D **********************************
+
+    // core_entry_.getCameraman().begin3D();
+    // core_entry_.getCameraman().end3D();
+
+    // **************************** 2D **********************************
+
+    FpsHandler::draw(10, 10);
+
+    auto& sprites = core_entry_.getData().getSprites();
+    if (sprites.size() == 0) return;
+    sprites[0]->draw({ 255, 255, 255, opacity_ });
+    if (opacity_ > 0) opacity_ -= 70 * DeltaTime::getDeltaTime();
 }

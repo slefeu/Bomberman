@@ -135,15 +135,6 @@ void Home::createButtons() noexcept
     for (auto& it : settings_) { it.invertDisplay(); }
 }
 
-void Home::display3D() noexcept {}
-
-void Home::display2D() noexcept
-{
-    FpsHandler::draw(10, 10);
-    drawButtons();
-    for (auto& it : settings_texts_) { it.draw(); }
-}
-
 void Home::action() noexcept
 {
     if (controller.isGamepadConnected(0)) {
@@ -151,20 +142,16 @@ void Home::action() noexcept
             button_index_ = (button_index_ - 1) % buttons_.size();
         if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
             button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
+        if (controller.isGamepadButtonPressed(0, G_Button::G_B))
+        buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
         buttons_[button_index_].setState(1);
     } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-        for (auto& it : settings_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    for (auto& it : settings_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
 }
-
-void Home::DestroyPool() noexcept {}
-
-void Home::CollisionPool() noexcept {}
 
 void Home::playMusic() noexcept
 {
@@ -176,12 +163,6 @@ void Home::updateMusic() const noexcept
     loop_music_.update();
 }
 
-void Home::drawBackground() const noexcept
-{
-    background_.draw({ 255, 255, 255, 175 });
-    title_.draw();
-}
-
 void Home::drawButtons() const noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
@@ -191,4 +172,25 @@ void Home::drawButtons() const noexcept
 ColorManager Home::getBackgroundColor() const noexcept
 {
     return (background_color_);
+}
+
+// ****************************************************************************
+// *                               SYSTEMS                                    *
+// ****************************************************************************
+
+void Home::SystemDisplay() noexcept
+{
+    background_.draw({ 255, 255, 255, 175 });
+    title_.draw();
+
+    // **************************** 3D **********************************
+
+    // core_entry_.getCameraman().begin3D();
+    // core_entry_.getCameraman().end3D();
+
+    // **************************** 2D **********************************
+
+    FpsHandler::draw(10, 10);
+    drawButtons();
+    for (auto& it : settings_texts_) { it.draw(); }
 }

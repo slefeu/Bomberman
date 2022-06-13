@@ -24,7 +24,7 @@ class Bomb : public Entity
     ~Bomb() noexcept                 = default;
 
     Bomb& operator=(const Bomb& rhs) noexcept = delete;
-    Bomb& operator=(Bomb&& rhs) noexcept      = delete;
+    Bomb& operator=(Bomb&& rhs) noexcept = delete;
 
     void Update() final;
     void explode() noexcept;

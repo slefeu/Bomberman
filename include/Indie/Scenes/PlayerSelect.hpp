@@ -16,6 +16,7 @@
 #include "Fps.hpp"
 #include "GameData.hpp"
 #include "Mouse.hpp"
+#include "Player.hpp"
 #include "Scene.hpp"
 #include "Text.hpp"
 
@@ -28,14 +29,10 @@ class PlayerSelect : public Scene
     ~PlayerSelect() noexcept                         = default;
 
     PlayerSelect& operator=(const PlayerSelect& rhs) noexcept = delete;
-    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept      = delete;
+    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept = delete;
 
     // main methods
-    void display3D() noexcept final;
-    void display2D() noexcept final;
     void action() noexcept final;
-    void DestroyPool() noexcept final;
-    void CollisionPool() noexcept final;
     void switchAction() noexcept final;
 
     // music methods
@@ -43,16 +40,19 @@ class PlayerSelect : public Scene
     void updateMusic() const noexcept final;
 
     // background methods
-    void         drawBackground() const noexcept final;
     ColorManager getBackgroundColor() const noexcept final;
 
-  protected:
+    void SystemDestroy() noexcept final{};
+    void SystemCollision() noexcept final{};
+    void SystemDisplay() noexcept final;
+
   private:
     // methods
     void createButtons() noexcept;
     void drawButtons() const noexcept;
-    void displayPlayerStats(const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept;
-    void displayAllStats() noexcept;
+    void displayPlayerStats(
+        const Vector2& stats_pos, const Vector2& texts_pos, unsigned int id) noexcept;
+    void         displayAllStats() noexcept;
     unsigned int findStatsId(const PlayerType& type) const noexcept;
     void drawSelection(const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept;
     void drawToggle(const int id, const Vector2& position, bool isBot) noexcept;

@@ -6,11 +6,11 @@
 */
 
 #include "PlayerSelect.hpp"
+
 #include "raylib.h"
 
 PlayerSelect::PlayerSelect(Core& core_ref) noexcept
-    : Scene()
-    , loop_music_(MUSIC)
+    : loop_music_(MUSIC)
     , core_entry_(core_ref)
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
@@ -59,15 +59,14 @@ void PlayerSelect::display2D() noexcept
     displayAllStats();
 }
 
-void PlayerSelect::drawToggle(const int id, const Vector2 &position,
-bool isBot) noexcept
+void PlayerSelect::drawToggle(const int id, const Vector2& position, bool isBot) noexcept
 {
     if (!isBot) {
         toggle_auto_[id].setText("Player");
-        toggle_auto_[id].setTextPosition({position.x + 45, position.y + 30});
+        toggle_auto_[id].setTextPosition({ position.x + 45, position.y + 30 });
     } else {
         toggle_auto_[id].setText("Bot");
-        toggle_auto_[id].setTextPosition({position.x + 80, position.y + 30});
+        toggle_auto_[id].setTextPosition({ position.x + 80, position.y + 30 });
     }
     toggle_auto_[id].setPosition(position);
     toggle_auto_[id].draw();
@@ -84,18 +83,20 @@ void PlayerSelect::drawSelection(
 
 void PlayerSelect::displayAllStats() noexcept
 {
-    int   height    = core_entry_.getWindow().getHeight();
+    auto  height    = static_cast<float>(core_entry_.getWindow().getHeight());
     float nbPlayers = 0;
 
     for (auto& player : core_entry_.getData().getPlayers()) {
-        Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
-        Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
-        Vector2 position = { 120 + 460 * nbPlayers, 600 };
+        Vector2 pos_l      = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
+        Vector2 pos_r      = { pos_l.x + 320, (height - height / 7) + 40 };
+        Vector2 position   = { 120 + 460 * nbPlayers, 600 };
         Vector2 toggle_pos = { 140 + 460 * nbPlayers, 540 };
         displayPlayerStats(position,
             { pos_l.x + 85, pos_l.y + 25 },
             findStatsId(((std::unique_ptr<Player>&)player)->getType()));
-        drawToggle(static_cast<int>(nbPlayers), toggle_pos, ((std::unique_ptr<Player>&)player)->getBotState());
+        drawToggle(static_cast<int>(nbPlayers),
+            toggle_pos,
+            ((std::unique_ptr<Player>&)player)->getBotState());
         drawSelection(static_cast<int>(nbPlayers), pos_l, pos_r);
         nbPlayers++;
     }
@@ -111,7 +112,7 @@ unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
 }
 
 void PlayerSelect::displayPlayerStats(
-    const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept
+    const Vector2& stats_pos, const Vector2& texts_pos, unsigned int id) noexcept
 {
     stats_[id].setPos(stats_pos.x, stats_pos.y);
     stats_[id].draw();
@@ -133,26 +134,23 @@ void PlayerSelect::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 4 + 200,
         height / 6,
-        std::function<void(void)>([this](void) {
+        std::function<void(void)>([this]() {
             if (core_entry_.getData().getNbPlayers() < 4) {
                 core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() + 1);
                 core_entry_.getData().addPlayer(core_entry_.getData().getNbPlayers() - 1);
-                auto& new_player =
+                Player& new_player =
                     *reinterpret_cast<Player*>(core_entry_.getData().getPlayers().back().get());
                 toggle_auto_.emplace_back("assets/textures/home/button.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
-                        new_player.toggleBot();
-                    }),
+                    std::function<void(void)>([&new_player](void) { new_player.toggleBot(); }),
                     "assets/fonts/menu.ttf",
                     "Player",
-                    0.8f
-                );
+                    0.8f);
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
+                    std::function<void(void)>([&new_player]() {
                         new_player.setPlayerType(
                             static_cast<PlayerType>(new_player.findNextType()));
                     }),
@@ -162,7 +160,7 @@ void PlayerSelect::createButtons() noexcept
                 select_left_.emplace_back("assets/textures/selection/left.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
+                    std::function<void(void)>([&new_player]() {
                         new_player.setPlayerType(
                             static_cast<PlayerType>(new_player.findPrevType()));
                     }),
@@ -238,10 +236,6 @@ void PlayerSelect::action() noexcept
     }
 }
 
-void PlayerSelect::DestroyPool() noexcept {}
-
-void PlayerSelect::CollisionPool() noexcept {}
-
 void PlayerSelect::playMusic() noexcept
 {
     loop_music_.play();
@@ -252,13 +246,46 @@ void PlayerSelect::updateMusic() const noexcept
     loop_music_.update();
 }
 
-void PlayerSelect::drawBackground() const noexcept
-{
-    background_.draw({ 255, 255, 255, 175 });
-    title_.draw();
-}
-
 ColorManager PlayerSelect::getBackgroundColor() const noexcept
 {
     return (background_color_);
+}
+
+// ****************************************************************************
+// *                               SYSTEMS                                    *
+// ****************************************************************************
+
+void PlayerSelect::SystemDisplay() noexcept
+{
+    background_.draw({ 255, 255, 255, 175 });
+    title_.draw();
+
+    // **************************** 3D **********************************
+
+    core_entry_.getCameraman().begin3D();
+
+    float nbPlayers = 0;
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        auto render    = player->getComponent<Render>();
+        auto transform = player->getComponent<Transform3D>();
+
+        if (!render.has_value() || !transform.has_value()) continue;
+
+        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
+        Vector3D rotation = { 0, 1, 0 };
+
+        render->get().getAnimation().setAnimationId(1);
+        render->get().getAnimation().updateAnimation(render->get().getModel());
+        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
+        nbPlayers++;
+    }
+
+    core_entry_.getCameraman().end3D();
+
+    // **************************** 2D **********************************
+
+    FpsHandler::draw(10, 10);
+    choose_text_.draw();
+    drawButtons();
+    displayAllStats();
 }

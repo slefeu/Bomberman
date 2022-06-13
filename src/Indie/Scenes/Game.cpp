@@ -117,72 +117,10 @@ void Game::updateMusic() const noexcept
         victory_music_.update();
 }
 
-void Game::display3D() noexcept
-{
-    DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
-    for (int z = -4; z < 7; z++)
-        for (int x = -6; x < 7; x++) {
-            if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
-            if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
-        }
-
-    for (auto& player : core_entry_.getData().getPlayers()) {
-        auto transform = player->getComponent<Transform3D>();
-        auto renderer  = player->getComponent<Render>();
-        if (!transform.has_value() || !renderer.has_value()) continue;
-        if (!player->getEnabledValue()) continue;
-        renderer->get().display(transform->get());
-    }
-    for (auto& entity : core_entry_.getData().getEntities()) {
-        auto transform = entity->getComponent<Transform3D>();
-        auto renderer  = entity->getComponent<Render>();
-        if (!transform.has_value() || !renderer.has_value()) continue;
-        if (!entity->getEnabledValue()) continue;
-        renderer->get().display(transform->get());
-    }
-}
-
-void Game::display2D() noexcept
-{
-    FpsHandler::draw(35, 70);
-
-    if (end_game) {
-        endGameDisplay();
-        return;
-    }
-    if (pause) { pauseText_.draw(); }
-
-    if (!chrono_.isTimerDone()) {
-        auto time = std::to_string(int(round(chrono_.getTime())));
-        timeText_.setText(time);
-        timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - (time.size() * 2), 10);
-        timeText_.draw();
-    }
-
-    if (isHurry) {
-        hurryUpText_.setPosition(HurryUpX, core_entry_.getWindow().getHeight() / 2 - 60);
-        hurryUpText_.draw();
-    }
-
-    auto& sprites = core_entry_.getData().getSprites();
-    for (size_t i = 0; i != core_entry_.getData().getNbPlayers(); i++) {
-        sprites[i]->draw();
-        auto player = (&(std::unique_ptr<Player>&)(core_entry_.getData().getPlayers()[i]))->get();
-
-        std::string speed = std::to_string(player->getSpeed());
-        speed             = speed.substr(0, speed.find(".") + 2);
-        playerText_[i].setText(std::to_string(player->getNbBomb()) + ", "
-                               + std::to_string(player->getBombSize()) + ", " + speed);
-        playerText_[i].draw();
-    }
-}
-
 void Game::action() noexcept
 {
-    DestroyPool();
-    CollisionPool();
+    SystemDestroy();
+    SystemCollision();
 
     if (pause) {
         pauseAction();
@@ -233,49 +171,6 @@ void Game::action() noexcept
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
         pause = true;
-}
-
-void Game::DestroyPool() noexcept
-{
-    // suppression des entités désactivées
-    size_t len = core_entry_.getData().getEntities().size();
-    for (size_t i = 0; i != len; i++) {
-        if (!core_entry_.getData().getEntities()[i]->getEnabledValue()) {
-            core_entry_.getData().getEntities().erase(
-                core_entry_.getData().getEntities().begin() + i);
-            len--;
-            i--;
-        }
-    }
-}
-
-void Game::CollisionPool() noexcept
-{
-    // Collisions jouers/entités
-    for (auto& player : core_entry_.getData().getPlayers()) {
-        for (auto& entity : core_entry_.getData().getEntities()) {
-            auto hitbox       = player->getComponent<BoxCollider>();
-            auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
-            if (hitbox->get().isColliding(other_hitbox->get())) {
-                player->OnCollisionEnter(entity);
-                entity->OnCollisionEnter(player);
-            }
-        }
-    }
-    for (auto& entity1 : core_entry_.getData().getEntities()) {
-        for (auto& entity : core_entry_.getData().getEntities()) {
-            auto hitbox       = entity1->getComponent<BoxCollider>();
-            auto other_hitbox = entity->getComponent<BoxCollider>();
-            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
-            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
-            if (entity1 == entity) continue;
-            if (hitbox->get().isColliding(other_hitbox->get())) {
-                entity1->OnCollisionEnter(entity);
-                entity->OnCollisionEnter(entity1);
-            }
-        }
-    }
 }
 
 void Game::createMap() noexcept
@@ -474,4 +369,116 @@ void Game::pauseAction() noexcept
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
         pause = false;
+}
+
+// ****************************************************************************
+// *                               SYSTEMS                                    *
+// ****************************************************************************
+
+void Game::SystemDestroy() noexcept
+{
+    size_t len = core_entry_.getData().getEntities().size();
+    for (size_t i = 0; i != len; i++) {
+        if (!core_entry_.getData().getEntities()[i]->getEnabledValue()) {
+            core_entry_.getData().getEntities().erase(
+                core_entry_.getData().getEntities().begin() + i);
+            len--;
+            i--;
+        }
+    }
+}
+
+void Game::SystemCollision() noexcept
+{
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        for (auto& entity : core_entry_.getData().getEntities()) {
+            auto hitbox       = player->getComponent<BoxCollider>();
+            auto other_hitbox = entity->getComponent<BoxCollider>();
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
+            if (hitbox->get().isColliding(other_hitbox->get())) {
+                player->OnCollisionEnter(entity);
+                entity->OnCollisionEnter(player);
+            }
+        }
+    }
+    for (auto& entity1 : core_entry_.getData().getEntities()) {
+        for (auto& entity : core_entry_.getData().getEntities()) {
+            auto hitbox       = entity1->getComponent<BoxCollider>();
+            auto other_hitbox = entity->getComponent<BoxCollider>();
+            if (hitbox == std::nullopt || other_hitbox == std::nullopt) continue;
+            if (!hitbox->get().getIsSolid() || !other_hitbox->get().getIsSolid()) continue;
+            if (entity1 == entity) continue;
+            if (hitbox->get().isColliding(other_hitbox->get())) {
+                entity1->OnCollisionEnter(entity);
+                entity->OnCollisionEnter(entity1);
+            }
+        }
+    }
+}
+
+void Game::SystemDisplay() noexcept
+{
+    // **************************** 3D **********************************
+
+    core_entry_.getCameraman().begin3D();
+
+    DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
+    for (int z = -4; z < 7; z++)
+        for (int x = -6; x < 7; x++) {
+            if (z % 2 == 0 && x % 2 == 0)
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+            if (z % 2 != 0 && x % 2 != 0)
+                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+        }
+
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        auto transform = player->getComponent<Transform3D>();
+        auto renderer  = player->getComponent<Render>();
+        if (!transform.has_value() || !renderer.has_value()) continue;
+        if (!player->getEnabledValue()) continue;
+        renderer->get().display(transform->get());
+    }
+    for (auto& entity : core_entry_.getData().getEntities()) {
+        auto transform = entity->getComponent<Transform3D>();
+        auto renderer  = entity->getComponent<Render>();
+        if (!transform.has_value() || !renderer.has_value()) continue;
+        if (!entity->getEnabledValue()) continue;
+        renderer->get().display(transform->get());
+    }
+
+    core_entry_.getCameraman().end3D();
+
+    // **************************** 2D **********************************
+
+    FpsHandler::draw(35, 70);
+
+    if (end_game) {
+        endGameDisplay();
+        return;
+    }
+    if (pause) { pauseText_.draw(); }
+
+    if (!chrono_.isTimerDone()) {
+        auto time = std::to_string(int(round(chrono_.getTime())));
+        timeText_.setText(time);
+        timeText_.setPosition(core_entry_.getWindow().getWidth() / 2 - (time.size() * 2), 10);
+        timeText_.draw();
+    }
+
+    if (isHurry) {
+        hurryUpText_.setPosition(HurryUpX, core_entry_.getWindow().getHeight() / 2 - 60);
+        hurryUpText_.draw();
+    }
+
+    auto& sprites = core_entry_.getData().getSprites();
+    for (size_t i = 0; i != core_entry_.getData().getNbPlayers(); i++) {
+        sprites[i]->draw();
+        auto player = (&(std::unique_ptr<Player>&)(core_entry_.getData().getPlayers()[i]))->get();
+
+        std::string speed = std::to_string(player->getSpeed());
+        speed             = speed.substr(0, speed.find(".") + 2);
+        playerText_[i].setText(std::to_string(player->getNbBomb()) + ", "
+                               + std::to_string(player->getBombSize()) + ", " + speed);
+        playerText_[i].draw();
+    }
 }

@@ -27,7 +27,7 @@ class Sprite
     ~Sprite() noexcept;
 
     Sprite& operator=(const Sprite& rhs) noexcept = default;
-    Sprite& operator=(Sprite&& rhs) noexcept;
+    Sprite& operator                              =(Sprite&& rhs) noexcept;
 
     void draw() const noexcept;
     void draw(const std::array<unsigned char, 3>& color) const noexcept;

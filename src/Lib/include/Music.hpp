@@ -19,7 +19,7 @@ class MusicManager
     ~MusicManager() noexcept;
 
     MusicManager& operator=(const MusicManager& rhs) noexcept = delete;
-    MusicManager& operator=(MusicManager&& rhs) noexcept;
+    MusicManager& operator                                    =(MusicManager&& rhs) noexcept;
 
     void play() noexcept;
     void update() const noexcept;

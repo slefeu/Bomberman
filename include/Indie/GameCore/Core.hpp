@@ -11,47 +11,39 @@
 #include <type_traits>
 #include <vector>
 
-#include "AudioDevice.hpp"
+#include "ACore.hpp"
 #include "GameData.hpp"
 #include "MyCameraman.hpp"
-#include "Player.hpp"
 #include "Scene.hpp"
 #include "Window.hpp"
 
-class Core
+class Core : public ACore
 {
   public:
     Core() noexcept;
+    Core(const Core& other) noexcept = delete;
+    Core(Core&& other) noexcept      = delete;
     ~Core() noexcept;
-    Core(const Core& other) noexcept          = delete;
-    Core(Core&& other) noexcept               = delete;
-    Core& operator=(const Core& rhs) noexcept = delete;
-    Core& operator=(Core&& rhs) noexcept      = delete;
 
-    void            run() noexcept;
-    void            switchScene(const bomberman::SceneType& scene) noexcept;
-    void            setExit(bool value) noexcept;
-    WindowManager&  getWindow() noexcept;
-    MyCameraman&    getCameraman() noexcept;
-    GameData&       getData() noexcept;
-    const GameData& getData() const noexcept;
+    Core& operator=(const Core& rhs) noexcept = delete;
+    Core& operator=(Core&& rhs) noexcept = delete;
+
+    void           switchScene(const bomberman::SceneType& scene) noexcept;
+    WindowManager& getWindow() noexcept;
+    MyCameraman&   getCameraman() noexcept;
+    void           run() noexcept final;
+    void           displayScene() noexcept final;
 
   protected:
   private:
     // methods
-    void   checkExit() noexcept;
-    void   checkCamera() noexcept;
-    Scene& findScene() noexcept;
-    void   switchScene(const int& scene) noexcept;
-    void   initGameModels() noexcept;
-    void   initScenes() noexcept;
-    void   initSprites() noexcept;
+    void checkCamera() noexcept final;
+    void initGameModels() noexcept;
+    void initScenes() noexcept final;
+    void initSprites() noexcept;
+    void checkExit() noexcept;
 
     // attributes
-    bool        exit_ = false;
-    MyCameraman camera_;
-
-    GameData                            data_;
-    std::unique_ptr<WindowManager>      window_;
-    std::vector<std::unique_ptr<Scene>> scenes = {};
+    MyCameraman                    camera_;
+    std::unique_ptr<WindowManager> window_;
 };

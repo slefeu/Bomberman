@@ -25,15 +25,14 @@ class Home : public Scene
     Home& operator=(Home&& rhs) noexcept      = delete;
     ~Home() noexcept                          = default;
 
-    void display3D() noexcept final;
-    void display2D() noexcept final;
     void action() noexcept final;
-    void DestroyPool() noexcept final;
-    void CollisionPool() noexcept final;
+    void SystemDisplay() noexcept final;
+    void SystemDestroy() noexcept final{};
+    void SystemCollision() noexcept final{};
 
+  protected:
     void         playMusic() noexcept final;
     void         updateMusic() const noexcept final;
-    void         drawBackground() const noexcept final;
     ColorManager getBackgroundColor() const noexcept final;
     void         switchAction() noexcept final;
 

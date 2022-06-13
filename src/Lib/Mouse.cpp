@@ -26,10 +26,7 @@ bool MouseHandler::isColliding(const RectangleManager& bounds) const noexcept
     Rectangle rectangle = { bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight() };
     Vector2   mouse     = { mouse_.x, mouse_.y };
 
-    if (CheckCollisionPointRec(mouse, rectangle)) {
-        return (true);
-    } else
-        return (false);
+    return (CheckCollisionPointRec(mouse, rectangle));
 }
 
 bool MouseHandler::isClicking() const noexcept

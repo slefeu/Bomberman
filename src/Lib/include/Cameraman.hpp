@@ -28,6 +28,7 @@ class Cameraman
     void     setIsMoving(bool isMoving) noexcept;
 
     void begin3D() const noexcept;
+    void end3D() const noexcept;
     void moveTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     void tpTo(const Vector3D& to, const Vector3D& target, const Vector3D& up) noexcept;
     bool smoothMove() noexcept;

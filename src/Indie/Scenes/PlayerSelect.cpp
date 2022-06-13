@@ -31,33 +31,6 @@ PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
-void PlayerSelect::display3D() noexcept
-{
-    float nbPlayers = 0;
-    for (auto& player : core_entry_.getData().getPlayers()) {
-        auto render    = player->getComponent<Render>();
-        auto transform = player->getComponent<Transform3D>();
-
-        if (!render.has_value() || !transform.has_value()) continue;
-
-        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
-        Vector3D rotation = { 0, 1, 0 };
-
-        render->get().getAnimation().setAnimationId(1);
-        render->get().getAnimation().updateAnimation(render->get().getModel());
-        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
-        nbPlayers++;
-    }
-}
-
-void PlayerSelect::display2D() noexcept
-{
-    FpsHandler::draw(10, 10);
-    choose_text_.draw();
-    drawButtons();
-    displayAllStats();
-}
-
 void PlayerSelect::drawSelection(
     const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept
 {
@@ -207,10 +180,6 @@ void PlayerSelect::action() noexcept
     }
 }
 
-void PlayerSelect::DestroyPool() noexcept {}
-
-void PlayerSelect::CollisionPool() noexcept {}
-
 void PlayerSelect::playMusic() noexcept
 {
     loop_music_.play();
@@ -221,13 +190,46 @@ void PlayerSelect::updateMusic() const noexcept
     loop_music_.update();
 }
 
-void PlayerSelect::drawBackground() const noexcept
-{
-    background_.draw({ 255, 255, 255, 175 });
-    title_.draw();
-}
-
 ColorManager PlayerSelect::getBackgroundColor() const noexcept
 {
     return (background_color_);
+}
+
+// ****************************************************************************
+// *                               SYSTEMS                                    *
+// ****************************************************************************
+
+void PlayerSelect::SystemDisplay() noexcept
+{
+    background_.draw({ 255, 255, 255, 175 });
+    title_.draw();
+
+    // **************************** 3D **********************************
+
+    core_entry_.getCameraman().begin3D();
+
+    float nbPlayers = 0;
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        auto render    = player->getComponent<Render>();
+        auto transform = player->getComponent<Transform3D>();
+
+        if (!render.has_value() || !transform.has_value()) continue;
+
+        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
+        Vector3D rotation = { 0, 1, 0 };
+
+        render->get().getAnimation().setAnimationId(1);
+        render->get().getAnimation().updateAnimation(render->get().getModel());
+        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
+        nbPlayers++;
+    }
+
+    core_entry_.getCameraman().end3D();
+
+    // **************************** 2D **********************************
+
+    FpsHandler::draw(10, 10);
+    choose_text_.draw();
+    drawButtons();
+    displayAllStats();
 }

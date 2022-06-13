@@ -75,6 +75,7 @@ void Game::switchAction() noexcept
     startSound_.play();
     core_entry_.getData().clearEntities();
     createMap();
+    srand(time(NULL));
 
     isHurry       = false;
     nbBlockPlaced = 0;

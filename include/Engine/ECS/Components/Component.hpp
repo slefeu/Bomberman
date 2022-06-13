@@ -7,7 +7,7 @@
 
 #pragma once
 
-enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER };
+enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER, AI };
 
 class Component
 {

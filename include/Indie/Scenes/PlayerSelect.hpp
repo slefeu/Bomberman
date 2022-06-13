@@ -55,6 +55,7 @@ class PlayerSelect : public Scene
     void         displayAllStats() noexcept;
     unsigned int findStatsId(const PlayerType& type) const noexcept;
     void drawSelection(const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept;
+    void drawToggle(const int id, const Vector2& position, bool isBot) noexcept;
 
     // attributes
     MusicManager             loop_music_;
@@ -66,6 +67,7 @@ class PlayerSelect : public Scene
     std::vector<Button>      buttons_      = {};
     std::vector<Button>      select_left_  = {};
     std::vector<Button>      select_right_ = {};
+    std::vector<Button>      toggle_auto_  = {};
     std::vector<Sprite>      stats_        = {};
     std::vector<TextHandler> texts_        = {};
     Controller               controller;

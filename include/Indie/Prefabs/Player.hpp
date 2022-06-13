@@ -51,12 +51,19 @@ class Player : public Entity
     PlayerType getType() const noexcept;
     int        findNextType() const noexcept;
     int        findPrevType() const noexcept;
+    void       toggleBot() noexcept;
+    bool       getBotState() const noexcept;
 
   private:
     // methods
-    void setKeyboard() noexcept;
-    void placeBomb();
-    bool isCollidingNextTurn(int xdir, int zdir);
+    void                  setKeyboard() noexcept;
+    void                  placeBomb();
+    bool                  isCollidingNextTurn(int xdir, int zdir);
+    void                  handlePlayerMovement();
+    void                  handleAutoMovement();
+    std::vector<Vector3D> getSurroundingBox();
+    std::vector<Vector3D> getBombsPositions();
+    std::vector<Vector3D> getFirePositions();
 
     // attributes
     SoundManager                     killSound_;
@@ -72,6 +79,7 @@ class Player : public Entity
     bool                             wallpass;
     Timer                            wallpassTimer;
     bool                             wallpassEnd;
+    bool                             isBot;
     int                              nbBomb;
     float                            speed;
     int                              bombSize;

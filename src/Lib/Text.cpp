@@ -86,8 +86,7 @@ void TextHandler::setText(const std::string_view& message) noexcept
     message_ = message;
 }
 
-std::string TextHandler::getText() const noexcept
-
+std::string& TextHandler::getText() noexcept
 {
-    return (message_);
+    return message_;
 }

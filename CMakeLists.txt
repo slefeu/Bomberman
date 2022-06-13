@@ -25,6 +25,7 @@ set(
   src/Engine/Tools/Timer.cpp
   src/Engine/Tools/Error.cpp
 
+  src/Engine/ECS/Components/AI.cpp
   src/Engine/ECS/Components/BoxCollider.cpp
   src/Engine/ECS/Components/Transform3D.cpp
   src/Engine/ECS/Components/Render.cpp

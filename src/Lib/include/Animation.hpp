@@ -13,7 +13,7 @@
 class Animation
 {
   public:
-    Animation() noexcept;
+    Animation() noexcept = default;
     ~Animation() noexcept;
     Animation(const Animation& other) noexcept = default;
     Animation(Animation&& other) noexcept      = default;

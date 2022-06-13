@@ -9,10 +9,6 @@
 
 #include <stdlib.h>
 
-#include <iostream>
-
-Animation::Animation() noexcept {}
-
 Animation::~Animation() noexcept
 {
     if (!animations_) return;
@@ -43,6 +39,5 @@ void Animation::setSkipFrame(int frame) noexcept
 
 void Animation::setAnimationId(int id) noexcept
 {
-    if (is_animated_ == false) std::cout << "Animation is not animated" << std::endl;
     animation_id_ = id;
 }

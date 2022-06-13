@@ -35,7 +35,7 @@ class GameData : public AData
     MouseHandler getMouseHandler() const noexcept;
     void         addModel(
                 const std::string_view& model_path, const std::string_view& texture_path) noexcept;
-    void addSprite(const std::string_view& texture_path) noexcept;
+    void addSprite(const std::string_view& texture_path, float scale) noexcept;
     void addPlayer(int index) noexcept;
     void addItem(bomberman::ItemType item) noexcept;
     void addItem(const Vector3D& position) noexcept;

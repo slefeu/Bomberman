@@ -9,6 +9,7 @@
 
 #include "Game.hpp"
 #include "Home.hpp"
+#include "Load.hpp"
 #include "PlayerSelect.hpp"
 #include "Splash.hpp"
 
@@ -89,10 +90,11 @@ void Core::initGameModels() noexcept
 
 void Core::initSprites() noexcept
 {
-    data_.addSprite("assets/icones/white.png");
-    data_.addSprite("assets/icones/black.png");
-    data_.addSprite("assets/icones/blue.png");
-    data_.addSprite("assets/icones/red.png");
+    data_.addSprite("assets/textures/home/splash.png", 1);
+    data_.addSprite("assets/icones/white.png", 0.5f);
+    data_.addSprite("assets/icones/black.png", 0.5f);
+    data_.addSprite("assets/icones/blue.png", 0.5f);
+    data_.addSprite("assets/icones/red.png", 0.5f);
 }
 
 void Core::initScenes() noexcept
@@ -101,6 +103,7 @@ void Core::initScenes() noexcept
     scenes.emplace_back(std::make_unique<Game>(*this));
     scenes.emplace_back(std::make_unique<PlayerSelect>(*this));
     scenes.emplace_back(std::make_unique<Splash>(*this));
+    scenes.emplace_back(std::make_unique<Load>(*this));
     findScene().playMusic();
     switchScene(bomberman::SceneType::SPLASH);
 }

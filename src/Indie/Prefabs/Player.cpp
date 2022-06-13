@@ -115,20 +115,20 @@ std::vector<Vector3D> Player::getSurroundingBox()
     std::vector<Vector3D> result;
 
     for (auto& other : data.getEntities()) {
-        if ((Type::instanceof<Crate>(other.get()) || Type::instanceof<Wall>(other.get()))&& other.get()->getEnabledValue()) {
+        if ((Type:: instanceof <Crate>(other.get()) || Type:: instanceof <Wall>(other.get()))
+            && other.get()->getEnabledValue()) {
             result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
         }
     }
     return (result);
 }
 
-
 std::vector<Vector3D> Player::getBombsPositions()
 {
     std::vector<Vector3D> result;
 
     for (auto& other : data.getEntities()) {
-        if (Type::instanceof<Bomb>(other.get()) && other.get()->getEnabledValue()) {
+        if (Type:: instanceof <Bomb>(other.get()) && other.get()->getEnabledValue()) {
             result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
         }
     }
@@ -140,7 +140,7 @@ std::vector<Vector3D> Player::getFirePositions()
     std::vector<Vector3D> result;
 
     for (auto& other : data.getEntities()) {
-        if (Type::instanceof<Fire>(other.get()) && other.get()->getEnabledValue()) {
+        if (Type:: instanceof <Fire>(other.get()) && other.get()->getEnabledValue()) {
             result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
         }
     }
@@ -149,20 +149,20 @@ std::vector<Vector3D> Player::getFirePositions()
 
 void Player::handleAutoMovement()
 {
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-    auto ai        = getComponent<AI>();
-    bool animate = false; 
-    AIEvent event = AIEvent::NONE;
+    auto    transform = getComponent<Transform3D>();
+    auto    renderer  = getComponent<Render>();
+    auto    ai        = getComponent<AI>();
+    bool    animate   = false;
+    AIEvent event     = AIEvent::NONE;
 
     if (!ai.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in handling the AI movements.\n"));
 
-    Vector2 position = {transform->get().getPositionX(), transform->get().getPositionZ()};
+    Vector2 position = { transform->get().getPositionX(), transform->get().getPositionZ() };
     std::vector<Vector3D> boxes = getSurroundingBox();
     std::vector<Vector3D> bombs = getBombsPositions();
     std::vector<Vector3D> fires = getFirePositions();
-    event = ai->get().getEvent(position, boxes, bombs, fires);
+    event                       = ai->get().getEvent(position, boxes, bombs, fires);
     if (event != AIEvent::NONE) {
         animate = true;
         if (event == AIEvent::MOVE_UP && !isCollidingNextTurn(0, -2)) {
@@ -181,8 +181,7 @@ void Player::handleAutoMovement()
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
-        if (event == AIEvent::PLACE_BOMB)
-            placeBomb();
+        if (event == AIEvent::PLACE_BOMB) placeBomb();
         if (event == AIEvent::MOVE_UP && isCollidingNextTurn(0, -2)
             || event == AIEvent::MOVE_DOWN && isCollidingNextTurn(0, 2)
             || event == AIEvent::MOVE_LEFT && isCollidingNextTurn(-2, 0)
@@ -208,7 +207,7 @@ void Player::handlePlayerMovement()
 
     if (!transform.has_value() || !renderer.has_value())
         throw Error("Error while handling the player inputs.\n");
-    
+
     if (controller.isGamepadConnected(id)) {
         // Mouvements au joystick
         float axisX = controller.getGamepadAxis(id, Axis::G_AXIS_LEFT_X);

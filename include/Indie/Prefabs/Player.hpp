@@ -56,11 +56,11 @@ class Player : public Entity
 
   private:
     // methods
-    void setKeyboard() noexcept;
-    void placeBomb();
-    bool isCollidingNextTurn(int xdir, int zdir);
-    void handlePlayerMovement();
-    void handleAutoMovement();
+    void                  setKeyboard() noexcept;
+    void                  placeBomb();
+    bool                  isCollidingNextTurn(int xdir, int zdir);
+    void                  handlePlayerMovement();
+    void                  handleAutoMovement();
     std::vector<Vector3D> getSurroundingBox();
     std::vector<Vector3D> getBombsPositions();
     std::vector<Vector3D> getFirePositions();

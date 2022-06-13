@@ -32,33 +32,6 @@ PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
-void PlayerSelect::display3D() noexcept
-{
-    float nbPlayers = 0;
-    for (auto& player : core_entry_.getData().getPlayers()) {
-        auto render    = player->getComponent<Render>();
-        auto transform = player->getComponent<Transform3D>();
-
-        if (!render.has_value() || !transform.has_value()) continue;
-
-        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
-        Vector3D rotation = { 0, 1, 0 };
-
-        render->get().getAnimation().setAnimationId(1);
-        render->get().getAnimation().updateAnimation(render->get().getModel());
-        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
-        nbPlayers++;
-    }
-}
-
-void PlayerSelect::display2D() noexcept
-{
-    FpsHandler::draw(10, 10);
-    choose_text_.draw();
-    drawButtons();
-    displayAllStats();
-}
-
 void PlayerSelect::drawToggle(const int id, const Vector2& position, bool isBot) noexcept
 {
     if (!isBot) {

@@ -31,6 +31,7 @@ Player::Player(int newId, GameData& data)
     , wallpass(false)
     , wallpassTimer(5.0f)
     , wallpassEnd(false)
+    , isBot(false)
     , killSound_(KILL)
 {
     addComponent(Transform3D());

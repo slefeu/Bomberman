@@ -55,6 +55,8 @@ class Button
     bool checkCollision(const MouseHandler& mouse_) noexcept;
     void setState(int state) noexcept;
     void setPosition(const Vector2& pos) noexcept;
+    void setTextPosition(const Vector2& pos) noexcept;
+    void setText(std::string new_text) noexcept;
     void invertDisplay() noexcept;
 
   protected:
@@ -62,6 +64,7 @@ class Button
     SoundManager              fx_clicked_;
     SoundManager              fx_hover_;
     Sprite                    texture_;
+    float                     scale_     = 1.0f;
     int                       state_     = 0;
     bool                      is_action_ = false;
     RectangleManager          rectangle_;

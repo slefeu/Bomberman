@@ -6,6 +6,7 @@
 */
 
 #include "PlayerSelect.hpp"
+#include "raylib.h"
 
 PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     : Scene()
@@ -58,6 +59,20 @@ void PlayerSelect::display2D() noexcept
     displayAllStats();
 }
 
+void PlayerSelect::drawToggle(const int id, const Vector2 &position,
+bool isBot) noexcept
+{
+    if (!isBot) {
+        toggle_auto_[id].setText("Player");
+        toggle_auto_[id].setTextPosition({position.x + 45, position.y + 30});
+    } else {
+        toggle_auto_[id].setText("Bot");
+        toggle_auto_[id].setTextPosition({position.x + 80, position.y + 30});
+    }
+    toggle_auto_[id].setPosition(position);
+    toggle_auto_[id].draw();
+}
+
 void PlayerSelect::drawSelection(
     const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept
 {
@@ -76,9 +91,11 @@ void PlayerSelect::displayAllStats() noexcept
         Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
         Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
         Vector2 position = { 120 + 460 * nbPlayers, 600 };
+        Vector2 toggle_pos = { 140 + 460 * nbPlayers, 540 };
         displayPlayerStats(position,
             { pos_l.x + 85, pos_l.y + 25 },
             findStatsId(((std::unique_ptr<Player>&)player)->getType()));
+        drawToggle(static_cast<int>(nbPlayers), toggle_pos, ((std::unique_ptr<Player>&)player)->getBotState());
         drawSelection(static_cast<int>(nbPlayers), pos_l, pos_r);
         nbPlayers++;
     }
@@ -122,6 +139,16 @@ void PlayerSelect::createButtons() noexcept
                 core_entry_.getData().addPlayer(core_entry_.getData().getNbPlayers() - 1);
                 auto& new_player =
                     *reinterpret_cast<Player*>(core_entry_.getData().getPlayers().back().get());
+                toggle_auto_.emplace_back("assets/textures/home/button.png",
+                    0,
+                    0,
+                    std::function<void(void)>([&new_player](void) {
+                        new_player.toggleBot();
+                    }),
+                    "assets/fonts/menu.ttf",
+                    "Player",
+                    0.8f
+                );
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
@@ -154,6 +181,7 @@ void PlayerSelect::createButtons() noexcept
             if (core_entry_.getData().getNbPlayers() > 2) {
                 core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() - 1);
                 core_entry_.getData().getPlayers().pop_back();
+                toggle_auto_.pop_back();
                 select_right_.pop_back();
                 select_left_.pop_back();
             }
@@ -198,6 +226,9 @@ void PlayerSelect::action() noexcept
     } else {
         for (auto& it : buttons_)
             if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    }
+    for (auto& it : toggle_auto_) {
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
     for (auto& it : select_left_) {
         if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }

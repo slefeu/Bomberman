@@ -34,6 +34,7 @@ class TextHandler
     void setText(const std::string_view& message) noexcept;
     void unload() noexcept;
     void invertDisplay() noexcept;
+    std::string &getText() noexcept;
 
   protected:
   private:

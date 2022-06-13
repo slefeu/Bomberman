@@ -157,8 +157,7 @@ bool AI::isDirectionSafe(Direction direction, bool fireOnly) const
 
 AIEvent AI::findSafePath()
 {
-    char     action = possible_actions_[(rand() % possible_actions_.size()) + 1];
-    Vector3D toDodge;
+    Vector3D toDodge = { 0, 0, 0 };
 
     for (auto& bomb : bombs_) {
         if (isInCross(player_position_, bomb) && distance(player_position_, { bomb.x, bomb.z }) < 3)

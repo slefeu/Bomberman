@@ -21,7 +21,7 @@ class BoxCollider : public Component
     ~BoxCollider() noexcept                        = default;
 
     BoxCollider& operator=(const BoxCollider& rhs) noexcept = default;
-    BoxCollider& operator=(BoxCollider&& rhs) noexcept = default;
+    BoxCollider& operator=(BoxCollider&& rhs) noexcept      = default;
 
     Vector3D      getPosition() const noexcept;
     void          setPosition(const Vector3D& pos) noexcept;
@@ -44,8 +44,6 @@ class BoxCollider : public Component
     bool isColliding(const BoxCollider& other) const noexcept;
     bool isColliding(const BoxCollider& otherHit, const Vector3D& otherPos) const noexcept;
 
-    // pour du débugage, à enlever si besoin
-    void                           display() const noexcept;
     static constexpr ComponentType TYPE = ComponentType::BOXCOLLIDER;
 
   protected:
@@ -53,5 +51,4 @@ class BoxCollider : public Component
     Vector3D position_;
     Vector3D size_;
     bool     is_solid_;
-    bool     debug = true; // pour du débugage
 };

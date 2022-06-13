@@ -7,6 +7,7 @@
 
 #include "Bomb.hpp"
 
+#include "DeltaTime.hpp"
 #include "Error.hpp"
 #include "InstanceOf.hpp"
 #include "Wall.hpp"
@@ -67,7 +68,8 @@ void Bomb::Update()
         if (i == static_cast<int>(data.getNbPlayers())) hitbox->get().setIsSolid(true);
     }
 
-    transform->get().setScale(transform->get().getScale() + (0.1f * GetFrameTime() * animeDir));
+    transform->get().setScale(
+        transform->get().getScale() + (0.1f * DeltaTime::getDeltaTime() * animeDir));
     if (transform->get().getScale() > 0.09f || transform->get().getScale() < 0.07f) animeDir *= -1;
 }
 
@@ -89,7 +91,7 @@ void Bomb::explode() noexcept
     createFire({ 0.0f, 0.0f, -1.0f });
 
     for (auto& fire : fires) { data.addFire(std::move(fire)); }
-    setEnabledValue(false);
+    destroy();
 }
 
 void Bomb::createFire(Vector3D mul) noexcept

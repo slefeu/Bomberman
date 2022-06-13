@@ -16,7 +16,7 @@ class Timer
     Timer(Timer&& other) noexcept      = delete;
 
     Timer& operator=(const Timer& rhs) noexcept = delete;
-    Timer& operator=(Timer&& rhs) noexcept = delete;
+    Timer& operator=(Timer&& rhs) noexcept      = delete;
 
     float getTime() const noexcept;
     void  setLifeTime(float time) noexcept;

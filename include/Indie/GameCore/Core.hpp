@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "AudioDevice.hpp"
-#include "Cameraman.hpp"
 #include "GameData.hpp"
+#include "MyCameraman.hpp"
 #include "Player.hpp"
 #include "Scene.hpp"
 #include "Window.hpp"
@@ -22,17 +22,17 @@ class Core
 {
   public:
     Core() noexcept;
-    ~Core() noexcept                 = default;
-    Core(const Core& other) noexcept = delete;
-    Core(Core&& other) noexcept      = delete;
+    ~Core() noexcept;
+    Core(const Core& other) noexcept          = delete;
+    Core(Core&& other) noexcept               = delete;
     Core& operator=(const Core& rhs) noexcept = delete;
-    Core& operator=(Core&& rhs) noexcept = delete;
+    Core& operator=(Core&& rhs) noexcept      = delete;
 
     void            run() noexcept;
     void            switchScene(const bomberman::SceneType& scene) noexcept;
     void            setExit(bool value) noexcept;
     WindowManager&  getWindow() noexcept;
-    Cameraman&      getCameraman() noexcept;
+    MyCameraman&    getCameraman() noexcept;
     GameData&       getData() noexcept;
     const GameData& getData() const noexcept;
 
@@ -48,8 +48,8 @@ class Core
     void   initSprites() noexcept;
 
     // attributes
-    bool      exit_ = false;
-    Cameraman camera_;
+    bool        exit_ = false;
+    MyCameraman camera_;
 
     GameData                            data_;
     std::unique_ptr<WindowManager>      window_;

@@ -114,7 +114,7 @@ void Item::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
         setPlayerStat((std::unique_ptr<Player>&)other);
         ((std::unique_ptr<Player>&)other)->addItem(itemType);
         getItemSound.play();
-        setEnabledValue(false);
+        destroy();
     }
 }
 

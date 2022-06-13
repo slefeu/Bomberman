@@ -391,3 +391,11 @@ void GameData::loadGameWallData(std::vector<std::string> data, int* index)
     wall  = std::make_unique<Wall>(pos, *models_[static_cast<int>(bomberman::ModelType::M_WALL)]);
     entities_.emplace_back(wall.get());
 }
+
+void GameData::unloadAll() noexcept
+{
+    entities_.clear();
+    players_.clear();
+    models_.clear();
+    sprites_.clear();
+}

@@ -48,6 +48,7 @@ class GameData
     void clearEntities() noexcept;
     void saveGame(void);
     void loadGame(std::string fileName);
+    void unloadAll() noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;
     std::vector<std::unique_ptr<Entity>>&  getEntities() noexcept;
@@ -68,7 +69,7 @@ class GameData
 
   private:
     MouseHandler         mouse_;
-    bomberman::SceneType current_scene_ = bomberman::SceneType::MENU;
+    bomberman::SceneType current_scene_ = bomberman::SceneType::SPLASH;
     int                  nb_players_    = 0;
 
     std::vector<std::unique_ptr<Model3D>> models_;

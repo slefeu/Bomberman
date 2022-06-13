@@ -7,7 +7,7 @@
 
 #include "Timer.hpp"
 
-#include "raylib.h"
+#include "DeltaTime.hpp"
 
 Timer::Timer(float time) noexcept
     : life_time_(time)
@@ -17,7 +17,7 @@ Timer::Timer(float time) noexcept
 
 void Timer::updateTimer() noexcept
 {
-    if (life_time_ > 0) life_time_ -= GetFrameTime();
+    if (life_time_ > 0) life_time_ -= DeltaTime::getDeltaTime();
 }
 
 bool Timer::isTimerDone() const noexcept

@@ -44,5 +44,5 @@ void Wall::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
     auto transform = getComponent<Transform3D>();
 
     if (Type:: instanceof <Wall>(other.get()) && transform->get().getPosition().y > 0)
-        other->setEnabledValue(false);
+        other->destroy();
 }

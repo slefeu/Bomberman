@@ -10,18 +10,16 @@
 Render::Render(Model3D& model) noexcept
     : color_(Colors::C_WHITE)
     , model_(model)
+    , animation_()
 {
 }
 
-Render::~Render() noexcept
-{
-    if (!animations_) return;
-    for (unsigned int i = 0; i < animations_count_; i++) UnloadModelAnimation(animations_[i]);
-    RL_FREE(animations_);
-}
+Render::~Render() noexcept {}
 
 void Render::display(const Transform3D& transform) noexcept
 {
+    if (!show_) return;
+
     auto     color = color_.getColor();
     Vector3D pos   = transform.getPosition();
     Vector3D rot   = transform.getRotationAxis();
@@ -33,7 +31,7 @@ void Render::display(const Transform3D& transform) noexcept
         float rotationAngle = transform.getRotationAngle();
         model_.draw(pos, rot, rotationAngle, scale, color);
     } else if (type == RenderType::R_ANIMATE) {
-        updateAnimation();
+        animation_.updateAnimation(model_);
         float rotationAngle = transform.getRotationAngle();
         model_.draw(pos, rot, rotationAngle, scale, color);
     }
@@ -59,38 +57,6 @@ ComponentType Render::getComponentType() const noexcept
     return (TYPE);
 }
 
-void Render::addAnimation(const std::string_view& path) noexcept
-{
-    animations_ = LoadModelAnimations(path.data(), &animations_count_);
-}
-
-void Render::updateAnimation() noexcept
-{
-    if (animations_ == nullptr) return;
-    if (is_animated_) {
-        frame_counter_ += 1.0f * skip_frame_;
-        model_.update(animations_[animation_id_], frame_counter_);
-        if (frame_counter_ >= animations_[animation_id_].frameCount) frame_counter_ = 0;
-    }
-}
-
-void Render::resetAnimation(int frame) noexcept
-{
-    if (animations_ == nullptr) return;
-    frame_counter_ = frame;
-    model_.update(animations_[animation_id_], frame_counter_);
-}
-
-void Render::setSkipFrame(int frame) noexcept
-{
-    skip_frame_ = frame;
-}
-
-void Render::setAnimationId(int id) noexcept
-{
-    animation_id_ = id;
-}
-
 void Render::displayModel(const Transform3D& transform, const Vector3D& pos) noexcept
 {
     auto axis  = transform.getRotationAxis();
@@ -103,8 +69,27 @@ void Render::displayModelV(
     const Transform3D& transform, const Vector3D& pos, const Vector3D& axis, float angle) noexcept
 {
     if (type == RenderType::R_ANIMATE) {
-        updateAnimation();
         std::array<unsigned char, 3> color = { 255, 255, 255 };
         model_.draw(pos, axis, angle, transform.getScale(), color);
     }
+}
+
+Animation& Render::getAnimation() noexcept
+{
+    return animation_;
+}
+
+Model3D& Render::getModel() noexcept
+{
+    return model_;
+}
+
+void Render::show(bool show) noexcept
+{
+    show_ = show;
+}
+
+bool Render::isShow() const noexcept
+{
+    return show_;
 }

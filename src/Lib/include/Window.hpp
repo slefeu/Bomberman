@@ -7,6 +7,7 @@
 
 #pragma once
 #include "AudioDevice.hpp"
+#include "Cameraman.hpp"
 #include "Fps.hpp"
 #include "Scene.hpp"
 
@@ -19,7 +20,7 @@ class WindowManager
     ~WindowManager() noexcept;
 
     WindowManager& operator=(const WindowManager& rhs) noexcept = delete;
-    WindowManager& operator=(WindowManager&& rhs) noexcept = delete;
+    WindowManager& operator=(WindowManager&& rhs) noexcept      = delete;
 
     // getters and setters
     int   getWidth() const noexcept;

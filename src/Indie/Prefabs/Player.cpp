@@ -8,6 +8,7 @@
 #include "Player.hpp"
 
 #include "Bomb.hpp"
+#include "DeltaTime.hpp"
 #include "Error.hpp"
 #include "Fire.hpp"
 #include "InstanceOf.hpp"
@@ -39,7 +40,7 @@ Player::Player(int newId, GameData& data)
     transform->get().setRotationAxis({ 0.0f, 1.0f, 0.0f });
     transform->get().setScale(0.65f);
     renderer->get().setRenderType(RenderType::R_ANIMATE);
-    renderer->get().addAnimation("assets/models/player.iqm");
+    renderer->get().getAnimation().addAnimation("assets/models/player.iqm");
     setKeyboard();
     setPosition();
     setPlayerType(PlayerType::NORMAL);
@@ -78,8 +79,11 @@ void Player::Update()
 
     if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
-    if (!getEnabledValue()) return;
+
+    if (!renderer->get().isShow()) return;
+
     hitbox->get().update(transform->get().getPosition());
+
     if (wallpass) {
         wallpassTimer.updateTimer();
         if (wallpassTimer.isTimerDone()) {
@@ -141,11 +145,11 @@ void Player::Update()
         if (controller.isKeyPressed(save)) data.saveGame();
     }
     if (!animate) {
-        renderer->get().setSkipFrame(1);
-        renderer->get().setAnimationId(1);
+        renderer->get().getAnimation().setSkipFrame(1);
+        renderer->get().getAnimation().setAnimationId(1);
     } else {
-        renderer->get().setSkipFrame(2);
-        renderer->get().setAnimationId(0);
+        renderer->get().getAnimation().setSkipFrame(2);
+        renderer->get().getAnimation().setAnimationId(0);
     }
 }
 
@@ -157,10 +161,10 @@ PlayerType Player::getType() const noexcept
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Wall>(other.get()) || Type:: instanceof <Fire>(other.get())) {
-        if (other->getEnabledValue()) {
-            killSound_.play();
-            setEnabledValue(false);
-        }
+        killSound_.play();
+        dispatchItem();
+        auto render = getComponent<Render>();
+        if (render.has_value()) { render->get().show(false); }
     }
 }
 
@@ -251,9 +255,9 @@ bool Player::isCollidingNextTurn(int xdir, int zdir)
         throw(Error("Error in updating the collision of the player.\n"));
 
     Vector3D position = transform->get().getPosition();
-    Vector3D nextTurn = { position.x + (speed * xdir * GetFrameTime()),
+    Vector3D nextTurn = { position.x + (speed * xdir * DeltaTime::getDeltaTime()),
         position.y,
-        position.z + (speed * zdir * GetFrameTime()) };
+        position.z + (speed * zdir * DeltaTime::getDeltaTime()) };
 
     if (!getEnabledValue()) return false;
     for (auto& other : data.getEntities()) {

@@ -7,6 +7,8 @@
 
 #include "AudioDevice.hpp"
 
+#include "raylib.h"
+
 void AudioDevice::initialize() noexcept
 {
     InitAudioDevice();

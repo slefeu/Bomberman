@@ -21,13 +21,17 @@
 
 class Entity
 {
+  private:
+    bool                                    is_enabled_ = true;
+    std::vector<std::unique_ptr<Component>> components_ = {};
+
   public:
-    Entity()                             = default;
-    virtual ~Entity() noexcept           = default;
-    Entity(const Entity& other) noexcept = delete;
-    Entity(Entity&& other) noexcept      = delete;
+    Entity()                                      = default;
+    virtual ~Entity() noexcept                    = default;
+    Entity(const Entity& other) noexcept          = delete;
+    Entity(Entity&& other) noexcept               = delete;
     Entity& operator=(const Entity& rhs) noexcept = delete;
-    Entity& operator=(Entity&& rhs) noexcept = delete;
+    Entity& operator=(Entity&& rhs) noexcept      = delete;
 
     virtual void Update()                                                  = 0;
     virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;
@@ -38,7 +42,7 @@ class Entity
         auto component_ptr = std::make_unique<T>(component);
         components_.push_back(std::move(component_ptr));
     };
-    std::vector<std::unique_ptr<Component>>& getComponents() noexcept;
+    std::vector<std::unique_ptr<Component>>& getComponents() noexcept { return (components_); };
     template <typename T>
     std::optional<std::reference_wrapper<T>> getComponent() noexcept
     {
@@ -52,10 +56,6 @@ class Entity
         return {};
     };
 
-    bool getEnabledValue() const noexcept;
-    void setEnabledValue(bool value) noexcept;
-
-  private:
-    bool                                    is_enabled_ = true;
-    std::vector<std::unique_ptr<Component>> components_ = {};
+    bool getEnabledValue() const noexcept { return (is_enabled_); };
+    void destroy() noexcept { is_enabled_ = false; }
 };

@@ -41,4 +41,8 @@ void MyCameraman::lookBetweenEntity(const std::vector<std::unique_ptr<Entity>>& 
     camera_.target.z   = newZ;
     camera_.position.x = newX;
     camera_.position.z = newZ + 2.0f;
+    camera_.position.y =
+        static_cast<float>(sqrt(pow(maxX - minX, 2) + pow(maxZ - minZ, 2)) * 0.8f + 2.0f);
+
+    if (camera_.position.y <= 8.0f) { camera_.position.y = 8.0f; }
 }

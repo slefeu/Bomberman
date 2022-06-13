@@ -24,9 +24,6 @@ class Scene
     Scene& operator=(Scene&& rhs) noexcept      = delete;
 
     virtual void         action() noexcept                   = 0;
-    virtual void         DestroyPool() noexcept              = 0;
-    virtual void         CollisionPool() noexcept            = 0;
-    virtual void         drawBackground() const noexcept     = 0;
     virtual ColorManager getBackgroundColor() const noexcept = 0;
 
     // methods for camera
@@ -36,7 +33,7 @@ class Scene
     virtual void playMusic() noexcept         = 0;
     virtual void updateMusic() const noexcept = 0;
 
-    // methods for display
-    virtual void display3D() noexcept = 0;
-    virtual void display2D() noexcept = 0;
+    virtual void SystemDestroy() noexcept   = 0;
+    virtual void SystemCollision() noexcept = 0;
+    virtual void SystemDisplay() noexcept   = 0;
 };

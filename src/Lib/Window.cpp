@@ -30,11 +30,7 @@ void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
 
     BeginDrawing();
     ClearBackground((Color){ color[0], color[1], color[2], 255 });
-    scene.drawBackground();
-    camera.begin3D();
-    scene.display3D();
-    EndMode3D();
-    scene.display2D();
+    scene.SystemDisplay();
     EndDrawing();
 }
 

@@ -25,17 +25,15 @@ class Splash : public Scene
     Splash& operator=(Splash&& rhs) noexcept      = delete;
     ~Splash() noexcept                            = default;
 
-    void display3D() noexcept final;
-    void display2D() noexcept final;
     void action() noexcept final;
-    void DestroyPool() noexcept final;
-    void CollisionPool() noexcept final;
 
     void         playMusic() noexcept final;
     void         updateMusic() const noexcept final;
-    void         drawBackground() const noexcept final;
     ColorManager getBackgroundColor() const noexcept final;
     void         switchAction() noexcept final;
+    void         SystemDestroy() noexcept final{};
+    void         SystemCollision() noexcept final{};
+    void         SystemDisplay() noexcept final;
 
   private:
     Core&                     core_entry_;

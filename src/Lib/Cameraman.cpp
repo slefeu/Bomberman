@@ -115,6 +115,11 @@ void Cameraman::begin3D() const noexcept
     BeginMode3D(camera_);
 }
 
+void Cameraman::end3D() const noexcept
+{
+    EndMode3D();
+}
+
 void Cameraman::setPosition(const Vector3D& pos) noexcept
 {
     position_ = pos;

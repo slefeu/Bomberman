@@ -11,27 +11,21 @@
 #include "InstanceOf.hpp"
 #include "Wall.hpp"
 
-Bomb::Bomb(Vector3D                       pos,
-    Player*                               p,
-    std::unique_ptr<Model3D>*             newModel,
-    int                                   bombSize,
-    GameData*                             data,
-    std::vector<std::unique_ptr<Entity>>* entities)
+Bomb::Bomb(Vector3D pos, Player& p, Model3D& newModel, int bombSize, GameData& data)
     : Entity()
     , lifeTime(3.0f)
-    , lifeTimer(std::make_unique<Timer>(lifeTime))
+    , lifeTimer(lifeTime)
     , player(p)
     , size(bombSize)
     , hasHitbox(false)
     , data(data)
-    , entities(entities)
     , is_exploding_(false)
     , animeDir(1)
     , dropSound_(DROP_BOMB)
     , explodeSound(EXPLODE)
 {
     addComponent(Transform3D());
-    addComponent(Render());
+    addComponent(Render(newModel));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -42,28 +36,11 @@ Bomb::Bomb(Vector3D                       pos,
     transform->get().setPosition(
         { round(pos.x), 0.0f - transform->get().getScale(), round(pos.z) });
     renderer->get().setRenderType(RenderType::R_3DMODEL);
-    renderer->get().setModel(newModel);
 
     addComponent(BoxCollider(transform->get().getPosition(), { 0.8f, 1.2f, 0.8f }, false));
 
     explodeSound.setVolume(1.0f);
     dropSound_.play();
-}
-
-Bomb::~Bomb() noexcept
-{
-    dropSound_.unload();
-    explodeSound.unload();
-}
-
-void Bomb::Display()
-{
-    auto transform = getComponent<Transform3D>();
-    auto renderer  = getComponent<Render>();
-
-    if (!renderer.has_value() || !transform.has_value())
-        throw(Error("Error in displaying a bomb element.\n"));
-    renderer->get().display(transform->get());
 }
 
 void Bomb::Update()
@@ -74,20 +51,20 @@ void Bomb::Update()
     if (!hitbox.has_value() || !transform.has_value())
         throw(Error("Error in updating a bomb element.\n"));
 
-    lifeTimer->updateTimer();
-    if (lifeTimer->timerDone()) {
+    lifeTimer.updateTimer();
+    if (lifeTimer.isTimerDone()) {
         explode();
         return;
     }
     if (fires.size() == 0 && !hitbox->get().getIsSolid()) {
-        if (data->players.size() <= 0) return;
+        if (data.getNbPlayers() <= 0) return;
 
-        for (auto& other : data->players) {
+        for (auto& other : data.getPlayers()) {
             if (!(other->getComponent<BoxCollider>().has_value())) continue;
             auto other_collider = other->getComponent<BoxCollider>();
             if (!hitbox->get().isColliding(other_collider->get())) i++;
         }
-        if (i == static_cast<int>(data->players.size())) hitbox->get().setIsSolid(true);
+        if (i == static_cast<int>(data.getNbPlayers())) hitbox->get().setIsSolid(true);
     }
 
     transform->get().setScale(transform->get().getScale() + (0.1f * GetFrameTime() * animeDir));
@@ -103,15 +80,15 @@ void Bomb::explode() noexcept
     if (is_exploding_) return;
     is_exploding_ = true;
     hitbox->get().setIsSolid(false);
-    if (player->getNbBombMax() > player->getNbBomb()) player->setNbBomb(player->getNbBomb() + 1);
+    if (player.getNbBombMax() > player.getNbBomb()) player.setNbBomb(player.getNbBomb() + 1);
     fires.emplace_back(std::make_unique<Fire>(getComponent<Transform3D>()->get().getPosition(),
-        &data->models[static_cast<int>(ModelType::M_FIRE)]));
+        *(data.getModels()[static_cast<int>(bomberman::ModelType::M_FIRE)])));
     createFire({ 1.0f, 0.0f, 0.0f });
     createFire({ -1.0f, 0.0f, 0.0f });
     createFire({ 0.0f, 0.0f, 1.0f });
     createFire({ 0.0f, 0.0f, -1.0f });
 
-    for (auto& fire : fires) { entities->emplace_back(std::move(fire)); }
+    for (auto& fire : fires) { data.addFire(std::move(fire)); }
     setEnabledValue(false);
 }
 
@@ -125,10 +102,10 @@ void Bomb::createFire(Vector3D mul) noexcept
         newPos.x = position.x + (float(i) * mul.x);
         newPos.y = position.y + (float(i) * mul.y);
         newPos.z = position.z + (float(i) * mul.z);
-        fires.emplace_back(
-            std::make_unique<Fire>(newPos, &data->models[static_cast<int>(ModelType::M_FIRE)]));
+        fires.emplace_back(std::make_unique<Fire>(
+            newPos, *(data.getModels()[static_cast<int>(bomberman::ModelType::M_FIRE)])));
         auto& fire = fires.back();
-        for (auto& other : *entities) {
+        for (auto& other : data.getEntities()) {
             auto collider      = fire->getComponent<BoxCollider>();
             auto other_collide = other->getComponent<BoxCollider>();
             if (collider->get().isColliding(other_collide->get()))
@@ -137,7 +114,7 @@ void Bomb::createFire(Vector3D mul) noexcept
     }
 }
 
-void Bomb::OnCollisionEnter([[maybe_unused]] std::unique_ptr<Entity>& other) noexcept
+void Bomb::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Wall>(other.get())) explode();
 }
@@ -154,5 +131,5 @@ void Bomb::setLifeTime(const int& newLifeTime) noexcept
 
 int Bomb::getOwnerId() const noexcept
 {
-    return player->getId();
+    return player.getId();
 }

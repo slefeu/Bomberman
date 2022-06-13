@@ -63,7 +63,7 @@ SceneType GameData::getCurrentScene() const noexcept
     return (current_scene_);
 }
 
-std::string GameData::getCurrentDateTime(void) const noexcept
+std::string getCurrentDateTime(void) noexcept
 {
     char       currentTimeString[80];
     time_t     currentTime = time(0);
@@ -84,7 +84,7 @@ void GameData::saveGame(void) const
         return saveGame();
     }
     file << "save " << fileName << std::endl;
-    file << nbPlayer << std::endl;
+    file << nb_players_ << std::endl;
     writeDataPlayer(file);
     file << "Crates" << std::endl;
     writeDataCrate(file);

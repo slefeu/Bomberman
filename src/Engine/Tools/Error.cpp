@@ -7,8 +7,8 @@
 
 #include "Error.hpp"
 
-Error::Error(std::string message) noexcept
-    : message_(std::move(message)){};
+Error::Error(const std::string_view& message) noexcept
+    : message_(std::move(message.data())){};
 
 const char* Error::what() const noexcept
 {

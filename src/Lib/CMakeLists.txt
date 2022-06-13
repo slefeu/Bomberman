@@ -25,9 +25,8 @@ add_library(
 set_property(TARGET raylib_encapsulation PROPERTY CXX_STANDARD 20)
 set_property(TARGET raylib_encapsulation PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-target_include_directories(raylib_encapsulation PUBLIC
-${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(raylib_encapsulation PUBLIC
-${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(raylib_encapsulation PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(raylib_encapsulation PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(raylib_encapsulation PUBLIC ../Engine/ECS/System)
 
 target_link_libraries(raylib_encapsulation raylib)

@@ -31,22 +31,7 @@ MouseHandler GameData::getMouseHandler() const noexcept
 
 void GameData::setCurrentScene(const bomberman::SceneType& scene) noexcept
 {
-    current_scene_ = scene;
-}
-
-bomberman::SceneType GameData::getCurrentScene() const noexcept
-{
-    return (current_scene_);
-}
-
-int GameData::getNbPlayers() const noexcept
-{
-    return (nb_players_);
-}
-
-void GameData::setNbPlayers(int value) noexcept
-{
-    nb_players_ = value;
+    current_scene_ = static_cast<typename std::underlying_type<bomberman::SceneType>::type>(scene);
 }
 
 void GameData::addModel(
@@ -110,11 +95,6 @@ std::vector<std::unique_ptr<Entity>>& GameData::getPlayers() noexcept
     return (players_);
 }
 
-std::vector<std::unique_ptr<Entity>>& GameData::getEntities() noexcept
-{
-    return (entities_);
-}
-
 std::vector<std::unique_ptr<Model3D>>& GameData::getModels() noexcept
 {
     return (models_);
@@ -123,11 +103,6 @@ std::vector<std::unique_ptr<Model3D>>& GameData::getModels() noexcept
 std::vector<std::unique_ptr<Sprite>>& GameData::getSprites() noexcept
 {
     return (sprites_);
-}
-
-void GameData::clearEntities() noexcept
-{
-    entities_.clear();
 }
 
 void GameData::unloadAll() noexcept

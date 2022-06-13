@@ -16,6 +16,7 @@
 #include "Fps.hpp"
 #include "GameData.hpp"
 #include "Mouse.hpp"
+#include "Player.hpp"
 #include "Scene.hpp"
 #include "Text.hpp"
 
@@ -28,7 +29,7 @@ class PlayerSelect : public Scene
     ~PlayerSelect() noexcept                         = default;
 
     PlayerSelect& operator=(const PlayerSelect& rhs) noexcept = delete;
-    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept      = delete;
+    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept = delete;
 
     // main methods
     void action() noexcept final;
@@ -49,8 +50,9 @@ class PlayerSelect : public Scene
     // methods
     void createButtons() noexcept;
     void drawButtons() const noexcept;
-    void displayPlayerStats(const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept;
-    void displayAllStats() noexcept;
+    void displayPlayerStats(
+        const Vector2& stats_pos, const Vector2& texts_pos, unsigned int id) noexcept;
+    void         displayAllStats() noexcept;
     unsigned int findStatsId(const PlayerType& type) const noexcept;
     void drawSelection(const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept;
 

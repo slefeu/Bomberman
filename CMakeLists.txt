@@ -3,10 +3,8 @@ project(bomberman)
 
 set(OpenGL_GL_PREFERENCE GLVND)
 set(CMAKE_CXX_STANDARD 20)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-g")
 
-set(CMAKE_MODULE_LINKER_FLAGS "fsanitize=address")
 if(UNIX)
   find_program(TIDY "clang-tidy")
   if(TIDY)
@@ -33,7 +31,9 @@ set(
   src/Engine/ECS/Components/BoxCollider.cpp
   src/Engine/ECS/Components/Transform3D.cpp
   src/Engine/ECS/Components/Render.cpp
-
+  src/Engine/ECS/System/ACore.cpp
+  src/Engine/ECS/System/AData.cpp
+  src/Engine/ECS/System/AWindow.cpp
   src/Indie/GameCore/Core.cpp
   src/Indie/GameCore/GameData.cpp
   src/Indie/GameCore/MyCameraman.cpp
@@ -61,6 +61,7 @@ target_link_libraries(${PROJECT_NAME} raylib_encapsulation)
 # Ajouter ici les dossiers contenants les .hpp
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/ECS/Components)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/ECS)
+target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/ECS/System)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine/Tools)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Engine)
 target_include_directories(${PROJECT_NAME} PRIVATE include/Indie/Scenes)

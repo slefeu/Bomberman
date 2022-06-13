@@ -8,9 +8,7 @@
 #include "Window.hpp"
 
 WindowManager::WindowManager(int width, int height, int fps) noexcept
-    : width_(width)
-    , height_(height)
-    , fps_(fps)
+    : AWindow(width, height, fps)
 {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width_, height_, "Indie Studio - Bomberman");
@@ -39,11 +37,6 @@ bool WindowManager::isExit() noexcept
     return (WindowShouldClose());
 }
 
-int WindowManager::getWidth() const noexcept
-{
-    return (width_);
-}
-
 void WindowManager::resetHeight() noexcept
 {
     height_ = GetScreenHeight();
@@ -52,16 +45,6 @@ void WindowManager::resetHeight() noexcept
 void WindowManager::resetWidth() noexcept
 {
     width_ = GetScreenWidth();
-}
-
-int WindowManager::getHeight() const noexcept
-{
-    return (height_);
-}
-
-float WindowManager::getFps() const noexcept
-{
-    return (fps_);
 }
 
 void WindowManager::setFps(float value) noexcept

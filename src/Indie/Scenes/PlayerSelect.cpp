@@ -8,8 +8,7 @@
 #include "PlayerSelect.hpp"
 
 PlayerSelect::PlayerSelect(Core& core_ref) noexcept
-    : Scene()
-    , loop_music_(MUSIC)
+    : loop_music_(MUSIC)
     , core_entry_(core_ref)
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
@@ -42,17 +41,17 @@ void PlayerSelect::drawSelection(
 
 void PlayerSelect::displayAllStats() noexcept
 {
-    int   height    = core_entry_.getWindow().getHeight();
+    auto  height    = static_cast<float>(core_entry_.getWindow().getHeight());
     float nbPlayers = 0;
 
     for (auto& player : core_entry_.getData().getPlayers()) {
         Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
-        Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
+        Vector2 pos_r    = { pos_l.x + 320, (height - height / 7) + 40 };
         Vector2 position = { 120 + 460 * nbPlayers, 600 };
         displayPlayerStats(position,
             { pos_l.x + 85, pos_l.y + 25 },
-            findStatsId(((std::unique_ptr<Player>&)player)->getType()));
-        drawSelection(static_cast<int>(nbPlayers), pos_l, pos_r);
+            findStatsId(reinterpret_cast<std::unique_ptr<Player>&>(player)->getType()));
+        drawSelection(nbPlayers, pos_l, pos_r);
         nbPlayers++;
     }
 }
@@ -67,7 +66,7 @@ unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
 }
 
 void PlayerSelect::displayPlayerStats(
-    const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept
+    const Vector2& stats_pos, const Vector2& texts_pos, unsigned int id) noexcept
 {
     stats_[id].setPos(stats_pos.x, stats_pos.y);
     stats_[id].draw();
@@ -89,16 +88,16 @@ void PlayerSelect::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 4 + 200,
         height / 6,
-        std::function<void(void)>([this](void) {
+        std::function<void(void)>([this]() {
             if (core_entry_.getData().getNbPlayers() < 4) {
                 core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() + 1);
                 core_entry_.getData().addPlayer(core_entry_.getData().getNbPlayers() - 1);
-                auto& new_player =
+                Player& new_player =
                     *reinterpret_cast<Player*>(core_entry_.getData().getPlayers().back().get());
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
+                    std::function<void(void)>([&new_player]() {
                         new_player.setPlayerType(
                             static_cast<PlayerType>(new_player.findNextType()));
                     }),
@@ -108,7 +107,7 @@ void PlayerSelect::createButtons() noexcept
                 select_left_.emplace_back("assets/textures/selection/left.png",
                     0,
                     0,
-                    std::function<void(void)>([&new_player](void) {
+                    std::function<void(void)>([&new_player]() {
                         new_player.setPlayerType(
                             static_cast<PlayerType>(new_player.findPrevType()));
                     }),
@@ -160,18 +159,18 @@ void PlayerSelect::drawButtons() const noexcept
 
 void PlayerSelect::action() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
+    // if (controller.isGamepadConnected(0)) {
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
+    //         button_index_ = (button_index_ - 1) % buttons_.size();
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
+    //         button_index_ = (button_index_ + 1) % buttons_.size();
+    //     if (controller.isGamepadButtonPressed(0, G_Button::G_B))
+    //     buttons_[button_index_].action(); for (auto& it : buttons_) it.setState(0);
+    //     buttons_[button_index_].setState(1);
+    // } else {
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    // }
     for (auto& it : select_left_) {
         if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }

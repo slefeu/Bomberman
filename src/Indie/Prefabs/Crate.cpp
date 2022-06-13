@@ -12,17 +12,12 @@
 #include "Item.hpp"
 #include "Wall.hpp"
 
-Crate::Crate(Vector3D                     pos,
-    std::unique_ptr<Model3D>*             newModel,
-    GameData*                             data,
-    std::vector<std::unique_ptr<Entity>>* entities)
+Crate::Crate(Vector3D pos, Model3D& newModel, GameData& data)
     : Entity()
-    , data(data)
-    , entities(entities)
+    , data_(data)
 {
     addComponent(Transform3D());
-    addComponent(Render());
-    setEnabledValue(true);
+    addComponent(Render(newModel));
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -33,7 +28,6 @@ Crate::Crate(Vector3D                     pos,
     transform->get().setScale(0.015f);
     transform->get().setY(0 - transform->get().getScale());
     renderer->get().setRenderType(RenderType::R_3DMODEL);
-    renderer->get().setModel(newModel);
 
     addComponent(
         BoxCollider({ transform->get().getPositionX(), 0.35f, transform->get().getPositionZ() },
@@ -52,10 +46,11 @@ void Crate::dropItem()
 
     if (!transform.has_value()) throw(Error("Error in dropping item.\n"));
     if (rand() % 3 != 0) return;
-    entities->emplace_back(std::make_unique<Item>((Vector3D)transform->get().getPosition(), data));
+
+    data_.addItem(transform->get().getPosition());
 }
 
 void Crate::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
-    if (Type:: instanceof <Wall>(other.get())) setEnabledValue(false);
+    if (Type:: instanceof <Wall>(other.get())) destroy();
 }

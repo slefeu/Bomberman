@@ -42,26 +42,29 @@ class Button
         const std::string&        font_path,
         const std::string&        message,
         float                     scale) noexcept;
-    Button(const Button& other) noexcept = default;
+    Button(const Button& other) noexcept = delete;
     Button(Button&& other) noexcept      = default;
     ~Button() noexcept                   = default;
 
-    Button& operator=(const Button& rhs) noexcept = default;
-    Button& operator=(Button&& rhs) noexcept      = default;
+    Button& operator=(const Button& rhs) noexcept = delete;
+    Button& operator=(Button&& rhs) noexcept = default;
 
     void draw() const noexcept;
     void draw(float scale) const noexcept;
-    void unload() noexcept;
     void action() const noexcept;
-    bool checkCollision(MouseHandler& mouse_) noexcept;
+    bool checkCollision(const MouseHandler& mouse_) noexcept;
     void setState(int state) noexcept;
     void setPosition(const Vector2& pos) noexcept;
+    void setTextPosition(const Vector2& pos) noexcept;
+    void setText(std::string new_text) noexcept;
+    void invertDisplay() noexcept;
 
   protected:
   private:
     SoundManager              fx_clicked_;
     SoundManager              fx_hover_;
     Sprite                    texture_;
+    float                     scale_     = 1.0f;
     int                       state_     = 0;
     bool                      is_action_ = false;
     RectangleManager          rectangle_;

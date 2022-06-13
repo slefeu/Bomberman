@@ -7,35 +7,35 @@
 
 #include "Timer.hpp"
 
-#include "raylib.h"
+#include "DeltaTime.hpp"
 
-Timer::Timer(float newLifeTime) noexcept
-    : lifeTime(newLifeTime)
-    , defaultTime(newLifeTime)
+Timer::Timer(float time) noexcept
+    : life_time_(time)
+    , default_(time)
 {
 }
 
 void Timer::updateTimer() noexcept
 {
-    if (lifeTime > 0) lifeTime -= GetFrameTime();
+    if (life_time_ > 0) life_time_ -= DeltaTime::getDeltaTime();
 }
 
-bool Timer::timerDone() const noexcept
+bool Timer::isTimerDone() const noexcept
 {
-    return lifeTime <= 0;
+    return (life_time_ <= 0);
 }
 
 float Timer::getTime() const noexcept
 {
-    return lifeTime;
+    return (life_time_);
 }
 
-void Timer::setLifeTime(float const& newLifeTime) noexcept
+void Timer::setLifeTime(float time) noexcept
 {
-    lifeTime = newLifeTime;
+    life_time_ = time;
 }
 
 void Timer::resetTimer() noexcept
 {
-    lifeTime = defaultTime;
+    life_time_ = default_;
 }

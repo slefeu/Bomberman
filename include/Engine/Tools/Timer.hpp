@@ -9,21 +9,23 @@
 
 class Timer
 {
-  private:
-    float lifeTime;
-    float defaultTime;
-
   public:
     Timer(float lifeTime) noexcept;
-    ~Timer() noexcept                           = default;
-    Timer(const Timer& other) noexcept          = delete;
-    Timer(Timer&& other) noexcept               = delete;
-    Timer& operator=(const Timer& rhs) noexcept = delete;
-    Timer& operator=(Timer&& rhs) noexcept      = delete;
+    ~Timer() noexcept                  = default;
+    Timer(const Timer& other) noexcept = delete;
+    Timer(Timer&& other) noexcept      = delete;
 
-    void  updateTimer() noexcept;
-    bool  timerDone() const noexcept;
+    Timer& operator=(const Timer& rhs) noexcept = delete;
+    Timer& operator=(Timer&& rhs) noexcept = delete;
+
     float getTime() const noexcept;
-    void  setLifeTime(float const& newLifeTime) noexcept;
-    void  resetTimer() noexcept;
+    void  setLifeTime(float time) noexcept;
+
+    void updateTimer() noexcept;
+    void resetTimer() noexcept;
+    bool isTimerDone() const noexcept;
+
+  private:
+    float life_time_;
+    float default_;
 };

@@ -63,6 +63,7 @@ Button::Button(const std::string& texture_path,
     , fx_hover_(ON_HOVER)
     , texture_(texture_path)
     , task_(function)
+    , scale_(scale)
     , text_(font_path, message, 0, 0)
     , color_(Colors::C_WHITE)
     , rectangle_(pos_x,
@@ -71,18 +72,10 @@ Button::Button(const std::string& texture_path,
           static_cast<float>(texture_.getHeight()))
 {
     texture_.setPos(rectangle_.getX(), rectangle_.getY());
-    text_.setPosition(pos_x + 150 - (message.size() * 30) / 2, pos_y + 45);
+    text_.setPosition((pos_x + 150 - (message.size() * 30) / 2), (pos_y + 45));
     texture_.setScale(scale);
     rectangle_.setWidth(texture_.getWidth() * scale);
     rectangle_.setHeight(texture_.getHeight() * scale);
-}
-
-void Button::unload() noexcept
-{
-    fx_clicked_.unload();
-    fx_hover_.unload();
-    text_.unload();
-    texture_.unload();
 }
 
 void Button::draw() const noexcept
@@ -91,7 +84,7 @@ void Button::draw() const noexcept
     text_.draw();
 }
 
-bool Button::checkCollision(MouseHandler& mouse_) noexcept
+bool Button::checkCollision(const MouseHandler& mouse_) noexcept
 {
     if (mouse_.isColliding(rectangle_)) {
         if (mouse_.isClicking()) { state_ = 2; };
@@ -136,4 +129,19 @@ void Button::setPosition(const Vector2& pos) noexcept
 {
     texture_.setPos(pos.x, pos.y);
     rectangle_.setPos(pos.x, pos.y);
+}
+
+void Button::setTextPosition(const Vector2& pos) noexcept
+{
+    text_.setPosition(pos.x, pos.y);
+}
+
+void Button::setText(std::string new_text) noexcept
+{
+    text_.setText(new_text);
+}
+
+void Button::invertDisplay() noexcept
+{
+    texture_.invertDisplay();
 }

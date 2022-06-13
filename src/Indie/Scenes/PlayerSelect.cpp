@@ -7,21 +7,22 @@
 
 #include "PlayerSelect.hpp"
 
-PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
-    : Scene()
-    , loop_music_(MUSIC)
+#include "raylib.h"
+
+PlayerSelect::PlayerSelect(Core& core_ref) noexcept
+    : loop_music_(MUSIC)
     , core_entry_(core_ref)
-    , data_(data)
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
     , title_(TITLE_PATH, 30, 30)
-    , choose_(SELECT, "Select players", 0, 0)
+    , choose_text_(SELECT, "Select players", 0, 0)
 {
-    choose_.setTextSize(40);
-    choose_.setPosition(
+    choose_text_.setTextSize(40);
+    choose_text_.setPosition(
         core_entry_.getWindow().getWidth() / 2, core_entry_.getWindow().getHeight() / 9);
     createButtons();
-    stats_.emplace_back("assets/textures/selection/normal.png", data_->winWidth / 2, 50);
+    stats_.emplace_back(
+        "assets/textures/selection/normal.png", core_entry_.getWindow().getWidth() / 2, 50);
     stats_.emplace_back("assets/textures/selection/attack.png");
     stats_.emplace_back("assets/textures/selection/tactical.png");
     stats_.emplace_back("assets/textures/selection/runner.png");
@@ -31,45 +32,17 @@ PlayerSelect::PlayerSelect(GameData* data, Core& core_ref) noexcept
     texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
-PlayerSelect::~PlayerSelect() noexcept
+void PlayerSelect::drawToggle(const int id, const Vector2& position, bool isBot) noexcept
 {
-    loop_music_.unload();
-    background_.unload();
-    title_.unload();
-    unloadButtons();
-}
-
-void PlayerSelect::unloadButtons() noexcept
-{
-    for (auto& it : buttons_) { it.unload(); }
-    for (auto& it : select_left_) { it.unload(); }
-    for (auto& it : select_right_) { it.unload(); }
-}
-
-void PlayerSelect::display3D() noexcept
-{
-    float nbPlayers = 0;
-    for (auto& player : data_->players) {
-        auto render    = player->getComponent<Render>();
-        auto transform = player->getComponent<Transform3D>();
-
-        if (!render.has_value() || !transform.has_value()) continue;
-
-        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
-        Vector3D rotation = { 0, 1, 0 };
-
-        render->get().setAnimationId(1);
-        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
-        nbPlayers++;
+    if (!isBot) {
+        toggle_auto_[id].setText("Player");
+        toggle_auto_[id].setTextPosition({ position.x + 45, position.y + 30 });
+    } else {
+        toggle_auto_[id].setText("Bot");
+        toggle_auto_[id].setTextPosition({ position.x + 80, position.y + 30 });
     }
-}
-
-void PlayerSelect::display2D() noexcept
-{
-    FpsHandler::draw(10, 10);
-    choose_.draw();
-    drawButtons();
-    displayAllStats();
+    toggle_auto_[id].setPosition(position);
+    toggle_auto_[id].draw();
 }
 
 void PlayerSelect::drawSelection(
@@ -83,16 +56,20 @@ void PlayerSelect::drawSelection(
 
 void PlayerSelect::displayAllStats() noexcept
 {
-    int   height    = core_entry_.getWindow().getHeight();
+    auto  height    = static_cast<float>(core_entry_.getWindow().getHeight());
     float nbPlayers = 0;
 
-    for (auto& player : data_->players) {
-        Vector2 pos_l    = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
-        Vector2 pos_r    = { pos_l.x + 320, static_cast<float>(height - height / 7) + 40 };
-        Vector2 position = { 120 + 460 * nbPlayers, 600 };
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        Vector2 pos_l      = { 70 + 460 * nbPlayers, static_cast<float>(height - height / 7) + 40 };
+        Vector2 pos_r      = { pos_l.x + 320, (height - height / 7) + 40 };
+        Vector2 position   = { 120 + 460 * nbPlayers, 600 };
+        Vector2 toggle_pos = { 140 + 460 * nbPlayers, 540 };
         displayPlayerStats(position,
             { pos_l.x + 85, pos_l.y + 25 },
             findStatsId(((std::unique_ptr<Player>&)player)->getType()));
+        drawToggle(static_cast<int>(nbPlayers),
+            toggle_pos,
+            ((std::unique_ptr<Player>&)player)->getBotState());
         drawSelection(static_cast<int>(nbPlayers), pos_l, pos_r);
         nbPlayers++;
     }
@@ -108,15 +85,19 @@ unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
 }
 
 void PlayerSelect::displayPlayerStats(
-    const Vector2& stats_pos, const Vector2& texts_pos, int id) noexcept
+    const Vector2& stats_pos, const Vector2& texts_pos, unsigned int id) noexcept
 {
     stats_[id].setPos(stats_pos.x, stats_pos.y);
     stats_[id].draw();
-    texts_[id].setPos(texts_pos.x, texts_pos.y);
+    texts_[id].setPosition(texts_pos.x, texts_pos.y);
     texts_[id].draw();
 }
 
-void PlayerSelect::switchAction() noexcept {}
+void PlayerSelect::switchAction() noexcept
+{
+    core_entry_.getCameraman().tpTo(
+        { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
+}
 
 void PlayerSelect::createButtons() noexcept
 {
@@ -126,17 +107,25 @@ void PlayerSelect::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 4 + 200,
         height / 6,
-        std::function<void(void)>([this](void) {
-            if (this->data_->nbPlayer < 4) {
-                data_->nbPlayer++;
-                data_->players.emplace_back(std::make_unique<Player>(data_->nbPlayer - 1, data_));
-                Player* new_player = reinterpret_cast<Player*>(data_->players.back().get());
+        std::function<void(void)>([this]() {
+            if (core_entry_.getData().getNbPlayers() < 4) {
+                core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() + 1);
+                core_entry_.getData().addPlayer(core_entry_.getData().getNbPlayers() - 1);
+                Player& new_player =
+                    *reinterpret_cast<Player*>(core_entry_.getData().getPlayers().back().get());
+                toggle_auto_.emplace_back("assets/textures/home/button.png",
+                    0,
+                    0,
+                    std::function<void(void)>([&new_player](void) { new_player.toggleBot(); }),
+                    "assets/fonts/menu.ttf",
+                    "Player",
+                    0.8f);
                 select_right_.emplace_back("assets/textures/selection/right.png",
                     0,
                     0,
-                    std::function<void(void)>([new_player](void) {
-                        new_player->setPlayerType(
-                            static_cast<PlayerType>(new_player->findNextType()));
+                    std::function<void(void)>([&new_player]() {
+                        new_player.setPlayerType(
+                            static_cast<PlayerType>(new_player.findNextType()));
                     }),
                     "assets/fonts/menu.ttf",
                     "",
@@ -144,9 +133,9 @@ void PlayerSelect::createButtons() noexcept
                 select_left_.emplace_back("assets/textures/selection/left.png",
                     0,
                     0,
-                    std::function<void(void)>([new_player](void) {
-                        new_player->setPlayerType(
-                            static_cast<PlayerType>(new_player->findPrevType()));
+                    std::function<void(void)>([&new_player]() {
+                        new_player.setPlayerType(
+                            static_cast<PlayerType>(new_player.findPrevType()));
                     }),
                     "assets/fonts/menu.ttf",
                     "",
@@ -160,9 +149,10 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 550,
         height / 6,
         std::function<void(void)>([this](void) {
-            if (this->data_->nbPlayer > 1) {
-                data_->nbPlayer--;
-                data_->players.pop_back();
+            if (core_entry_.getData().getNbPlayers() > 2) {
+                core_entry_.getData().setNbPlayers(core_entry_.getData().getNbPlayers() - 1);
+                core_entry_.getData().getPlayers().pop_back();
+                toggle_auto_.pop_back();
                 select_right_.pop_back();
                 select_left_.pop_back();
             }
@@ -173,8 +163,10 @@ void PlayerSelect::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 4 + 900,
         height / 6,
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::GAME)); }),
+        std::function<void(void)>([this](void) {
+            if (this->core_entry_.getData().getNbPlayers() > 1)
+                core_entry_.switchScene(bomberman::SceneType::GAME);
+        }),
         "assets/fonts/menu.ttf",
         "Play");
 
@@ -182,7 +174,7 @@ void PlayerSelect::createButtons() noexcept
         width / 4 + 1250,
         height / 6,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(SceneType::MENU)); }),
+            [this](void) { core_entry_.switchScene(bomberman::SceneType::MENU); }),
         "assets/fonts/menu.ttf",
         "");
 }
@@ -192,12 +184,7 @@ void PlayerSelect::drawButtons() const noexcept
     for (auto& it : buttons_) { it.draw(); }
 }
 
-void PlayerSelect::resetCameraman(Cameraman& camera) noexcept
-{
-    camera.tpTo(camera_position_, camera_target_, camera_up_);
-}
-
-void PlayerSelect::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse_) noexcept
+void PlayerSelect::action() noexcept
 {
     if (controller.isGamepadConnected(0)) {
         if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
@@ -209,52 +196,69 @@ void PlayerSelect::action([[maybe_unused]] Cameraman& camera, MouseHandler mouse
         buttons_[button_index_].setState(1);
     } else {
         for (auto& it : buttons_)
-            if (it.checkCollision(mouse_)) { it.action(); }
+            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    }
+    for (auto& it : toggle_auto_) {
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
     for (auto& it : select_left_) {
-        if (it.checkCollision(mouse_)) { it.action(); }
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
     for (auto& it : select_right_) {
-        if (it.checkCollision(mouse_)) { it.action(); }
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
 }
-
-void PlayerSelect::DestroyPool() noexcept {}
-
-void PlayerSelect::CollisionPool() noexcept {}
 
 void PlayerSelect::playMusic() noexcept
 {
     loop_music_.play();
 }
 
-MusicManager PlayerSelect::getMusicManager() const noexcept
+void PlayerSelect::updateMusic() const noexcept
 {
-    return (loop_music_);
-}
-
-Vector3D PlayerSelect::getCameraPosition() const noexcept
-{
-    return (camera_position_);
-}
-
-Vector3D PlayerSelect::getCameraTarget() const noexcept
-{
-    return (camera_target_);
-}
-
-Vector3D PlayerSelect::getCameraUp() const noexcept
-{
-    return (camera_up_);
-}
-
-void PlayerSelect::drawBackground() const noexcept
-{
-    background_.draw({ 255, 255, 255, 175 });
-    title_.draw();
+    loop_music_.update();
 }
 
 ColorManager PlayerSelect::getBackgroundColor() const noexcept
 {
     return (background_color_);
+}
+
+// ****************************************************************************
+// *                               SYSTEMS                                    *
+// ****************************************************************************
+
+void PlayerSelect::SystemDisplay() noexcept
+{
+    background_.draw({ 255, 255, 255, 175 });
+    title_.draw();
+
+    // **************************** 3D **********************************
+
+    core_entry_.getCameraman().begin3D();
+
+    float nbPlayers = 0;
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        auto render    = player->getComponent<Render>();
+        auto transform = player->getComponent<Transform3D>();
+
+        if (!render.has_value() || !transform.has_value()) continue;
+
+        Vector3D position = { 0.2f, 0.6f, 4.5f - nbPlayers * 2 };
+        Vector3D rotation = { 0, 1, 0 };
+
+        render->get().getAnimation().setAnimationId(1);
+        render->get().getAnimation().updateAnimation(render->get().getModel());
+        render->get().displayModelV(transform->get(), position, rotation, 180.0f);
+        nbPlayers++;
+    }
+
+    core_entry_.getCameraman().end3D();
+
+    // **************************** 2D **********************************
+
+    FpsHandler::draw(10, 10);
+    choose_text_.draw();
+    drawButtons();
+    displayAllStats();
 }

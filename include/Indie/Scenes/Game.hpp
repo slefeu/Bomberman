@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 
+#include "Bomberman.hpp"
 #include "Button.hpp"
 #include "Controller.hpp"
 #include "Core.hpp"
@@ -27,45 +28,37 @@ enum class Direction { UP, RIGHT, DOWN, LEFT };
 class Game : public Scene
 {
   public:
-    Game(GameData* data, Core& core_ref) noexcept;
-    ~Game() noexcept;
-    Game(const Game& other) noexcept          = delete;
-    Game(Game&& other) noexcept               = delete;
-    Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
+    Game(Core& core_ref) noexcept;
+    Game(const Game& other) noexcept = delete;
+    Game(Game&& other) noexcept      = delete;
+    ~Game() noexcept                 = default;
 
-    void         display3D() noexcept final;
-    void         display2D() noexcept final;
-    void         action(Cameraman& camera, MouseHandler mouse_) noexcept final;
-    void         DestroyPool() noexcept final;
-    void         CollisionPool() noexcept final;
+    Game& operator=(const Game& rhs) noexcept = delete;
+    Game& operator=(Game&& rhs) noexcept = delete;
+
+    void         action() noexcept final;
     void         playMusic() noexcept final;
-    MusicManager getMusicManager() const noexcept final;
-    Vector3D     getCameraPosition() const noexcept final;
-    Vector3D     getCameraTarget() const noexcept final;
-    Vector3D     getCameraUp() const noexcept final;
-    void         resetCameraman(Cameraman& camera) noexcept final;
-    void         drawBackground() const noexcept final{};
+    void         updateMusic() const noexcept final;
     ColorManager getBackgroundColor() const noexcept final;
     void         switchAction() noexcept final;
+    void         SystemDestroy() noexcept final;
+    void         SystemCollision() noexcept final;
+    void         SystemDisplay() noexcept final;
 
   private:
     // methods
     void createMap() noexcept;
     void hurryUp() noexcept;
-    // EndGame
     void endGame() noexcept;
-    void endGameAction(MouseHandler mouse_) noexcept;
+    void endGameAction() noexcept;
     void endGameDisplay() noexcept;
-    // Buttons
     void createButtons() noexcept;
-    // Pause
-    void pauseAction(MouseHandler mouse_) noexcept;
+    void pauseAction() noexcept;
 
     // attributes
-    GameData*                            data_;
-    std::vector<std::unique_ptr<Entity>> entities_;
-    std::unique_ptr<Timer>               chrono_;
+    float time_party_ = 120;
+    Core& core_entry_;
+    Timer chrono_;
 
     float lastTimeBlockPlace;
     bool  isHurry;
@@ -86,7 +79,6 @@ class Game : public Scene
     Vector3D                 camera_position_ = { 0.0f, 13.0f, 2.0f };
     Vector3D                 camera_target_   = { 0.0f, 0.0f, 1.0f };
     Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
-    Core&                    core_entry_;
     float                    HurryUpX;
     ColorManager             background_color_;
     std::vector<Button>      buttons_      = {};

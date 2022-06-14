@@ -8,7 +8,9 @@
 #include "Animation.hpp"
 
 #include <stdlib.h>
+
 #include <iostream>
+
 #include "DeltaTime.hpp"
 
 /**
@@ -44,7 +46,7 @@ void Animation::addAnimation(const std::string_view& path) noexcept
 void Animation::updateAnimation(Model3D& model_) noexcept
 {
     time_ += DeltaTime::getDeltaTime();
-    std::cout << "time\n" <<  time_ << std::endl;
+    std::cout << "time\n" << time_ << std::endl;
     if (animations_ == nullptr) return;
     if (is_animated_ == false) return;
     if (time_ < 0.01) return;

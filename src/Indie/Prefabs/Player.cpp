@@ -13,6 +13,7 @@
 
 #include "AI.hpp"
 #include "Bomb.hpp"
+#include "Controller.hpp"
 #include "Crate.hpp"
 #include "DeltaTime.hpp"
 #include "Error.hpp"
@@ -233,6 +234,7 @@ void Player::handlePlayerMovement()
             transform->get().moveX(speed);
         }
         if (controller.isGamepadButtonPressed(id, G_Button::G_B)) placeBomb();
+        if (controller.isGamepadButtonPressed(id, G_Button::G_SELECT)) data.saveGame();
     } else {
         // Mouvements au clavier
         if (controller.isKeyDown(moveUp) || controller.isKeyDown(moveDown)

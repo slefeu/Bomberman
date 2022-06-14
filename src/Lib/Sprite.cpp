@@ -108,26 +108,14 @@ void Sprite::draw(const std::array<unsigned char, 3>& color) const noexcept
 {
     Color col = { color[0], color[1], color[2], 255 };
 
-    if (displayed_) {
-        DrawTextureEx(texture_,
-            { pos_x_, pos_y_ },
-            0.0f,
-            scale_,
-            col);
-    }
+    if (displayed_) { DrawTextureEx(texture_, { pos_x_, pos_y_ }, 0.0f, scale_, col); }
 }
 
 void Sprite::draw(const std::array<unsigned char, 4>& color) const noexcept
 {
     Color col = { color[0], color[1], color[2], color[3] };
 
-    if (displayed_) {
-        DrawTextureEx(texture_,
-            { pos_x_, pos_y_ },
-            0.0f,
-            scale_,
-            col);
-    }
+    if (displayed_) { DrawTextureEx(texture_, { pos_x_, pos_y_ }, 0.0f, scale_, col); }
 }
 
 void Sprite::setScale(float scale) noexcept

@@ -435,17 +435,12 @@ void Game::SystemDisplay() noexcept
         renderer->get().display(transform->get());
     }
     for (auto& entity : core_entry_.getData().getEntities()) {
-        std::cout << "Test" << std::endl;
         auto transform = entity->getComponent<Transform3D>();
-        std::cout << "Test2" << std::endl;
-        auto renderer = entity->getComponent<Render>();
+        auto renderer  = entity->getComponent<Render>();
         if (!transform.has_value() || !renderer.has_value()) continue;
         if (!entity->getEnabledValue()) continue;
-        std::cout << "Test3" << std::endl;
         renderer->get().display(transform->get());
-        std::cout << "Test4" << std::endl;
     }
-    std::cout << "Test5" << std::endl;
 
     core_entry_.getCameraman().end3D();
     FpsHandler::draw(35, 70);

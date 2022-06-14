@@ -342,8 +342,8 @@ void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
             } catch (std::exception err) {
                 throw Error("Save not valid: " + data[*index] + " loadGameBomb " + err.what());
             }
-            *index = *index + 1;
         }
+        *index = *index + 1;
     }
 }
 

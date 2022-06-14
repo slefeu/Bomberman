@@ -32,7 +32,7 @@ class Render : public Component
     ~Render() noexcept;
 
     Render& operator=(const Render& rhs) noexcept = delete;
-    Render& operator=(Render&& rhs) noexcept = delete;
+    Render& operator=(Render&& rhs) noexcept      = delete;
 
     void          display(const Transform3D& transform) noexcept;
     void          setRenderType(const RenderType& type) noexcept;

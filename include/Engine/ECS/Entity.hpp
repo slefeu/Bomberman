@@ -26,12 +26,12 @@ class Entity
     std::vector<std::unique_ptr<Component>> components_ = {};
 
   public:
-    Entity()                             = default;
-    virtual ~Entity() noexcept           = default;
-    Entity(const Entity& other) noexcept = delete;
-    Entity(Entity&& other) noexcept      = delete;
+    Entity()                                      = default;
+    virtual ~Entity() noexcept                    = default;
+    Entity(const Entity& other) noexcept          = delete;
+    Entity(Entity&& other) noexcept               = delete;
     Entity& operator=(const Entity& rhs) noexcept = delete;
-    Entity& operator=(Entity&& rhs) noexcept = delete;
+    Entity& operator=(Entity&& rhs) noexcept      = delete;
 
     virtual void Update()                                                  = 0;
     virtual void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept = 0;

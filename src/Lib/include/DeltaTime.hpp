@@ -16,7 +16,7 @@ class DeltaTime
     DeltaTime(DeltaTime&& other) noexcept      = delete;
 
     DeltaTime& operator=(const DeltaTime& rhs) noexcept = delete;
-    DeltaTime& operator=(DeltaTime&& rhs) noexcept = delete;
+    DeltaTime& operator=(DeltaTime&& rhs) noexcept      = delete;
 
     static float getDeltaTime() noexcept;
 };

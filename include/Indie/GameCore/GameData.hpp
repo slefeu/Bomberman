@@ -37,18 +37,20 @@ class GameData
     void                 setNbPlayers(int value) noexcept;
     void                 addModel(
                         const std::string_view& model_path, const std::string_view& texture_path) noexcept;
-    void addSprite(const std::string_view& texture_path) noexcept;
-    void addPlayer(int index) noexcept;
-    void addItem(bomberman::ItemType item) noexcept;
-    void addItem(const Vector3D& position) noexcept;
-    void addCrate(Vector3D position) noexcept;
-    void addWall(Vector3D position) noexcept;
-    void addFire(std::unique_ptr<Fire> fire) noexcept;
-    void addBomb(Vector3D position, Player& ref, int size) noexcept;
-    void clearEntities() noexcept;
-    void saveGame(void);
-    void loadGame(std::string fileName);
-    void unloadAll() noexcept;
+    void        addSprite(const std::string_view& texture_path) noexcept;
+    void        addPlayer(int index) noexcept;
+    void        addItem(bomberman::ItemType item) noexcept;
+    void        addItem(const Vector3D& position) noexcept;
+    void        addCrate(Vector3D position) noexcept;
+    void        addWall(Vector3D position) noexcept;
+    void        addFire(std::unique_ptr<Fire> fire) noexcept;
+    void        addBomb(Vector3D position, Player& ref, int size) noexcept;
+    void        clearEntities() noexcept;
+    void        saveGame(void);
+    void        loadGame();
+    void        unloadAll() noexcept;
+    std::string tryToLoad() const noexcept;
+    void        setTryToLoad(const std::string& value) noexcept;
 
     std::vector<std::unique_ptr<Entity>>&  getPlayers() noexcept;
     std::vector<std::unique_ptr<Entity>>&  getEntities() noexcept;
@@ -71,6 +73,7 @@ class GameData
     MouseHandler         mouse_;
     bomberman::SceneType current_scene_ = bomberman::SceneType::SPLASH;
     int                  nb_players_    = 0;
+    std::string          try_to_load;
 
     std::vector<std::unique_ptr<Model3D>> models_;
     std::vector<std::unique_ptr<Entity>>  entities_;

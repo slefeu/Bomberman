@@ -193,7 +193,7 @@ void GameData::writeDataPlayer(std::ofstream& file)
         /// Write Player Id/////////////////////////////////////////////////////
         file << tmp->getId() << std::endl;
         /// Write Player Position///////////////////////////////////////////////
-        file << transform->get().getPositionX() << ";" << transform->get().getPositionY()
+        file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
              << transform->get().getPositionZ() << std::endl;
         /// Write Player Info///////////////////////////////////////////////////
         file << int(tmp->getType()) << std::endl;
@@ -220,9 +220,8 @@ void GameData::writeDataBombPlayer(std::ofstream& file, const std::unique_ptr<En
 
     if (!transform.has_value()) return;
     /// Write Bomb Position///////////////////////////////////////////////
-    file << transform->get().getPositionX() << ";" << transform->get().getPositionY()
+    file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
          << transform->get().getPositionZ() << std::endl;
-    file << tmp->getLifeTime() << std::endl;
 }
 
 void GameData::writeDataCrate(std::ofstream& file)
@@ -261,9 +260,9 @@ void splitStr(std::string str, std::string delimiter, std::vector<std::string>* 
     (*result).push_back(str);
 }
 
-void GameData::loadGame(std::string fileName)
+void GameData::loadGame()
 {
-    std::ifstream            file(fileName);
+    std::ifstream            file(try_to_load);
     std::string              line;
     std::vector<std::string> data;
 
@@ -278,19 +277,36 @@ void GameData::loadGameData(std::vector<std::string> data)
 
     nb_players_ = std::stoi(data[1]);
     for (int i = 0; i < nb_players_; i++) {
-        if (data[index].find("Player") != 0) throw Error("Save not valid");
+        if (data[index].find("Player") != 0)
+            throw Error("Save not valid: " + data[index] + " in loadGameData Player");
         loadGamePlayerData(data, &index);
+    }
+
+    if (data[index].find("Crates") != 0)
+        throw Error("Save not valid: " + data[index] + " in loadGameData Crates");
+    index++;
+    while (data[index].find("Walls") != 0) {
+        try {
+            loadGameCrateData(data, &index);
+        } catch (std::exception err) {
+            throw Error("Save not valid: " + data[index] + " in loadGameCrate " + err.what());
+        }
         index++;
     }
-    if (data[index].find("Crates") != 0) throw Error("Save not valid");
-    while (!data[index].find("Walls")) {
-        index++;
-        loadGameCrateData(data, &index);
-    }
+
+    if (data[index].find("Walls") != 0)
+        throw Error("Save not valid: " + data[index] + " in loadGameData Walls");
+
+    index++;
     while (data[index] != data.back()) {
         index++;
-        loadGameWallData(data, &index);
+        try {
+            loadGameWallData(data, &index);
+        } catch (std::exception err) {
+            throw Error("Save not valid: " + data[index] + " in loadGameWall " + err.what());
+        }
     }
+    std::cout << "Load finish" << std::endl;
 }
 
 void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
@@ -300,31 +316,31 @@ void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
     int                      nbBombPlaced;
     Vector3D                 pos;
     std::vector<std::string> split;
-    std::unique_ptr<Player>  player;
 
-    id = std::stoi(data[*index]);
+    *index = *index + 1;
+    id     = std::stoi(data[*index]);
+
+    addPlayer(id);
+    auto* player = dynamic_cast<Player*>(players_.back().get());
 
     *index = *index + 1;
     splitStr(data[*index], ";", &split);
-    if (split.size() != 3) throw Error("Save not valid");
-    pos.x  = std::stof(split[0]);
-    pos.y  = std::stof(split[1]);
-    pos.z  = std::stof(split[2]);
-    player = std::make_unique<Player>(id, *this);
+    if (split.size() != 3) throw Error("Save not valid: " + data[*index] + " loadGamePlayer");
+    pos.x = std::stof(split[0]);
+    pos.y = std::stof(split[1]);
+    pos.z = std::stof(split[2]);
     player->setPosition(pos);
 
     *index = *index + 1;
     type   = std::stoi(data[*index]);
+    player->setPlayerType(static_cast<PlayerType>(type));
 
     *index = *index + 1;
     splitStr(data[*index], ";", &split);
-    if (split.size() != 3) throw Error("Save not valid");
+    if (split.size() != 3) throw Error("Save not valid: " + data[*index] + " loadGamePlayer");
     player->setSpeed(std::stoi(split[0]));
     player->setNbBomb(std::stoi(split[1]));
     player->setBombSize(std::stoi(split[2]));
-
-    player->setPlayerType(static_cast<PlayerType>(type));
-    entities_.emplace_back(player.get());
 
     *index       = *index + 1;
     nbBombPlaced = std::stoi(data[*index]);
@@ -332,7 +348,11 @@ void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
     *index = *index + 1;
     if (nbBombPlaced > 0 && !data[*index].find("Bombs")) {
         for (int i = 0; i < nbBombPlaced; i++) {
-            loadGameBombData(data, index);
+            try {
+                loadGameBombData(data, index);
+            } catch (std::exception err) {
+                throw Error("Save not valid: " + data[*index] + " loadGameBomb " + err.what());
+            }
             *index = *index + 1;
         }
     }
@@ -340,27 +360,19 @@ void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
 
 void GameData::loadGameBombData(std::vector<std::string> data, int* index)
 {
-    Player*                  player = dynamic_cast<Player*>(entities_.back().get());
+    Player*                  player = dynamic_cast<Player*>(players_.back().get());
     Vector3D                 pos;
     int                      lifeTime;
     std::vector<std::string> split;
     std::unique_ptr<Bomb>    bomb;
 
+    *index = *index + 1;
     splitStr(data[*index], ";", &split);
     pos.x = std::stof(split[0]);
     pos.y = std::stof(split[1]);
     pos.z = std::stof(split[2]);
 
-    *index   = *index + 1;
-    lifeTime = std::stoi(data[*index]);
-    bomb     = std::make_unique<Bomb>(pos,
-        *player,
-        *models_[static_cast<int>(bomberman::ModelType::M_BOMB)],
-        player->getBombSize(),
-        *this);
-    bomb->setLifeTime(lifeTime);
-    entities_.emplace_back(bomb.get());
-    entities_.emplace_back(bomb.get());
+    addBomb(pos, *player, player->getBombSize());
 }
 
 void GameData::loadGameCrateData(std::vector<std::string> data, int* index)
@@ -370,12 +382,10 @@ void GameData::loadGameCrateData(std::vector<std::string> data, int* index)
     Vector3D                 pos;
 
     splitStr(data[*index], ";", &split);
-    pos.x = std::stoi(split[0]);
-    pos.y = std::stoi(split[1]);
-    pos.z = std::stoi(split[2]);
-    crate = std::make_unique<Crate>(
-        pos, *models_[static_cast<int>(bomberman::ModelType::M_CRATE)], *this);
-    entities_.emplace_back(crate.get());
+    pos.x = std::stof(split[0]);
+    pos.y = std::stof(split[1]);
+    pos.z = std::stof(split[2]);
+    addCrate(pos);
 }
 
 void GameData::loadGameWallData(std::vector<std::string> data, int* index)
@@ -385,11 +395,10 @@ void GameData::loadGameWallData(std::vector<std::string> data, int* index)
     Vector3D                 pos;
 
     splitStr(data[*index], ";", &split);
-    pos.x = std::stoi(split[0]);
-    pos.y = std::stoi(split[1]);
-    pos.z = std::stoi(split[2]);
-    wall  = std::make_unique<Wall>(pos, *models_[static_cast<int>(bomberman::ModelType::M_WALL)]);
-    entities_.emplace_back(wall.get());
+    pos.x = std::stof(split[0]);
+    pos.y = std::stof(split[1]);
+    pos.z = std::stof(split[2]);
+    addWall(pos);
 }
 
 void GameData::unloadAll() noexcept
@@ -398,4 +407,14 @@ void GameData::unloadAll() noexcept
     players_.clear();
     models_.clear();
     sprites_.clear();
+}
+
+void GameData::setTryToLoad(const std::string& value) noexcept
+{
+    try_to_load = value;
+}
+
+std::string GameData::tryToLoad() const noexcept
+{
+    return try_to_load;
 }

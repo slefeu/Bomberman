@@ -28,7 +28,7 @@ class PlayerSelect : public Scene
     ~PlayerSelect() noexcept                         = default;
 
     PlayerSelect& operator=(const PlayerSelect& rhs) noexcept = delete;
-    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept = delete;
+    PlayerSelect& operator=(PlayerSelect&& rhs) noexcept      = delete;
 
     // main methods
     void action() noexcept final;

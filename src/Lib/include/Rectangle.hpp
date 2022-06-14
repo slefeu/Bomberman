@@ -16,7 +16,7 @@ class RectangleManager
     ~RectangleManager() noexcept                             = default;
 
     RectangleManager& operator=(const RectangleManager& rhs) noexcept = default;
-    RectangleManager& operator=(RectangleManager&& rhs) noexcept      = default;
+    RectangleManager& operator=(RectangleManager&& rhs) noexcept = default;
 
     float getX() const noexcept;
     float getY() const noexcept;

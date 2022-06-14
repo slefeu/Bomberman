@@ -439,7 +439,6 @@ void GameData::loadGameData(std::vector<std::string> data)
     if (data[index].find("Walls") != 0)
         throw Error("Save not valid: " + data[index] + " in loadGameData Walls");
 
-    index++;
     while (data[index] != data.back()) {
         index++;
         try {

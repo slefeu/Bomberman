@@ -17,7 +17,7 @@ class AData
     ~AData() noexcept                  = default;
 
     AData& operator=(const AData& rhs) noexcept = delete;
-    AData& operator=(AData&& rhs) noexcept      = delete;
+    AData& operator=(AData&& rhs) noexcept = delete;
 
     virtual void updateMouse() noexcept = 0;
     int          getCurrentSceneIndex() const noexcept;

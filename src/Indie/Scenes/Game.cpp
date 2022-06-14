@@ -98,7 +98,14 @@ void Game::switchAction() noexcept
     }
     for (auto& text : playerText_) { text.setTextSize(20); }
 
-    if (!core_entry_.getData().tryToLoad().empty()) return core_entry_.getData().loadGame();
+    core_entry_.getData().clearEntities();
+
+    if (!core_entry_.getData().tryToLoad().empty()) {
+        core_entry_.getData().getPlayers().clear();
+        core_entry_.getData().setNbPlayers(0);
+        core_entry_.getData().loadGame();
+        return;
+    }
 
     for (auto& player : core_entry_.getData().getPlayers()) {
         if (!Type:: instanceof <Player>(player.get())) continue;
@@ -112,7 +119,6 @@ void Game::switchAction() noexcept
         if (render.has_value()) { render->get().show(true); }
     }
 
-    core_entry_.getData().clearEntities();
     createMap();
 }
 
@@ -367,18 +373,8 @@ void Game::endGame() noexcept
  */
 void Game::endGameAction() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_LEFT))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_RIGHT))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
 }
 
 /**

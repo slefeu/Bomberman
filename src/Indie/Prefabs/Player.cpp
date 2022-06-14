@@ -278,7 +278,6 @@ void Player::handlePlayerMovement()
             transform->get().moveX(speed);
         }
         if (controller.isGamepadButtonPressed(id, G_Button::G_B)) placeBomb();
-        if (controller.isGamepadButtonPressed(id, G_Button::G_SELECT)) data.saveGame();
     } else {
         // Mouvements au clavier
         if (controller.isKeyDown(moveUp) || controller.isKeyDown(moveDown)
@@ -301,8 +300,6 @@ void Player::handlePlayerMovement()
             transform->get().moveX(speed);
         }
         if (controller.isKeyPressed(dropBomb)) placeBomb();
-
-        if (controller.isKeyPressed(save)) data.saveGame();
     }
 
     if (!animate) {
@@ -408,7 +405,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_A;
             moveRight = Key::K_D;
             dropBomb  = Key::K_Q;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         case 1:
             moveUp    = Key::K_KP_8;
@@ -416,7 +412,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_KP_4;
             moveRight = Key::K_KP_6;
             dropBomb  = Key::K_KP_7;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         case 2:
             moveUp    = Key::K_T;
@@ -424,7 +419,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_F;
             moveRight = Key::K_H;
             dropBomb  = Key::K_R;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         case 3:
             moveUp    = Key::K_I;
@@ -432,7 +426,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_J;
             moveRight = Key::K_L;
             dropBomb  = Key::K_U;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         default: break;
     }

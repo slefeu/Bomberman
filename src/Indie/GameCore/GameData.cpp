@@ -493,7 +493,7 @@ void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
     player->setBombSize(std::stoi(split[2]));
 
     *index = *index + 1;
-    player->setIsBot(std::stoi(data[*index]));
+    player->setIsBot(std::stoi(data[*index]) == 1 ? true : false);
 
     *index       = *index + 1;
     nbBombPlaced = std::stoi(data[*index]);

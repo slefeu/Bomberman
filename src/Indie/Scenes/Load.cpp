@@ -142,6 +142,8 @@ void Load::getSavesNames() noexcept
  */
 void Load::switchAction() noexcept
 {
+    buttons_.clear();
+    createButtons();
     core_entry_.getCameraman().tpTo(
         { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
 }

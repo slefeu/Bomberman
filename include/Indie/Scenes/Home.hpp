@@ -44,7 +44,7 @@ class Home : public Scene
 
     // attributes
     MusicManager             loop_music_;
-    std::vector<Button>      buttons_      = {};
+    std::vector<Button>      buttons_ = {};
     Core&                    core_entry_;
     ColorManager             background_color_;
     Sprite                   background_;

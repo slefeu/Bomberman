@@ -75,7 +75,6 @@ class Player : public Entity
     // attributes
     SoundManager                     killSound_;
     Controller                       controller;
-    Key                              save;
     Key                              moveUp;
     Key                              moveDown;
     Key                              moveLeft;

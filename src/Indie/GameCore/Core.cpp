@@ -135,6 +135,7 @@ void Core::initSprites() noexcept
     data_.addSprite("assets/icones/red.png", 0.5f);
     data_.addSprite("assets/textures/home/splash.png", 1);
     data_.addSprite("assets/textures/home/background.png", 1.5);
+    data_.addSprite("assets/icones/white.png", 0.5f);
 }
 
 /**

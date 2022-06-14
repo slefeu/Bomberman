@@ -9,6 +9,7 @@
 
 #include <iostream>
 
+#include "Controller.hpp"
 #include "Crate.hpp"
 #include "DeltaTime.hpp"
 #include "InstanceOf.hpp"
@@ -44,6 +45,8 @@ Game::Game(Core& core_ref) noexcept
           "Pause",
           core_entry_.getWindow().getWidth() / 2 - 220,
           core_entry_.getWindow().getHeight() / 2 - 80)
+    , timer_save(4.3f)
+    , opacity_save_(0)
 {
     hurryUpSound_.setVolume(0.7f);
     createButtons();
@@ -55,6 +58,8 @@ Game::Game(Core& core_ref) noexcept
 
     pauseText_.setTextSize(100);
     pauseText_.setTextColor(Colors::C_RED);
+
+    core_entry_.getData().getSprites()[6]->setPos(960, 40);
 }
 
 /**
@@ -195,6 +200,12 @@ void Game::action() noexcept
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
         pause = true;
+
+    if (controller.isKeyPressed(Key::K_RIGHT_SHIFT)) {
+        timer_save.setLifeTime(4.3f);
+        opacity_save_ = 255;
+        core_entry_.getData().saveGame();
+    }
 }
 
 /**
@@ -403,16 +414,20 @@ void Game::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         50,
         height - 200,
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::GAME)); }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getData().setTryToLoad("");
+            return (core_entry_.switchScene(bomberman::SceneType::GAME));
+        }),
         "assets/fonts/menu.ttf",
         "Restart");
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width - 350,
         height - 200,
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::MENU)); }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getData().setTryToLoad("");
+            return (core_entry_.switchScene(bomberman::SceneType::MENU));
+        }),
         "assets/fonts/menu.ttf",
         "Menu");
 }
@@ -483,6 +498,9 @@ void Game::SystemDisplay() noexcept
     auto& spriteses = core_entry_.getData().getSprites();
     if (spriteses.size() == 0) return;
     spriteses[5]->draw({ 200, 200, 200, 255 });
+
+    spriteses[6]->draw({ 255, 255, 255, opacity_save_ });
+    if (opacity_save_ > 0) opacity_save_ -= 35 * DeltaTime::getDeltaTime();
 
     core_entry_.getCameraman().begin3D();
 

@@ -56,9 +56,11 @@ class Game : public Scene
     void pauseAction() noexcept;
 
     // attributes
-    float time_party_ = 120;
-    Core& core_entry_;
-    Timer chrono_;
+    float         time_party_ = 120;
+    Core&         core_entry_;
+    Timer         chrono_;
+    unsigned char opacity_save_ = 0;
+    Timer         timer_save;
 
     float lastTimeBlockPlace;
     bool  isHurry;

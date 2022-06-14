@@ -14,6 +14,11 @@
 
 #include "Bomberman.hpp"
 
+/**
+ * It initializes the Load class
+ *
+ * @param core_ref The core reference.
+ */
 Load::Load(Core& core_ref) noexcept
     : loop_music_(MUSIC)
     , core_entry_(core_ref)
@@ -30,6 +35,9 @@ Load::Load(Core& core_ref) noexcept
     createIllustrations();
 }
 
+/**
+ * It creates the texts that will be displayed on the screen
+ */
 void Load::createTexts() noexcept
 {
     load_names_.emplace_back(FONT_PATH, "No Save", 0, 0); // à changer avec les noms de tes saves
@@ -37,6 +45,10 @@ void Load::createTexts() noexcept
     load_names_.emplace_back(FONT_PATH, "No Save", 0, 0);
 }
 
+/**
+ * It creates the illustrations
+ * that are displayed on the screen
+ */
 void Load::createIllustrations() noexcept
 {
     int width  = core_entry_.getWindow().getWidth();
@@ -49,11 +61,19 @@ void Load::createIllustrations() noexcept
         BLACK_IMG, width / 6 + (495 * illustrations_.size()), height / 4 + 30);
 }
 
+/**
+ * It draws all the illustrations
+ */
 void Load::drawIllustrations() const noexcept
 {
     for (auto& it : illustrations_) { it.draw(); }
 }
 
+/**
+ * It creates the buttons for the load scene
+ *
+ * @return the scene type of the game.
+ */
 void Load::createButtons() noexcept
 {
     int         width  = core_entry_.getWindow().getWidth();
@@ -96,6 +116,9 @@ void Load::createButtons() noexcept
         "");
 }
 
+/**
+ * It gets the names of the saves in the save folder and puts them in a vector
+ */
 void Load::getSavesNames() noexcept
 {
     int nbSave = 0;
@@ -114,17 +137,29 @@ void Load::getSavesNames() noexcept
     while (save_names.size() < 3) { save_names.emplace_back("No Save"); }
 }
 
+/**
+ * It teleports the cameraman to a new position
+ */
 void Load::switchAction() noexcept
 {
     core_entry_.getCameraman().tpTo(
         { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
 }
 
+/**
+ * It draws all the buttons in the buttons_ vector
+ */
 void Load::drawButtons() const noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
 }
 
+/**
+ * If the gamepad is connected, then check if the dpad is pressed, and if so, change the button
+ * index. If the B button is pressed, then call the action function of the button at the current
+ * index. If the gamepad is not connected, then check if the mouse is hovering over any of the
+ * buttons, and if so, call the action function of that button
+ */
 void Load::action() noexcept
 {
     if (controller_.isGamepadConnected(0)) {
@@ -141,21 +176,35 @@ void Load::action() noexcept
     }
 }
 
+/**
+ * It plays the music
+ */
 void Load::playMusic() noexcept
 {
     loop_music_.play();
 }
 
+/**
+ * It updates the music
+ */
 void Load::updateMusic() const noexcept
 {
     loop_music_.update();
 }
 
+/**
+ * It returns the background color of the load object
+ *
+ * @return A ColorManager object.
+ */
 ColorManager Load::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }
 
+/**
+ * It draws the background, title, FPS, title text, buttons, and illustrations
+ */
 void Load::SystemDisplay() noexcept
 {
     background_.draw({ 255, 255, 255, 175 });

@@ -13,6 +13,9 @@
 #include "PlayerSelect.hpp"
 #include "Splash.hpp"
 
+/**
+ * It initializes the window, the game models, the sprites, and the scenes
+ */
 Core::Core() noexcept
     : window_(std::make_unique<WindowManager>(1920, 1040, 60))
 {
@@ -21,6 +24,9 @@ Core::Core() noexcept
     initScenes();
 }
 
+/**
+ * It unloads all the data, resets all the scenes, and resets the window
+ */
 Core::~Core() noexcept
 {
     data_.unloadAll();
@@ -28,6 +34,11 @@ Core::~Core() noexcept
     window_.reset();
 }
 
+/**
+ * It switches the current scene to the one specified in the parameter
+ *
+ * @param scene The scene to switch to.
+ */
 void Core::switchScene(const bomberman::SceneType& scene) noexcept
 {
     data_.setCurrentScene(scene);
@@ -35,6 +46,9 @@ void Core::switchScene(const bomberman::SceneType& scene) noexcept
     findScene().switchAction();
 }
 
+/**
+ * The function runs the game loop
+ */
 void Core::run() noexcept
 {
     while (!exit_) {
@@ -47,31 +61,53 @@ void Core::run() noexcept
     }
 }
 
+/**
+ * It displays the scene
+ */
 void Core::displayScene() noexcept
 {
     window_->display(findScene(), camera_);
 }
 
+/**
+ * If the camera is moving, then move it
+ */
 void Core::checkCamera() noexcept
 {
     if (camera_.getIsMoving()) camera_.setIsMoving(camera_.smoothMove());
 }
 
+/**
+ * If the window is marked for exit, then mark the core for exit
+ */
 void Core::checkExit() noexcept
 {
     if (window_->isExit()) { setExit(true); }
 }
 
+/**
+ * It returns a reference to the WindowManager object
+ *
+ * @return A reference to the window_ object.
+ */
 WindowManager& Core::getWindow() noexcept
 {
     return (*window_);
 }
 
+/**
+ * It returns a reference to the cameraman
+ *
+ * @return A reference to the cameraman.
+ */
 MyCameraman& Core::getCameraman() noexcept
 {
     return (camera_);
 }
 
+/**
+ * It loads all the models and textures used in the game
+ */
 void Core::initGameModels() noexcept
 {
     data_.addModel("assets/models/bomb.glb", "assets/textures/entities/bomb.png");
@@ -88,6 +124,9 @@ void Core::initGameModels() noexcept
     data_.addModel("assets/models/player.iqm", "assets/textures/player/red.png");
 }
 
+/**
+ * It adds sprites to the data_ member of the Core class
+ */
 void Core::initSprites() noexcept
 {
     data_.addSprite("assets/icones/white.png", 0.5f);
@@ -97,6 +136,9 @@ void Core::initSprites() noexcept
     data_.addSprite("assets/textures/home/splash.png", 1);
 }
 
+/**
+ * It creates a vector of unique pointers to scenes, and then switches to the splash scene
+ */
 void Core::initScenes() noexcept
 {
     scenes.emplace_back(std::make_unique<Home>(*this));

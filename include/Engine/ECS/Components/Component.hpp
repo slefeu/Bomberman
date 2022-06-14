@@ -7,7 +7,7 @@
 
 #pragma once
 
-enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER };
+enum class ComponentType { BOXCOLLIDER, RENDER, TRANSFORM, CONTROLLER, AI };
 
 class Component
 {
@@ -18,7 +18,7 @@ class Component
     virtual ~Component() noexcept              = default;
 
     Component& operator=(const Component& rhs) noexcept = default;
-    Component& operator=(Component&& rhs) noexcept      = default;
+    Component& operator=(Component&& rhs) noexcept = default;
 
     virtual ComponentType getComponentType() const noexcept = 0;
 

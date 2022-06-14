@@ -9,12 +9,12 @@
 
 #include "Game.hpp"
 #include "Home.hpp"
+#include "Load.hpp"
 #include "PlayerSelect.hpp"
 #include "Splash.hpp"
 
 Core::Core() noexcept
-    : data_(GameData())
-    , window_(std::make_unique<WindowManager>(1920, 1040, 60))
+    : window_(std::make_unique<WindowManager>(1920, 1040, 60))
 {
     initGameModels();
     initSprites();
@@ -26,12 +26,6 @@ Core::~Core() noexcept
     data_.unloadAll();
     for (auto& scene : scenes) { scene.reset(); }
     window_.reset();
-}
-
-Scene& Core::findScene() noexcept
-{
-    return (*scenes[static_cast<typename std::underlying_type<bomberman::SceneType>::type>(
-        data_.getCurrentScene())]);
 }
 
 void Core::switchScene(const bomberman::SceneType& scene) noexcept
@@ -49,8 +43,13 @@ void Core::run() noexcept
         AudioDevice::update(findScene());
         data_.updateMouse();
         findScene().action();
-        window_->display(findScene(), camera_);
+        displayScene();
     }
+}
+
+void Core::displayScene() noexcept
+{
+    window_->display(findScene(), camera_);
 }
 
 void Core::checkCamera() noexcept
@@ -63,11 +62,6 @@ void Core::checkExit() noexcept
     if (window_->isExit()) { setExit(true); }
 }
 
-void Core::setExit(bool value) noexcept
-{
-    exit_ = value;
-}
-
 WindowManager& Core::getWindow() noexcept
 {
     return (*window_);
@@ -76,16 +70,6 @@ WindowManager& Core::getWindow() noexcept
 MyCameraman& Core::getCameraman() noexcept
 {
     return (camera_);
-}
-
-GameData& Core::getData() noexcept
-{
-    return (data_);
-}
-
-const GameData& Core::getData() const noexcept
-{
-    return (data_);
 }
 
 void Core::initGameModels() noexcept
@@ -106,10 +90,11 @@ void Core::initGameModels() noexcept
 
 void Core::initSprites() noexcept
 {
-    data_.addSprite("assets/icones/white.png");
-    data_.addSprite("assets/icones/black.png");
-    data_.addSprite("assets/icones/blue.png");
-    data_.addSprite("assets/icones/red.png");
+    data_.addSprite("assets/icones/white.png", 0.5f);
+    data_.addSprite("assets/icones/black.png", 0.5f);
+    data_.addSprite("assets/icones/blue.png", 0.5f);
+    data_.addSprite("assets/icones/red.png", 0.5f);
+    data_.addSprite("assets/textures/home/splash.png", 1);
 }
 
 void Core::initScenes() noexcept
@@ -118,6 +103,7 @@ void Core::initScenes() noexcept
     scenes.emplace_back(std::make_unique<Game>(*this));
     scenes.emplace_back(std::make_unique<PlayerSelect>(*this));
     scenes.emplace_back(std::make_unique<Splash>(*this));
+    scenes.emplace_back(std::make_unique<Load>(*this));
     findScene().playMusic();
     switchScene(bomberman::SceneType::SPLASH);
 }

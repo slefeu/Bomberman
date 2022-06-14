@@ -63,6 +63,7 @@ Button::Button(const std::string& texture_path,
     , fx_hover_(ON_HOVER)
     , texture_(texture_path)
     , task_(function)
+    , scale_(scale)
     , text_(font_path, message, 0, 0)
     , color_(Colors::C_WHITE)
     , rectangle_(pos_x,
@@ -71,7 +72,7 @@ Button::Button(const std::string& texture_path,
           static_cast<float>(texture_.getHeight()))
 {
     texture_.setPos(rectangle_.getX(), rectangle_.getY());
-    text_.setPosition(pos_x + 150 - (message.size() * 30) / 2, pos_y + 45);
+    text_.setPosition((pos_x + 150 - (message.size() * 30) / 2), (pos_y + 45));
     texture_.setScale(scale);
     rectangle_.setWidth(texture_.getWidth() * scale);
     rectangle_.setHeight(texture_.getHeight() * scale);
@@ -128,6 +129,16 @@ void Button::setPosition(const Vector2& pos) noexcept
 {
     texture_.setPos(pos.x, pos.y);
     rectangle_.setPos(pos.x, pos.y);
+}
+
+void Button::setTextPosition(const Vector2& pos) noexcept
+{
+    text_.setPosition(pos.x, pos.y);
+}
+
+void Button::setText(std::string new_text) noexcept
+{
+    text_.setText(new_text);
 }
 
 void Button::invertDisplay() noexcept

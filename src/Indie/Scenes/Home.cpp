@@ -53,17 +53,15 @@ void Home::createButtons() noexcept
         width / 2,
         width / 8,
         std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::SELECT)); }),
+            [this](void) { core_entry_.switchScene(bomberman::SceneType::SELECT); }),
         FONT_PATH,
         "Play");
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width / 2,
         (width / 8) + (150 * buttons_.size()),
-        std::function<void(void)>([this](void) {
-            core_entry_.getData().setTryToLoad("Save/2022-06-13.23:33:53");
-            return (core_entry_.switchScene(bomberman::SceneType::GAME));
-        }),
+        std::function<void(void)>(
+            [this](void) { core_entry_.switchScene(bomberman::SceneType::LOAD); }),
         FONT_PATH,
         "Load");
 
@@ -177,22 +175,10 @@ ColorManager Home::getBackgroundColor() const noexcept
     return (background_color_);
 }
 
-// ****************************************************************************
-// *                               SYSTEMS                                    *
-// ****************************************************************************
-
 void Home::SystemDisplay() noexcept
 {
     background_.draw({ 255, 255, 255, 175 });
     title_.draw();
-
-    // **************************** 3D **********************************
-
-    // core_entry_.getCameraman().begin3D();
-    // core_entry_.getCameraman().end3D();
-
-    // **************************** 2D **********************************
-
     FpsHandler::draw(10, 10);
     drawButtons();
     for (auto& it : settings_texts_) { it.draw(); }

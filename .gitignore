@@ -17,3 +17,5 @@ null.d
 /Save
 build
 src/Lib/libraylib_encapsulation.a
+*.a
+.vs/

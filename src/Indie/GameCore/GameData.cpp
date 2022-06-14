@@ -37,22 +37,7 @@ MouseHandler GameData::getMouseHandler() const noexcept
 
 void GameData::setCurrentScene(const bomberman::SceneType& scene) noexcept
 {
-    current_scene_ = scene;
-}
-
-bomberman::SceneType GameData::getCurrentScene() const noexcept
-{
-    return (current_scene_);
-}
-
-int GameData::getNbPlayers() const noexcept
-{
-    return (nb_players_);
-}
-
-void GameData::setNbPlayers(int value) noexcept
-{
-    nb_players_ = value;
+    current_scene_ = static_cast<typename std::underlying_type<bomberman::SceneType>::type>(scene);
 }
 
 void GameData::addModel(
@@ -61,9 +46,9 @@ void GameData::addModel(
     models_.emplace_back(std::make_unique<Model3D>(model_path, texture_path));
 }
 
-void GameData::addSprite(const std::string_view& texture_path) noexcept
+void GameData::addSprite(const std::string_view& texture_path, float scale) noexcept
 {
-    sprites_.emplace_back(std::make_unique<Sprite>(texture_path, 0, 0, 0.5f));
+    sprites_.emplace_back(std::make_unique<Sprite>(texture_path, 0, 0, scale));
 }
 
 void GameData::addPlayer(int index) noexcept
@@ -79,6 +64,16 @@ void GameData::addItem(bomberman::ItemType item) noexcept
 void GameData::addItem(const Vector3D& position) noexcept
 {
     entities_.emplace_back(std::make_unique<Item>(position, *this));
+}
+
+int GameData::getNbPlayers() const noexcept
+{
+    return (nb_players_);
+}
+
+void GameData::setNbPlayers(int value) noexcept
+{
+    nb_players_ = value;
 }
 
 void GameData::addCrate(Vector3D position) noexcept
@@ -114,11 +109,6 @@ void GameData::addBomb(Vector3D position, Player& player_ref, int size) noexcept
 std::vector<std::unique_ptr<Entity>>& GameData::getPlayers() noexcept
 {
     return (players_);
-}
-
-std::vector<std::unique_ptr<Entity>>& GameData::getEntities() noexcept
-{
-    return (entities_);
 }
 
 std::vector<std::unique_ptr<Model3D>>& GameData::getModels() noexcept
@@ -216,7 +206,6 @@ void GameData::writeDataPlayer(std::ofstream& file)
 void GameData::writeDataBombPlayer(std::ofstream& file, const std::unique_ptr<Entity>& bomb) const
 {
     auto transform = bomb->getComponent<Transform3D>();
-    auto tmp       = dynamic_cast<const Bomb*>(bomb.get());
 
     if (!transform.has_value()) return;
     /// Write Bomb Position///////////////////////////////////////////////

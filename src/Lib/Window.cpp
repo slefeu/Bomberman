@@ -8,9 +8,7 @@
 #include "Window.hpp"
 
 WindowManager::WindowManager(int width, int height, int fps) noexcept
-    : width_(width)
-    , height_(height)
-    , fps_(fps)
+    : AWindow(width, height, fps)
 {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width_, height_, "Indie Studio - Bomberman");
@@ -27,9 +25,10 @@ WindowManager::~WindowManager() noexcept
 void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
 {
     auto color = scene.getBackgroundColor().getColor();
+    Color col   = { color[0], color[1], color[2], 255 };
 
     BeginDrawing();
-    ClearBackground((Color){ color[0], color[1], color[2], 255 });
+    ClearBackground(col);
     scene.SystemDisplay();
     EndDrawing();
 }
@@ -37,11 +36,6 @@ void WindowManager::display(Scene& scene, const Cameraman& camera) noexcept
 bool WindowManager::isExit() noexcept
 {
     return (WindowShouldClose());
-}
-
-int WindowManager::getWidth() const noexcept
-{
-    return (width_);
 }
 
 void WindowManager::resetHeight() noexcept
@@ -52,16 +46,6 @@ void WindowManager::resetHeight() noexcept
 void WindowManager::resetWidth() noexcept
 {
     width_ = GetScreenWidth();
-}
-
-int WindowManager::getHeight() const noexcept
-{
-    return (height_);
-}
-
-float WindowManager::getFps() const noexcept
-{
-    return (fps_);
 }
 
 void WindowManager::setFps(float value) noexcept

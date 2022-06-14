@@ -7,15 +7,23 @@
 
 #include "Player.hpp"
 
+#include <iostream>
+#include <optional>
+#include <vector>
+
+#include "AI.hpp"
 #include "Bomb.hpp"
+#include "Crate.hpp"
 #include "DeltaTime.hpp"
 #include "Error.hpp"
 #include "Fire.hpp"
+#include "Game.hpp"
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Transform3D.hpp"
 #include "Vector.hpp"
 #include "Wall.hpp"
+#include "raylib.h"
 
 Player::Player(int newId, GameData& data)
     : Entity()
@@ -24,6 +32,7 @@ Player::Player(int newId, GameData& data)
     , wallpass(false)
     , wallpassTimer(5.0f)
     , wallpassEnd(false)
+    , isBot(false)
     , killSound_(KILL)
 {
     addComponent(Transform3D());
@@ -31,6 +40,7 @@ Player::Player(int newId, GameData& data)
         *data.getModels()[static_cast<typename std::underlying_type<bomberman::ModelType>::type>(
                               bomberman::ModelType::M_PLAYER_1)
                           + id]));
+    addComponent(AI());
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
 
@@ -75,7 +85,6 @@ void Player::Update()
     auto hitbox    = getComponent<BoxCollider>();
     auto transform = getComponent<Transform3D>();
     auto renderer  = getComponent<Render>();
-    bool animate   = false;
 
     if (!hitbox.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in updating the player element.\n"));
@@ -96,6 +105,111 @@ void Player::Update()
         renderer->get().setColor(colors[colorIndex]);
         colorIndex = (colorIndex + 1) % colors.size();
     }
+    if (isBot) {
+        handleAutoMovement();
+    } else {
+        handlePlayerMovement();
+    }
+}
+
+std::vector<Vector3D> Player::getSurroundingBox()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if ((Type:: instanceof <Crate>(other.get()) || Type:: instanceof <Wall>(other.get()))
+            && other.get()->getEnabledValue()) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
+std::vector<Vector3D> Player::getBombsPositions()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if (Type:: instanceof <Bomb>(other.get()) && other.get()->getEnabledValue()) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
+std::vector<Vector3D> Player::getFirePositions()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if (Type:: instanceof <Fire>(other.get()) && other.get()->getEnabledValue()) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
+void Player::handleAutoMovement()
+{
+    auto    transform = getComponent<Transform3D>();
+    auto    renderer  = getComponent<Render>();
+    auto    ai        = getComponent<AI>();
+    bool    animate   = false;
+    AIEvent event     = AIEvent::NONE;
+
+    if (!ai.has_value() || !transform.has_value() || !renderer.has_value())
+        throw(Error("Error in handling the AI movements.\n"));
+
+    Vector2 position = { transform->get().getPositionX(), transform->get().getPositionZ() };
+    std::vector<Vector3D> boxes = getSurroundingBox();
+    std::vector<Vector3D> bombs = getBombsPositions();
+    std::vector<Vector3D> fires = getFirePositions();
+    event                       = ai->get().getEvent(position, boxes, bombs, fires);
+    if (event != AIEvent::NONE) {
+        animate = true;
+        if (event == AIEvent::MOVE_UP && !isCollidingNextTurn(0, -2)) {
+            transform->get().setRotationAngle(270.0f);
+            transform->get().moveZ(-speed);
+        }
+        if (event == AIEvent::MOVE_DOWN && !isCollidingNextTurn(0, 2)) {
+            transform->get().setRotationAngle(90.0f);
+            transform->get().moveZ(speed);
+        }
+        if (event == AIEvent::MOVE_LEFT && !isCollidingNextTurn(-2, 0)) {
+            transform->get().setRotationAngle(0.0f);
+            transform->get().moveX(-speed);
+        }
+        if (event == AIEvent::MOVE_RIGHT && !isCollidingNextTurn(2, 0)) {
+            transform->get().setRotationAngle(180.0f);
+            transform->get().moveX(speed);
+        }
+        if (event == AIEvent::PLACE_BOMB) placeBomb();
+        if (event == AIEvent::MOVE_UP && isCollidingNextTurn(0, -2)
+            || event == AIEvent::MOVE_DOWN && isCollidingNextTurn(0, 2)
+            || event == AIEvent::MOVE_LEFT && isCollidingNextTurn(-2, 0)
+            || event == AIEvent::MOVE_RIGHT && isCollidingNextTurn(2, 0)) {
+            ai->get().handleColliding();
+        }
+    }
+
+    if (!animate) {
+        renderer->get().getAnimation().setSkipFrame(1);
+        renderer->get().getAnimation().setAnimationId(1);
+    } else {
+        renderer->get().getAnimation().setSkipFrame(2);
+        renderer->get().getAnimation().setAnimationId(0);
+    }
+}
+
+void Player::handlePlayerMovement()
+{
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
+    bool animate   = false;
+
+    if (!transform.has_value() || !renderer.has_value())
+        throw Error("Error while handling the player inputs.\n");
+
     if (controller.isGamepadConnected(id)) {
         // Mouvements au joystick
         float axisX = controller.getGamepadAxis(id, Axis::G_AXIS_LEFT_X);
@@ -144,6 +258,7 @@ void Player::Update()
 
         if (controller.isKeyPressed(save)) data.saveGame();
     }
+
     if (!animate) {
         renderer->get().getAnimation().setSkipFrame(1);
         renderer->get().getAnimation().setAnimationId(1);
@@ -156,6 +271,11 @@ void Player::Update()
 PlayerType Player::getType() const noexcept
 {
     return (type);
+}
+
+bool Player::getBotState() const noexcept
+{
+    return isBot;
 }
 
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
@@ -318,6 +438,11 @@ bool Player::getWallPassEnd() const noexcept
 void Player::addItem(bomberman::ItemType itemType) noexcept
 {
     items.emplace_back(itemType);
+}
+
+void Player::toggleBot(void) noexcept
+{
+    isBot = !isBot;
 }
 
 void Player::dispatchItem(void) noexcept

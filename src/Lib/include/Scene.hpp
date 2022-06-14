@@ -21,12 +21,12 @@ class Scene
     virtual ~Scene() noexcept          = default;
 
     Scene& operator=(const Scene& rhs) noexcept = delete;
-    Scene& operator=(Scene&& rhs) noexcept      = delete;
+    Scene& operator=(Scene&& rhs) noexcept = delete;
 
     virtual void         action() noexcept                   = 0;
     virtual ColorManager getBackgroundColor() const noexcept = 0;
-
-    // methods for camera
+    // enlever la méthode getBackGroundColor de la scène
+    //  methods for camera
     virtual void switchAction() noexcept = 0;
 
     // methods for musics

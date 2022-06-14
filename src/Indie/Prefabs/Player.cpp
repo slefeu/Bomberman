@@ -589,11 +589,11 @@ void Player::setPlayerType(PlayerType type) noexcept
             bombSizeMax = 6;
             break;
         case PlayerType::ATTACK:
-            nbBomb      = 2;
-            speed       = 1.7f;
+            nbBomb      = 1;
+            speed       = 1.5f;
             bombSize    = 4;
             nbBombMax   = 10;
-            speedMax    = 2.5f;
+            speedMax    = 2.2f;
             bombSizeMax = 10;
             break;
         case PlayerType::TACTICAL:
@@ -602,7 +602,7 @@ void Player::setPlayerType(PlayerType type) noexcept
             bombSize    = 2;
             nbBombMax   = 5;
             speedMax    = 3.0f;
-            bombSizeMax = 10;
+            bombSizeMax = 7;
             break;
         case PlayerType::RUNNER:
             nbBomb      = 1;

@@ -279,7 +279,6 @@ int getNbBomb(const std::vector<std::unique_ptr<Entity>>& entities, const Player
         auto bombN    = dynamic_cast<Bomb*>(bomb.get());
         if (!bombN) continue;
         int BombOwnerId = bombN->getOwnerId();
-        std::cout << "BombOwnerId " << BombOwnerId << ", PlayerId " << playerId << std::endl;
         if (!Type:: instanceof <Bomb>(bomb.get()) || BombOwnerId != playerId) continue;
         nb++;
     }
@@ -450,7 +449,6 @@ void GameData::loadGameData(std::vector<std::string> data)
             throw Error("Save not valid: " + data[index] + " in loadGameWall " + err.what());
         }
     }
-    std::cout << "Load finish" << std::endl;
 }
 
 /**

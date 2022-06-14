@@ -13,6 +13,7 @@
 #include "Core.hpp"
 #include "Fps.hpp"
 #include "Scene.hpp"
+#include "Sound.hpp"
 #include "Timer.hpp"
 
 class Splash : public Scene
@@ -36,9 +37,11 @@ class Splash : public Scene
     void         SystemDisplay() noexcept final;
 
   private:
-    Core&                     core_entry_;
-    ColorManager              background_color_;
-    Timer                     timer;
+    Core&        core_entry_;
+    ColorManager background_color_;
+    Timer        timer;
+    SoundManager splashSound_;
+
     unsigned char             opacity_;
-    static const inline char* SPLASH_SCREEN = "assets/audios/MainMenu.mp3";
+    static const inline char* SPLASH_SCREEN = "assets/audios/guitare.wav";
 };

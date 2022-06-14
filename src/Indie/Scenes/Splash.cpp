@@ -20,7 +20,9 @@ Splash::Splash(Core& core_ref) noexcept
     , background_color_(Colors::C_BLACK)
     , timer(4.3f)
     , opacity_(255)
+    , splashSound_(Splash::SPLASH_SCREEN)
 {
+    splashSound_.play();
 }
 
 /**

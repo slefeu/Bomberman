@@ -17,6 +17,7 @@
 #include "GameData.hpp"
 #include "Sound.hpp"
 #include "Timer.hpp"
+#include "Vector.hpp"
 
 enum class PlayerType { NORMAL, ATTACK, TACTICAL, RUNNER, __size__ };
 
@@ -24,11 +25,11 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData& data);
-    ~Player() noexcept                   = default;
-    Player(const Player& other) noexcept = delete;
-    Player(Player&& other) noexcept      = delete;
+    ~Player() noexcept                            = default;
+    Player(const Player& other) noexcept          = delete;
+    Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept = delete;
+    Player& operator=(Player&& rhs) noexcept      = delete;
 
     void       Update() final;
     void       addItem(bomberman::ItemType item) noexcept;
@@ -37,6 +38,8 @@ class Player : public Entity
     void       setStats(int bomb, int sp, int size) noexcept;
     void       setPlayerType(PlayerType type) noexcept;
     void       setWallPass(const bool& pass) noexcept;
+    bool       getWallPass() const noexcept;
+    bool       getWallPassEnd() const noexcept;
     int        getNbBombMax() const noexcept;
     float      getSpeedMax() const noexcept;
     int        getBombSizeMax() const noexcept;
@@ -48,7 +51,9 @@ class Player : public Entity
     void       setBombSize(const int& bombSize) noexcept;
     PlayerType getPlayerType() const noexcept;
     void       setPosition();
+    void       setPosition(Vector3D pos);
     PlayerType getType() const noexcept;
+    int        getId() const noexcept;
     int        findNextType() const noexcept;
     int        findPrevType() const noexcept;
     void       toggleBot() noexcept;
@@ -68,6 +73,7 @@ class Player : public Entity
     // attributes
     SoundManager                     killSound_;
     Controller                       controller;
+    Key                              save;
     Key                              moveUp;
     Key                              moveDown;
     Key                              moveLeft;

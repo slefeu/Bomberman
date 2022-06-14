@@ -18,7 +18,7 @@ class CollisionChecker
     CollisionChecker(CollisionChecker&& other) noexcept      = delete;
 
     CollisionChecker& operator=(const CollisionChecker& rhs) noexcept = delete;
-    CollisionChecker& operator=(CollisionChecker&& rhs) noexcept = delete;
+    CollisionChecker& operator=(CollisionChecker&& rhs) noexcept      = delete;
 
     static bool check(const Vector3D& pos,
         const Vector3D&               size,

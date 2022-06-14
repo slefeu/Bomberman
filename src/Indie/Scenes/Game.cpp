@@ -14,6 +14,7 @@
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "MyCameraman.hpp"
+#include "Plane.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
 #include "Wall.hpp"
@@ -57,26 +58,6 @@ void Game::switchAction() noexcept
         { 0.0f, 1.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 2.0f, 0.0f });
     core_entry_.getCameraman().moveTo(camera_position_, camera_target_, camera_up_);
 
-    for (auto& player : core_entry_.getData().getPlayers()) {
-        if (!Type:: instanceof <Player>(player.get())) continue;
-        auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
-        ((std::unique_ptr<Player>&)player)->setPlayerType(type);
-        ((std::unique_ptr<Player>&)player)->setPosition();
-        ((std::unique_ptr<Player>&)player)->setWallPass(false);
-        ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
-
-        auto render = player->getComponent<Render>();
-        if (render.has_value()) { render->get().show(true); }
-    }
-
-    chrono_.resetTimer();
-    loop_music_.play();
-    hurry_music_.stop();
-    startSound_.play();
-    core_entry_.getData().clearEntities();
-    createMap();
-    srand(time(NULL));
-
     isHurry       = false;
     nbBlockPlaced = 0;
     x             = -6;
@@ -90,6 +71,11 @@ void Game::switchAction() noexcept
     end_game = false;
     pause    = false;
 
+    chrono_.resetTimer();
+    loop_music_.play();
+    hurry_music_.stop();
+    startSound_.play();
+
     for (auto& text : playerText_) { text.unload(); }
     playerText_.clear();
 
@@ -101,6 +87,23 @@ void Game::switchAction() noexcept
         playerText_.emplace_back("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]);
     }
     for (auto& text : playerText_) { text.setTextSize(20); }
+
+    if (!core_entry_.getData().tryToLoad().empty()) return core_entry_.getData().loadGame();
+
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        if (!Type:: instanceof <Player>(player.get())) continue;
+        auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
+        ((std::unique_ptr<Player>&)player)->setPlayerType(type);
+        ((std::unique_ptr<Player>&)player)->setPosition();
+        ((std::unique_ptr<Player>&)player)->setWallPass(false);
+        ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
+
+        auto render = player->getComponent<Render>();
+        if (render.has_value()) { render->get().show(true); }
+    }
+
+    core_entry_.getData().clearEntities();
+    createMap();
 }
 
 void Game::playMusic() noexcept
@@ -416,13 +419,13 @@ void Game::SystemDisplay() noexcept
 {
     core_entry_.getCameraman().begin3D();
 
-    DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
+    Plane::draw({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
             if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+                Plane::draw({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48 });
             if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+                Plane::draw({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48 });
         }
 
     for (auto& player : core_entry_.getData().getPlayers()) {

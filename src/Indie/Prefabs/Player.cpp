@@ -21,6 +21,7 @@
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "Transform3D.hpp"
+#include "Vector.hpp"
 #include "Wall.hpp"
 #include "raylib.h"
 
@@ -254,6 +255,8 @@ void Player::handlePlayerMovement()
             transform->get().moveX(speed);
         }
         if (controller.isKeyPressed(dropBomb)) placeBomb();
+
+        if (controller.isKeyPressed(save)) data.saveGame();
     }
 
     if (!animate) {
@@ -313,6 +316,17 @@ void Player::setPosition()
     }
 }
 
+void Player::setPosition(Vector3D pos)
+{
+    auto transform = getComponent<Transform3D>();
+    if (!transform.has_value()) throw(Error("Error in setting player position.\n"));
+
+    transform->get().setRotationAngle(direction[id]);
+    transform->get().setX(pos.x);
+    transform->get().setY(pos.y);
+    transform->get().setZ(pos.z);
+}
+
 void Player::setKeyboard() noexcept
 {
     switch (id) {
@@ -322,6 +336,7 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_A;
             moveRight = Key::K_D;
             dropBomb  = Key::K_Q;
+            save      = Key::K_RIGHT_SHIFT;
             break;
         case 1:
             moveUp    = Key::K_KP_8;
@@ -329,6 +344,7 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_KP_4;
             moveRight = Key::K_KP_6;
             dropBomb  = Key::K_KP_7;
+            save      = Key::K_RIGHT_SHIFT;
             break;
         case 2:
             moveUp    = Key::K_T;
@@ -336,6 +352,7 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_F;
             moveRight = Key::K_H;
             dropBomb  = Key::K_R;
+            save      = Key::K_RIGHT_SHIFT;
             break;
         case 3:
             moveUp    = Key::K_I;
@@ -343,6 +360,7 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_J;
             moveRight = Key::K_L;
             dropBomb  = Key::K_U;
+            save      = Key::K_RIGHT_SHIFT;
             break;
         default: break;
     }
@@ -405,6 +423,16 @@ void Player::setWallPass(const bool& pass) noexcept
 {
     this->wallpassTimer.resetTimer();
     wallpass = pass;
+}
+
+bool Player::getWallPass() const noexcept
+{
+    return wallpass;
+}
+
+bool Player::getWallPassEnd() const noexcept
+{
+    return wallpassEnd;
 }
 
 void Player::addItem(bomberman::ItemType itemType) noexcept
@@ -512,4 +540,9 @@ void Player::setBombSize(const int& bombSize) noexcept
 PlayerType Player::getPlayerType() const noexcept
 {
     return type;
+}
+
+int Player::getId() const noexcept
+{
+    return id;
 }

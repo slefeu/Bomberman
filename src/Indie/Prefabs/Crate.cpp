@@ -7,6 +7,8 @@
 
 #include "Crate.hpp"
 
+#include <type_traits>
+
 #include "Error.hpp"
 #include "InstanceOf.hpp"
 #include "Item.hpp"

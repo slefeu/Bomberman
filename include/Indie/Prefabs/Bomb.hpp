@@ -24,11 +24,14 @@ class Bomb : public Entity
     ~Bomb() noexcept                 = default;
 
     Bomb& operator=(const Bomb& rhs) noexcept = delete;
-    Bomb& operator=(Bomb&& rhs) noexcept = delete;
+    Bomb& operator=(Bomb&& rhs) noexcept      = delete;
 
     void Update() final;
     void explode() noexcept;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept final;
+    int  getLifeTime() const noexcept;
+    void setLifeTime(const int& newLifeTime) noexcept;
+    int  getOwnerId() const noexcept;
 
   private:
     // methods

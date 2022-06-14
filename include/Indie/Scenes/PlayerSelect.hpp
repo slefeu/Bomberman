@@ -71,7 +71,6 @@ class PlayerSelect : public Scene
     std::vector<Sprite>      stats_        = {};
     std::vector<TextHandler> texts_        = {};
     Controller               controller;
-    int                      button_index_ = 0;
 
     static const inline char*       MUSIC      = "assets/audios/Select.mp3";
     static const inline char*       BG_PATH    = "assets/textures/home/background.png";

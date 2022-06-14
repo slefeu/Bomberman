@@ -34,7 +34,7 @@ class Game : public Scene
     ~Game() noexcept                 = default;
 
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept = delete;
+    Game& operator=(Game&& rhs) noexcept      = delete;
 
     void         action() noexcept final;
     void         playMusic() noexcept final;
@@ -78,7 +78,7 @@ class Game : public Scene
     MusicManager             loop_music_;
     MusicManager             hurry_music_;
     MusicManager             victory_music_;
-    Vector3D                 camera_position_ = { 0.0f, 13.0f, 2.0f };
+    Vector3D                 camera_position_ = { 0.0f, 14.5f, 2.0f };
     Vector3D                 camera_target_   = { 0.0f, 0.0f, 1.0f };
     Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
     float                    HurryUpX;

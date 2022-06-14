@@ -14,11 +14,11 @@ class Cameraman
 {
   public:
     Cameraman() noexcept;
-    ~Cameraman() noexcept                      = default;
-    Cameraman(const Cameraman& other) noexcept = delete;
-    Cameraman(Cameraman&& other) noexcept      = delete;
+    ~Cameraman() noexcept                               = default;
+    Cameraman(const Cameraman& other) noexcept          = delete;
+    Cameraman(Cameraman&& other) noexcept               = delete;
     Cameraman& operator=(const Cameraman& rhs) noexcept = delete;
-    Cameraman& operator=(Cameraman&& rhs) noexcept = delete;
+    Cameraman& operator=(Cameraman&& rhs) noexcept      = delete;
 
     Vector3D getPosition() const noexcept;
     Vector3D getTarget() const noexcept;
@@ -36,7 +36,7 @@ class Cameraman
   protected:
     Camera3D camera_;
     bool     is_moving_ = false;
-    float    speed_     = 0.5f;
+    float    speed_;
     Vector3D position_;
     Vector3D target_;
     Vector3D up_;

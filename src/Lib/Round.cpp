@@ -19,7 +19,7 @@
  */
 float Round::round(const float& x, const int& n) noexcept
 {
-    return (float)(int)(x * pow(10, n)) / pow(10, n);
+    return static_cast<float>(static_cast<int>((x * pow(10, n)) / pow(10, n)));
 }
 
 /**

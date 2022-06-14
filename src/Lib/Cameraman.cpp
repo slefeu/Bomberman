@@ -7,6 +7,7 @@
 
 #include "Cameraman.hpp"
 
+#include "DeltaTime.hpp"
 #include "Round.hpp"
 
 /**
@@ -14,9 +15,13 @@
  * perspective
  */
 Cameraman::Cameraman() noexcept
+    : speed_(15.0f)
 {
     camera_.fovy       = 60.0f;
     camera_.projection = CAMERA_PERSPECTIVE;
+    camera_.position   = { 0.0f, 0.0f, 0.0f };
+    camera_.target     = { 0.0f, 0.0f, 0.0f };
+    camera_.up         = { 0.0f, 0.0f, 0.0f };
 }
 
 /**
@@ -26,7 +31,7 @@ Cameraman::Cameraman() noexcept
  */
 void Cameraman::moveX(float x) noexcept
 {
-    camera_.position.x += x;
+    camera_.position.x += x * DeltaTime::getDeltaTime();
 }
 
 /**
@@ -36,7 +41,7 @@ void Cameraman::moveX(float x) noexcept
  */
 void Cameraman::moveY(float y) noexcept
 {
-    camera_.position.y += y;
+    camera_.position.y += y * DeltaTime::getDeltaTime();
 }
 
 /**
@@ -46,7 +51,7 @@ void Cameraman::moveY(float y) noexcept
  */
 void Cameraman::moveZ(float z) noexcept
 {
-    camera_.position.z += z;
+    camera_.position.z += z * DeltaTime::getDeltaTime();
 }
 
 /**
@@ -97,24 +102,24 @@ bool Cameraman::smoothMove() noexcept
 {
     bool     thereIsMovement = false;
     Vector3D roundPos        = { Round::round(camera_.position.x, 1),
-        Round::round(camera_.position.y, 1),
-        Round::round(camera_.position.z, 1) };
+               Round::round(camera_.position.y, 1),
+               Round::round(camera_.position.z, 1) };
     Vector3D roundTarget     = Round::roundVector(position_, 1);
-    Vector3D dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
-        (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,
-        (roundPos.z < roundTarget.z) ? 1.0f : -1.0f };
+    float    dirX            = (roundPos.x < roundTarget.x) ? 1.0f : -1.0f;
+    float    dirY            = (roundPos.y < roundTarget.y) ? 1.0f : -1.0f;
+    float    dirZ            = (roundPos.y < roundTarget.y) ? 1.0f : -1.0f;
 
-    if ((dir.z == 1 && roundTarget.z > roundPos.z) || (dir.z == -1 && roundTarget.z < roundPos.z)) {
+    if ((dirZ == 1 && roundTarget.z > roundPos.z) || (dirZ == -1 && roundTarget.z < roundPos.z)) {
         thereIsMovement = true;
-        moveZ(dir.z * speed_);
+        moveZ(dirZ * speed_);
     }
-    if ((dir.x == 1 && roundTarget.x > roundPos.x) || (dir.x == -1 && roundTarget.x < roundPos.x)) {
+    if ((dirX == 1 && roundTarget.x > roundPos.x) || (dirX == -1 && roundTarget.x < roundPos.x)) {
         thereIsMovement = true;
-        moveX(dir.x * speed_);
+        moveX(dirX * speed_);
     }
-    if ((dir.y == 1 && roundTarget.y > roundPos.y) || (dir.y == -1 && roundTarget.y < roundPos.y)) {
+    if ((dirY == 1 && roundTarget.y > roundPos.y) || (dirY == -1 && roundTarget.y < roundPos.y)) {
         thereIsMovement = true;
-        moveY(dir.y * speed_);
+        moveY(dirY * speed_);
     }
 
     camera_.target.x = target_.x;

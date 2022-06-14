@@ -22,7 +22,7 @@ class Load : public Scene
     ~Load() noexcept                 = default;
 
     Load& operator=(const Load& rhs) noexcept = delete;
-    Load& operator=(Load&& rhs) noexcept = delete;
+    Load& operator=(Load&& rhs) noexcept      = delete;
 
     // main methods
     void action() noexcept final;

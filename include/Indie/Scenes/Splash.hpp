@@ -20,11 +20,11 @@ class Splash : public Scene
 {
   public:
     Splash(Core& core_ref) noexcept;
-    Splash(const Splash& other) noexcept = delete;
-    Splash(Splash&& other) noexcept      = delete;
+    Splash(const Splash& other) noexcept          = delete;
+    Splash(Splash&& other) noexcept               = delete;
     Splash& operator=(const Splash& rhs) noexcept = delete;
-    Splash& operator=(Splash&& rhs) noexcept = delete;
-    ~Splash() noexcept                       = default;
+    Splash& operator=(Splash&& rhs) noexcept      = delete;
+    ~Splash() noexcept                            = default;
 
     void action() noexcept final;
 

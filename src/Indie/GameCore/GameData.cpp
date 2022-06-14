@@ -227,13 +227,13 @@ void GameData::clearEntities() noexcept
  *
  * @return A string containing the current date and time.
  */
-std::string getCurrentDateTime(void) noexcept
+std::string getCurrentDateTime() noexcept
 {
     char       currentTimeString[80];
     time_t     currentTime = time(0);
     struct tm* tstruct     = localtime(&currentTime);
 
-    strftime(currentTimeString, sizeof(currentTimeString), "%Y-%m-%d.%X", tstruct);
+    strftime(currentTimeString, sizeof(currentTimeString), "%d.%m--%H:%M", tstruct);
     return currentTimeString;
 }
 
@@ -243,7 +243,7 @@ std::string getCurrentDateTime(void) noexcept
  *
  * @return A string
  */
-void GameData::saveGame(void)
+void GameData::saveGame()
 {
     std::string   fileName = getCurrentDateTime();
     std::string   path     = "Save/" + fileName;

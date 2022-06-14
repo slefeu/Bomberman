@@ -7,6 +7,7 @@
 
 #include "Load.hpp"
 
+#include <algorithm>
 #include <exception>
 #include <filesystem>
 #include <iostream>
@@ -24,25 +25,14 @@ Load::Load(Core& core_ref) noexcept
     , core_entry_(core_ref)
     , background_color_(Colors::C_WHITE)
     , background_(BG_PATH, 0, 0, 1.1)
-    , title_(TITLE_PATH, 30, 30, 0.7)
+    , title_(TITLE_PATH, 30, 30, 0.5)
     , title_text_(FONT_PATH, "Pick a save :", 0, 0)
 {
     title_text_.setTextSize(40);
     title_text_.setPosition(
         core_entry_.getWindow().getWidth() / 2, core_entry_.getWindow().getHeight() / 9);
-    for (int i = 0; i < 3; i++) { load_names_.emplace_back(FONT_PATH, "Test", 40, 40); }
     createButtons();
     createIllustrations();
-}
-
-/**
- * It creates the texts that will be displayed on the screen
- */
-void Load::createTexts() noexcept
-{
-    load_names_.emplace_back(FONT_PATH, "No Save", 0, 0); // à changer avec les noms de tes saves
-    load_names_.emplace_back(FONT_PATH, "No Save", 0, 0);
-    load_names_.emplace_back(FONT_PATH, "No Save", 0, 0);
 }
 
 /**
@@ -54,13 +44,17 @@ void Load::createIllustrations() noexcept
     int width  = core_entry_.getWindow().getWidth();
     int height = core_entry_.getWindow().getHeight();
 
-    illustrations_.emplace_back(WHITE_IMG, width / 6 - 10, height / 4 + 30);
+    illustrations_.emplace_back(WHITE_IMG, width / 6 - 10, height / 6 + 30);
     illustrations_.emplace_back(
-        RED_IMG, width / 6 + (490 * illustrations_.size()), height / 4 + 30);
+        RED_IMG, width / 6 + (490 * illustrations_.size()), height / 6 + 30);
     illustrations_.emplace_back(
-        BLACK_IMG, width / 6 + (495 * illustrations_.size()), height / 4 + 30);
+        BLACK_IMG, width / 6 + (495 * illustrations_.size()), height / 6 + 30);
 }
 
+void Load::initTexts() noexcept
+{
+    while (load_names_.size() < 3) { load_names_.emplace_back(FONT_PATH, "No Save", 0, 0); }
+}
 /**
  * It draws all the illustrations
  */
@@ -76,36 +70,43 @@ void Load::drawIllustrations() const noexcept
  */
 void Load::createButtons() noexcept
 {
-    int         width  = core_entry_.getWindow().getWidth();
-    int         height = core_entry_.getWindow().getHeight();
-    std::string fileName;
+    int width  = core_entry_.getWindow().getWidth();
+    int height = core_entry_.getWindow().getHeight();
 
     getSavesNames();
     for (int i = 0; i < 3; i++) {
-        (save_names[i].compare("No Save")) ? fileName = save_names[i].substr(5)
-                                           : fileName = save_names[i];
-        load_names_[i].setText(fileName);
-        if (save_names[i].compare("No Save"))
+        auto name = load_names_[i].getText();
+        if (name.compare("No Save")) {
             buttons_.emplace_back(BUTTON_PATH,
                 width / 6 + (500 * buttons_.size()),
-                height - (height / 4),
-                std::function<void(void)>([this, i](void) {
-                    core_entry_.getData().setTryToLoad(save_names[i]);
-                    return core_entry_.switchScene(bomberman::SceneType::GAME);
+                height - (height / 3),
+                std::function<void(void)>([this, name]() {
+                    core_entry_.getData().setTryToLoad(name);
+                    core_entry_.switchScene(bomberman::SceneType::GAME);
                 }),
                 FONT_PATH,
-                load_names_[i].getText(),
-                20,
+                name.substr(5),
+                100,
                 0);
-        else
+            remove_.emplace_back(BUTTON_PATH,
+                width / 6 + (500 * remove_.size()),
+                height - (height / 5),
+                std::function<void(void)>([this, name]() {
+                    std::remove(name.c_str());
+                    core_entry_.switchScene(bomberman::SceneType::LOAD);
+                }),
+                FONT_PATH,
+                "remove");
+        } else {
             buttons_.emplace_back(BUTTON_PATH,
                 width / 6 + (500 * buttons_.size()),
-                height - (height / 4),
-                std::function<void(void)>([this, i](void) { return; }),
+                height - (height / 3),
+                std::function<void(void)>([this, i]() { return; }),
                 FONT_PATH,
                 load_names_[i].getText(),
                 20,
                 0);
+        }
     }
     buttons_.emplace_back("assets/textures/selection/close.png",
         width / 4 + 1200,
@@ -126,15 +127,15 @@ void Load::getSavesNames() noexcept
     try {
         for (const auto& entry : std::filesystem::directory_iterator(SAVE_PATH)) {
             if (nbSave >= 3) break;
-            save_names.emplace_back(entry.path());
+            if (load_names_.size() > 0) load_names_.erase(load_names_.begin());
+            load_names_.emplace(load_names_.begin(), FONT_PATH, entry.path().c_str(), 0, 0);
             nbSave++;
         }
-
     } catch (std::exception err) {
         std::filesystem::create_directory("Save");
         getSavesNames();
     }
-    while (save_names.size() < 3) { save_names.emplace_back("No Save"); }
+    initTexts();
 }
 
 /**
@@ -146,6 +147,11 @@ void Load::switchAction() noexcept
     createButtons();
     core_entry_.getCameraman().tpTo(
         { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
+    buttons_.clear();
+    remove_.clear();
+    load_names_.clear();
+    initTexts();
+    createButtons();
 }
 
 /**
@@ -154,17 +160,17 @@ void Load::switchAction() noexcept
 void Load::drawButtons() const noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
+    for (auto& it : remove_) { it.draw(); }
 }
 
 /**
- * If the gamepad is connected, then check if the dpad is pressed, and if so, change the button
- * index. If the B button is pressed, then call the action function of the button at the current
- * index. If the gamepad is not connected, then check if the mouse is hovering over any of the
- * buttons, and if so, call the action function of that button
+ * If the mouse is hovering over a button, then call the button's action function.
  */
 void Load::action() noexcept
 {
     for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    for (auto& it : remove_)
         if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
 }
 

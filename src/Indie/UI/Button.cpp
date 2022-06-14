@@ -213,6 +213,17 @@ void Button::setText(std::string new_text) noexcept
 }
 
 /**
+ * Sets the size of the text
+ *
+ * @param size The size of the text.
+ */
+void Button::setTextSize(int size) noexcept
+{
+    text_.setTextSize(size);
+}
+
+
+/**
  * It inverts the display of the button
  */
 void Button::invertDisplay() noexcept

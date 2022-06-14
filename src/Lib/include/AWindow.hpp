@@ -16,7 +16,7 @@ class AWindow
     virtual ~AWindow() noexcept            = default;
 
     AWindow& operator=(const AWindow& rhs) noexcept = delete;
-    AWindow& operator=(AWindow&& rhs) noexcept      = delete;
+    AWindow& operator=(AWindow&& rhs) noexcept = delete;
 
     // getters
     int   getWidth() const noexcept;

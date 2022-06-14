@@ -97,8 +97,8 @@ bool Cameraman::smoothMove() noexcept
 {
     bool     thereIsMovement = false;
     Vector3D roundPos        = { Round::round(camera_.position.x, 1),
-               Round::round(camera_.position.y, 1),
-               Round::round(camera_.position.z, 1) };
+        Round::round(camera_.position.y, 1),
+        Round::round(camera_.position.z, 1) };
     Vector3D roundTarget     = Round::roundVector(position_, 1);
     Vector3D dir             = { (roundPos.x < roundTarget.x) ? 1.0f : -1.0f,
         (roundPos.y < roundTarget.y) ? 1.0f : -1.0f,

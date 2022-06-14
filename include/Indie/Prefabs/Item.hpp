@@ -22,7 +22,7 @@ class Item : public Entity
     ~Item() noexcept                 = default;
 
     Item& operator=(const Item& rhs) noexcept = delete;
-    Item& operator=(Item&& rhs) noexcept      = delete;
+    Item& operator=(Item&& rhs) noexcept = delete;
 
     void Update() final;
     void OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept;

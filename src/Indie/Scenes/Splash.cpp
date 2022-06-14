@@ -18,7 +18,7 @@ Splash::Splash(Core& core_ref) noexcept
     : Scene()
     , core_entry_(core_ref)
     , background_color_(Colors::C_BLACK)
-    , timer(4.3f)
+    , timer(5)
     , opacity_(255)
     , splashSound_(Splash::SPLASH_SCREEN)
 {
@@ -72,5 +72,10 @@ void Splash::SystemDisplay() noexcept
     auto& sprites = core_entry_.getData().getSprites();
     if (sprites.size() == 0) return;
     sprites[4]->draw({ 255, 255, 255, opacity_ });
-    if (opacity_ > 0) opacity_ -= 15 * DeltaTime::getDeltaTime();
+    sprites[7]->draw({ 255, 255, 255, static_cast<unsigned char>(255 - opacity_) });
+
+    if (timer.getTime() > 3) return;
+    if (opacity_ > 0) opacity_ -= 120 * DeltaTime::getDeltaTime();
+    else
+        opacity_ = 0;
 }

@@ -480,6 +480,10 @@ void Game::SystemCollision() noexcept
  */
 void Game::SystemDisplay() noexcept
 {
+    auto& spriteses = core_entry_.getData().getSprites();
+    if (spriteses.size() == 0) return;
+    spriteses[5]->draw({ 200, 200, 200, 255 });
+
     core_entry_.getCameraman().begin3D();
 
     Plane::draw({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68 });

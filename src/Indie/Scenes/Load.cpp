@@ -127,7 +127,7 @@ void Load::getSavesNames() noexcept
     try {
         for (const auto& entry : std::filesystem::directory_iterator(SAVE_PATH)) {
             if (nbSave >= 3) break;
-            if (load_names_.size() > 0) load_names_.erase(load_names_.begin());
+            if (load_names_.size() > 0) load_names_.pop_back();
             load_names_.emplace(load_names_.begin(), FONT_PATH, entry.path().c_str(), 0, 0);
             nbSave++;
         }

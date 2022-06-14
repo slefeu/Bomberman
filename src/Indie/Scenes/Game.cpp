@@ -207,7 +207,9 @@ void Game::action() noexcept
         || controller.isKeyPressed(Key::K_ENTER))
         pause = true;
 
-    if (controller.isKeyPressed(Key::K_RIGHT_SHIFT)) {
+    if (controller.isKeyPressed(Key::K_RIGHT_SHIFT)
+        || (controller.isGamepadConnected(0)
+            && controller.isGamepadButtonPressed(0, G_Button::G_SELECT))) {
         timer_save.setLifeTime(4.3f);
         opacity_save_ = 255;
         core_entry_.getData().saveGame();

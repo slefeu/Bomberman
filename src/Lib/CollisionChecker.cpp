@@ -9,6 +9,16 @@
 
 #include "raylib.h"
 
+/**
+ * If the two bounding boxes are not overlapping, then there is no collision
+ *
+ * @param pos The position of the object.
+ * @param size The size of the object.
+ * @param otherPos The position of the other object.
+ * @param otherSize The size of the other object.
+ *
+ * @return A boolean value.
+ */
 bool CollisionChecker::check(const Vector3D& pos,
     const Vector3D&                          size,
     const Vector3D&                          otherPos,

@@ -16,6 +16,12 @@
 #include "Item.hpp"
 #include "Wall.hpp"
 
+/**
+ * It creates a fire entity with a transform, a renderer, and a box collider
+ *
+ * @param position The position of the fire.
+ * @param model The model to be used for the fire.
+ */
 Fire::Fire(Vector3D position, Model3D& model)
     : Entity()
     , explodeTime(0.5f)
@@ -39,14 +45,30 @@ Fire::Fire(Vector3D position, Model3D& model)
     addComponent(BoxCollider({ position.x, position.y, position.z }, { 0.5f, 0.5f, 0.5f }, true));
 }
 
+/**
+ * If the timer is done, destroy the object
+ */
 void Fire::Update()
 {
     explodeTimer.updateTimer();
     if (explodeTimer.isTimerDone()) destroy();
 }
 
+/**
+ * > This function is called when the fire collides with another entity
+ *
+ * @param other The entity that collided with this entity.
+ */
 void Fire::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept {}
 
+/**
+ * If the entity is a crate, drop its item and destroy it. If it's an item, destroy it. If it's a
+ * wall, return true. If it's a bomb, explode it. Otherwise, return false
+ *
+ * @param other The entity that the fire is colliding with.
+ *
+ * @return A boolean value.
+ */
 bool Fire::ExplodeElements(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Crate>(other.get())) {

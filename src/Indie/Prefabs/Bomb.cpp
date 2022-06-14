@@ -12,6 +12,15 @@
 #include "InstanceOf.hpp"
 #include "Wall.hpp"
 
+/**
+ * It creates a bomb at the given position, with the given size, and the given player
+ *
+ * @param pos the position of the bomb
+ * @param p The player who dropped the bomb
+ * @param newModel The model of the bomb
+ * @param bombSize the size of the bomb, which is the number of blocks it will destroy
+ * @param data The GameData object, which contains all the data needed for the game.
+ */
 Bomb::Bomb(Vector3D pos, Player& p, Model3D& newModel, int bombSize, GameData& data)
     : Entity()
     , lifeTime(3.0f)
@@ -44,6 +53,12 @@ Bomb::Bomb(Vector3D pos, Player& p, Model3D& newModel, int bombSize, GameData& d
     dropSound_.play();
 }
 
+/**
+ * It updates the bomb's timer, checks if it's time to explode, checks if it's time to become solid,
+ * and animates the bomb
+ *
+ * @return A pointer to the bomb object.
+ */
 void Bomb::Update()
 {
     int  i         = 0;
@@ -73,6 +88,11 @@ void Bomb::Update()
     if (transform->get().getScale() > 0.09f || transform->get().getScale() < 0.07f) animeDir *= -1;
 }
 
+/**
+ * It creates the fire and destroys the bomb
+ *
+ * @return A reference to the fire vector.
+ */
 void Bomb::explode() noexcept
 {
     auto hitbox = getComponent<BoxCollider>();
@@ -94,6 +114,13 @@ void Bomb::explode() noexcept
     destroy();
 }
 
+/**
+ * It creates a fire at the position of the bomb, and then checks if the fire is colliding with any
+ * other entity. If it is, it calls the `ExplodeElements` function of the fire, which will destroy
+ * the entity if it's destructible
+ *
+ * @param mul The direction of the fire.
+ */
 void Bomb::createFire(Vector3D mul) noexcept
 {
     Vector3D position = getComponent<Transform3D>()->get().getPosition();
@@ -116,21 +143,41 @@ void Bomb::createFire(Vector3D mul) noexcept
     }
 }
 
+/**
+ * If the bomb collides with a wall, explode
+ *
+ * @param other The entity that collided with this entity.
+ */
 void Bomb::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Wall>(other.get())) explode();
 }
 
+/**
+ * Get the life time of the bomb.
+ *
+ * @return The lifeTime variable is being returned.
+ */
 int Bomb::getLifeTime() const noexcept
 {
     return lifeTime;
 }
 
+/**
+ * Sets the life time of the bomb.
+ *
+ * @param newLifeTime The new life time of the bomb.
+ */
 void Bomb::setLifeTime(const int& newLifeTime) noexcept
 {
     lifeTime = newLifeTime;
 }
 
+/**
+ * Returns the id of the player who owns this bomb.
+ *
+ * @return The id of the player who owns the bomb.
+ */
 int Bomb::getOwnerId() const noexcept
 {
     return player.getId();

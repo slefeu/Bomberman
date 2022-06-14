@@ -9,6 +9,11 @@
 
 #include "DeltaTime.hpp"
 
+/**
+ * It's a constructor for the Splash scene
+ *
+ * @param core_ref This is a reference to the core class. This is used to change the scene.
+ */
 Splash::Splash(Core& core_ref) noexcept
     : Scene()
     , core_entry_(core_ref)
@@ -18,8 +23,14 @@ Splash::Splash(Core& core_ref) noexcept
 {
 }
 
+/**
+ * It does nothing
+ */
 void Splash::switchAction() noexcept {}
 
+/**
+ * If the timer is done, switch to the menu scene
+ */
 void Splash::action() noexcept
 {
     timer.updateTimer();
@@ -27,15 +38,31 @@ void Splash::action() noexcept
     if (timer.isTimerDone()) core_entry_.switchScene(bomberman::SceneType::MENU);
 }
 
+/**
+ * It does nothing
+ */
 void Splash::playMusic() noexcept {}
 
+/**
+ * It does nothing
+ */
 void Splash::updateMusic() const noexcept {}
 
+/**
+ * It returns the background color of the splash screen
+ *
+ * @return The background color of the splash screen.
+ */
 ColorManager Splash::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }
 
+/**
+ * It draws the FPS counter and the splash screen
+ *
+ * @return A reference to the sprites vector in the Data class.
+ */
 void Splash::SystemDisplay() noexcept
 {
     FpsHandler::draw(10, 10);

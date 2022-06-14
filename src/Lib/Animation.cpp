@@ -9,6 +9,11 @@
 
 #include <stdlib.h>
 
+/**
+ * If there are animations, unload them and free the memory.
+ *
+ * @return A pointer to the first element of the array.
+ */
 Animation::~Animation() noexcept
 {
     if (!animations_) return;
@@ -16,12 +21,24 @@ Animation::~Animation() noexcept
     RL_FREE(animations_);
 }
 
+/**
+ * It loads the animations from the file path and stores them in the animations_ array
+ *
+ * @param path The path to the model file.
+ */
 void Animation::addAnimation(const std::string_view& path) noexcept
 {
     animations_  = LoadModelAnimations(path.data(), &animations_count_);
     is_animated_ = true;
 }
 
+/**
+ * It updates the animation of the model
+ *
+ * @param model_ The model to update.
+ *
+ * @return A reference to the animation object.
+ */
 void Animation::updateAnimation(Model3D& model_) noexcept
 {
     if (animations_ == nullptr) return;
@@ -32,11 +49,21 @@ void Animation::updateAnimation(Model3D& model_) noexcept
     if (frame_counter_ >= animations_[animation_id_].frameCount) frame_counter_ = 0;
 }
 
+/**
+ * Sets the number of frames to skip.
+ *
+ * @param frame The frame to skip to.
+ */
 void Animation::setSkipFrame(int frame) noexcept
 {
     skip_frame_ = frame;
 }
 
+/**
+ * Sets the animation id.
+ *
+ * @param id The id of the animation.
+ */
 void Animation::setAnimationId(int id) noexcept
 {
     animation_id_ = id;

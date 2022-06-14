@@ -19,6 +19,11 @@
 #include "Round.hpp"
 #include "Wall.hpp"
 
+/**
+ * It initializes the game scene
+ *
+ * @param core_ref a reference to the core of the game
+ */
 Game::Game(Core& core_ref) noexcept
     : Scene()
     , core_entry_(core_ref)
@@ -52,6 +57,11 @@ Game::Game(Core& core_ref) noexcept
     pauseText_.setTextColor(Colors::C_RED);
 }
 
+/**
+ * It resets the game
+ *
+ * @return The return type is void.
+ */
 void Game::switchAction() noexcept
 {
     core_entry_.getCameraman().tpTo(
@@ -106,11 +116,17 @@ void Game::switchAction() noexcept
     createMap();
 }
 
+/**
+ * It plays the music
+ */
 void Game::playMusic() noexcept
 {
     loop_music_.play();
 }
 
+/**
+ * It updates the music
+ */
 void Game::updateMusic() const noexcept
 {
     if (loop_music_.isPlaying()) loop_music_.update();
@@ -120,6 +136,11 @@ void Game::updateMusic() const noexcept
         victory_music_.update();
 }
 
+/**
+ * It updates the game
+ *
+ * @return The return type is void.
+ */
 void Game::action() noexcept
 {
     SystemDestroy();
@@ -176,6 +197,9 @@ void Game::action() noexcept
         pause = true;
 }
 
+/**
+ * It creates the map
+ */
 void Game::createMap() noexcept
 {
     Vector3D vectorTemp;
@@ -222,6 +246,11 @@ void Game::createMap() noexcept
         }
 }
 
+/**
+ * It places blocks in a spiral around the player
+ *
+ * @return A boolean
+ */
 void Game::hurryUp() noexcept
 {
     if (!isHurry) return;
@@ -268,11 +297,19 @@ void Game::hurryUp() noexcept
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }
 
+/**
+ * It returns the background color of the game
+ *
+ * @return A reference to the background color.
+ */
 ColorManager Game::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }
 
+/**
+ * It ends the game
+ */
 void Game::endGame() noexcept
 {
     end_game = true;
@@ -323,6 +360,11 @@ void Game::endGame() noexcept
     }
 }
 
+/**
+ * If the gamepad is connected, then the user can navigate the menu with the dpad and select an
+ * option with the B button. If the gamepad is not connected, then the user can navigate the menu
+ * with the mouse
+ */
 void Game::endGameAction() noexcept
 {
     if (controller.isGamepadConnected(0)) {
@@ -339,12 +381,20 @@ void Game::endGameAction() noexcept
     }
 }
 
+/**
+ * It draws the victory text and the buttons
+ */
 void Game::endGameDisplay() noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
     victoryText_.draw();
 }
 
+/**
+ * It creates the buttons that will be displayed on the screen
+ *
+ * @return A reference to the current instance of the class.
+ */
 void Game::createButtons() noexcept
 {
     int width  = core_entry_.getWindow().getWidth();
@@ -367,6 +417,10 @@ void Game::createButtons() noexcept
         "Menu");
 }
 
+/**
+ * If the player presses the Y button on the gamepad or the Enter key on the keyboard, the game will
+ * unpause
+ */
 void Game::pauseAction() noexcept
 {
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
@@ -374,6 +428,9 @@ void Game::pauseAction() noexcept
         pause = false;
 }
 
+/**
+ * If an entity is disabled, remove it from the entity list
+ */
 void Game::SystemDestroy() noexcept
 {
     size_t len = core_entry_.getData().getEntities().size();
@@ -387,6 +444,9 @@ void Game::SystemDestroy() noexcept
     }
 }
 
+/**
+ * For every entity, check if it's colliding with any other entity
+ */
 void Game::SystemCollision() noexcept
 {
     for (auto& player : core_entry_.getData().getPlayers()) {
@@ -415,6 +475,9 @@ void Game::SystemCollision() noexcept
     }
 }
 
+/**
+ * It displays the game
+ */
 void Game::SystemDisplay() noexcept
 {
     core_entry_.getCameraman().begin3D();

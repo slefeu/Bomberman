@@ -14,6 +14,7 @@
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "MyCameraman.hpp"
+#include "Plane.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
 #include "Wall.hpp"
@@ -416,13 +417,13 @@ void Game::SystemDisplay() noexcept
 {
     core_entry_.getCameraman().begin3D();
 
-    DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
+    Plane::draw({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
             if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+                Plane::draw({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48 });
             if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+                Plane::draw({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48 });
         }
 
     for (auto& player : core_entry_.getData().getPlayers()) {

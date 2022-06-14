@@ -33,4 +33,5 @@ class Animation
     unsigned int    skip_frame_       = 1;
     unsigned int    animation_id_     = 0;
     bool            is_animated_      = false;
+    float           time_             = 0;
 };

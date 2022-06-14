@@ -9,6 +9,8 @@
 
 #include <stdlib.h>
 
+#include "DeltaTime.hpp"
+
 Animation::~Animation() noexcept
 {
     if (!animations_) return;
@@ -24,9 +26,12 @@ void Animation::addAnimation(const std::string_view& path) noexcept
 
 void Animation::updateAnimation(Model3D& model_) noexcept
 {
+    time_ += DeltaTime::getDeltaTime();
+
     if (animations_ == nullptr) return;
     if (is_animated_ == false) return;
-
+    if (time_ < 0.01) return;
+    time_ = 0;
     frame_counter_ += 1.0f * skip_frame_;
     model_.update(animations_[animation_id_], frame_counter_);
     if (frame_counter_ >= animations_[animation_id_].frameCount) frame_counter_ = 0;

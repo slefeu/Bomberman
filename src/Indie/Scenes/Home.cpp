@@ -159,9 +159,10 @@ void Home::createButtons() noexcept
 void Home::action() noexcept
 {
     if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP && button_index_ > 0))
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP) && button_index_ > 0)
             button_index_ = button_index_ - 1;
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN) && button_index_ < buttons_.size() + settings_.size())
+        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN)
+            && button_index_ < buttons_.size() + settings_.size())
             button_index_ = button_index_ + 1;
         if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
         for (auto& it : buttons_) it.setState(0);

@@ -17,7 +17,7 @@ class AudioDevice
     ~AudioDevice() noexcept                        = delete;
 
     AudioDevice& operator=(const AudioDevice& rhs) noexcept = delete;
-    AudioDevice& operator=(AudioDevice&& rhs) noexcept = delete;
+    AudioDevice& operator=(AudioDevice&& rhs) noexcept      = delete;
 
     static void initialize() noexcept;
     static void update(const Scene& scene) noexcept;

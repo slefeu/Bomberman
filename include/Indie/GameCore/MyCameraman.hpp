@@ -22,7 +22,7 @@ class MyCameraman : public Cameraman
     ~MyCameraman() noexcept                        = default;
 
     MyCameraman& operator=(const MyCameraman& rhs) noexcept = delete;
-    MyCameraman& operator=(MyCameraman&& rhs) noexcept = delete;
+    MyCameraman& operator=(MyCameraman&& rhs) noexcept      = delete;
 
     void lookBetweenEntity(const std::vector<std::unique_ptr<Entity>>& entities);
 };

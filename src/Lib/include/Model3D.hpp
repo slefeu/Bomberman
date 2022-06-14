@@ -17,10 +17,10 @@ class Model3D
 {
   public:
     Model3D(const std::string_view& path, const std::string_view& texturePath) noexcept;
-    Model3D(const Model3D& other) noexcept = delete;
-    Model3D(Model3D&& other) noexcept      = delete;
+    Model3D(const Model3D& other) noexcept          = delete;
+    Model3D(Model3D&& other) noexcept               = delete;
     Model3D& operator=(const Model3D& rhs) noexcept = delete;
-    Model3D& operator=(Model3D&& rhs) noexcept = delete;
+    Model3D& operator=(Model3D&& rhs) noexcept      = delete;
     ~Model3D() noexcept;
 
     void draw(const Vector3D&               position,

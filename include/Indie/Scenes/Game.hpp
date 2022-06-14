@@ -34,7 +34,7 @@ class Game : public Scene
     ~Game() noexcept                 = default;
 
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept = delete;
+    Game& operator=(Game&& rhs) noexcept      = delete;
 
     void         action() noexcept final;
     void         playMusic() noexcept final;

@@ -222,7 +222,6 @@ void Button::setTextSize(int size) noexcept
     text_.setTextSize(size);
 }
 
-
 /**
  * It inverts the display of the button
  */

@@ -19,7 +19,7 @@ class Animation
     Animation(Animation&& other) noexcept      = default;
 
     Animation& operator=(const Animation& rhs) noexcept = default;
-    Animation& operator=(Animation&& rhs) noexcept      = default;
+    Animation& operator=(Animation&& rhs) noexcept = default;
 
     void addAnimation(const std::string_view& path) noexcept;
     void updateAnimation(Model3D& model_) noexcept;

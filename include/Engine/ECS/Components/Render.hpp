@@ -29,10 +29,10 @@ class Render : public Component
     Render(Model3D& model) noexcept;
     Render(const Render& other) noexcept = default;
     Render(Render&& other) noexcept      = default;
-    ~Render() noexcept;
+    ~Render() noexcept                   = default;
 
     Render& operator=(const Render& rhs) noexcept = delete;
-    Render& operator=(Render&& rhs) noexcept      = delete;
+    Render& operator=(Render&& rhs) noexcept = delete;
 
     void          display(const Transform3D& transform) noexcept;
     void          setRenderType(const RenderType& type) noexcept;

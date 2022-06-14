@@ -6,6 +6,8 @@
 */
 
 #pragma once
+#include <vector>
+
 #include "Button.hpp"
 #include "Core.hpp"
 #include "Scene.hpp"
@@ -20,7 +22,7 @@ class Load : public Scene
     ~Load() noexcept                 = default;
 
     Load& operator=(const Load& rhs) noexcept = delete;
-    Load& operator=(Load&& rhs) noexcept = delete;
+    Load& operator=(Load&& rhs) noexcept      = delete;
 
     // main methods
     void action() noexcept final;
@@ -37,7 +39,6 @@ class Load : public Scene
     void SystemCollision() noexcept final{};
     void SystemDisplay() noexcept final;
 
-  protected:
   private:
     // methods
     void createIllustrations() noexcept;
@@ -45,6 +46,7 @@ class Load : public Scene
     void drawIllustrations() const noexcept;
     void drawButtons() const noexcept;
     void createTexts() noexcept;
+    void getSavesNames() noexcept;
 
     // attributes
     MusicManager             loop_music_;
@@ -56,6 +58,7 @@ class Load : public Scene
     std::vector<Button>      buttons_       = {};
     std::vector<Sprite>      illustrations_ = {};
     std::vector<TextHandler> load_names_    = {};
+    std::vector<std::string> save_names     = {};
     Controller               controller_;
     int                      button_index_ = 0;
 
@@ -67,4 +70,5 @@ class Load : public Scene
     static const inline char*       BG_PATH     = "assets/textures/home/background.png";
     static const inline char*       TITLE_PATH  = "assets/textures/selection/title.png";
     static const inline char*       FONT_PATH   = "assets/fonts/menu.ttf";
+    static const inline char*       SAVE_PATH   = "Save/";
 };

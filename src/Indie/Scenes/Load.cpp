@@ -7,6 +7,13 @@
 
 #include "Load.hpp"
 
+#include <exception>
+#include <filesystem>
+#include <iostream>
+#include <string>
+
+#include "Bomberman.hpp"
+
 Load::Load(Core& core_ref) noexcept
     : loop_music_(MUSIC)
     , core_entry_(core_ref)
@@ -25,9 +32,9 @@ Load::Load(Core& core_ref) noexcept
 
 void Load::createTexts() noexcept
 {
-    load_names_.emplace_back(FONT_PATH, "Test", 0, 0); // à changer avec les noms de tes saves
-    load_names_.emplace_back(FONT_PATH, "Test", 0, 0);
-    load_names_.emplace_back(FONT_PATH, "Test", 0, 0);
+    load_names_.emplace_back(FONT_PATH, "No Save", 0, 0); // à changer avec les noms de tes saves
+    load_names_.emplace_back(FONT_PATH, "No Save", 0, 0);
+    load_names_.emplace_back(FONT_PATH, "No Save", 0, 0);
 }
 
 void Load::createIllustrations() noexcept
@@ -49,18 +56,36 @@ void Load::drawIllustrations() const noexcept
 
 void Load::createButtons() noexcept
 {
-    int width  = core_entry_.getWindow().getWidth();
-    int height = core_entry_.getWindow().getHeight();
+    int         width  = core_entry_.getWindow().getWidth();
+    int         height = core_entry_.getWindow().getHeight();
+    std::string fileName;
 
+    getSavesNames();
     for (int i = 0; i < 3; i++) {
-        buttons_.emplace_back(BUTTON_PATH,
-            width / 6 + (500 * buttons_.size()),
-            height - (height / 4),
-            std::function<void(void)>([](void) { return; }),
-            FONT_PATH,
-            load_names_[i].getText(),
-            20,
-            0);
+        (save_names[i].compare("No Save")) ? fileName = save_names[i].substr(5)
+                                           : fileName = save_names[i];
+        load_names_[i].setText(fileName);
+        if (save_names[i].compare("No Save"))
+            buttons_.emplace_back(BUTTON_PATH,
+                width / 6 + (500 * buttons_.size()),
+                height - (height / 4),
+                std::function<void(void)>([this, i](void) {
+                    core_entry_.getData().setTryToLoad(save_names[i]);
+                    return core_entry_.switchScene(bomberman::SceneType::GAME);
+                }),
+                FONT_PATH,
+                load_names_[i].getText(),
+                20,
+                0);
+        else
+            buttons_.emplace_back(BUTTON_PATH,
+                width / 6 + (500 * buttons_.size()),
+                height - (height / 4),
+                std::function<void(void)>([this, i](void) { return; }),
+                FONT_PATH,
+                load_names_[i].getText(),
+                20,
+                0);
     }
     buttons_.emplace_back("assets/textures/selection/close.png",
         width / 4 + 1200,
@@ -69,6 +94,24 @@ void Load::createButtons() noexcept
             [this](void) { core_entry_.switchScene(bomberman::SceneType::MENU); }),
         "assets/fonts/menu.ttf",
         "");
+}
+
+void Load::getSavesNames() noexcept
+{
+    int nbSave = 0;
+
+    try {
+        for (const auto& entry : std::filesystem::directory_iterator(SAVE_PATH)) {
+            if (nbSave >= 3) break;
+            save_names.emplace_back(entry.path());
+            nbSave++;
+        }
+
+    } catch (std::exception err) {
+        std::filesystem::create_directory("Save");
+        getSavesNames();
+    }
+    while (save_names.size() < 3) { save_names.emplace_back("No Save"); }
 }
 
 void Load::switchAction() noexcept

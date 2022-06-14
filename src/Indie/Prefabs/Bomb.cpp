@@ -120,3 +120,18 @@ void Bomb::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     if (Type:: instanceof <Wall>(other.get())) explode();
 }
+
+int Bomb::getLifeTime() const noexcept
+{
+    return lifeTime;
+}
+
+void Bomb::setLifeTime(const int& newLifeTime) noexcept
+{
+    lifeTime = newLifeTime;
+}
+
+int Bomb::getOwnerId() const noexcept
+{
+    return player.getId();
+}

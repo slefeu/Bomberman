@@ -18,7 +18,7 @@ class MouseHandler
     ~MouseHandler() noexcept                         = default;
 
     MouseHandler& operator=(const MouseHandler& rhs) noexcept = default;
-    MouseHandler& operator=(MouseHandler&& rhs) noexcept = default;
+    MouseHandler& operator=(MouseHandler&& rhs) noexcept      = default;
 
     void     update() noexcept;
     bool     isColliding(const RectangleManager& bounds) const noexcept;

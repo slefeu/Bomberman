@@ -14,6 +14,8 @@ build/
 compile_commands.json
 null.d
 .history
+/Save
 build
+src/Lib/libraylib_encapsulation.a
 *.a
 .vs/

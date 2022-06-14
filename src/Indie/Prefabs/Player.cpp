@@ -440,15 +440,18 @@ void Player::addItem(bomberman::ItemType itemType) noexcept
     items.emplace_back(itemType);
 }
 
-void Player::toggleBot(void) noexcept
+void Player::toggleBot() noexcept
 {
     isBot = !isBot;
 }
 
-void Player::dispatchItem(void) noexcept
+void Player::dispatchItem() noexcept
 {
     if (items.empty()) return;
-    for (auto& item : items) { data.addItem(item); }
+    for (auto& item : items) {
+        if (item == bomberman::ItemType::I_WALL) { continue; }
+        data.addItem(item);
+    }
     items.clear();
 }
 

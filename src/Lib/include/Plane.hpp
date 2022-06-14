@@ -19,7 +19,7 @@ class Plane
     Plane(Plane&& other) noexcept      = delete;
 
     Plane& operator=(const Plane& rhs) noexcept = delete;
-    Plane& operator=(Plane&& rhs) noexcept = delete;
+    Plane& operator=(Plane&& rhs) noexcept      = delete;
 
     static void draw(Vector3D pos, Vector2D size, std::array<unsigned char, 3> color) noexcept;
 };

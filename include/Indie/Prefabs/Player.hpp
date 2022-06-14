@@ -25,11 +25,11 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData& data);
-    ~Player() noexcept                   = default;
-    Player(const Player& other) noexcept = delete;
-    Player(Player&& other) noexcept      = delete;
+    ~Player() noexcept                            = default;
+    Player(const Player& other) noexcept          = delete;
+    Player(Player&& other) noexcept               = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept = delete;
+    Player& operator=(Player&& rhs) noexcept      = delete;
 
     void       Update() final;
     void       addItem(bomberman::ItemType item) noexcept;
@@ -57,6 +57,8 @@ class Player : public Entity
     int        findNextType() const noexcept;
     int        findPrevType() const noexcept;
     void       toggleBot() noexcept;
+    void       setIsBot(const bool& bot) noexcept;
+    bool       isPlayer() const noexcept;
     bool       getBotState() const noexcept;
 
   private:

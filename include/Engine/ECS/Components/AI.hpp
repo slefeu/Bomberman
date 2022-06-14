@@ -23,7 +23,7 @@ class AI : public Component
     AI(AI&& other) noexcept      = default;
 
     AI& operator=(AI const& other) noexcept = default;
-    AI& operator=(AI&& other) noexcept = default;
+    AI& operator=(AI&& other) noexcept      = default;
 
     ComponentType getComponentType() const noexcept;
     AIEvent       getEvent(Vector2&  playerPosition,

@@ -26,7 +26,7 @@ class Core : public ACore
     ~Core() noexcept;
 
     Core& operator=(const Core& rhs) noexcept = delete;
-    Core& operator=(Core&& rhs) noexcept = delete;
+    Core& operator=(Core&& rhs) noexcept      = delete;
 
     void           switchScene(const bomberman::SceneType& scene) noexcept;
     WindowManager& getWindow() noexcept;

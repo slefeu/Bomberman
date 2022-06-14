@@ -553,6 +553,16 @@ void Player::toggleBot() noexcept
     isBot = !isBot;
 }
 
+void Player::setIsBot(const bool& val) noexcept
+{
+    isBot = val;
+}
+
+bool Player::isPlayer() const noexcept
+{
+    return !isBot;
+}
+
 /**
  * If the player has any items, add them to the player's data and clear the items vector
  *

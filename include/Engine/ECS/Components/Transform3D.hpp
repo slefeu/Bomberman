@@ -19,7 +19,7 @@ class Transform3D : public Component
     ~Transform3D() noexcept                        = default;
 
     Transform3D& operator=(const Transform3D& rhs) noexcept = default;
-    Transform3D& operator=(Transform3D&& rhs) noexcept = default;
+    Transform3D& operator=(Transform3D&& rhs) noexcept      = default;
 
     // getters and setters
     Vector3D      getPosition() const noexcept;

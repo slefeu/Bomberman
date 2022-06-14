@@ -310,6 +310,9 @@ void GameData::writeDataPlayer(std::ofstream& file)
         /// Write Player Stat///////////////////////////////////////////////////
         file << tmp->getSpeed() << ";" << tmp->getNbBomb() << ";" << tmp->getBombSize()
              << std::endl;
+        /// Write Player Bot Boolean////////////////////////////////////////////
+        file << ((tmp->isPlayer()) ? 0 : 1) << std::endl;
+        /// Write Player Nb Bomb///////////////////////////////////////////////
         file << nbBomb << std::endl;
         if (nbBomb == 0) continue;
         file << "Bombs" << std::endl;
@@ -485,9 +488,12 @@ void GameData::loadGamePlayerData(std::vector<std::string> data, int* index)
     *index = *index + 1;
     splitStr(data[*index], ";", &split);
     if (split.size() != 3) throw Error("Save not valid: " + data[*index] + " loadGamePlayer");
-    player->setSpeed(std::stoi(split[0]));
+    player->setSpeed(std::stof(split[0]));
     player->setNbBomb(std::stoi(split[1]));
     player->setBombSize(std::stoi(split[2]));
+
+    *index = *index + 1;
+    player->setIsBot(std::stoi(data[*index]));
 
     *index       = *index + 1;
     nbBombPlaced = std::stoi(data[*index]);

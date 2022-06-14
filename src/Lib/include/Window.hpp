@@ -21,7 +21,7 @@ class WindowManager : public AWindow
     ~WindowManager() noexcept;
 
     WindowManager& operator=(const WindowManager& rhs) noexcept = delete;
-    WindowManager& operator=(WindowManager&& rhs) noexcept = delete;
+    WindowManager& operator=(WindowManager&& rhs) noexcept      = delete;
 
     // getters and setters
     int  getMusicPercentage() const noexcept;

@@ -25,7 +25,7 @@ class TextHandler
     ~TextHandler() noexcept;
 
     TextHandler& operator=(const TextHandler& rhs) noexcept = delete;
-    TextHandler& operator=(TextHandler&& rhs) noexcept;
+    TextHandler& operator                                   =(TextHandler&& rhs) noexcept;
 
     void         draw() const noexcept;
     void         setTextColor(const std::array<unsigned char, 3>& color) noexcept;

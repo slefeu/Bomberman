@@ -29,22 +29,29 @@ class AI : public Component
     AIEvent       getEvent(Vector2&  playerPosition,
               std::vector<Vector3D>& boxes,
               std::vector<Vector3D>& bombs,
-              std::vector<Vector3D>& fires);
+              std::vector<Vector3D>& fires,
+              std::vector<Vector3D>& players,
+              std::vector<Vector3D>& powerups,
+              int                    nbBomb);
     void          handleColliding();
 
     static constexpr ComponentType TYPE = ComponentType::AI;
 
   private:
-    std::string getPossibleActions() const noexcept;
-    bool        isBombPlaceSafe();
-    bool        dodgeBombs() const;
-    AIEvent     findSafePath();
-    void        sideMovements();
-    bool        isDirectionSafe(Direction direction, bool fireOnly = false) const;
-    bool        isDirectionBlocked(Direction direction, float offset = 1) const;
-    bool        isInCase(Vector2 pos1, Vector3D pos2, float offset = 0.5) const;
-    bool        isInCross(Vector2 pos1, Vector3D pos2) const;
-    float       distance(Vector2 pos1, Vector2 pos2) const;
+    static float distance(int x1, int y1, int x2, int y2);
+    std::string  getPossibleActions() const noexcept;
+    bool         canPlaceBomb();
+    bool         dodgeBombs() const;
+    AIEvent      findSafePath();
+    void         sideMovements();
+    bool         isDirectionSafe(Direction direction, bool fireOnly = false) const;
+    bool         isDirectionBlocked(Direction direction, float offset = 1) const;
+    bool         isInCase(Vector2 pos1, Vector3D pos2, float offset = 0.5) const;
+    bool         isInCross(Vector2 pos1, Vector3D pos2) const;
+    float        distance(Vector2 pos1, Vector2 pos2) const;
+    AIEvent      movePlayer();
+    char         getObjectAtPosition(int x, int y);
+    void         calculateMap();
 
     std::string           actions_;
     Vector2               next_pos_;
@@ -54,5 +61,10 @@ class AI : public Component
     std::vector<Vector3D> boxes_;
     std::vector<Vector3D> bombs_;
     std::vector<Vector3D> fires_;
+    std::vector<Vector3D> players_;
+    std::vector<Vector3D> powerups_;
+    std::vector<std::string> map_;
+    int                   nb_bomb_;
+    int                   placed_bombs_;
     bool                  is_moving_;
 };

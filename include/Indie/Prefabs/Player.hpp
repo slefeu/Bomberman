@@ -71,6 +71,8 @@ class Player : public Entity
     std::vector<Vector3D> getSurroundingBox();
     std::vector<Vector3D> getBombsPositions();
     std::vector<Vector3D> getFirePositions();
+    std::vector<Vector3D> getPowerupPositions();
+    std::vector<Vector3D> getPlayersPositions();
 
     // attributes
     SoundManager                     killSound_;

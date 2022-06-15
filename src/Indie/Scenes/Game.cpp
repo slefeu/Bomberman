@@ -45,7 +45,7 @@ Game::Game(Core& core_ref) noexcept
           "Pause",
           core_entry_.getWindow().getWidth() / 2 - 220,
           core_entry_.getWindow().getHeight() / 2 - 80)
-    , timer_save(4.3f)
+    , timer_save(2.0f)
     , opacity_save_(0)
 {
     hurryUpSound_.setVolume(0.7f);
@@ -210,7 +210,7 @@ void Game::action() noexcept
     if (controller.isKeyPressed(Key::K_RIGHT_SHIFT)
         || (controller.isGamepadConnected(0)
             && controller.isGamepadButtonPressed(0, G_Button::G_SELECT))) {
-        timer_save.setLifeTime(4.3f);
+        timer_save.setLifeTime(2.0f);
         opacity_save_ = 255;
         core_entry_.getData().saveGame();
     }
@@ -498,7 +498,7 @@ void Game::SystemDisplay() noexcept
     spriteses[5]->draw({ 200, 200, 200, 255 });
 
     spriteses[6]->draw({ 255, 255, 255, opacity_save_ });
-    if (opacity_save_ > 0) opacity_save_ -= 35 * DeltaTime::getDeltaTime();
+    if (opacity_save_ > 0) opacity_save_ -= 50 * DeltaTime::getDeltaTime();
 
     core_entry_.getCameraman().begin3D();
 

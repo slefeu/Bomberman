@@ -188,6 +188,32 @@ std::vector<Vector3D> Player::getFirePositions()
     return (result);
 }
 
+std::vector<Vector3D> Player::getPowerupPositions()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if (Type:: instanceof <Item>(other.get()) && other.get()->getEnabledValue()) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
+std::vector<Vector3D> Player::getPlayersPositions()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if (Type::
+                instanceof <Player>(other.get()) && other.get()->getEnabledValue()
+                               && other.get() != this) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
 /**
  * It handles the AI movements
  */
@@ -198,38 +224,41 @@ void Player::handleAutoMovement()
     auto    ai        = getComponent<AI>();
     bool    animate   = false;
     AIEvent event     = AIEvent::NONE;
+    int collision_distance = 4;
 
     if (!ai.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in handling the AI movements.\n"));
 
     Vector2 position = { transform->get().getPositionX(), transform->get().getPositionZ() };
-    std::vector<Vector3D> boxes = getSurroundingBox();
-    std::vector<Vector3D> bombs = getBombsPositions();
-    std::vector<Vector3D> fires = getFirePositions();
-    event                       = ai->get().getEvent(position, boxes, bombs, fires);
+    std::vector<Vector3D> boxes    = getSurroundingBox();
+    std::vector<Vector3D> bombs    = getBombsPositions();
+    std::vector<Vector3D> fires    = getFirePositions();
+    std::vector<Vector3D> players  = getPlayersPositions();
+    std::vector<Vector3D> powerups = getPowerupPositions();
+    event = ai->get().getEvent(position, boxes, bombs, fires, players, powerups, nbBomb);
     if (event != AIEvent::NONE) {
         animate = true;
-        if (event == AIEvent::MOVE_UP && !isCollidingNextTurn(0, -2)) {
+        if (event == AIEvent::MOVE_UP && !isCollidingNextTurn(0, -collision_distance)) {
             transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
         }
-        if (event == AIEvent::MOVE_DOWN && !isCollidingNextTurn(0, 2)) {
+        if (event == AIEvent::MOVE_DOWN && !isCollidingNextTurn(0, collision_distance)) {
             transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
         }
-        if (event == AIEvent::MOVE_LEFT && !isCollidingNextTurn(-2, 0)) {
+        if (event == AIEvent::MOVE_LEFT && !isCollidingNextTurn(-collision_distance, 0)) {
             transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
         }
-        if (event == AIEvent::MOVE_RIGHT && !isCollidingNextTurn(2, 0)) {
+        if (event == AIEvent::MOVE_RIGHT && !isCollidingNextTurn(collision_distance, 0)) {
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
         if (event == AIEvent::PLACE_BOMB) placeBomb();
-        if (event == AIEvent::MOVE_UP && isCollidingNextTurn(0, -2)
-            || event == AIEvent::MOVE_DOWN && isCollidingNextTurn(0, 2)
-            || event == AIEvent::MOVE_LEFT && isCollidingNextTurn(-2, 0)
-            || event == AIEvent::MOVE_RIGHT && isCollidingNextTurn(2, 0)) {
+        if (event == AIEvent::MOVE_UP && isCollidingNextTurn(0, -collision_distance)
+            || event == AIEvent::MOVE_DOWN && isCollidingNextTurn(0, collision_distance)
+            || event == AIEvent::MOVE_LEFT && isCollidingNextTurn(-collision_distance, 0)
+            || event == AIEvent::MOVE_RIGHT && isCollidingNextTurn(collision_distance, 0)) {
             ai->get().handleColliding();
         }
     }

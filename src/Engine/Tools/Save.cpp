@@ -97,6 +97,7 @@ void Save::writeDataPlayer(std::ofstream& file)
 
         if (!transform.has_value() || !Type:: instanceof <Player>(player.get())) continue;
         auto* tmp    = dynamic_cast<const Player*>(player.get());
+        auto  render = player->getComponent<Render>();
         int   nbBomb = getNbBomb(data.getEntities(), tmp);
         file << "Player" << std::endl;
         /// Write Player Id/////////////////////////////////////////////////////
@@ -109,9 +110,16 @@ void Save::writeDataPlayer(std::ofstream& file)
         /// Write Player Stat///////////////////////////////////////////////////
         file << tmp->getSpeed() << ";" << tmp->getNbBomb() << ";" << tmp->getBombSize()
              << std::endl;
+        /// Write Player WallPass Boolean///////////////////////////////////////
+        file << (tmp->getWallPass() ? 1 : 0) << std::endl;
+
+        /// Write Player isShow Boolean/////////////////////////////////////////
+        if (!render.has_value()) file << 0 << std::endl;
+        else
+            file << (render->get().isShow() ? 1 : 0) << std::endl;
         /// Write Player Bot Boolean////////////////////////////////////////////
         file << ((tmp->isPlayer()) ? 0 : 1) << std::endl;
-        /// Write Player Nb Bomb///////////////////////////////////////////////
+        /// Write Player Nb Bomb////////////////////////////////////////////////
         file << nbBomb << std::endl;
         if (nbBomb == 0) continue;
         file << "Bombs" << std::endl;
@@ -289,6 +297,12 @@ void Save::loadGamePlayerData(std::vector<std::string> data, int* index)
     player->setSpeed(std::stof(split[0]));
     player->setNbBomb(std::stoi(split[1]));
     player->setBombSize(std::stoi(split[2]));
+
+    *index = *index + 1;
+    player->setWallPass(std::stoi(data[*index]) == 1 ? true : false);
+
+    *index = *index + 1;
+    player->getComponent<Render>()->get().show(std::stoi(data[*index]) == 1 ? true : false);
 
     *index = *index + 1;
     player->setIsBot(std::stoi(data[*index]) == 1 ? true : false);

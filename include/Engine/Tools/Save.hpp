@@ -28,9 +28,6 @@ class Save
     void load(const std::string& file);
     void save();
 
-  public:
-    GameData& data;
-
   private:
     void        loadGameData(std::vector<std::string> data);
     void        loadGamePlayerData(std::vector<std::string> data, int* index);
@@ -46,4 +43,7 @@ class Save
     int         getNbBomb(
                 const std::vector<std::unique_ptr<Entity>>& entities, const Player* player) const noexcept;
     void splitStr(std::string str, std::string delimiter, std::vector<std::string>* result) const;
+
+  private:
+    GameData& data;
 };

@@ -1,0 +1,45 @@
+.TH "MyCameraman" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MyCameraman
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBCameraman\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMyCameraman\fP (const \fBMyCameraman\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBMyCameraman\fP (\fBMyCameraman\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBMyCameraman\fP & \fBoperator=\fP (const \fBMyCameraman\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBMyCameraman\fP & \fBoperator=\fP (\fBMyCameraman\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBlookBetweenEntity\fP (const std::vector< std::unique_ptr< \fBEntity\fP > > &entities)"
+.br
+.in -1c
+.SS "Additional Inherited Members"
+.SH "Member Function Documentation"
+.PP 
+.SS "void MyCameraman::lookBetweenEntity (const std::vector< std::unique_ptr< \fBEntity\fP > > & entities)"
+It finds the center of the entities and sets the camera's position and target to that point
+.PP
+\fBParameters\fP
+.RS 4
+\fIentities\fP A vector of pointers to the entities that are being rendered\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

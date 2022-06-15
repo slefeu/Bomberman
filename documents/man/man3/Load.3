@@ -1,0 +1,109 @@
+.TH "Load" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Load
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBScene\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBLoad\fP (\fBCore\fP &core_ref) noexcept"
+.br
+.ti -1c
+.RI "\fBLoad\fP (const \fBLoad\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBLoad\fP (\fBLoad\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBLoad\fP & \fBoperator=\fP (const \fBLoad\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBLoad\fP & \fBoperator=\fP (\fBLoad\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBaction\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBswitchAction\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBplayMusic\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBupdateMusic\fP () const noexcept final"
+.br
+.ti -1c
+.RI "\fBColorManager\fP \fBgetBackgroundColor\fP () const noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemDestroy\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemCollision\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemDisplay\fP () noexcept final"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Load::Load (\fBCore\fP & core_ref)\fC [noexcept]\fP"
+It initializes the \fBLoad\fP class
+.PP
+\fBParameters\fP
+.RS 4
+\fIcore_ref\fP The core reference\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void Load::action ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+If the mouse is hovering over a button, then call the button's action function\&. 
+.PP
+Implements \fBScene\fP\&.
+.SS "\fBColorManager\fP Load::getBackgroundColor () const\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It returns the background color of the load object
+.PP
+\fBReturns\fP
+.RS 4
+A \fBColorManager\fP object\&. 
+.RE
+.PP
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void Load::playMusic ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It plays the music 
+.PP
+Implements \fBScene\fP\&.
+.SS "void Load::switchAction ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It teleports the cameraman to a new position 
+.PP
+Implements \fBScene\fP\&.
+.SS "void Load::SystemCollision ()\fC [inline]\fP, \fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void Load::SystemDestroy ()\fC [inline]\fP, \fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void Load::SystemDisplay ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It draws the background, title, FPS, title text, buttons, and illustrations 
+.PP
+Implements \fBScene\fP\&.
+.SS "void Load::updateMusic () const\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It updates the music 
+.PP
+Implements \fBScene\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

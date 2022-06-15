@@ -10,6 +10,12 @@
 #include "Error.hpp"
 #include "InstanceOf.hpp"
 
+/**
+ * It creates a wall entity with a transform, a renderer and a box collider
+ *
+ * @param pos The position of the wall
+ * @param model The model to be used for the wall.
+ */
 Wall::Wall(Vector3D pos, Model3D& model)
     : Entity()
 {
@@ -28,6 +34,11 @@ Wall::Wall(Vector3D pos, Model3D& model)
     addComponent(BoxCollider(transform->get().getPosition(), size, true));
 }
 
+/**
+ * If the wall is enabled, move it down by 4 units per frame
+ *
+ * @return The return type is a pointer to a Component.
+ */
 void Wall::Update()
 {
     if (!getEnabledValue()) return;
@@ -39,6 +50,12 @@ void Wall::Update()
     getComponent<BoxCollider>()->get().update(transform->get().getPosition());
 }
 
+/**
+ * If the entity colliding with this wall is another wall, and the position of this wall is greater
+ * than 0, destroy the other wall
+ *
+ * @param other The entity that collided with this entity.
+ */
 void Wall::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
     auto transform = getComponent<Transform3D>();

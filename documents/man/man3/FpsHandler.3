@@ -1,0 +1,60 @@
+.TH "FpsHandler" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FpsHandler
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBFpsHandler\fP (const \fBFpsHandler\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBFpsHandler\fP (\fBFpsHandler\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBFpsHandler\fP & \fBoperator=\fP (const \fBFpsHandler\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBFpsHandler\fP & \fBoperator=\fP (\fBFpsHandler\fP &&rhs) noexcept=delete"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBdraw\fP (int x, int y)"
+.br
+.ti -1c
+.RI "static void \fBsetFps\fP (float fps) noexcept"
+.br
+.in -1c
+.SH "Member Function Documentation"
+.PP 
+.SS "void FpsHandler::draw (int x, int y)\fC [static]\fP"
+Draw the FPS counter at the specified coordinates
+.PP
+\fBParameters\fP
+.RS 4
+\fIx\fP The x coordinate of the top left corner of the text\&. 
+.br
+\fIy\fP The y coordinate of the FPS counter\&. 
+.RE
+.PP
+
+.SS "void FpsHandler::setFps (float fps)\fC [static]\fP, \fC [noexcept]\fP"
+It sets the target FPS
+.PP
+\fBParameters\fP
+.RS 4
+\fIfps\fP The target FPS to be set\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

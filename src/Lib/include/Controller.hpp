@@ -160,7 +160,7 @@ class Controller
     Controller(Controller&& other) noexcept      = default;
 
     Controller& operator=(const Controller& rhs) noexcept = default;
-    Controller& operator=(Controller&& rhs) noexcept      = default;
+    Controller& operator=(Controller&& rhs) noexcept = default;
 
     bool  isKeyDown(const Key& key) const noexcept;
     bool  isKeyPressed(const Key& key) const noexcept;

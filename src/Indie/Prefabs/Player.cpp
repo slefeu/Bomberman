@@ -13,6 +13,7 @@
 
 #include "AI.hpp"
 #include "Bomb.hpp"
+#include "Controller.hpp"
 #include "Crate.hpp"
 #include "DeltaTime.hpp"
 #include "Error.hpp"
@@ -25,6 +26,12 @@
 #include "Wall.hpp"
 #include "raylib.h"
 
+/**
+ * It creates a player
+ *
+ * @param newId The id of the player.
+ * @param data The game data, which contains all the models, textures, sounds, etc.
+ */
 Player::Player(int newId, GameData& data)
     : Entity()
     , id(newId)
@@ -57,6 +64,12 @@ Player::Player(int newId, GameData& data)
     addComponent(BoxCollider(transform->get().getPosition(), { 0.5f, 0.5f, 0.5f }, true));
 }
 
+/**
+ * "If the current type is not the first type,
+ * decrement the type, otherwise set the type to the last type."
+ *
+ * @return The new type of the player.
+ */
 int Player::findPrevType() const noexcept
 {
     auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);
@@ -68,6 +81,11 @@ int Player::findPrevType() const noexcept
     return (new_type);
 }
 
+/**
+ * It returns the next player type in the enum
+ *
+ * @return The next type of player.
+ */
 int Player::findNextType() const noexcept
 {
     auto new_type = static_cast<typename std::underlying_type<PlayerType>::type>(type);
@@ -80,6 +98,11 @@ int Player::findNextType() const noexcept
     return (new_type);
 }
 
+/**
+ * If the player is a bot, then handle the bot's movement, otherwise handle the player's movement
+ *
+ * @return The player's hitbox.
+ */
 void Player::Update()
 {
     auto hitbox    = getComponent<BoxCollider>();
@@ -112,6 +135,12 @@ void Player::Update()
     }
 }
 
+/**
+ * It returns a vector of Vector3D's that represent the positions of all the crates and walls in the
+ * game
+ *
+ * @return A vector of Vector3D
+ */
 std::vector<Vector3D> Player::getSurroundingBox()
 {
     std::vector<Vector3D> result;
@@ -125,6 +154,11 @@ std::vector<Vector3D> Player::getSurroundingBox()
     return (result);
 }
 
+/**
+ * It returns a vector of Vector3D, which contains the positions of all the bombs in the game
+ *
+ * @return A vector of Vector3D
+ */
 std::vector<Vector3D> Player::getBombsPositions()
 {
     std::vector<Vector3D> result;
@@ -137,6 +171,11 @@ std::vector<Vector3D> Player::getBombsPositions()
     return (result);
 }
 
+/**
+ * It returns a vector of Vector3D objects, which are the positions of all the fires in the game
+ *
+ * @return A vector of Vector3D
+ */
 std::vector<Vector3D> Player::getFirePositions()
 {
     std::vector<Vector3D> result;
@@ -149,45 +188,77 @@ std::vector<Vector3D> Player::getFirePositions()
     return (result);
 }
 
+std::vector<Vector3D> Player::getPowerupPositions()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if (Type:: instanceof <Item>(other.get()) && other.get()->getEnabledValue()) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
+std::vector<Vector3D> Player::getPlayersPositions()
+{
+    std::vector<Vector3D> result;
+
+    for (auto& other : data.getEntities()) {
+        if (Type::
+                instanceof <Player>(other.get()) && other.get()->getEnabledValue()
+                               && other.get() != this) {
+            result.push_back(other.get()->getComponent<Transform3D>()->get().getPosition());
+        }
+    }
+    return (result);
+}
+
+/**
+ * It handles the AI movements
+ */
 void Player::handleAutoMovement()
 {
-    auto    transform = getComponent<Transform3D>();
-    auto    renderer  = getComponent<Render>();
-    auto    ai        = getComponent<AI>();
-    bool    animate   = false;
-    AIEvent event     = AIEvent::NONE;
+    auto    transform          = getComponent<Transform3D>();
+    auto    renderer           = getComponent<Render>();
+    auto    ai                 = getComponent<AI>();
+    bool    animate            = false;
+    AIEvent event              = AIEvent::NONE;
+    int     collision_distance = 4;
 
     if (!ai.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in handling the AI movements.\n"));
 
-    Vector2 position = { transform->get().getPositionX(), transform->get().getPositionZ() };
-    std::vector<Vector3D> boxes = getSurroundingBox();
-    std::vector<Vector3D> bombs = getBombsPositions();
-    std::vector<Vector3D> fires = getFirePositions();
-    event                       = ai->get().getEvent(position, boxes, bombs, fires);
+    Vector2D position = { transform->get().getPositionX(), transform->get().getPositionZ() };
+    std::vector<Vector3D> boxes    = getSurroundingBox();
+    std::vector<Vector3D> bombs    = getBombsPositions();
+    std::vector<Vector3D> fires    = getFirePositions();
+    std::vector<Vector3D> players  = getPlayersPositions();
+    std::vector<Vector3D> powerups = getPowerupPositions();
+    event = ai->get().getEvent(position, boxes, bombs, fires, players, powerups, nbBomb);
     if (event != AIEvent::NONE) {
         animate = true;
-        if (event == AIEvent::MOVE_UP && !isCollidingNextTurn(0, -2)) {
+        if (event == AIEvent::MOVE_UP && !isCollidingNextTurn(0, -collision_distance)) {
             transform->get().setRotationAngle(270.0f);
             transform->get().moveZ(-speed);
         }
-        if (event == AIEvent::MOVE_DOWN && !isCollidingNextTurn(0, 2)) {
+        if (event == AIEvent::MOVE_DOWN && !isCollidingNextTurn(0, collision_distance)) {
             transform->get().setRotationAngle(90.0f);
             transform->get().moveZ(speed);
         }
-        if (event == AIEvent::MOVE_LEFT && !isCollidingNextTurn(-2, 0)) {
+        if (event == AIEvent::MOVE_LEFT && !isCollidingNextTurn(-collision_distance, 0)) {
             transform->get().setRotationAngle(0.0f);
             transform->get().moveX(-speed);
         }
-        if (event == AIEvent::MOVE_RIGHT && !isCollidingNextTurn(2, 0)) {
+        if (event == AIEvent::MOVE_RIGHT && !isCollidingNextTurn(collision_distance, 0)) {
             transform->get().setRotationAngle(180.0f);
             transform->get().moveX(speed);
         }
         if (event == AIEvent::PLACE_BOMB) placeBomb();
-        if (event == AIEvent::MOVE_UP && isCollidingNextTurn(0, -2)
-            || event == AIEvent::MOVE_DOWN && isCollidingNextTurn(0, 2)
-            || event == AIEvent::MOVE_LEFT && isCollidingNextTurn(-2, 0)
-            || event == AIEvent::MOVE_RIGHT && isCollidingNextTurn(2, 0)) {
+        if (event == AIEvent::MOVE_UP && isCollidingNextTurn(0, -collision_distance)
+            || event == AIEvent::MOVE_DOWN && isCollidingNextTurn(0, collision_distance)
+            || event == AIEvent::MOVE_LEFT && isCollidingNextTurn(-collision_distance, 0)
+            || event == AIEvent::MOVE_RIGHT && isCollidingNextTurn(collision_distance, 0)) {
             ai->get().handleColliding();
         }
     }
@@ -201,6 +272,9 @@ void Player::handleAutoMovement()
     }
 }
 
+/**
+ * It handles the player's movement and animation
+ */
 void Player::handlePlayerMovement()
 {
     auto transform = getComponent<Transform3D>();
@@ -255,8 +329,6 @@ void Player::handlePlayerMovement()
             transform->get().moveX(speed);
         }
         if (controller.isKeyPressed(dropBomb)) placeBomb();
-
-        if (controller.isKeyPressed(save)) data.saveGame();
     }
 
     if (!animate) {
@@ -268,19 +340,43 @@ void Player::handlePlayerMovement()
     }
 }
 
+/**
+ * This function returns the type of the player.
+ *
+ * @return The type of the player.
+ */
 PlayerType Player::getType() const noexcept
 {
     return (type);
 }
 
+/**
+ * This function returns the value of the private member variable isBot.
+ *
+ * @return isBot
+ */
 bool Player::getBotState() const noexcept
 {
     return isBot;
 }
 
+/**
+ * If the player collides with a wall or fire, play a sound, dispatch an item, and hide the player
+ *
+ * @param other The entity that collided with this entity.
+ */
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
+    auto render = getComponent<Render>();
+    if (!render.has_value()) return;
+    if (!render->get().isShow()) return;
+    if (Type:: instanceof <Wall>(other.get()) && wallpass || Type::
+            instanceof <Wall>(other.get()) && wallpassEnd) {
+        printf("in first\n");
+        return;
+    }
     if (Type:: instanceof <Wall>(other.get()) || Type:: instanceof <Fire>(other.get())) {
+        printf("in second\n");
         killSound_.play();
         dispatchItem();
         auto render = getComponent<Render>();
@@ -288,6 +384,9 @@ void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
     }
 }
 
+/**
+ * It sets the player's position based on the player's id
+ */
 void Player::setPosition()
 {
     auto transform = getComponent<Transform3D>();
@@ -316,6 +415,11 @@ void Player::setPosition()
     }
 }
 
+/**
+ * It sets the player's position to the given position
+ *
+ * @param pos The position to set the player to.
+ */
 void Player::setPosition(Vector3D pos)
 {
     auto transform = getComponent<Transform3D>();
@@ -327,6 +431,9 @@ void Player::setPosition(Vector3D pos)
     transform->get().setZ(pos.z);
 }
 
+/**
+ * It sets the keyboard keys for each player
+ */
 void Player::setKeyboard() noexcept
 {
     switch (id) {
@@ -336,7 +443,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_A;
             moveRight = Key::K_D;
             dropBomb  = Key::K_Q;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         case 1:
             moveUp    = Key::K_KP_8;
@@ -344,7 +450,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_KP_4;
             moveRight = Key::K_KP_6;
             dropBomb  = Key::K_KP_7;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         case 2:
             moveUp    = Key::K_T;
@@ -352,7 +457,6 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_F;
             moveRight = Key::K_H;
             dropBomb  = Key::K_R;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         case 3:
             moveUp    = Key::K_I;
@@ -360,12 +464,19 @@ void Player::setKeyboard() noexcept
             moveLeft  = Key::K_J;
             moveRight = Key::K_L;
             dropBomb  = Key::K_U;
-            save      = Key::K_RIGHT_SHIFT;
             break;
         default: break;
     }
 }
 
+/**
+ * It checks if the player is colliding with any other entity next turn
+ *
+ * @param xdir The direction of the player on the x axis.
+ * @param zdir The direction the player is moving in the z axis.
+ *
+ * @return A boolean value.
+ */
 bool Player::isCollidingNextTurn(int xdir, int zdir)
 {
     auto hitbox    = getComponent<BoxCollider>();
@@ -403,6 +514,11 @@ bool Player::isCollidingNextTurn(int xdir, int zdir)
     return false;
 }
 
+/**
+ * It checks if the player can place a bomb, and if so, it places one
+ *
+ * @return A reference to the data member.
+ */
 void Player::placeBomb()
 {
     auto transform = getComponent<Transform3D>();
@@ -419,39 +535,85 @@ void Player::placeBomb()
     data.addBomb(transform->get().getPosition(), *this, bombSize);
 }
 
+/**
+ * It sets the wallpass variable to the value of the pass parameter, and resets the wallpassTimer
+ *
+ * @param pass The new value for the wallpass variable.
+ */
 void Player::setWallPass(const bool& pass) noexcept
 {
     this->wallpassTimer.resetTimer();
     wallpass = pass;
 }
 
+/**
+ * This function returns the value of the wallpass variable.
+ *
+ * @return A boolean value.
+ */
 bool Player::getWallPass() const noexcept
 {
     return wallpass;
 }
 
+/**
+ * This function returns the value of the private member variable wallpassEnd.
+ *
+ * @return The wallpassEnd variable is being returned.
+ */
 bool Player::getWallPassEnd() const noexcept
 {
     return wallpassEnd;
 }
 
+/**
+ * It adds an item to the player's inventory
+ *
+ * @param itemType The type of item to add to the player.
+ */
 void Player::addItem(bomberman::ItemType itemType) noexcept
 {
     items.emplace_back(itemType);
 }
 
-void Player::toggleBot(void) noexcept
+/**
+ * It toggles the isBot variable
+ */
+void Player::toggleBot() noexcept
 {
     isBot = !isBot;
 }
 
-void Player::dispatchItem(void) noexcept
+void Player::setIsBot(const bool& val) noexcept
+{
+    isBot = val;
+}
+
+bool Player::isPlayer() const noexcept
+{
+    return !isBot;
+}
+
+/**
+ * If the player has any items, add them to the player's data and clear the items vector
+ *
+ * @return A reference to the player's data.
+ */
+void Player::dispatchItem() noexcept
 {
     if (items.empty()) return;
-    for (auto& item : items) { data.addItem(item); }
+    for (auto& item : items) {
+        if (item == bomberman::ItemType::I_WALL) { continue; }
+        data.addItem(item);
+    }
     items.clear();
 }
 
+/**
+ * It sets the player's type, and sets the player's stats according to the type
+ *
+ * @param type The type of the player.
+ */
 void Player::setPlayerType(PlayerType type) noexcept
 {
     this->type = type;
@@ -465,11 +627,11 @@ void Player::setPlayerType(PlayerType type) noexcept
             bombSizeMax = 6;
             break;
         case PlayerType::ATTACK:
-            nbBomb      = 2;
-            speed       = 1.7f;
+            nbBomb      = 1;
+            speed       = 1.5f;
             bombSize    = 4;
             nbBombMax   = 10;
-            speedMax    = 2.5f;
+            speedMax    = 2.2f;
             bombSizeMax = 10;
             break;
         case PlayerType::TACTICAL:
@@ -478,7 +640,7 @@ void Player::setPlayerType(PlayerType type) noexcept
             bombSize    = 2;
             nbBombMax   = 5;
             speedMax    = 3.0f;
-            bombSizeMax = 10;
+            bombSizeMax = 7;
             break;
         case PlayerType::RUNNER:
             nbBomb      = 1;
@@ -492,56 +654,111 @@ void Player::setPlayerType(PlayerType type) noexcept
     }
 }
 
+/**
+ * GetNbBombMax returns the number of bombs the player can place.
+ *
+ * @return The number of bombs the player can place.
+ */
 int Player::getNbBombMax() const noexcept
 {
     return nbBombMax;
 }
 
+/**
+ * This function returns the maximum speed of the player.
+ *
+ * @return The maximum speed of the player.
+ */
 float Player::getSpeedMax() const noexcept
 {
     return speedMax;
 }
 
+/**
+ * This function returns the maximum size of the bombs that the player can place.
+ *
+ * @return The maximum size of the bomb.
+ */
 int Player::getBombSizeMax() const noexcept
 {
     return bombSizeMax;
 }
 
+/**
+ * This function returns the speed of the player.
+ *
+ * @return The speed of the player.
+ */
 float Player::getSpeed() const noexcept
 {
     return speed;
 }
 
+/**
+ * GetNbBomb returns the number of bombs the player has
+ *
+ * @return The number of bombs the player has.
+ */
 int Player::getNbBomb() const noexcept
 {
     return nbBomb;
 }
 
+/**
+ * This function returns the size of the bomb.
+ *
+ * @return The size of the bomb.
+ */
 int Player::getBombSize() const noexcept
 {
     return bombSize;
 }
 
+/**
+ * This function sets the speed of the player.
+ *
+ * @param speed The speed of the player.
+ */
 void Player::setSpeed(const float& speed) noexcept
 {
     this->speed = speed;
 }
 
+/**
+ * SetNbBomb sets the number of bombs the player can place
+ *
+ * @param nbBomb The number of bombs the player can place.
+ */
 void Player::setNbBomb(const int& nbBomb) noexcept
 {
     this->nbBomb = nbBomb;
 }
 
+/**
+ * This function sets the bomb size of the player.
+ *
+ * @param bombSize The size of the bomb.
+ */
 void Player::setBombSize(const int& bombSize) noexcept
 {
     this->bombSize = bombSize;
 }
 
+/**
+ * Returns the type of player.
+ *
+ * @return The type of the player.
+ */
 PlayerType Player::getPlayerType() const noexcept
 {
     return type;
 }
 
+/**
+ * This function returns the player's id.
+ *
+ * @return The id of the player.
+ */
 int Player::getId() const noexcept
 {
     return id;

@@ -19,11 +19,11 @@ class Home : public Scene
 {
   public:
     Home(Core& core_ref) noexcept;
-    Home(const Home& other) noexcept          = delete;
-    Home(Home&& other) noexcept               = delete;
+    Home(const Home& other) noexcept = delete;
+    Home(Home&& other) noexcept      = delete;
     Home& operator=(const Home& rhs) noexcept = delete;
-    Home& operator=(Home&& rhs) noexcept      = delete;
-    ~Home() noexcept                          = default;
+    Home& operator=(Home&& rhs) noexcept = delete;
+    ~Home() noexcept                     = default;
 
     void action() noexcept final;
     void SystemDisplay() noexcept final;
@@ -44,8 +44,7 @@ class Home : public Scene
 
     // attributes
     MusicManager             loop_music_;
-    std::vector<Button>      buttons_      = {};
-    int                      button_index_ = 0;
+    std::vector<Button>      buttons_ = {};
     Core&                    core_entry_;
     ColorManager             background_color_;
     Sprite                   background_;

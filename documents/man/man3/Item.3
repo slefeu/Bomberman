@@ -1,0 +1,83 @@
+.TH "Item" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Item
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBEntity\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBItem\fP (\fBVector3D\fP pos, \fBGameData\fP &data)"
+.br
+.ti -1c
+.RI "\fBItem\fP (\fBGameData\fP &data, bomberman::ItemType type)"
+.br
+.ti -1c
+.RI "\fBItem\fP (const \fBItem\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBItem\fP (\fBItem\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBItem\fP & \fBoperator=\fP (const \fBItem\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBItem\fP & \fBoperator=\fP (\fBItem\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBUpdate\fP () final"
+.br
+.ti -1c
+.RI "void \fBOnCollisionEnter\fP (std::unique_ptr< \fBEntity\fP > &other) noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Item::Item (\fBVector3D\fP pos, \fBGameData\fP & data)"
+It creates an item, sets its position, its model, its hitbox, and plays a sound
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The position of the item\&. 
+.br
+\fIdata\fP The \fBGameData\fP object that contains all the game data\&. 
+.RE
+.PP
+
+.SS "Item::Item (\fBGameData\fP & data, bomberman::ItemType type)"
+It creates an item, sets its position, scale, rotation, and render type, and adds a box collider to it
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP The game data, which contains the map and the players\&. 
+.br
+\fItype\fP The type of item to be created\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void Item::OnCollisionEnter (std::unique_ptr< \fBEntity\fP > & other)\fC [virtual]\fP, \fC [noexcept]\fP"
+If the player collides with the item, the item will set the player's stats, add the item to the player's inventory, play the sound effect, and destroy itself
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The entity that collided with this entity\&. 
+.RE
+.PP
+
+.PP
+Implements \fBEntity\fP\&.
+.SS "void Item::Update ()\fC [final]\fP, \fC [virtual]\fP"
+This function does nothing\&. 
+.PP
+Implements \fBEntity\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

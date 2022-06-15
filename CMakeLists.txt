@@ -35,6 +35,7 @@ set(
   src/Indie/GameCore/Core.cpp
   src/Indie/GameCore/GameData.cpp
   src/Indie/GameCore/MyCameraman.cpp
+  src/Indie/GameCore/Save.cpp
 
   src/Indie/Prefabs/Player.cpp
   src/Indie/Prefabs/Bomb.cpp

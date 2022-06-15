@@ -1,0 +1,138 @@
+.TH "RectangleManager" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RectangleManager
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRectangleManager\fP (float x, float y, float width, float height) noexcept"
+.br
+.ti -1c
+.RI "\fBRectangleManager\fP (const \fBRectangleManager\fP &other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBRectangleManager\fP (\fBRectangleManager\fP &&other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBRectangleManager\fP & \fBoperator=\fP (const \fBRectangleManager\fP &rhs) noexcept=default"
+.br
+.ti -1c
+.RI "\fBRectangleManager\fP & \fBoperator=\fP (\fBRectangleManager\fP &&rhs) noexcept=default"
+.br
+.ti -1c
+.RI "float \fBgetX\fP () const noexcept"
+.br
+.ti -1c
+.RI "float \fBgetY\fP () const noexcept"
+.br
+.ti -1c
+.RI "float \fBgetWidth\fP () const noexcept"
+.br
+.ti -1c
+.RI "float \fBgetHeight\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPos\fP (float x, float y) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetWidth\fP (float width) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetHeight\fP (float height) noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RectangleManager::RectangleManager (float x, float y, float width, float height)\fC [noexcept]\fP"
+It initializes the member variables of the class
+.PP
+\fBParameters\fP
+.RS 4
+\fIx\fP The x coordinate of the rectangle\&. 
+.br
+\fIy\fP The y-coordinate of the rectangle\&. 
+.br
+\fIwidth\fP The width of the rectangle\&. 
+.br
+\fIheight\fP The height of the rectangle\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "float RectangleManager::getHeight () const\fC [noexcept]\fP"
+\fC\fBgetHeight()\fP\fP returns the height of the rectangle\&.
+.PP
+\fBReturns\fP
+.RS 4
+The height of the rectangle\&. 
+.RE
+.PP
+
+.SS "float RectangleManager::getWidth () const\fC [noexcept]\fP"
+This function returns the width of the rectangle\&.
+.PP
+\fBReturns\fP
+.RS 4
+The width of the rectangle\&. 
+.RE
+.PP
+
+.SS "float RectangleManager::getX () const\fC [noexcept]\fP"
+This function returns the value of the private member variable x_, which is a float\&.
+.PP
+\fBReturns\fP
+.RS 4
+The x coordinate of the rectangle\&. 
+.RE
+.PP
+
+.SS "float RectangleManager::getY () const\fC [noexcept]\fP"
+This function returns the y coordinate of the rectangle\&.
+.PP
+\fBReturns\fP
+.RS 4
+The y coordinate of the rectangle\&. 
+.RE
+.PP
+
+.SS "void RectangleManager::setHeight (float height)\fC [noexcept]\fP"
+\fCvoid \fBRectangleManager::setHeight(float height)\fP noexcept\fP
+.PP
+This function is a member of the \fC\fBRectangleManager\fP\fP class\&. It's a \fCvoid\fP function, meaning it doesn't return anything\&. It's called \fCsetHeight\fP and it takes one parameter, a \fCfloat\fP called \fCheight\fP\&. It's marked \fCnoexcept\fP which means it won't throw any exceptions
+.PP
+\fBParameters\fP
+.RS 4
+\fIheight\fP The height of the rectangle\&. 
+.RE
+.PP
+
+.SS "void RectangleManager::setPos (float x, float y)\fC [noexcept]\fP"
+Sets the position of the rectangle\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIx\fP The x position of the rectangle\&. 
+.br
+\fIy\fP The y coordinate of the rectangle\&. 
+.RE
+.PP
+
+.SS "void RectangleManager::setWidth (float width)\fC [noexcept]\fP"
+\fCsetWidth\fP sets the width of the rectangle\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIwidth\fP The width of the rectangle\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

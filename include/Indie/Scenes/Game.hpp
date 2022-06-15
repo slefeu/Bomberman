@@ -34,7 +34,7 @@ class Game : public Scene
     ~Game() noexcept                 = default;
 
     Game& operator=(const Game& rhs) noexcept = delete;
-    Game& operator=(Game&& rhs) noexcept      = delete;
+    Game& operator=(Game&& rhs) noexcept = delete;
 
     void         action() noexcept final;
     void         playMusic() noexcept final;
@@ -56,9 +56,11 @@ class Game : public Scene
     void pauseAction() noexcept;
 
     // attributes
-    float time_party_ = 120;
-    Core& core_entry_;
-    Timer chrono_;
+    float         time_party_ = 120;
+    Core&         core_entry_;
+    Timer         chrono_;
+    unsigned char opacity_save_ = 0;
+    Timer         timer_save;
 
     float lastTimeBlockPlace;
     bool  isHurry;
@@ -76,12 +78,13 @@ class Game : public Scene
     MusicManager             loop_music_;
     MusicManager             hurry_music_;
     MusicManager             victory_music_;
-    Vector3D                 camera_position_ = { 0.0f, 13.0f, 2.0f };
+    Vector3D                 camera_position_ = { 0.0f, 14.5f, 2.0f };
     Vector3D                 camera_target_   = { 0.0f, 0.0f, 1.0f };
     Vector3D                 camera_up_       = { 0.0f, 2.0f, 0.0f };
     float                    HurryUpX;
     ColorManager             background_color_;
     std::vector<Button>      buttons_      = {};
+    std::vector<Button>      pause_btn_    = {};
     int                      button_index_ = 0;
     Controller               controller;
     TextHandler              victoryText_;

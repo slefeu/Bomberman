@@ -1,0 +1,262 @@
+.TH "BoxCollider" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+BoxCollider
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBComponent\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBBoxCollider\fP (const \fBVector3D\fP &pos, const \fBVector3D\fP &size, bool solid) noexcept"
+.br
+.ti -1c
+.RI "\fBBoxCollider\fP (const \fBBoxCollider\fP &other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBBoxCollider\fP (\fBBoxCollider\fP &&other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBBoxCollider\fP & \fBoperator=\fP (const \fBBoxCollider\fP &rhs) noexcept=default"
+.br
+.ti -1c
+.RI "\fBBoxCollider\fP & \fBoperator=\fP (\fBBoxCollider\fP &&rhs) noexcept=default"
+.br
+.ti -1c
+.RI "\fBVector3D\fP \fBgetPosition\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPosition\fP (const \fBVector3D\fP &pos) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPositionY\fP (int pos) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPositionZ\fP (int pos) noexcept"
+.br
+.ti -1c
+.RI "bool \fBgetIsSolid\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetIsSolid\fP (bool newValue) noexcept"
+.br
+.ti -1c
+.RI "\fBVector3D\fP \fBgetSize\fP () const noexcept"
+.br
+.ti -1c
+.RI "ComponentType \fBgetComponentType\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBaddX\fP (float value) noexcept"
+.br
+.ti -1c
+.RI "void \fBaddY\fP (float value) noexcept"
+.br
+.ti -1c
+.RI "void \fBaddZ\fP (float value) noexcept"
+.br
+.ti -1c
+.RI "bool \fBcheckCollision\fP (const \fBVector3D\fP &pos, const \fBVector3D\fP &size, const \fBVector3D\fP &otherPos, const \fBVector3D\fP &otherSize) const noexcept"
+.br
+.ti -1c
+.RI "void \fBupdate\fP (const \fBVector3D\fP &pos) noexcept"
+.br
+.ti -1c
+.RI "bool \fBisColliding\fP (const \fBBoxCollider\fP &other) const noexcept"
+.br
+.ti -1c
+.RI "bool \fBisColliding\fP (const \fBBoxCollider\fP &otherHit, const \fBVector3D\fP &otherPos) const noexcept"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static constexpr ComponentType \fBTYPE\fP = ComponentType::BOXCOLLIDER"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "BoxCollider::BoxCollider (const \fBVector3D\fP & newPos, const \fBVector3D\fP & newSize, bool solid)\fC [noexcept]\fP"
+It's a constructor that takes a position, size, and a boolean value that determines whether the box is solid or not
+.PP
+\fBParameters\fP
+.RS 4
+\fInewPos\fP The position of the box collider\&. 
+.br
+\fInewSize\fP The size of the box collider\&. 
+.br
+\fIsolid\fP If true, the box collider will be solid\&. If false, it will be a trigger\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void BoxCollider::addX (float value)\fC [noexcept]\fP"
+Adds a value to the x position of the box collider
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The value to add to the x position\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::addY (float value)\fC [noexcept]\fP"
+It adds the value to the y position of the box collider
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The value to add to the y position\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::addZ (float value)\fC [noexcept]\fP"
+Adds the given value to the z-coordinate of the position of the box collider\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The value to add to the position\&. 
+.RE
+.PP
+
+.SS "bool BoxCollider::checkCollision (const \fBVector3D\fP & pos, const \fBVector3D\fP & size, const \fBVector3D\fP & otherPos, const \fBVector3D\fP & otherSize) const\fC [noexcept]\fP"
+If the two boxes are not colliding, return false, otherwise return true
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The position of the box collider\&. 
+.br
+\fIsize\fP The size of the box collider\&. 
+.br
+\fIotherPos\fP The position of the other box collider\&. 
+.br
+\fIotherSize\fP The size of the other box collider\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "ComponentType BoxCollider::getComponentType () const\fC [virtual]\fP, \fC [noexcept]\fP"
+It returns the type of the component\&.
+.PP
+\fBReturns\fP
+.RS 4
+The type of the component\&. 
+.RE
+.PP
+
+.PP
+Implements \fBComponent\fP\&.
+.SS "bool BoxCollider::getIsSolid () const\fC [noexcept]\fP"
+This function returns the value of the private member variable is_solid_\&.
+.PP
+\fBReturns\fP
+.RS 4
+The is_solid_ variable is being returned\&. 
+.RE
+.PP
+
+.SS "\fBVector3D\fP BoxCollider::getPosition () const\fC [noexcept]\fP"
+This function returns the position of the box collider\&.
+.PP
+\fBReturns\fP
+.RS 4
+The position of the box collider\&. 
+.RE
+.PP
+
+.SS "\fBVector3D\fP BoxCollider::getSize () const\fC [noexcept]\fP"
+This function returns the size of the box collider\&.
+.PP
+\fBReturns\fP
+.RS 4
+The size of the box collider\&. 
+.RE
+.PP
+
+.SS "bool BoxCollider::isColliding (const \fBBoxCollider\fP & other) const\fC [noexcept]\fP"
+If the two boxes are colliding, return true, otherwise return false
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The other box collider to check collision with\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "bool BoxCollider::isColliding (const \fBBoxCollider\fP & otherHit, const \fBVector3D\fP & otherPos) const\fC [noexcept]\fP"
+If the position of the current box collider is less than the position of the other box collider plus the size of the other box collider, and the position of the current box collider plus the size of the current box collider is greater than the position of the other box collider, then return true
+.PP
+\fBParameters\fP
+.RS 4
+\fIotherHit\fP The other hitbox to check collision with\&. 
+.br
+\fIotherPos\fP The position of the other hitbox\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::setIsSolid (bool value)\fC [noexcept]\fP"
+It sets the value of the is_solid_ member variable to the value of the value parameter
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The new value for the is_solid_ variable\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::setPosition (const \fBVector3D\fP & pos)\fC [noexcept]\fP"
+Sets the position of the box collider\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The position of the box collider\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::setPositionY (int pos)\fC [noexcept]\fP"
+It sets the y position of the box collider
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The new position of the box collider\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::setPositionZ (int pos)\fC [noexcept]\fP"
+It sets the z position of the box collider
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The new position of the box collider\&. 
+.RE
+.PP
+
+.SS "void BoxCollider::update (const \fBVector3D\fP & newPos)\fC [noexcept]\fP"
+It updates the position of the box collider\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fInewPos\fP The new position of the box collider\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

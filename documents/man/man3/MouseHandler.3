@@ -1,0 +1,88 @@
+.TH "MouseHandler" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MouseHandler
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMouseHandler\fP (const \fBMouseHandler\fP &other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBMouseHandler\fP (\fBMouseHandler\fP &&other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBMouseHandler\fP & \fBoperator=\fP (const \fBMouseHandler\fP &rhs) noexcept=default"
+.br
+.ti -1c
+.RI "\fBMouseHandler\fP & \fBoperator=\fP (\fBMouseHandler\fP &&rhs) noexcept=default"
+.br
+.ti -1c
+.RI "void \fBupdate\fP () noexcept"
+.br
+.ti -1c
+.RI "bool \fBisColliding\fP (const \fBRectangleManager\fP &bounds) const noexcept"
+.br
+.ti -1c
+.RI "bool \fBisClicking\fP () const noexcept"
+.br
+.ti -1c
+.RI "bool \fBisClicked\fP () const noexcept"
+.br
+.ti -1c
+.RI "\fBVector2D\fP \fBgetMousePosition\fP () const noexcept"
+.br
+.in -1c
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBVector2D\fP MouseHandler::getMousePosition () const\fC [noexcept]\fP"
+It returns the mouse position
+.PP
+\fBReturns\fP
+.RS 4
+A \fBVector2D\fP object\&. 
+.RE
+.PP
+
+.SS "bool MouseHandler::isClicked () const\fC [noexcept]\fP"
+This function returns true if the left mouse button is released
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "bool MouseHandler::isClicking () const\fC [noexcept]\fP"
+If the left mouse button is down, return true, otherwise return false\&.
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "bool MouseHandler::isColliding (const \fBRectangleManager\fP & bounds) const\fC [noexcept]\fP"
+If the mouse is within the bounds of the rectangle, return true
+.PP
+\fBParameters\fP
+.RS 4
+\fIbounds\fP The rectangle to check collision with
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "void MouseHandler::update ()\fC [noexcept]\fP"
+It updates the mouse's position 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

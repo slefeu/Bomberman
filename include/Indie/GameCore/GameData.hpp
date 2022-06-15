@@ -27,7 +27,7 @@ class GameData : public AData
     ~GameData() noexcept                     = default;
 
     GameData& operator=(const GameData& rhs) noexcept = delete;
-    GameData& operator=(GameData&& rhs) noexcept      = delete;
+    GameData& operator=(GameData&& rhs) noexcept = delete;
 
     Vector2D             getMousePos() const noexcept;
     void                 updateMouse() noexcept;
@@ -42,12 +42,13 @@ class GameData : public AData
     void        addPlayer(int index) noexcept;
     void        addItem(bomberman::ItemType item) noexcept;
     void        addItem(const Vector3D& position) noexcept;
+    void        addItem(const Vector3D& position, bomberman::ItemType item) noexcept;
     void        addCrate(Vector3D position) noexcept;
     void        addWall(Vector3D position) noexcept;
     void        addFire(std::unique_ptr<Fire> fire) noexcept;
     void        addBomb(Vector3D position, Player& ref, int size) noexcept;
     void        clearEntities() noexcept;
-    void        saveGame(void);
+    void        saveGame();
     void        loadGame();
     void        unloadAll() noexcept;
     std::string tryToLoad() const noexcept;
@@ -58,17 +59,6 @@ class GameData : public AData
     std::vector<std::unique_ptr<Sprite>>&  getSprites() noexcept;
 
   private:
-    void loadGameData(std::vector<std::string> data);
-    void loadGamePlayerData(std::vector<std::string> data, int* index);
-    void loadGameBombData(std::vector<std::string> data, int* index);
-    void loadGameCrateData(std::vector<std::string> data, int* index);
-    void loadGameWallData(std::vector<std::string> data, int* index);
-    void writeDataGame(std::ofstream& file);
-    void writeDataPlayer(std::ofstream& file);
-    void writeDataCrate(std::ofstream& file);
-    void writeDataWall(std::ofstream& file);
-    void writeDataBombPlayer(std::ofstream& file, const std::unique_ptr<Entity>& bomb) const;
-
   private:
     MouseHandler mouse_;
     int          nb_players_ = 0;

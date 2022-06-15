@@ -19,7 +19,7 @@ class SoundManager
     ~SoundManager() noexcept;
 
     SoundManager& operator=(const SoundManager& rhs) noexcept = delete;
-    SoundManager& operator=(SoundManager&& rhs) noexcept;
+    SoundManager& operator                                    =(SoundManager&& rhs) noexcept;
 
     void unload() noexcept;
     void play() const noexcept;
@@ -29,4 +29,5 @@ class SoundManager
   private:
     Sound sound_;
     bool  unloaded_ = false;
+    bool  load_     = false;
 };

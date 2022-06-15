@@ -25,11 +25,11 @@ class Player : public Entity
 {
   public:
     Player(const int newId, GameData& data);
-    ~Player() noexcept                            = default;
-    Player(const Player& other) noexcept          = delete;
-    Player(Player&& other) noexcept               = delete;
+    ~Player() noexcept                   = default;
+    Player(const Player& other) noexcept = delete;
+    Player(Player&& other) noexcept      = delete;
     Player& operator=(const Player& rhs) noexcept = delete;
-    Player& operator=(Player&& rhs) noexcept      = delete;
+    Player& operator=(Player&& rhs) noexcept = delete;
 
     void       Update() final;
     void       addItem(bomberman::ItemType item) noexcept;
@@ -57,6 +57,8 @@ class Player : public Entity
     int        findNextType() const noexcept;
     int        findPrevType() const noexcept;
     void       toggleBot() noexcept;
+    void       setIsBot(const bool& bot) noexcept;
+    bool       isPlayer() const noexcept;
     bool       getBotState() const noexcept;
 
   private:
@@ -69,11 +71,12 @@ class Player : public Entity
     std::vector<Vector3D> getSurroundingBox();
     std::vector<Vector3D> getBombsPositions();
     std::vector<Vector3D> getFirePositions();
+    std::vector<Vector3D> getPowerupPositions();
+    std::vector<Vector3D> getPlayersPositions();
 
     // attributes
     SoundManager                     killSound_;
     Controller                       controller;
-    Key                              save;
     Key                              moveUp;
     Key                              moveDown;
     Key                              moveLeft;

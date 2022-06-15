@@ -86,8 +86,9 @@ void Load::createButtons() noexcept
                 }),
                 FONT_PATH,
                 name.substr(5),
-                100,
-                0);
+                130,
+                0,
+                false);
             remove_.emplace_back(BUTTON_PATH,
                 width / 6 + (500 * remove_.size()),
                 height - (height / 5),
@@ -96,7 +97,10 @@ void Load::createButtons() noexcept
                     core_entry_.switchScene(bomberman::SceneType::LOAD);
                 }),
                 FONT_PATH,
-                "remove");
+                "remove",
+                0,
+                0,
+                false);
         } else {
             buttons_.emplace_back(BUTTON_PATH,
                 width / 6 + (500 * buttons_.size()),
@@ -105,7 +109,8 @@ void Load::createButtons() noexcept
                 FONT_PATH,
                 load_names_[i].getText(),
                 20,
-                0);
+                0,
+                false);
         }
     }
     buttons_.emplace_back("assets/textures/selection/close.png",
@@ -114,7 +119,10 @@ void Load::createButtons() noexcept
         std::function<void(void)>(
             [this](void) { core_entry_.switchScene(bomberman::SceneType::MENU); }),
         "assets/fonts/menu.ttf",
-        "");
+        "",
+        0,
+        0,
+        false);
 }
 
 /**
@@ -143,8 +151,6 @@ void Load::getSavesNames() noexcept
  */
 void Load::switchAction() noexcept
 {
-    buttons_.clear();
-    createButtons();
     core_entry_.getCameraman().tpTo(
         { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
     buttons_.clear();

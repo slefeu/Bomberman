@@ -34,6 +34,15 @@ class Button
         float                     pos_y,
         std::function<void(void)> function,
         const std::string&        font_path,
+        const std::string&        message,
+        int                       textPosX,
+        int                       textPosY,
+        bool                      sound) noexcept;
+    Button(const std::string&     texture_path,
+        float                     pos_x,
+        float                     pos_y,
+        std::function<void(void)> function,
+        const std::string&        font_path,
         const std::string&        message) noexcept;
     Button(const std::string&     texture_path,
         float                     pos_x,
@@ -72,6 +81,7 @@ class Button
     std::function<void(void)> task_;
     TextHandler               text_;
     ColorManager              color_;
+    bool                      sound = true;
 
     static const inline char* ON_CLICK = "assets/audios/OnClick.wav";
     static const inline char* ON_HOVER = "assets/audios/MenuHover.wav";

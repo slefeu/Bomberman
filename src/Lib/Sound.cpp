@@ -16,6 +16,7 @@ SoundManager::SoundManager(const std::string& path) noexcept
     : sound_(LoadSound(path.c_str()))
 {
     setVolume(1);
+    load_ = true;
 }
 
 /**
@@ -75,7 +76,7 @@ void SoundManager::unload() noexcept
  */
 void SoundManager::play() const noexcept
 {
-    PlaySound(sound_);
+    if (load_) { PlaySound(sound_); }
 }
 
 /**
@@ -85,5 +86,5 @@ void SoundManager::play() const noexcept
  */
 void SoundManager::setVolume(float value) noexcept
 {
-    SetSoundVolume(sound_, value);
+    if (load_) { SetSoundVolume(sound_, value); }
 }

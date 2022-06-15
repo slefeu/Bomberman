@@ -29,4 +29,5 @@ class SoundManager
   private:
     Sound sound_;
     bool  unloaded_ = false;
+    bool  load_     = false;
 };

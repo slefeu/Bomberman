@@ -44,6 +44,32 @@ Button::Button(const std::string& texture_path,
         (pos_x + 150 - (message.size() * 35) / 2) + textPosX, (pos_y + 45) + textPosY);
 }
 
+Button::Button(const std::string& texture_path,
+    float                         pos_x,
+    float                         pos_y,
+    std::function<void(void)>     function,
+    const std::string&            font_path,
+    const std::string&            message,
+    int                           textPosX,
+    int                           textPosY,
+    bool                          sound) noexcept
+    : fx_clicked_(ON_CLICK)
+    , fx_hover_(ON_HOVER)
+    , texture_(texture_path)
+    , task_(function)
+    , text_(font_path, message, 0, 0)
+    , color_(Colors::C_WHITE)
+    , rectangle_(pos_x,
+          pos_y,
+          static_cast<float>(texture_.getWidth()),
+          static_cast<float>(texture_.getHeight()))
+    , sound(sound)
+{
+    texture_.setPos(rectangle_.getX(), rectangle_.getY());
+    text_.setPosition(
+        (pos_x + 150 - (message.size() * 35) / 2) + textPosX, (pos_y + 45) + textPosY);
+}
+
 /**
  * It initializes the button's
  * texture, sound effects, task, text, color, and rectangle
@@ -139,7 +165,7 @@ bool Button::checkCollision(const MouseHandler& mouse_) noexcept
         if (state_ == 0) {
             state_ = 1;
             color_.setColor(Colors::C_PINK);
-            fx_hover_.play();
+            if (sound) fx_hover_.play();
         }
         if (mouse_.isClicked()) { is_action_ = true; }
     } else {
@@ -148,7 +174,7 @@ bool Button::checkCollision(const MouseHandler& mouse_) noexcept
     }
     if (is_action_) {
         color_.setColor(Colors::C_WHITE);
-        fx_clicked_.play();
+        if (sound) fx_clicked_.play();
         is_action_ = false;
         return (true);
     }

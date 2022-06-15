@@ -52,6 +52,8 @@ void Save::save()
     std::string   path     = "Save/" + filename;
     std::ofstream file(path);
 
+    if (!file) return;
+
     if (!file.is_open()) {
         std::filesystem::create_directory("Save");
         return (save());

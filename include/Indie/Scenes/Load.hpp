@@ -69,6 +69,6 @@ class Load : public Scene
     static const inline char*       MUSIC       = "assets/audios/Select.mp3";
     static const inline char*       BG_PATH     = "assets/textures/home/background.png";
     static const inline char*       TITLE_PATH  = "assets/textures/selection/title.png";
-    static const inline char*       FONT_PATH   = "assets/fonts/menu.ttf";
+    static const inline std::string       FONT_PATH   = "assets/fonts/menu.ttf";
     static const inline char*       SAVE_PATH   = "Save/";
 };

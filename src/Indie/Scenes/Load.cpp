@@ -41,10 +41,12 @@ Load::Load(Core& core_ref) noexcept
  */
 void Load::createIllustrations() noexcept
 {
-    int width  = core_entry_.getWindow().getWidth();
-    int height = core_entry_.getWindow().getHeight();
+    float width  = core_entry_.getWindow().getWidth();
+    float height = core_entry_.getWindow().getHeight();
 
-    illustrations_.emplace_back(WHITE_IMG, width / 6 - 10, height / 6 + 30);
+    illustrations_.emplace_back("assets/textures/load/white_bomber.png",
+        width / 6 - 10,
+        height / 6 + 30);
     illustrations_.emplace_back(
         RED_IMG, width / 6 + (490 * illustrations_.size()), height / 6 + 30);
     illustrations_.emplace_back(
@@ -70,8 +72,8 @@ void Load::drawIllustrations() const noexcept
  */
 void Load::createButtons() noexcept
 {
-    int width  = core_entry_.getWindow().getWidth();
-    int height = core_entry_.getWindow().getHeight();
+    float width  = core_entry_.getWindow().getWidth();
+    float height = core_entry_.getWindow().getHeight();
 
     getSavesNames();
     for (int i = 0; i < 3; i++) {
@@ -136,7 +138,9 @@ void Load::getSavesNames() noexcept
         for (const auto& entry : std::filesystem::directory_iterator(SAVE_PATH)) {
             if (nbSave >= 3) break;
             if (load_names_.size() > 0) load_names_.pop_back();
-            load_names_.emplace(load_names_.begin(), FONT_PATH, entry.path().c_str(), 0, 0);
+            auto path  = static_cast<std::string>(entry.path().string());
+
+            load_names_.emplace(load_names_.begin(), FONT_PATH, path, 0, 0);
             nbSave++;
         }
     } catch (std::exception err) {

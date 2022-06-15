@@ -5,6 +5,8 @@
 ** Parser
 */
 
+#include "Save.hpp"
+
 #include <filesystem>
 #include <fstream>
 
@@ -12,7 +14,6 @@
 #include "Crate.hpp"
 #include "Error.hpp"
 #include "InstanceOf.hpp"
-#include "Parser.hpp"
 #include "Player.hpp"
 #include "Wall.hpp"
 

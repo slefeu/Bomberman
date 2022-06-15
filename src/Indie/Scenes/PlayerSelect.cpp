@@ -25,16 +25,6 @@ PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     choose_text_.setTextSize(40);
     choose_text_.setPosition(
         core_entry_.getWindow().getWidth() / 2, core_entry_.getWindow().getHeight() / 9);
-    createButtons();
-    stats_.emplace_back(
-        "assets/textures/selection/normal.png", core_entry_.getWindow().getWidth() / 2, 50);
-    stats_.emplace_back("assets/textures/selection/attack.png");
-    stats_.emplace_back("assets/textures/selection/tactical.png");
-    stats_.emplace_back("assets/textures/selection/runner.png");
-    texts_.emplace_back("assets/fonts/menu.ttf", "Balanced", 0, 0);
-    texts_.emplace_back("assets/fonts/menu.ttf", "Attack", 0, 0);
-    texts_.emplace_back("assets/fonts/menu.ttf", "Tactical", 0, 0);
-    texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
 /**
@@ -137,8 +127,27 @@ void PlayerSelect::switchAction() noexcept
 {
     core_entry_.getCameraman().tpTo(
         { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
+
     core_entry_.getData().getPlayers().clear();
+    buttons_.clear();
+    stats_.clear();
+    select_left_.clear();
+    select_right_.clear();
+    toggle_auto_.clear();
+
     core_entry_.getData().setNbPlayers(0);
+
+    createButtons();
+
+    stats_.emplace_back(
+        "assets/textures/selection/normal.png", core_entry_.getWindow().getWidth() / 2, 50);
+    stats_.emplace_back("assets/textures/selection/attack.png");
+    stats_.emplace_back("assets/textures/selection/tactical.png");
+    stats_.emplace_back("assets/textures/selection/runner.png");
+    texts_.emplace_back("assets/fonts/menu.ttf", "Balanced", 0, 0);
+    texts_.emplace_back("assets/fonts/menu.ttf", "Attack", 0, 0);
+    texts_.emplace_back("assets/fonts/menu.ttf", "Tactical", 0, 0);
+    texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
 /**

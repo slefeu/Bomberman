@@ -33,7 +33,7 @@ std::string Save::getCurrentDateTime() const noexcept
     time_t     currentTime = time(0);
     struct tm* tstruct     = localtime(&currentTime);
 
-    strftime(currentTimeString, sizeof(currentTimeString), "%d.%m--%H:%M", tstruct);
+    strftime(currentTimeString, sizeof(currentTimeString), "%d.%m--%H:%M:%S", tstruct);
     return currentTimeString;
 }
 /**

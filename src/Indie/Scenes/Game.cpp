@@ -497,9 +497,6 @@ void Game::SystemDisplay() noexcept
     if (spriteses.size() == 0) return;
     spriteses[5]->draw({ 200, 200, 200, 255 });
 
-    spriteses[6]->draw({ 255, 255, 255, opacity_save_ });
-    if (opacity_save_ > 0) opacity_save_ -= 50 * DeltaTime::getDeltaTime();
-
     core_entry_.getCameraman().begin3D();
 
     Plane::draw({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68 });
@@ -527,6 +524,10 @@ void Game::SystemDisplay() noexcept
     }
 
     core_entry_.getCameraman().end3D();
+
+    spriteses[6]->draw({ 255, 255, 255, opacity_save_ });
+    if (opacity_save_ > 0) opacity_save_ -= 50 * DeltaTime::getDeltaTime();
+
     FpsHandler::draw(35, 70);
     if (end_game) {
         endGameDisplay();

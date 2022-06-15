@@ -338,6 +338,10 @@ bool Player::getBotState() const noexcept
  */
 void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
 {
+    auto render = getComponent<Render>();
+    if (!render.has_value()) return;
+    if (!render->get().isShow()) return;
+
     if (Type:: instanceof <Wall>(other.get()) || Type:: instanceof <Fire>(other.get())) {
         killSound_.play();
         dispatchItem();

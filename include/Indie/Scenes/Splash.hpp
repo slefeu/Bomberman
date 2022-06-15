@@ -13,17 +13,18 @@
 #include "Core.hpp"
 #include "Fps.hpp"
 #include "Scene.hpp"
+#include "Sound.hpp"
 #include "Timer.hpp"
 
 class Splash : public Scene
 {
   public:
     Splash(Core& core_ref) noexcept;
-    Splash(const Splash& other) noexcept = delete;
-    Splash(Splash&& other) noexcept      = delete;
+    Splash(const Splash& other) noexcept          = delete;
+    Splash(Splash&& other) noexcept               = delete;
     Splash& operator=(const Splash& rhs) noexcept = delete;
-    Splash& operator=(Splash&& rhs) noexcept = delete;
-    ~Splash() noexcept                       = default;
+    Splash& operator=(Splash&& rhs) noexcept      = delete;
+    ~Splash() noexcept                            = default;
 
     void action() noexcept final;
 
@@ -36,9 +37,11 @@ class Splash : public Scene
     void         SystemDisplay() noexcept final;
 
   private:
-    Core&                     core_entry_;
-    ColorManager              background_color_;
-    Timer                     timer;
+    Core&        core_entry_;
+    ColorManager background_color_;
+    Timer        timer;
+    SoundManager splashSound_;
+
     unsigned char             opacity_;
-    static const inline char* SPLASH_SCREEN = "assets/audios/MainMenu.mp3";
+    static const inline char* SPLASH_SCREEN = "assets/audios/guitare.wav";
 };

@@ -15,6 +15,7 @@ add_library(
     Model3D.cpp
     Mouse.cpp
     Music.cpp
+    Plane.cpp
     Rectangle.cpp
     Sound.cpp
     Sprite.cpp

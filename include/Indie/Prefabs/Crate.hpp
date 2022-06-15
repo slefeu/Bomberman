@@ -18,7 +18,7 @@ class Crate : public Entity
     ~Crate() noexcept                  = default;
 
     Crate& operator=(const Crate& rhs) noexcept = delete;
-    Crate& operator=(Crate&& rhs) noexcept = delete;
+    Crate& operator=(Crate&& rhs) noexcept      = delete;
 
     void Update() final;
     void dropItem();

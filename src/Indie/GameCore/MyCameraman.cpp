@@ -13,6 +13,11 @@
 
 #include "Error.hpp"
 
+/**
+ * It finds the center of the entities and sets the camera's position and target to that point
+ *
+ * @param entities A vector of pointers to the entities that are being rendered.
+ */
 void MyCameraman::lookBetweenEntity(const std::vector<std::unique_ptr<Entity>>& entities)
 {
     float minX = INFINITY;

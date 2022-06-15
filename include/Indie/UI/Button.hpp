@@ -47,7 +47,7 @@ class Button
     ~Button() noexcept                   = default;
 
     Button& operator=(const Button& rhs) noexcept = delete;
-    Button& operator=(Button&& rhs) noexcept = default;
+    Button& operator=(Button&& rhs) noexcept      = default;
 
     void draw() const noexcept;
     void draw(float scale) const noexcept;
@@ -58,6 +58,7 @@ class Button
     void setTextPosition(const Vector2& pos) noexcept;
     void setText(std::string new_text) noexcept;
     void invertDisplay() noexcept;
+    void setTextSize(int size) noexcept;
 
   protected:
   private:

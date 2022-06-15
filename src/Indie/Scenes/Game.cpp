@@ -9,15 +9,22 @@
 
 #include <iostream>
 
+#include "Controller.hpp"
 #include "Crate.hpp"
 #include "DeltaTime.hpp"
 #include "InstanceOf.hpp"
 #include "Item.hpp"
 #include "MyCameraman.hpp"
+#include "Plane.hpp"
 #include "Player.hpp"
 #include "Round.hpp"
 #include "Wall.hpp"
 
+/**
+ * It initializes the game scene
+ *
+ * @param core_ref a reference to the core of the game
+ */
 Game::Game(Core& core_ref) noexcept
     : Scene()
     , core_entry_(core_ref)
@@ -38,6 +45,8 @@ Game::Game(Core& core_ref) noexcept
           "Pause",
           core_entry_.getWindow().getWidth() / 2 - 220,
           core_entry_.getWindow().getHeight() / 2 - 80)
+    , timer_save(4.3f)
+    , opacity_save_(0)
 {
     hurryUpSound_.setVolume(0.7f);
     createButtons();
@@ -49,33 +58,20 @@ Game::Game(Core& core_ref) noexcept
 
     pauseText_.setTextSize(100);
     pauseText_.setTextColor(Colors::C_RED);
+
+    core_entry_.getData().getSprites()[6]->setPos(960, 40);
 }
 
+/**
+ * It resets the game
+ *
+ * @return The return type is void.
+ */
 void Game::switchAction() noexcept
 {
     core_entry_.getCameraman().tpTo(
         { 0.0f, 1.0f, 2.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 2.0f, 0.0f });
     core_entry_.getCameraman().moveTo(camera_position_, camera_target_, camera_up_);
-
-    for (auto& player : core_entry_.getData().getPlayers()) {
-        if (!Type:: instanceof <Player>(player.get())) continue;
-        auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
-        ((std::unique_ptr<Player>&)player)->setPlayerType(type);
-        ((std::unique_ptr<Player>&)player)->setPosition();
-        ((std::unique_ptr<Player>&)player)->setWallPass(false);
-        ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
-
-        auto render = player->getComponent<Render>();
-        if (render.has_value()) { render->get().show(true); }
-    }
-
-    chrono_.resetTimer();
-    loop_music_.play();
-    hurry_music_.stop();
-    startSound_.play();
-    core_entry_.getData().clearEntities();
-    createMap();
-    srand(time(NULL));
 
     isHurry       = false;
     nbBlockPlaced = 0;
@@ -90,6 +86,11 @@ void Game::switchAction() noexcept
     end_game = false;
     pause    = false;
 
+    chrono_.resetTimer();
+    loop_music_.play();
+    hurry_music_.stop();
+    startSound_.play();
+
     for (auto& text : playerText_) { text.unload(); }
     playerText_.clear();
 
@@ -101,13 +102,42 @@ void Game::switchAction() noexcept
         playerText_.emplace_back("assets/fonts/menu.ttf", "Stats", xPos[i], yPos[i]);
     }
     for (auto& text : playerText_) { text.setTextSize(20); }
+
+    core_entry_.getData().clearEntities();
+
+    if (!core_entry_.getData().tryToLoad().empty()) {
+        core_entry_.getData().getPlayers().clear();
+        core_entry_.getData().setNbPlayers(0);
+        core_entry_.getData().loadGame();
+        return;
+    }
+
+    for (auto& player : core_entry_.getData().getPlayers()) {
+        if (!Type:: instanceof <Player>(player.get())) continue;
+        auto type = ((std::unique_ptr<Player>&)player)->getPlayerType();
+        ((std::unique_ptr<Player>&)player)->setPlayerType(type);
+        ((std::unique_ptr<Player>&)player)->setPosition();
+        ((std::unique_ptr<Player>&)player)->setWallPass(false);
+        ((std::unique_ptr<Player>&)player)->getComponent<Render>()->get().setColor(Colors::C_WHITE);
+
+        auto render = player->getComponent<Render>();
+        if (render.has_value()) { render->get().show(true); }
+    }
+
+    createMap();
 }
 
+/**
+ * It plays the music
+ */
 void Game::playMusic() noexcept
 {
     loop_music_.play();
 }
 
+/**
+ * It updates the music
+ */
 void Game::updateMusic() const noexcept
 {
     if (loop_music_.isPlaying()) loop_music_.update();
@@ -117,6 +147,11 @@ void Game::updateMusic() const noexcept
         victory_music_.update();
 }
 
+/**
+ * It updates the game
+ *
+ * @return The return type is void.
+ */
 void Game::action() noexcept
 {
     SystemDestroy();
@@ -171,8 +206,19 @@ void Game::action() noexcept
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
         pause = true;
+
+    if (controller.isKeyPressed(Key::K_RIGHT_SHIFT)
+        || (controller.isGamepadConnected(0)
+            && controller.isGamepadButtonPressed(0, G_Button::G_SELECT))) {
+        timer_save.setLifeTime(4.3f);
+        opacity_save_ = 255;
+        core_entry_.getData().saveGame();
+    }
 }
 
+/**
+ * It creates the map
+ */
 void Game::createMap() noexcept
 {
     Vector3D vectorTemp;
@@ -219,6 +265,11 @@ void Game::createMap() noexcept
         }
 }
 
+/**
+ * It places blocks in a spiral around the player
+ *
+ * @return A boolean
+ */
 void Game::hurryUp() noexcept
 {
     if (!isHurry) return;
@@ -265,11 +316,19 @@ void Game::hurryUp() noexcept
     if (nbBlockPlaced >= 80 && isHurry) isHurry = false;
 }
 
+/**
+ * It returns the background color of the game
+ *
+ * @return A reference to the background color.
+ */
 ColorManager Game::getBackgroundColor() const noexcept
 {
     return (background_color_);
 }
 
+/**
+ * It ends the game
+ */
 void Game::endGame() noexcept
 {
     end_game = true;
@@ -320,28 +379,31 @@ void Game::endGame() noexcept
     }
 }
 
+/**
+ * If the gamepad is connected, then the user can navigate the menu with the dpad and select an
+ * option with the B button. If the gamepad is not connected, then the user can navigate the menu
+ * with the mouse
+ */
 void Game::endGameAction() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_LEFT))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_RIGHT))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
 }
 
+/**
+ * It draws the victory text and the buttons
+ */
 void Game::endGameDisplay() noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
     victoryText_.draw();
 }
 
+/**
+ * It creates the buttons that will be displayed on the screen
+ *
+ * @return A reference to the current instance of the class.
+ */
 void Game::createButtons() noexcept
 {
     int width  = core_entry_.getWindow().getWidth();
@@ -350,20 +412,28 @@ void Game::createButtons() noexcept
     buttons_.emplace_back("assets/textures/home/button.png",
         50,
         height - 200,
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::GAME)); }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getData().setTryToLoad("");
+            return (core_entry_.switchScene(bomberman::SceneType::GAME));
+        }),
         "assets/fonts/menu.ttf",
         "Restart");
 
     buttons_.emplace_back("assets/textures/home/button.png",
         width - 350,
         height - 200,
-        std::function<void(void)>(
-            [this](void) { return (core_entry_.switchScene(bomberman::SceneType::MENU)); }),
+        std::function<void(void)>([this](void) {
+            core_entry_.getData().setTryToLoad("");
+            return (core_entry_.switchScene(bomberman::SceneType::MENU));
+        }),
         "assets/fonts/menu.ttf",
         "Menu");
 }
 
+/**
+ * If the player presses the Y button on the gamepad or the Enter key on the keyboard, the game will
+ * unpause
+ */
 void Game::pauseAction() noexcept
 {
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
@@ -371,6 +441,9 @@ void Game::pauseAction() noexcept
         pause = false;
 }
 
+/**
+ * If an entity is disabled, remove it from the entity list
+ */
 void Game::SystemDestroy() noexcept
 {
     size_t len = core_entry_.getData().getEntities().size();
@@ -384,6 +457,9 @@ void Game::SystemDestroy() noexcept
     }
 }
 
+/**
+ * For every entity, check if it's colliding with any other entity
+ */
 void Game::SystemCollision() noexcept
 {
     for (auto& player : core_entry_.getData().getPlayers()) {
@@ -412,17 +488,27 @@ void Game::SystemCollision() noexcept
     }
 }
 
+/**
+ * It displays the game
+ */
 void Game::SystemDisplay() noexcept
 {
+    auto& spriteses = core_entry_.getData().getSprites();
+    if (spriteses.size() == 0) return;
+    spriteses[5]->draw({ 200, 200, 200, 255 });
+
+    spriteses[6]->draw({ 255, 255, 255, opacity_save_ });
+    if (opacity_save_ > 0) opacity_save_ -= 35 * DeltaTime::getDeltaTime();
+
     core_entry_.getCameraman().begin3D();
 
-    DrawPlane({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68, 255 });
+    Plane::draw({ 0.0f, 0.0f, 1.0f }, { 13.0f, 11.0f }, { 0, 207, 68 });
     for (int z = -4; z < 7; z++)
         for (int x = -6; x < 7; x++) {
             if (z % 2 == 0 && x % 2 == 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+                Plane::draw({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48 });
             if (z % 2 != 0 && x % 2 != 0)
-                DrawPlane({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48, 255 });
+                Plane::draw({ x * 1.0f, 0.01f, z * 1.0f }, { 1.0f, 1.0f }, { 0, 181, 48 });
         }
 
     for (auto& player : core_entry_.getData().getPlayers()) {

@@ -18,7 +18,7 @@ class ACore
     virtual ~ACore() noexcept          = default;
 
     ACore& operator=(const ACore& rhs) noexcept = delete;
-    ACore& operator=(ACore&& rhs) noexcept = delete;
+    ACore& operator=(ACore&& rhs) noexcept      = delete;
 
     virtual void    run() noexcept = 0;
     void            setExit(bool value) noexcept;

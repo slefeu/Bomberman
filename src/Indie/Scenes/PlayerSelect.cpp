@@ -9,6 +9,11 @@
 
 #include "raylib.h"
 
+/**
+ * It creates the buttons, the background, the title, the text and the stats.
+ *
+ * @param core_ref A reference to the core object.
+ */
 PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     : loop_music_(MUSIC)
     , core_entry_(core_ref)
@@ -32,6 +37,13 @@ PlayerSelect::PlayerSelect(Core& core_ref) noexcept
     texts_.emplace_back("assets/fonts/menu.ttf", "Runner", 0, 0);
 }
 
+/**
+ * It draws the toggle button for the player selection screen
+ *
+ * @param id The id of the toggle.
+ * @param position The position of the toggle.
+ * @param isBot Whether the player is a bot or not.
+ */
 void PlayerSelect::drawToggle(const int id, const Vector2& position, bool isBot) noexcept
 {
     if (!isBot) {
@@ -45,6 +57,14 @@ void PlayerSelect::drawToggle(const int id, const Vector2& position, bool isBot)
     toggle_auto_[id].draw();
 }
 
+/**
+ * It draws the selection
+ * arrows for the player with the given id
+ *
+ * @param id The id of the player.
+ * @param pos_left The position of the left side of the selection.
+ * @param pos_right The position of the right selection arrow.
+ */
 void PlayerSelect::drawSelection(
     const int id, const Vector2& pos_left, const Vector2& pos_right) noexcept
 {
@@ -54,6 +74,9 @@ void PlayerSelect::drawSelection(
     select_right_[id].draw();
 }
 
+/**
+ * It displays the stats of all the players in the game
+ */
 void PlayerSelect::displayAllStats() noexcept
 {
     auto  height    = static_cast<float>(core_entry_.getWindow().getHeight());
@@ -75,6 +98,13 @@ void PlayerSelect::displayAllStats() noexcept
     }
 }
 
+/**
+ * It returns the index of the stats array that corresponds to the given player type
+ *
+ * @param type The type of player to find the stats for.
+ *
+ * @return The index of the player type in the stats array.
+ */
 unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
 {
     if (type == PlayerType::NORMAL) { return (0); };
@@ -84,6 +114,13 @@ unsigned int PlayerSelect::findStatsId(const PlayerType& type) const noexcept
     return (0);
 }
 
+/**
+ * It displays the player's stats and texts
+ *
+ * @param stats_pos The position of the stats bar.
+ * @param texts_pos The position of the text.
+ * @param id The id of the player.
+ */
 void PlayerSelect::displayPlayerStats(
     const Vector2& stats_pos, const Vector2& texts_pos, unsigned int id) noexcept
 {
@@ -93,12 +130,20 @@ void PlayerSelect::displayPlayerStats(
     texts_[id].draw();
 }
 
+/**
+ * It teleports the camera to a new position
+ */
 void PlayerSelect::switchAction() noexcept
 {
     core_entry_.getCameraman().tpTo(
         { 4.0f, 2.0f, 1.5f }, { 0.0f, 1.0f, 1.5f }, { 0.0f, 2.0f, 0.0f });
+    core_entry_.getData().getPlayers().clear();
+    core_entry_.getData().setNbPlayers(0);
 }
 
+/**
+ * It creates the buttons for the player selection scene
+ */
 void PlayerSelect::createButtons() noexcept
 {
     int width  = core_entry_.getWindow().getWidth();
@@ -179,25 +224,24 @@ void PlayerSelect::createButtons() noexcept
         "");
 }
 
+/**
+ * It draws all the buttons
+ */
 void PlayerSelect::drawButtons() const noexcept
 {
     for (auto& it : buttons_) { it.draw(); }
 }
 
+/**
+ * If the gamepad is connected, then check if the dpad is pressed, and if so, change the button
+ * index. If the B button is pressed, then call the action function of the button at the current
+ * index. If the gamepad is not connected, then check if the mouse is hovering over any of the
+ * buttons, and if so, call the action function of that button
+ */
 void PlayerSelect::action() noexcept
 {
-    if (controller.isGamepadConnected(0)) {
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_UP))
-            button_index_ = (button_index_ - 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_DPAD_DOWN))
-            button_index_ = (button_index_ + 1) % buttons_.size();
-        if (controller.isGamepadButtonPressed(0, G_Button::G_B)) buttons_[button_index_].action();
-        for (auto& it : buttons_) it.setState(0);
-        buttons_[button_index_].setState(1);
-    } else {
-        for (auto& it : buttons_)
-            if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
-    }
+    for (auto& it : buttons_)
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     for (auto& it : toggle_auto_) {
         if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
     }
@@ -209,16 +253,30 @@ void PlayerSelect::action() noexcept
     }
 }
 
+/**
+ * It plays the music
+ */
 void PlayerSelect::playMusic() noexcept
 {
     loop_music_.play();
 }
 
+/**
+ * It updates the music
+ */
 void PlayerSelect::updateMusic() const noexcept
 {
     loop_music_.update();
 }
 
+/**
+ * `ColorManager PlayerSelect::getBackgroundColor() const noexcept`
+ *
+ * The function returns a `ColorManager` object. The function is a member of the `PlayerSelect`
+ * class. The function is a `const` function. The function is a `noexcept` function
+ *
+ * @return The background color of the player select screen.
+ */
 ColorManager PlayerSelect::getBackgroundColor() const noexcept
 {
     return (background_color_);
@@ -228,6 +286,9 @@ ColorManager PlayerSelect::getBackgroundColor() const noexcept
 // *                               SYSTEMS                                    *
 // ****************************************************************************
 
+/**
+ * It displays the background, the title, the players, the buttons, the stats and the FPS
+ */
 void PlayerSelect::SystemDisplay() noexcept
 {
     background_.draw({ 255, 255, 255, 175 });

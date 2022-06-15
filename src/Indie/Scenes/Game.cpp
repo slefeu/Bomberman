@@ -427,6 +427,33 @@ void Game::createButtons() noexcept
         }),
         "assets/fonts/menu.ttf",
         "Menu");
+
+    pause_btn_.emplace_back("assets/textures/home/button.png",
+        50,
+        height - 200,
+        std::function<void(void)>([this](void) { core_entry_.setExit(true); }),
+        "assets/fonts/menu.ttf",
+        "Exit");
+
+    pause_btn_.emplace_back("assets/textures/home/button.png",
+        width - 350,
+        height - 200,
+        std::function<void(void)>([this](void) {
+            core_entry_.getData().setTryToLoad("");
+            return (core_entry_.switchScene(bomberman::SceneType::MENU));
+        }),
+        "assets/fonts/menu.ttf",
+        "Menu");
+    pause_btn_.emplace_back("assets/textures/home/button.png",
+        width / 2 - 150,
+        height - 200,
+        std::function<void(void)>([this](void) {
+            timer_save.setLifeTime(2.0f);
+            opacity_save_ = 255;
+            core_entry_.getData().saveGame();
+        }),
+        "assets/fonts/menu.ttf",
+        "Save");
 }
 
 /**
@@ -438,6 +465,9 @@ void Game::pauseAction() noexcept
     if ((controller.isGamepadConnected(0) && controller.isGamepadButtonPressed(0, G_Button::G_Y))
         || controller.isKeyPressed(Key::K_ENTER))
         pause = false;
+    for (auto& it : pause_btn_) {
+        if (it.checkCollision(core_entry_.getData().getMouseHandler())) { it.action(); }
+    }
 }
 
 /**
@@ -532,7 +562,10 @@ void Game::SystemDisplay() noexcept
         endGameDisplay();
         return;
     }
-    if (pause) { pauseText_.draw(); }
+    if (pause) {
+        pauseText_.draw();
+        for (auto& it : pause_btn_) { it.draw(); }
+    }
     if (!chrono_.isTimerDone()) {
         auto time = std::to_string(int(round(chrono_.getTime())));
         timeText_.setText(time);

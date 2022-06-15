@@ -26,7 +26,7 @@ class AI : public Component
     AI& operator=(AI&& other) noexcept = default;
 
     ComponentType getComponentType() const noexcept;
-    AIEvent       getEvent(Vector2&  playerPosition,
+    AIEvent       getEvent(Vector2D& playerPosition,
               std::vector<Vector3D>& boxes,
               std::vector<Vector3D>& bombs,
               std::vector<Vector3D>& fires,
@@ -46,25 +46,25 @@ class AI : public Component
     void         sideMovements();
     bool         isDirectionSafe(Direction direction, bool fireOnly = false) const;
     bool         isDirectionBlocked(Direction direction, float offset = 1) const;
-    bool         isInCase(Vector2 pos1, Vector3D pos2, float offset = 0.5) const;
-    bool         isInCross(Vector2 pos1, Vector3D pos2) const;
-    float        distance(Vector2 pos1, Vector2 pos2) const;
+    bool         isInCase(Vector2D pos1, Vector3D pos2, float offset = 0.5) const;
+    bool         isInCross(Vector2D pos1, Vector3D pos2) const;
+    float        distance(Vector2D pos1, Vector2D pos2) const;
     AIEvent      movePlayer();
     char         getObjectAtPosition(int x, int y);
     void         calculateMap();
 
-    std::string           actions_;
-    Vector2               next_pos_;
-    Direction             direction_;
-    std::string           possible_actions_;
-    Vector2               player_position_;
-    std::vector<Vector3D> boxes_;
-    std::vector<Vector3D> bombs_;
-    std::vector<Vector3D> fires_;
-    std::vector<Vector3D> players_;
-    std::vector<Vector3D> powerups_;
+    std::string              actions_;
+    Vector2D                 next_pos_;
+    Direction                direction_;
+    std::string              possible_actions_;
+    Vector2D                 player_position_;
+    std::vector<Vector3D>    boxes_;
+    std::vector<Vector3D>    bombs_;
+    std::vector<Vector3D>    fires_;
+    std::vector<Vector3D>    players_;
+    std::vector<Vector3D>    powerups_;
     std::vector<std::string> map_;
-    int                   nb_bomb_;
-    int                   placed_bombs_;
-    bool                  is_moving_;
+    int                      nb_bomb_;
+    int                      placed_bombs_;
+    bool                     is_moving_;
 };

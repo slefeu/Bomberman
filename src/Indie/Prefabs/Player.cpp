@@ -219,17 +219,17 @@ std::vector<Vector3D> Player::getPlayersPositions()
  */
 void Player::handleAutoMovement()
 {
-    auto    transform = getComponent<Transform3D>();
-    auto    renderer  = getComponent<Render>();
-    auto    ai        = getComponent<AI>();
-    bool    animate   = false;
-    AIEvent event     = AIEvent::NONE;
-    int collision_distance = 4;
+    auto    transform          = getComponent<Transform3D>();
+    auto    renderer           = getComponent<Render>();
+    auto    ai                 = getComponent<AI>();
+    bool    animate            = false;
+    AIEvent event              = AIEvent::NONE;
+    int     collision_distance = 4;
 
     if (!ai.has_value() || !transform.has_value() || !renderer.has_value())
         throw(Error("Error in handling the AI movements.\n"));
 
-    Vector2 position = { transform->get().getPositionX(), transform->get().getPositionZ() };
+    Vector2D position = { transform->get().getPositionX(), transform->get().getPositionZ() };
     std::vector<Vector3D> boxes    = getSurroundingBox();
     std::vector<Vector3D> bombs    = getBombsPositions();
     std::vector<Vector3D> fires    = getFirePositions();

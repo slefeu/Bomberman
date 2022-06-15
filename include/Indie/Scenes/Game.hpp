@@ -84,6 +84,7 @@ class Game : public Scene
     float                    HurryUpX;
     ColorManager             background_color_;
     std::vector<Button>      buttons_      = {};
+    std::vector<Button>      pause_btn_    = {};
     int                      button_index_ = 0;
     Controller               controller;
     TextHandler              victoryText_;

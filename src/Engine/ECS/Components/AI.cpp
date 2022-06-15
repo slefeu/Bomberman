@@ -36,12 +36,12 @@ void AI::handleColliding()
     if (is_moving_) { is_moving_ = false; }
 }
 
-float AI::distance(Vector2 pos1, Vector2 pos2) const
+float AI::distance(Vector2D pos1, Vector2D pos2) const
 {
     return (std::sqrt(std::pow(pos1.x - pos2.x, 2) + std::pow(pos1.y - pos2.y, 2)));
 }
 
-bool AI::isInCase(Vector2 pos1, Vector3D pos2, float offset) const
+bool AI::isInCase(Vector2D pos1, Vector3D pos2, float offset) const
 {
     float pos2_x_max = pos2.x + offset;
     float pos2_x_min = pos2.x - offset;
@@ -52,7 +52,7 @@ bool AI::isInCase(Vector2 pos1, Vector3D pos2, float offset) const
     return false;
 }
 
-bool AI::isInCross(Vector2 pos1, Vector3D pos2) const
+bool AI::isInCross(Vector2D pos1, Vector3D pos2) const
 {
     float pos2_x_max = pos2.x + 0.5;
     float pos2_x_min = pos2.x - 0.5;
@@ -66,7 +66,7 @@ bool AI::isInCross(Vector2 pos1, Vector3D pos2) const
 
 bool AI::isDirectionBlocked(Direction direction, float offset) const
 {
-    Vector2 next_pos = player_position_;
+    Vector2D next_pos = player_position_;
 
     switch (direction) {
         case Direction::UP: next_pos.y -= offset; break;
@@ -102,8 +102,8 @@ std::string AI::getPossibleActions() const noexcept
 
 bool AI::canPlaceBomb()
 {
-    Vector2 next_pos       = player_position_;
-    int     path_available = possible_actions_.size() - 2;
+    Vector2D next_pos       = player_position_;
+    int      path_available = possible_actions_.size() - 2;
 
     if (nb_bomb_ <= 0
         || (round(abs(player_position_.x)) == 6 && round(abs(player_position_.y)) == 4)) {
@@ -145,7 +145,7 @@ float AI::distance(int x1, int y1, int x2, int y2)
 
 bool AI::isDirectionSafe(Direction direction, bool fireOnly) const
 {
-    Vector2 next_pos = player_position_;
+    Vector2D next_pos = player_position_;
 
     switch (direction) {
         case Direction::UP: next_pos.y -= 1; break;
@@ -331,33 +331,27 @@ char AI::getObjectAtPosition(int x, int z)
     for (auto& fire : fires_) {
         if (fire.x == x && fire.z == z) { return ('f'); }
     }
-    if (x == round(player_position_.x) && z == round(player_position_.y)) {
-        return ('j');
-    }
+    if (x == round(player_position_.x) && z == round(player_position_.y)) { return ('j'); }
     return (' ');
 }
 
 void AI::calculateMap()
 {
     map_.clear();
-    map_ = std::vector<std::string> (16, std::string(16, ' '));
+    map_ = std::vector<std::string>(16, std::string(16, ' '));
     for (int z = -5; z < 8; z++) {
-        for (int x = -7; x < 8; x++) {
-            map_[z + 5][x + 7] = getObjectAtPosition(x, z);
-        }
+        for (int x = -7; x < 8; x++) { map_[z + 5][x + 7] = getObjectAtPosition(x, z); }
     }
-    for (auto &line : map_) {
-        std::cout << line << std::endl;
-    }
+    for (auto& line : map_) { std::cout << line << std::endl; }
 }
 
-AIEvent AI::getEvent(Vector2& playerPosition,
-    std::vector<Vector3D>&    boxes,
-    std::vector<Vector3D>&    bombs,
-    std::vector<Vector3D>&    fires,
-    std::vector<Vector3D>&    players,
-    std::vector<Vector3D>&    powerups,
-    int                       nbBomb)
+AIEvent AI::getEvent(Vector2D& playerPosition,
+    std::vector<Vector3D>&     boxes,
+    std::vector<Vector3D>&     bombs,
+    std::vector<Vector3D>&     fires,
+    std::vector<Vector3D>&     players,
+    std::vector<Vector3D>&     powerups,
+    int                        nbBomb)
 {
     player_position_  = playerPosition;
     boxes_            = boxes;

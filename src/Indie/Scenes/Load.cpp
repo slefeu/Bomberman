@@ -44,9 +44,8 @@ void Load::createIllustrations() noexcept
     float width  = core_entry_.getWindow().getWidth();
     float height = core_entry_.getWindow().getHeight();
 
-    illustrations_.emplace_back("assets/textures/load/white_bomber.png",
-        width / 6 - 10,
-        height / 6 + 30);
+    illustrations_.emplace_back(
+        "assets/textures/load/white_bomber.png", width / 6 - 10, height / 6 + 30);
     illustrations_.emplace_back(
         RED_IMG, width / 6 + (490 * illustrations_.size()), height / 6 + 30);
     illustrations_.emplace_back(
@@ -138,7 +137,7 @@ void Load::getSavesNames() noexcept
         for (const auto& entry : std::filesystem::directory_iterator(SAVE_PATH)) {
             if (nbSave >= 3) break;
             if (load_names_.size() > 0) load_names_.pop_back();
-            auto path  = static_cast<std::string>(entry.path().string());
+            auto path = static_cast<std::string>(entry.path().string());
 
             load_names_.emplace(load_names_.begin(), FONT_PATH, path, 0, 0);
             nbSave++;

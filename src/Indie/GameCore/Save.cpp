@@ -195,8 +195,8 @@ void Save::writeDataItem(std::ofstream& file)
     for (auto& item : data_.getEntities()) {
         auto transform = item->getComponent<Transform3D>();
         if (!transform.has_value() || !Type:: instanceof <Item>(item.get())) continue;
-        auto item_ = dynamic_cast<Item*>(item.get());
-        file << static_cast<int>(item_->getType()) << std::endl;
+        auto& item_ = *dynamic_cast<Item*>(item.get());
+        file << static_cast<int>(item_.getType()) << std::endl;
         file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
              << transform->get().getPositionZ() << std::endl;
     }
@@ -416,9 +416,7 @@ void Save::loadGameItemData(const std::vector<std::string>& infos)
 {
     std::vector<std::string> split;
     Vector3D                 pos;
-    bomberman::ItemType      type;
-
-    type = static_cast<bomberman::ItemType>(std::stoi(infos[index_]));
+    bomberman::ItemType      type = static_cast<bomberman::ItemType>(std::stoi(infos[index_]));
 
     index_ += 1;
     splitStr(infos[index_], ";", split);

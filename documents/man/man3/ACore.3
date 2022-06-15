@@ -1,0 +1,117 @@
+.TH "ACore" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ACore
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherited by \fBCore\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBACore\fP (const \fBACore\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBACore\fP (\fBACore\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBACore\fP & \fBoperator=\fP (const \fBACore\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBACore\fP & \fBoperator=\fP (\fBACore\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "virtual void \fBrun\fP () noexcept=0"
+.br
+.ti -1c
+.RI "void \fBsetExit\fP (bool value) noexcept"
+.br
+.ti -1c
+.RI "\fBGameData\fP & \fBgetData\fP () noexcept"
+.br
+.ti -1c
+.RI "const \fBGameData\fP & \fBgetData\fP () const noexcept"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual void \fBcheckCamera\fP () noexcept=0"
+.br
+.ti -1c
+.RI "virtual void \fBdisplayScene\fP () noexcept=0"
+.br
+.ti -1c
+.RI "virtual void \fBinitScenes\fP () noexcept=0"
+.br
+.ti -1c
+.RI "\fBScene\fP & \fBfindScene\fP () noexcept"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "bool \fBexit_\fP = false"
+.br
+.ti -1c
+.RI "\fBGameData\fP \fBdata_\fP"
+.br
+.ti -1c
+.RI "std::vector< std::unique_ptr< \fBScene\fP > > \fBscenes\fP"
+.br
+.in -1c
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual void ACore::displayScene ()\fC [protected]\fP, \fC [pure virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implemented in \fBCore\fP\&.
+.SS "\fBScene\fP & ACore::findScene ()\fC [protected]\fP, \fC [noexcept]\fP"
+It returns a reference to the current scene
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the current scene\&. 
+.RE
+.PP
+
+.SS "const \fBGameData\fP & ACore::getData () const\fC [noexcept]\fP"
+It returns a constant reference to the \fBGameData\fP object
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the data_ member\&. 
+.RE
+.PP
+
+.SS "\fBGameData\fP & ACore::getData ()\fC [noexcept]\fP"
+It returns a reference to the \fBGameData\fP object
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the data_ member\&. 
+.RE
+.PP
+
+.SS "virtual void ACore::run ()\fC [pure virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implemented in \fBCore\fP\&.
+.SS "void ACore::setExit (bool value)\fC [noexcept]\fP"
+It sets the exit_ variable to the value passed in
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The value to set the exit_ variable to\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

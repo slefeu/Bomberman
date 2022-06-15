@@ -1,0 +1,360 @@
+.TH "Player" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Player
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBEntity\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPlayer\fP (const int newId, \fBGameData\fP &data)"
+.br
+.ti -1c
+.RI "\fBPlayer\fP (const \fBPlayer\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBPlayer\fP (\fBPlayer\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBPlayer\fP & \fBoperator=\fP (const \fBPlayer\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBPlayer\fP & \fBoperator=\fP (\fBPlayer\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBUpdate\fP () final"
+.br
+.ti -1c
+.RI "void \fBaddItem\fP (bomberman::ItemType item) noexcept"
+.br
+.ti -1c
+.RI "void \fBdispatchItem\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBOnCollisionEnter\fP (std::unique_ptr< \fBEntity\fP > &other) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetStats\fP (int bomb, int sp, int size) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPlayerType\fP (PlayerType type) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetWallPass\fP (const bool &pass) noexcept"
+.br
+.ti -1c
+.RI "bool \fBgetWallPass\fP () const noexcept"
+.br
+.ti -1c
+.RI "bool \fBgetWallPassEnd\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBgetNbBombMax\fP () const noexcept"
+.br
+.ti -1c
+.RI "float \fBgetSpeedMax\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBgetBombSizeMax\fP () const noexcept"
+.br
+.ti -1c
+.RI "float \fBgetSpeed\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBgetNbBomb\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBgetBombSize\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetSpeed\fP (const float &speed) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetNbBomb\fP (const int &nbBomb) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetBombSize\fP (const int &bombSize) noexcept"
+.br
+.ti -1c
+.RI "PlayerType \fBgetPlayerType\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPosition\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetPosition\fP (\fBVector3D\fP pos)"
+.br
+.ti -1c
+.RI "PlayerType \fBgetType\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBgetId\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBfindNextType\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBfindPrevType\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBtoggleBot\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBsetIsBot\fP (const bool &bot) noexcept"
+.br
+.ti -1c
+.RI "bool \fBisPlayer\fP () const noexcept"
+.br
+.ti -1c
+.RI "bool \fBgetBotState\fP () const noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Player::Player (const int newId, \fBGameData\fP & data)"
+It creates a player
+.PP
+\fBParameters\fP
+.RS 4
+\fInewId\fP The id of the player\&. 
+.br
+\fIdata\fP The game data, which contains all the models, textures, sounds, etc\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void Player::addItem (bomberman::ItemType itemType)\fC [noexcept]\fP"
+It adds an item to the player's inventory
+.PP
+\fBParameters\fP
+.RS 4
+\fIitemType\fP The type of item to add to the player\&. 
+.RE
+.PP
+
+.SS "void Player::dispatchItem ()\fC [noexcept]\fP"
+If the player has any items, add them to the player's data and clear the items vector
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the player's data\&. 
+.RE
+.PP
+
+.SS "int Player::findNextType () const\fC [noexcept]\fP"
+It returns the next player type in the enum
+.PP
+\fBReturns\fP
+.RS 4
+The next type of player\&. 
+.RE
+.PP
+
+.SS "int Player::findPrevType () const\fC [noexcept]\fP"
+'If the current type is not the first type,
+decrement the type, otherwise set the type to the last type\&.'
+.PP
+\fBReturns\fP
+.RS 4
+The new type of the player\&. 
+.RE
+.PP
+
+.SS "int Player::getBombSize () const\fC [noexcept]\fP"
+This function returns the size of the bomb\&.
+.PP
+\fBReturns\fP
+.RS 4
+The size of the bomb\&. 
+.RE
+.PP
+
+.SS "int Player::getBombSizeMax () const\fC [noexcept]\fP"
+This function returns the maximum size of the bombs that the player can place\&.
+.PP
+\fBReturns\fP
+.RS 4
+The maximum size of the bomb\&. 
+.RE
+.PP
+
+.SS "bool Player::getBotState () const\fC [noexcept]\fP"
+This function returns the value of the private member variable isBot\&.
+.PP
+\fBReturns\fP
+.RS 4
+isBot 
+.RE
+.PP
+
+.SS "int Player::getId () const\fC [noexcept]\fP"
+This function returns the player's id\&.
+.PP
+\fBReturns\fP
+.RS 4
+The id of the player\&. 
+.RE
+.PP
+
+.SS "int Player::getNbBomb () const\fC [noexcept]\fP"
+GetNbBomb returns the number of bombs the player has
+.PP
+\fBReturns\fP
+.RS 4
+The number of bombs the player has\&. 
+.RE
+.PP
+
+.SS "int Player::getNbBombMax () const\fC [noexcept]\fP"
+GetNbBombMax returns the number of bombs the player can place\&.
+.PP
+\fBReturns\fP
+.RS 4
+The number of bombs the player can place\&. 
+.RE
+.PP
+
+.SS "PlayerType Player::getPlayerType () const\fC [noexcept]\fP"
+Returns the type of player\&.
+.PP
+\fBReturns\fP
+.RS 4
+The type of the player\&. 
+.RE
+.PP
+
+.SS "float Player::getSpeed () const\fC [noexcept]\fP"
+This function returns the speed of the player\&.
+.PP
+\fBReturns\fP
+.RS 4
+The speed of the player\&. 
+.RE
+.PP
+
+.SS "float Player::getSpeedMax () const\fC [noexcept]\fP"
+This function returns the maximum speed of the player\&.
+.PP
+\fBReturns\fP
+.RS 4
+The maximum speed of the player\&. 
+.RE
+.PP
+
+.SS "PlayerType Player::getType () const\fC [noexcept]\fP"
+This function returns the type of the player\&.
+.PP
+\fBReturns\fP
+.RS 4
+The type of the player\&. 
+.RE
+.PP
+
+.SS "bool Player::getWallPass () const\fC [noexcept]\fP"
+This function returns the value of the wallpass variable\&.
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "bool Player::getWallPassEnd () const\fC [noexcept]\fP"
+This function returns the value of the private member variable wallpassEnd\&.
+.PP
+\fBReturns\fP
+.RS 4
+The wallpassEnd variable is being returned\&. 
+.RE
+.PP
+
+.SS "void Player::OnCollisionEnter (std::unique_ptr< \fBEntity\fP > & other)\fC [virtual]\fP, \fC [noexcept]\fP"
+If the player collides with a wall or fire, play a sound, dispatch an item, and hide the player
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The entity that collided with this entity\&. 
+.RE
+.PP
+
+.PP
+Implements \fBEntity\fP\&.
+.SS "void Player::setBombSize (const int & bombSize)\fC [noexcept]\fP"
+This function sets the bomb size of the player\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIbombSize\fP The size of the bomb\&. 
+.RE
+.PP
+
+.SS "void Player::setNbBomb (const int & nbBomb)\fC [noexcept]\fP"
+SetNbBomb sets the number of bombs the player can place
+.PP
+\fBParameters\fP
+.RS 4
+\fInbBomb\fP The number of bombs the player can place\&. 
+.RE
+.PP
+
+.SS "void Player::setPlayerType (PlayerType type)\fC [noexcept]\fP"
+It sets the player's type, and sets the player's stats according to the type
+.PP
+\fBParameters\fP
+.RS 4
+\fItype\fP The type of the player\&. 
+.RE
+.PP
+
+.SS "void Player::setPosition ()"
+It sets the player's position based on the player's id 
+.SS "void Player::setPosition (\fBVector3D\fP pos)"
+It sets the player's position to the given position
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The position to set the player to\&. 
+.RE
+.PP
+
+.SS "void Player::setSpeed (const float & speed)\fC [noexcept]\fP"
+This function sets the speed of the player\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIspeed\fP The speed of the player\&. 
+.RE
+.PP
+
+.SS "void Player::setWallPass (const bool & pass)\fC [noexcept]\fP"
+It sets the wallpass variable to the value of the pass parameter, and resets the wallpassTimer
+.PP
+\fBParameters\fP
+.RS 4
+\fIpass\fP The new value for the wallpass variable\&. 
+.RE
+.PP
+
+.SS "void Player::toggleBot ()\fC [noexcept]\fP"
+It toggles the isBot variable 
+.SS "void Player::Update ()\fC [final]\fP, \fC [virtual]\fP"
+If the player is a bot, then handle the bot's movement, otherwise handle the player's movement
+.PP
+\fBReturns\fP
+.RS 4
+The player's hitbox\&. 
+.RE
+.PP
+
+.PP
+Implements \fBEntity\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

@@ -1,0 +1,103 @@
+.TH "Model3D" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Model3D
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBModel3D\fP (const std::string_view &path, const std::string_view &texturePath) noexcept"
+.br
+.ti -1c
+.RI "\fBModel3D\fP (const \fBModel3D\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBModel3D\fP (\fBModel3D\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBModel3D\fP & \fBoperator=\fP (const \fBModel3D\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBModel3D\fP & \fBoperator=\fP (\fBModel3D\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fB~Model3D\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBdraw\fP (const \fBVector3D\fP &position, float scale, const std::array< unsigned char, 3 > &color) const noexcept"
+.br
+.ti -1c
+.RI "void \fBdraw\fP (const \fBVector3D\fP &position, const \fBVector3D\fP &rotation, float rotation_angle, float scale, const std::array< unsigned char, 3 > &color) const noexcept"
+.br
+.ti -1c
+.RI "void \fBupdate\fP (ModelAnimation animation, int frame_counter)"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Model3D::Model3D (const std::string_view & path, const std::string_view & texture_Path)\fC [noexcept]\fP"
+It loads a model from a file and a texture from a file, and then sets the texture of the model to the texture
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP The path to the model file\&. 
+.br
+\fItexture_Path\fP The path to the texture file\&. 
+.RE
+.PP
+
+.SS "Model3D::~Model3D ()\fC [noexcept]\fP"
+The destructor of the \fBModel3D\fP class 
+.SH "Member Function Documentation"
+.PP 
+.SS "void Model3D::draw (const \fBVector3D\fP & pos, const \fBVector3D\fP & rotation, float rotation_angle, float scale, const std::array< unsigned char, 3 > & color_infos) const\fC [noexcept]\fP"
+Update the model's animation to the given animation and frame counter\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The position of the model\&. 
+.br
+\fIrotation\fP The rotation of the model\&. 
+.br
+\fIrotation_angle\fP The angle of rotation\&. 
+.br
+\fIscale\fP The scale of the model\&. 
+.br
+\fIcolor_infos\fP The color of the model\&. 
+.RE
+.PP
+
+.SS "void Model3D::draw (const \fBVector3D\fP & pos, float scale, const std::array< unsigned char, 3 > & color_infos) const\fC [noexcept]\fP"
+Update the model's animation to the given animation and frame counter\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The position of the model\&. 
+.br
+\fIscale\fP The scale of the model\&. 
+.br
+\fIcolor_infos\fP The color of the model\&. 
+.RE
+.PP
+
+.SS "void Model3D::update (ModelAnimation animation, int frame_counter)"
+'Update the model's animation to the given animation and frame counter\&.'
+.PP
+The first thing we do is check if the model has any animations\&. If it doesn't, we return
+.PP
+\fBParameters\fP
+.RS 4
+\fIanimation\fP The animation to update\&. 
+.br
+\fIframe_counter\fP The current frame of the animation\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

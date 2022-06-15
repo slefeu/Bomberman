@@ -1,0 +1,117 @@
+.TH "MusicManager" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MusicManager
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMusicManager\fP (const std::string &path) noexcept"
+.br
+.ti -1c
+.RI "\fBMusicManager\fP (const \fBMusicManager\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBMusicManager\fP (\fBMusicManager\fP &&other) noexcept"
+.br
+.ti -1c
+.RI "\fB~MusicManager\fP () noexcept"
+.br
+.ti -1c
+.RI "\fBMusicManager\fP & \fBoperator=\fP (const \fBMusicManager\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBMusicManager\fP & \fBoperator=\fP (\fBMusicManager\fP &&rhs) noexcept"
+.br
+.ti -1c
+.RI "void \fBplay\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBupdate\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetVolume\fP (float volume) noexcept"
+.br
+.ti -1c
+.RI "void \fBstop\fP () noexcept"
+.br
+.ti -1c
+.RI "bool \fBisPlaying\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBunload\fP () noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "MusicManager::MusicManager (const std::string & path)\fC [noexcept]\fP"
+It loads a music file from the given path and sets the volume to 50%
+.PP
+\fBParameters\fP
+.RS 4
+\fIpath\fP The path to the music file\&. 
+.RE
+.PP
+
+.SS "MusicManager::MusicManager (\fBMusicManager\fP && other)\fC [noexcept]\fP"
+'Move the other object's music_ into this object's music_, and set the other object's unloaded_
+to true\&.'
+.PP
+The first line of the function is the function declaration\&. It's a move constructor, so it takes a \fBMusicManager\fP&& as a parameter\&. The && is a reference to a reference, which is a rvalue reference\&. A rvalue reference is a reference to a temporary object
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The other \fBMusicManager\fP object that we're moving from\&. 
+.RE
+.PP
+
+.SS "MusicManager::~MusicManager ()\fC [noexcept]\fP"
+It unloads all the music files 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool MusicManager::isPlaying () const\fC [noexcept]\fP"
+This function returns true if the music is playing, false otherwise\&.
+.PP
+\fBReturns\fP
+.RS 4
+isPlaying_ 
+.RE
+.PP
+
+.SS "\fBMusicManager\fP & MusicManager::operator= (\fBMusicManager\fP && rhs)\fC [noexcept]\fP"
+'Move the data from the right hand side to the left hand side, and then set the right hand side
+to a default state\&.'
+.PP
+The first thing we do is move the data from the right hand side to the left hand side\&. This is done by calling the move assignment operator for the \fCstd::unique_ptr\fP class\&. This is the same as calling the move constructor for the \fCstd::unique_ptr\fP class
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the object that called the function\&. 
+.RE
+.PP
+
+.SS "void MusicManager::play ()\fC [noexcept]\fP"
+It plays the music 
+.SS "void MusicManager::setVolume (float volume)\fC [noexcept]\fP"
+It sets the volume of the music
+.PP
+\fBParameters\fP
+.RS 4
+\fIvolume\fP The volume to set the music to\&. 
+.RE
+.PP
+
+.SS "void MusicManager::stop ()\fC [noexcept]\fP"
+Stop the music stream 
+.SS "void MusicManager::unload ()\fC [noexcept]\fP"
+It unloads the music stream 
+.SS "void MusicManager::update () const\fC [noexcept]\fP"
+Update the music stream 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

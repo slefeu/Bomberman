@@ -1,0 +1,40 @@
+.TH "Animation" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Animation
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBAnimation\fP (const \fBAnimation\fP &other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBAnimation\fP (\fBAnimation\fP &&other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBAnimation\fP & \fBoperator=\fP (const \fBAnimation\fP &rhs) noexcept=default"
+.br
+.ti -1c
+.RI "\fBAnimation\fP & \fBoperator=\fP (\fBAnimation\fP &&rhs) noexcept=default"
+.br
+.ti -1c
+.RI "void \fBaddAnimation\fP (const std::string_view &path) noexcept"
+.br
+.ti -1c
+.RI "void \fBupdateAnimation\fP (\fBModel3D\fP &model_) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetSkipFrame\fP (int frame) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetAnimationId\fP (int id) noexcept"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

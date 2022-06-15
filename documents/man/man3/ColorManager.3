@@ -1,0 +1,68 @@
+.TH "ColorManager" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ColorManager
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBColorManager\fP (const std::array< unsigned char, 3 > &color) noexcept"
+.br
+.ti -1c
+.RI "\fBColorManager\fP (const \fBColorManager\fP &other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBColorManager\fP (\fBColorManager\fP &&other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBColorManager\fP & \fBoperator=\fP (const \fBColorManager\fP &rhs) noexcept=default"
+.br
+.ti -1c
+.RI "\fBColorManager\fP & \fBoperator=\fP (\fBColorManager\fP &&rhs) noexcept=default"
+.br
+.ti -1c
+.RI "void \fBsetColor\fP (const std::array< unsigned char, 3 > &color) noexcept"
+.br
+.ti -1c
+.RI "std::array< unsigned char, 3 > \fBgetColor\fP () const noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "ColorManager::ColorManager (const std::array< unsigned char, 3 > & color)\fC [noexcept]\fP"
+It's a constructor that takes a reference to a constant array of three unsigned characters and assigns it to the color_ member variable
+.PP
+\fBParameters\fP
+.RS 4
+\fIcolor\fP The color to be used for the color manager\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "std::array< unsigned char, 3 > ColorManager::getColor () const\fC [noexcept]\fP"
+It returns the color of the object
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the color_ array\&. 
+.RE
+.PP
+
+.SS "void ColorManager::setColor (const std::array< unsigned char, 3 > & color)\fC [noexcept]\fP"
+It sets the color of the object
+.PP
+\fBParameters\fP
+.RS 4
+\fIcolor\fP The color to set\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

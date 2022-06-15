@@ -1,0 +1,113 @@
+.TH "Home" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Home
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBScene\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBHome\fP (\fBCore\fP &core_ref) noexcept"
+.br
+.ti -1c
+.RI "\fBHome\fP (const \fBHome\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBHome\fP (\fBHome\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBHome\fP & \fBoperator=\fP (const \fBHome\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBHome\fP & \fBoperator=\fP (\fBHome\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBaction\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemDisplay\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemDestroy\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemCollision\fP () noexcept final"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBplayMusic\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBupdateMusic\fP () const noexcept final"
+.br
+.ti -1c
+.RI "\fBColorManager\fP \fBgetBackgroundColor\fP () const noexcept final"
+.br
+.ti -1c
+.RI "void \fBswitchAction\fP () noexcept final"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Home::Home (\fBCore\fP & core_ref)\fC [noexcept]\fP"
+It creates the scene's background, title, buttons, and texts
+.PP
+\fBParameters\fP
+.RS 4
+\fIcore_ref\fP A reference to the core object\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void Home::action ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+If the gamepad is connected, then check if the dpad is pressed, and if so, change the button index\&. If the B button is pressed, then call the action function of the button at the current index\&. If the gamepad is not connected, then check if the mouse is hovering over any of the buttons, and if so, call the action function of the button 
+.PP
+Implements \fBScene\fP\&.
+.SS "\fBColorManager\fP Home::getBackgroundColor () const\fC [final]\fP, \fC [protected]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+This function returns the background color of the home\&.
+.PP
+\fBReturns\fP
+.RS 4
+A \fBColorManager\fP object\&. 
+.RE
+.PP
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void Home::playMusic ()\fC [final]\fP, \fC [protected]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It plays the music 
+.PP
+Implements \fBScene\fP\&.
+.SS "void Home::switchAction ()\fC [final]\fP, \fC [protected]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It moves the camera to a new position, and sets its orientation 
+.PP
+Implements \fBScene\fP\&.
+.SS "void Home::SystemCollision ()\fC [inline]\fP, \fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void Home::SystemDestroy ()\fC [inline]\fP, \fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void Home::SystemDisplay ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It draws the background, title, FPS, buttons, and settings text\&. 
+.PP
+Implements \fBScene\fP\&.
+.SS "void Home::updateMusic () const\fC [final]\fP, \fC [protected]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It updates the music 
+.PP
+Implements \fBScene\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

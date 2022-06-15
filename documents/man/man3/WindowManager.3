@@ -1,0 +1,172 @@
+.TH "WindowManager" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+WindowManager
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBAWindow\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBWindowManager\fP (int width, int height, int fps) noexcept"
+.br
+.ti -1c
+.RI "\fBWindowManager\fP (const \fBWindowManager\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBWindowManager\fP (\fBWindowManager\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fB~WindowManager\fP () noexcept"
+.br
+.ti -1c
+.RI "\fBWindowManager\fP & \fBoperator=\fP (const \fBWindowManager\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBWindowManager\fP & \fBoperator=\fP (\fBWindowManager\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "int \fBgetMusicPercentage\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBresetHeight\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBresetWidth\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBdisplay\fP (\fBScene\fP &scene, const \fBCameraman\fP &camera) noexcept"
+.br
+.ti -1c
+.RI "bool \fBisExit\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBsetFps\fP (float value) noexcept final"
+.br
+.ti -1c
+.RI "void \fBincreaseFps\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBdecreaseFps\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBincreaseMusic\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBdecreaseMusic\fP () noexcept"
+.br
+.in -1c
+.SS "Additional Inherited Members"
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "WindowManager::WindowManager (int width, int height, int fps)\fC [noexcept]\fP"
+It initializes the window and sets the fps
+.PP
+\fBParameters\fP
+.RS 4
+\fIwidth\fP the width of the window 
+.br
+\fIheight\fP the height of the window 
+.br
+\fIfps\fP The number of frames per second the game will run at\&. 
+.RE
+.PP
+
+.SS "WindowManager::~WindowManager ()\fC [noexcept]\fP"
+It closes the audio device and closes the window 
+.SH "Member Function Documentation"
+.PP 
+.SS "void WindowManager::decreaseFps ()\fC [noexcept]\fP"
+Decrease the fps by 30 if it's not already at 30
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the \fBWindowManager\fP object\&. 
+.RE
+.PP
+
+.SS "void WindowManager::decreaseMusic ()\fC [noexcept]\fP"
+Decrease the music volume by 10% if it's not already at 0%
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the \fBWindowManager\fP object\&. 
+.RE
+.PP
+
+.SS "void WindowManager::display (\fBScene\fP & scene, const \fBCameraman\fP & camera)\fC [noexcept]\fP"
+It clears the screen and draws the scene
+.PP
+\fBParameters\fP
+.RS 4
+\fIscene\fP The scene to display\&. 
+.br
+\fIcamera\fP The camera that will be used to render the scene\&. 
+.RE
+.PP
+
+.SS "int WindowManager::getMusicPercentage () const\fC [noexcept]\fP"
+This function returns the music percentage\&.
+.PP
+\fBReturns\fP
+.RS 4
+The music_percent_ variable is being returned\&. 
+.RE
+.PP
+
+.SS "void WindowManager::increaseFps ()\fC [noexcept]\fP"
+If the fps is not 120, increase the fps by 30
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the \fBWindowManager\fP object\&. 
+.RE
+.PP
+
+.SS "void WindowManager::increaseMusic ()\fC [noexcept]\fP"
+Increase the music volume by 10% if it's not already at 100%
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the \fBWindowManager\fP object\&. 
+.RE
+.PP
+
+.SS "bool WindowManager::isExit ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+This function returns true if the window should close, and false otherwise
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.PP
+Implements \fBAWindow\fP\&.
+.SS "void WindowManager::resetHeight ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It resets the height of the window to the height of the screen 
+.PP
+Implements \fBAWindow\fP\&.
+.SS "void WindowManager::resetWidth ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It resets the width of the window to the width of the screen 
+.PP
+Implements \fBAWindow\fP\&.
+.SS "void WindowManager::setFps (float value)\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It sets the fps_ member variable to the value passed in, and then calls the \fBFpsHandler::setFps()\fP function to set the fps_ member variable in the \fBFpsHandler\fP class
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The new FPS value\&. 
+.RE
+.PP
+
+.PP
+Implements \fBAWindow\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

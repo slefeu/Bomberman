@@ -1,0 +1,111 @@
+.TH "PlayerSelect" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+PlayerSelect
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBScene\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPlayerSelect\fP (\fBCore\fP &core_ref) noexcept"
+.br
+.ti -1c
+.RI "\fBPlayerSelect\fP (const \fBPlayerSelect\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBPlayerSelect\fP (\fBPlayerSelect\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBPlayerSelect\fP & \fBoperator=\fP (const \fBPlayerSelect\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBPlayerSelect\fP & \fBoperator=\fP (\fBPlayerSelect\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBaction\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBswitchAction\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBplayMusic\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBupdateMusic\fP () const noexcept final"
+.br
+.ti -1c
+.RI "\fBColorManager\fP \fBgetBackgroundColor\fP () const noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemDestroy\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemCollision\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBSystemDisplay\fP () noexcept final"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "PlayerSelect::PlayerSelect (\fBCore\fP & core_ref)\fC [noexcept]\fP"
+It creates the buttons, the background, the title, the text and the stats\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIcore_ref\fP A reference to the core object\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void PlayerSelect::action ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+If the gamepad is connected, then check if the dpad is pressed, and if so, change the button index\&. If the B button is pressed, then call the action function of the button at the current index\&. If the gamepad is not connected, then check if the mouse is hovering over any of the buttons, and if so, call the action function of that button 
+.PP
+Implements \fBScene\fP\&.
+.SS "\fBColorManager\fP PlayerSelect::getBackgroundColor () const\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+\fC\fBColorManager\fP \fBPlayerSelect::getBackgroundColor() const \fPnoexcept\fP
+.PP
+The function returns a \fC\fBColorManager\fP\fP object\&. The function is a member of the \fC\fBPlayerSelect\fP\fP class\&. The function is a \fCconst\fP function\&. The function is a \fCnoexcept\fP function
+.PP
+\fBReturns\fP
+.RS 4
+The background color of the player select screen\&. 
+.RE
+.PP
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void PlayerSelect::playMusic ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It plays the music 
+.PP
+Implements \fBScene\fP\&.
+.SS "void PlayerSelect::switchAction ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It teleports the camera to a new position 
+.PP
+Implements \fBScene\fP\&.
+.SS "void PlayerSelect::SystemCollision ()\fC [inline]\fP, \fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void PlayerSelect::SystemDestroy ()\fC [inline]\fP, \fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implements \fBScene\fP\&.
+.SS "void PlayerSelect::SystemDisplay ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It displays the background, the title, the players, the buttons, the stats and the FPS 
+.PP
+Implements \fBScene\fP\&.
+.SS "void PlayerSelect::updateMusic () const\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It updates the music 
+.PP
+Implements \fBScene\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

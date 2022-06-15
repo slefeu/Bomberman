@@ -1,0 +1,162 @@
+.TH "TextHandler" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TextHandler
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTextHandler\fP (const std::string_view &font_path, const std::string_view &message, int posX, int posY) noexcept"
+.br
+.ti -1c
+.RI "\fBTextHandler\fP (const \fBTextHandler\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBTextHandler\fP (\fBTextHandler\fP &&other) noexcept"
+.br
+.ti -1c
+.RI "\fB~TextHandler\fP () noexcept"
+.br
+.ti -1c
+.RI "\fBTextHandler\fP & \fBoperator=\fP (const \fBTextHandler\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBTextHandler\fP & \fBoperator=\fP (\fBTextHandler\fP &&rhs) noexcept"
+.br
+.ti -1c
+.RI "void \fBdraw\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetTextColor\fP (const std::array< unsigned char, 3 > &color) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetTextSize\fP (int size) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetPosition\fP (int posX, int posY) noexcept"
+.br
+.ti -1c
+.RI "void \fBsetText\fP (const std::string_view &message) noexcept"
+.br
+.ti -1c
+.RI "void \fBunload\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBinvertDisplay\fP () noexcept"
+.br
+.ti -1c
+.RI "std::string & \fBgetText\fP () noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "TextHandler::TextHandler (const std::string_view & font_path, const std::string_view & message, int posX, int posY)\fC [noexcept]\fP"
+It loads the font, sets the message, and sets the color
+.PP
+\fBParameters\fP
+.RS 4
+\fIfont_path\fP The path to the font file\&. 
+.br
+\fImessage\fP The text to be displayed\&. 
+.br
+\fIposX\fP The x position of the text\&. 
+.br
+\fIposY\fP The Y position of the text\&. 
+.RE
+.PP
+
+.SS "TextHandler::TextHandler (\fBTextHandler\fP && other)\fC [noexcept]\fP"
+'Move the other object's data into this object, and mark the other object as unloaded\&.'
+.PP
+The first thing we do is move the font_ object into this object\&. This is done by calling the move constructor of the font_ object
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The \fBTextHandler\fP object that we're moving from\&. 
+.RE
+.PP
+
+.SS "TextHandler::~TextHandler ()\fC [noexcept]\fP"
+It deletes the \fC\fBTextHandler\fP\fP object 
+.SH "Member Function Documentation"
+.PP 
+.SS "void TextHandler::draw () const\fC [noexcept]\fP"
+It draws the text to the screen
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the \fBTextHandler\fP object\&. 
+.RE
+.PP
+
+.SS "std::string & TextHandler::getText ()\fC [noexcept]\fP"
+It returns a reference to the message_ string
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the message_ string\&. 
+.RE
+.PP
+
+.SS "void TextHandler::invertDisplay ()\fC [noexcept]\fP"
+It inverts the value of the displayed_ member variable 
+.SS "\fBTextHandler\fP & TextHandler::operator= (\fBTextHandler\fP && rhs)\fC [noexcept]\fP"
+'Move the data from the right hand side to the left hand side, and then set the right hand side
+to an unloaded state\&.'
+.PP
+The first thing we do is move the font_ data member from the right hand side to the left hand side\&. This is done by calling the move constructor of the std::unique_ptr class
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the object that was assigned to\&. 
+.RE
+.PP
+
+.SS "void TextHandler::setPosition (int posX, int posY)\fC [noexcept]\fP"
+It sets the position of the text
+.PP
+\fBParameters\fP
+.RS 4
+\fIposX\fP The x position of the text\&. 
+.br
+\fIposY\fP The y-coordinate of the text\&. 
+.RE
+.PP
+
+.SS "void TextHandler::setText (const std::string_view & message)\fC [noexcept]\fP"
+It sets the message to be displayed
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP The message to be displayed\&. 
+.RE
+.PP
+
+.SS "void TextHandler::setTextColor (const std::array< unsigned char, 3 > & color)\fC [noexcept]\fP"
+It sets the color of the text
+.PP
+\fBParameters\fP
+.RS 4
+\fIcolor\fP The color of the text\&. 
+.RE
+.PP
+
+.SS "void TextHandler::setTextSize (int size)\fC [noexcept]\fP"
+It sets the font size of the text
+.PP
+\fBParameters\fP
+.RS 4
+\fIsize\fP The size of the font\&. 
+.RE
+.PP
+
+.SS "void TextHandler::unload ()\fC [noexcept]\fP"
+It unloads the font 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

@@ -1,0 +1,108 @@
+.TH "AData" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+AData
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherited by \fBGameData\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBAData\fP (const \fBAData\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBAData\fP (\fBAData\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBAData\fP & \fBoperator=\fP (const \fBAData\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBAData\fP & \fBoperator=\fP (\fBAData\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "virtual void \fBupdateMouse\fP () noexcept=0"
+.br
+.ti -1c
+.RI "int \fBgetCurrentSceneIndex\fP () const noexcept"
+.br
+.ti -1c
+.RI "int \fBgetNbPlayers\fP () const noexcept"
+.br
+.ti -1c
+.RI "void \fBsetNbPlayers\fP (int value) noexcept"
+.br
+.ti -1c
+.RI "void \fBclearEntities\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBunloadAll\fP () noexcept"
+.br
+.ti -1c
+.RI "std::vector< std::unique_ptr< \fBEntity\fP > > & \fBgetEntities\fP () noexcept"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fBcurrent_scene_\fP = 0"
+.br
+.ti -1c
+.RI "int \fBnb_players_\fP = 0"
+.br
+.ti -1c
+.RI "std::vector< std::unique_ptr< \fBEntity\fP > > \fBentities_\fP"
+.br
+.in -1c
+.SH "Member Function Documentation"
+.PP 
+.SS "void AData::clearEntities ()\fC [noexcept]\fP"
+Clear the entities_ vector\&. 
+.SS "int AData::getCurrentSceneIndex () const\fC [noexcept]\fP"
+This function returns the current scene index\&.
+.PP
+\fBReturns\fP
+.RS 4
+The current scene index\&. 
+.RE
+.PP
+
+.SS "std::vector< std::unique_ptr< \fBEntity\fP > > & AData::getEntities ()\fC [noexcept]\fP"
+It returns a reference to the vector of unique pointers to entities
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the vector of unique pointers to entities\&. 
+.RE
+.PP
+
+.SS "int AData::getNbPlayers () const\fC [noexcept]\fP"
+It returns the number of players
+.PP
+\fBReturns\fP
+.RS 4
+The number of players\&. 
+.RE
+.PP
+
+.SS "void AData::setNbPlayers (int value)\fC [noexcept]\fP"
+It sets the number of players
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The value to set the parameter to\&. 
+.RE
+.PP
+
+.SS "virtual void AData::updateMouse ()\fC [pure virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+Implemented in \fBGameData\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

@@ -1,0 +1,90 @@
+.TH "Fire" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Fire
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBEntity\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBFire\fP (\fBVector3D\fP posi, \fBModel3D\fP &model)"
+.br
+.ti -1c
+.RI "\fBFire\fP (const \fBFire\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBFire\fP (\fBFire\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBFire\fP & \fBoperator=\fP (const \fBFire\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBFire\fP & \fBoperator=\fP (\fBFire\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBUpdate\fP () final"
+.br
+.ti -1c
+.RI "void \fBOnCollisionEnter\fP (std::unique_ptr< \fBEntity\fP > &other) noexcept"
+.br
+.ti -1c
+.RI "bool \fBExplodeElements\fP (std::unique_ptr< \fBEntity\fP > &other) noexcept"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Fire::Fire (\fBVector3D\fP position, \fBModel3D\fP & model)"
+It creates a fire entity with a transform, a renderer, and a box collider
+.PP
+\fBParameters\fP
+.RS 4
+\fIposition\fP The position of the fire\&. 
+.br
+\fImodel\fP The model to be used for the fire\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Fire::ExplodeElements (std::unique_ptr< \fBEntity\fP > & other)\fC [noexcept]\fP"
+If the entity is a crate, drop its item and destroy it\&. If it's an item, destroy it\&. If it's a wall, return true\&. If it's a bomb, explode it\&. Otherwise, return false
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The entity that the fire is colliding with\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A boolean value\&. 
+.RE
+.PP
+
+.SS "void Fire::OnCollisionEnter (std::unique_ptr< \fBEntity\fP > & other)\fC [virtual]\fP, \fC [noexcept]\fP"
+
+.PP
+.RS 4
+This function is called when the fire collides with another entity 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIother\fP The entity that collided with this entity\&. 
+.RE
+.PP
+
+.PP
+Implements \fBEntity\fP\&.
+.SS "void Fire::Update ()\fC [final]\fP, \fC [virtual]\fP"
+If the timer is done, destroy the object 
+.PP
+Implements \fBEntity\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

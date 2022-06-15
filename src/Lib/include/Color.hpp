@@ -43,7 +43,7 @@ class ColorManager
     ~ColorManager() noexcept                         = default;
 
     ColorManager& operator=(const ColorManager& rhs) noexcept = default;
-    ColorManager& operator=(ColorManager&& rhs) noexcept      = default;
+    ColorManager& operator=(ColorManager&& rhs) noexcept = default;
 
     void                         setColor(const std::array<unsigned char, 3>& color) noexcept;
     std::array<unsigned char, 3> getColor() const noexcept;

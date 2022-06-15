@@ -24,7 +24,6 @@ set(
 
   src/Engine/Tools/Timer.cpp
   src/Engine/Tools/Error.cpp
-  src/Engine/Tools/Save.cpp
 
   src/Engine/ECS/Components/AI.cpp
   src/Engine/ECS/Components/BoxCollider.cpp
@@ -36,6 +35,7 @@ set(
   src/Indie/GameCore/Core.cpp
   src/Indie/GameCore/GameData.cpp
   src/Indie/GameCore/MyCameraman.cpp
+  src/Indie/GameCore/Save.cpp
 
   src/Indie/Prefabs/Player.cpp
   src/Indie/Prefabs/Bomb.cpp

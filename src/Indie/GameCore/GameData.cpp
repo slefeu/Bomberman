@@ -112,6 +112,16 @@ void GameData::addItem(const Vector3D& position) noexcept
 }
 
 /**
+ * It creates a new item at the given position and given type and adds it to the list of entities
+ *
+ * @param position The position of the item.
+ */
+void GameData::addItem(const Vector3D& position, bomberman::ItemType type) noexcept
+{
+    entities_.emplace_back(std::make_unique<Item>(*this, type, position));
+}
+
+/**
  * It returns the number of players in the game
  *
  * @return The number of players in the game.

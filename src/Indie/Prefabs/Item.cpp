@@ -16,6 +16,7 @@
 #include "Player.hpp"
 #include "Render.hpp"
 #include "Transform3D.hpp"
+#include "Vector.hpp"
 
 /**
  * It creates an item, sets its position, its model, its hitbox, and plays a sound
@@ -83,6 +84,51 @@ Item::Item(GameData& data, bomberman::ItemType type)
         throw(Error("Error, could not instanciate the item element.\n"));
 
     transform->get().setPosition(findFreePosition());
+    transform->get().setScale(1.0f);
+    transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
+    transform->get().setRotationAngle(90.0f);
+    renderer->get().setRenderType(RenderType::R_3DMODEL_ROTATE);
+
+    Vector3D scale = { 1.0f, 1.0f, 0.5f };
+    addComponent(BoxCollider(transform->get().getPosition(), scale, true));
+    auto hitbox = getComponent<BoxCollider>();
+
+    if (!hitbox.has_value()) throw(Error("Error, could not instanciate the item element.\n"));
+    hitbox->get().setIsSolid(false);
+    transform->get().addZ((transform->get().getScale() / 2) * -1);
+    transform->get().addY((transform->get().getScale() / 2));
+
+    hitbox->get().addZ(transform->get().getScale() / 10);
+    hitbox->get().addY(transform->get().getScale() / 10);
+    hitbox->get().update(hitbox->get().getPosition());
+    newItemSound.play();
+}
+
+/**
+ * It creates an item, sets its position, scale, rotation, and render type, and adds a box collider
+ * to it
+ *
+ * @param data The game data, which contains the map and the players.
+ * @param type The type of item to be created.
+ * @param pos The position of the item.
+ */
+Item::Item(GameData& data, bomberman::ItemType type, Vector3D pos)
+    : Entity()
+    , data(data)
+    , itemType(type)
+    , getItemSound(GET_ITEM)
+    , newItemSound(NEW_ITEM)
+
+{
+    addComponent(Transform3D());
+    addComponent(Render(findItemModel()));
+    auto transform = getComponent<Transform3D>();
+    auto renderer  = getComponent<Render>();
+
+    if (!transform.has_value() || !renderer.has_value())
+        throw(Error("Error, could not instanciate the item element.\n"));
+
+    transform->get().setPosition(pos);
     transform->get().setScale(1.0f);
     transform->get().setRotationAxis({ 1.0f, 0.0f, 0.0f });
     transform->get().setRotationAngle(90.0f);
@@ -209,4 +255,14 @@ bool Item::entitiesHere(Vector3D& pos) const noexcept
         if (other_hitbox->get().isColliding(hitbox, pos)) return true;
     }
     return false;
+}
+
+void Item::setType(const bomberman::ItemType& type) noexcept
+{
+    itemType = type;
+}
+
+bomberman::ItemType Item::getType() const noexcept
+{
+    return itemType;
 }

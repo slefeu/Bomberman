@@ -36,10 +36,12 @@ class Save
     void        loadGameBombData(const std::vector<std::string>& infos);
     void        loadGameCrateData(const std::vector<std::string>& infos);
     void        loadGameWallData(const std::vector<std::string>& infos);
+    void        loadGameItemData(const std::vector<std::string>& infos);
     void        writeDataGame(std::ofstream& file);
     void        writeDataPlayer(std::ofstream& file);
     void        writeDataCrate(std::ofstream& file);
     void        writeDataWall(std::ofstream& file);
+    void        writeDataItem(std::ofstream& file);
     void        writeDataBombPlayer(std::ofstream& file, Entity& bomb) const;
     std::string getCurrentDateTime() const noexcept;
     int         getNbBomb(const Player& player) const noexcept;

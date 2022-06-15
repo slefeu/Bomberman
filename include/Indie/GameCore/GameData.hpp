@@ -42,6 +42,7 @@ class GameData : public AData
     void        addPlayer(int index) noexcept;
     void        addItem(bomberman::ItemType item) noexcept;
     void        addItem(const Vector3D& position) noexcept;
+    void        addItem(const Vector3D& position, bomberman::ItemType item) noexcept;
     void        addCrate(Vector3D position) noexcept;
     void        addWall(Vector3D position) noexcept;
     void        addFire(std::unique_ptr<Fire> fire) noexcept;

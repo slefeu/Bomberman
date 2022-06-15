@@ -11,10 +11,13 @@
 #include <fstream>
 
 #include "Bomb.hpp"
+#include "Bomberman.hpp"
 #include "Crate.hpp"
 #include "Error.hpp"
 #include "InstanceOf.hpp"
+#include "Item.hpp"
 #include "Player.hpp"
+#include "Transform3D.hpp"
 #include "Wall.hpp"
 
 Save::Save(GameData& data)
@@ -60,6 +63,8 @@ void Save::save()
     writeDataCrate(file);
     file << "Walls" << std::endl;
     writeDataWall(file);
+    file << "Items" << std::endl;
+    writeDataItem(file);
 }
 
 /**
@@ -166,15 +171,32 @@ void Save::writeDataCrate(std::ofstream& file)
 }
 
 /**
- * It writes the position of all the walls in the game to a file
+ * it writes the position of all the walls in the game to a file
  *
- * @param file The file to write to.
+ * @param file the file to write to.
  */
 void Save::writeDataWall(std::ofstream& file)
 {
     for (auto& wall : data_.getEntities()) {
         auto transform = wall->getComponent<Transform3D>();
         if (!transform.has_value() || !Type:: instanceof <Wall>(wall.get())) continue;
+        file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
+             << transform->get().getPositionZ() << std::endl;
+    }
+}
+
+/**
+ * it writes the position of all the items in the game to a file
+ *
+ * @param file the file to write to.
+ */
+void Save::writeDataItem(std::ofstream& file)
+{
+    for (auto& item : data_.getEntities()) {
+        auto transform = item->getComponent<Transform3D>();
+        if (!transform.has_value() || !Type:: instanceof <Item>(item.get())) continue;
+        auto item_ = dynamic_cast<Item*>(item.get());
+        file << static_cast<int>(item_->getType()) << std::endl;
         file << transform->get().getPositionX() << ";" << transform->get().getPositionY() << ";"
              << transform->get().getPositionZ() << std::endl;
     }
@@ -243,13 +265,24 @@ void Save::loadGameData(std::vector<std::string>& infos)
 
     if (infos[index_].find("Walls") != 0)
         throw Error("Save not valid: " + infos[index_] + " in loadGameData Walls");
-
-    while (infos[index_] != infos.back()) {
-        index_++;
+    index_++;
+    while (infos[index_].find("Items") != 0) {
         try {
             loadGameWallData(infos);
         } catch (std::exception err) {
             throw Error("Save not valid: " + infos[index_] + " in loadGameWall " + err.what());
+        }
+        index_++;
+    }
+
+    if (infos[index_].find("Items") != 0)
+        throw Error("Save not valid: " + infos[index_] + " in loadGameData Items");
+    while (infos[index_] != infos.back()) {
+        index_++;
+        try {
+            loadGameItemData(infos);
+        } catch (std::exception err) {
+            throw Error("Save not valid: " + infos[index_] + " in loadGameItem " + err.what());
         }
     }
 }
@@ -371,4 +404,26 @@ void Save::loadGameWallData(const std::vector<std::string>& infos)
     pos.y = std::stof(split[1]);
     pos.z = std::stof(split[2]);
     data_.addWall(pos);
+}
+
+/**
+ * It takes a vector of strings, and an index_, and it adds a item to the game world
+ *
+ * @param data_ The vector of strings that contains the data_ to be loaded.
+ * @param index_ The index_ of the line in the file that is being read.
+ */
+void Save::loadGameItemData(const std::vector<std::string>& infos)
+{
+    std::vector<std::string> split;
+    Vector3D                 pos;
+    bomberman::ItemType      type;
+
+    type = static_cast<bomberman::ItemType>(std::stoi(infos[index_]));
+
+    index_ += 1;
+    splitStr(infos[index_], ";", split);
+    pos.x = std::stof(split[0]);
+    pos.y = std::stof(split[1]);
+    pos.z = std::stof(split[2]);
+    data_.addItem(pos, type);
 }

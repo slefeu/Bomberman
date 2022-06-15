@@ -46,6 +46,6 @@ class Save
     void        splitStr(std::string str, std::string delimiter, std::vector<std::string>& result);
 
     // attributes
-    GameData&                 data_;
-    int                       index_  = 2;
+    GameData& data_;
+    int       index_ = 2;
 };

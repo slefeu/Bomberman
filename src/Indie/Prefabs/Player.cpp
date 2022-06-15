@@ -341,8 +341,13 @@ void Player::OnCollisionEnter(std::unique_ptr<Entity>& other) noexcept
     auto render = getComponent<Render>();
     if (!render.has_value()) return;
     if (!render->get().isShow()) return;
-
+    if (Type:: instanceof <Wall>(other.get()) && wallpass || Type::
+            instanceof <Wall>(other.get()) && wallpassEnd) {
+        printf("in first\n");
+        return;
+    }
     if (Type:: instanceof <Wall>(other.get()) || Type:: instanceof <Fire>(other.get())) {
+        printf("in second\n");
         killSound_.play();
         dispatchItem();
         auto render = getComponent<Render>();

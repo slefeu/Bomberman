@@ -123,7 +123,6 @@ void Game::switchAction() noexcept
         auto render = player->getComponent<Render>();
         if (render.has_value()) { render->get().show(true); }
     }
-
     createMap();
 }
 

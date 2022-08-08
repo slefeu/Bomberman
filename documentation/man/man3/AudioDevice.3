@@ -1,0 +1,74 @@
+.TH "AudioDevice" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+AudioDevice
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBAudioDevice\fP (const \fBAudioDevice\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBAudioDevice\fP (\fBAudioDevice\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBAudioDevice\fP & \fBoperator=\fP (const \fBAudioDevice\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBAudioDevice\fP & \fBoperator=\fP (\fBAudioDevice\fP &&rhs) noexcept=delete"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBinitialize\fP () noexcept"
+.br
+.ti -1c
+.RI "static void \fBupdate\fP (const \fBScene\fP &scene) noexcept"
+.br
+.ti -1c
+.RI "static void \fBclose\fP () noexcept"
+.br
+.ti -1c
+.RI "static void \fBsetMusic\fP (float value) noexcept"
+.br
+.in -1c
+.SH "Member Function Documentation"
+.PP 
+.SS "void AudioDevice::close ()\fC [static]\fP, \fC [noexcept]\fP"
+It closes the audio device\&. 
+.SS "void AudioDevice::initialize ()\fC [static]\fP, \fC [noexcept]\fP"
+
+.PP
+.RS 4
+Initialize the audio device 
+.RE
+.PP
+
+.SS "void AudioDevice::setMusic (float value)\fC [static]\fP, \fC [noexcept]\fP"
+It sets the music volume
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP The volume of the music\&. 
+.RE
+.PP
+
+.SS "void AudioDevice::update (const \fBScene\fP & scene)\fC [static]\fP, \fC [noexcept]\fP"
+It updates the music
+.PP
+\fBParameters\fP
+.RS 4
+\fIscene\fP The scene to update the music of\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

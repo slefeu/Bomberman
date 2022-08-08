@@ -1,27 +1,27 @@
-# {EPITECH} | Second year | OOP | Video Game & ECS | Bomberman
+# {EPITECH} | Second year | OOP | ECS | Indie Studio
 
-## Indie Studio project:
+## The project :
 
-- `Tools:`
-    * Project made in `C++` version 20
-    * Compiled with `CMake`, minimum version required : 3.6
-    * a `justfile` is provided to compile it  
+[](ReadMe/trailer.mp4)
 
-The purpose of the project is to simulate a pizzeria, which is composed of two main parts:
+The purpose of the Indie Studio project is to recreate the cross-platform video game Bomberman. In the game, you have to control a character to kill the other players on the map with bombs.
 
-    - a Reception:
-        - Takes and send orders to kitchens
-        - Receives the finished order and gives it to the customer
-        - Keeps a log of all orders made
+Our gameplay reference is Neo Bomberman, released on the MVS, and our design is inspired from the Switch game Super Bomberman R released in 2017.
 
-    - Kitchens containing:
-        - a fridge with ingredients stocks
-        - a set number of cooks, represented as a thread pool
+- `Tools`:
+    * Project made in `C++` version 20, `Raylib` and `Blender` version 3.2.0
+    * Compiled with `CMake`, minimum version required : `3.6`
+    * Can be compiled either on `Windows` or `Linux` distributions
+    * A `justfile` is provided to compile it
+
+- `Some of the features we implemented:`
+    * A local multi-player module to play with up to 3 friends or AI’s controlled bots.
+    * 3D graphics mixed with a 2D gameplay and procedurally generated maps.
+    * A generic entity component system and game engine.
 
 - `Notions we had to implement and encapsulate:`
-    * Load balancing
-    * processes synchronization & commmunication (IPC)
-    * POSIX threads synchronization & commmunication
+    * ECS (entity component system)
+    * Raylib encapsulation
 
 For further details about the implementation of these notions, you can click [here](./documentation) to be redirected to our documentation.
 
@@ -32,23 +32,5 @@ For further details about the implementation of these notions, you can click [he
 
     * To build on release mode : `mkdir build && just build`
 
-- `How to start the program`:
-    * `./plazza 2 5 4000 `
 
 ## Highlights:
-
-- C++ thread pool implementation : [documentation](./documentation/ThreadPool.md)
-    * Generic creation and run of a thread pool.
-    * You can choose the number of threads you want in your pool.
-
-- C++ process wrapper : [documentation](./documentation/Process.md)
-    * This class is a wrapper to the unix `fork` and `wait` functions
-    * It allows to create a new process and wait for its termination.
-
-- C++ named pipe wrapper : [documentation](./documentation/NamedPipe.md)
-    * The `NamedPipe` class is a wrapper around the `mkfifo` and `open` system calls.
-    * It allows to create a named pipe with two directions, one for reading and one for writing.
-
-- C++ class object serialization and deserialization : [documentation](./documentation/Serializer.md)
-    * Send serialized datas during inter-process communication
-    * Recovers the datas and recreates an instance of the class with the provided serialized datas

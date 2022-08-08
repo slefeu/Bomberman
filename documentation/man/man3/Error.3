@@ -1,0 +1,58 @@
+.TH "Error" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Error
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits std::exception\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBError\fP (const std::string_view &message) noexcept"
+.br
+.ti -1c
+.RI "\fBError\fP (const \fBError\fP &other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBError\fP (\fBError\fP &&other) noexcept=default"
+.br
+.ti -1c
+.RI "\fBError\fP & \fBoperator=\fP (const \fBError\fP &) noexcept=default"
+.br
+.ti -1c
+.RI "\fBError\fP & \fBoperator=\fP (\fBError\fP &&) noexcept=default"
+.br
+.ti -1c
+.RI "const char * \fBwhat\fP () const noexcept override"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Error::Error (const std::string_view & message)\fC [explicit]\fP, \fC [noexcept]\fP"
+It moves the message into the message_ variable\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP The message to be displayed when the error is thrown\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "const char * Error::what () const\fC [override]\fP, \fC [noexcept]\fP"
+It returns a pointer to a C-style string that contains the error message
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the string object's internal character array, which is not null-terminated\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

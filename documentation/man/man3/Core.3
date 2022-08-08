@@ -1,0 +1,95 @@
+.TH "Core" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Core
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBACore\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBCore\fP () noexcept"
+.br
+.ti -1c
+.RI "\fBCore\fP (const \fBCore\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBCore\fP (\fBCore\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fB~Core\fP () noexcept"
+.br
+.ti -1c
+.RI "\fBCore\fP & \fBoperator=\fP (const \fBCore\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBCore\fP & \fBoperator=\fP (\fBCore\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBswitchScene\fP (const bomberman::SceneType &scene) noexcept"
+.br
+.ti -1c
+.RI "\fBWindowManager\fP & \fBgetWindow\fP () noexcept"
+.br
+.ti -1c
+.RI "\fBMyCameraman\fP & \fBgetCameraman\fP () noexcept"
+.br
+.ti -1c
+.RI "void \fBrun\fP () noexcept final"
+.br
+.ti -1c
+.RI "void \fBdisplayScene\fP () noexcept final"
+.br
+.in -1c
+.SS "Additional Inherited Members"
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Core::Core ()\fC [noexcept]\fP"
+It initializes the window, the game models, the sprites, and the scenes 
+.SS "Core::~Core ()\fC [noexcept]\fP"
+It unloads all the data, resets all the scenes, and resets the window 
+.SH "Member Function Documentation"
+.PP 
+.SS "void Core::displayScene ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+It displays the scene 
+.PP
+Implements \fBACore\fP\&.
+.SS "\fBMyCameraman\fP & Core::getCameraman ()\fC [noexcept]\fP"
+It returns a reference to the cameraman
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the cameraman\&. 
+.RE
+.PP
+
+.SS "\fBWindowManager\fP & Core::getWindow ()\fC [noexcept]\fP"
+It returns a reference to the \fBWindowManager\fP object
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the window_ object\&. 
+.RE
+.PP
+
+.SS "void Core::run ()\fC [final]\fP, \fC [virtual]\fP, \fC [noexcept]\fP"
+The function runs the game loop 
+.PP
+Implements \fBACore\fP\&.
+.SS "void Core::switchScene (const bomberman::SceneType & scene)\fC [noexcept]\fP"
+It switches the current scene to the one specified in the parameter
+.PP
+\fBParameters\fP
+.RS 4
+\fIscene\fP The scene to switch to\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

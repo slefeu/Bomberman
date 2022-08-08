@@ -1,0 +1,45 @@
+.TH "Save" 3 "Wed Jun 15 2022" "Version 1.0" "Indie Studio" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Save
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSave\fP (\fBGameData\fP &data)"
+.br
+.ti -1c
+.RI "\fBSave\fP (const \fBSave\fP &other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBSave\fP (\fBSave\fP &&other) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBSave\fP & \fBoperator=\fP (const \fBSave\fP &rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "\fBSave\fP & \fBoperator=\fP (\fBSave\fP &&rhs) noexcept=delete"
+.br
+.ti -1c
+.RI "void \fBload\fP (const std::string_view &filename)"
+.br
+.ti -1c
+.RI "void \fBsave\fP ()"
+.br
+.in -1c
+.SH "Member Function Documentation"
+.PP 
+.SS "void Save::load (const std::string_view & filename)"
+It opens a file, reads the file line by line, and then passes the infos to another function 
+.SS "void Save::save ()"
+It creates a file with the current date and time as its name, then writes the number of players, the players' data_, the crates' data_ and the walls' data_
+.PP
+@retuns nothing 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Indie Studio from the source code\&.

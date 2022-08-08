@@ -26,7 +26,5 @@ For further details about the implementation of these notions, you can click [he
 - `How to compile the project:`
     * To build on debug mode : `mkdir build && just debug`<brk>
 
-    * To build on release mode : `mkdir build && just build`
-
-
-## Highlights:
+    * To build on release mode : `mkdir build && just build`<brk>
+    * To run the game : `cd build && ./bomberman`

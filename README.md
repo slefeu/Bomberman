@@ -19,10 +19,6 @@ Our gameplay reference is Neo Bomberman, released on the MVS, and our design is 
     * 3D graphics mixed with a 2D gameplay and procedurally generated maps.
     * A generic entity component system and game engine.
 
-- `Notions we had to implement and encapsulate:`
-    * ECS (entity component system)
-    * Raylib encapsulation
-
 For further details about the implementation of these notions, you can click [here](./documentation) to be redirected to our documentation.
 
 ## Usage:

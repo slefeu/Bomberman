@@ -2,7 +2,7 @@
 
 ## The project :
 
-[![Bomberman - Trailer](ReadMe/trailerpic.png)](ReadMe/trailer.mp4)
+[![Bomberman - Trailer](ReadMe/trailerpic.png)](https://youtu.be/VIhgITBRSbQ "Click to Watch!")
 
 The purpose of the Indie Studio project is to recreate the cross-platform video game Bomberman. In the game, you have to control a character to kill the other players on the map with bombs.
 
